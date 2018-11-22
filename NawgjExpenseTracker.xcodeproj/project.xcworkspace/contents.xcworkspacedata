@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:NawgjExpenceTracker.xcodeproj">
+      location = "self:/Users/derek/workspace/NawgjExpenceTracker/NawgjExpenseTracker.xcodeproj">
    </FileRef>
 </Workspace>

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "65DBC963217D5B320029C6AA"
-               BuildableName = "NawgjExpenceTracker.app"
-               BlueprintName = "NawgjExpenceTracker"
-               ReferencedContainer = "container:NawgjExpenceTracker.xcodeproj">
+               BuildableName = "NawgjExpenseTracker.app"
+               BlueprintName = "NawgjExpenseTracker"
+               ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "65DBC977217D5B320029C6AA"
-               BuildableName = "NawgjExpenceTrackerTests.xctest"
-               BlueprintName = "NawgjExpenceTrackerTests"
-               ReferencedContainer = "container:NawgjExpenceTracker.xcodeproj">
+               BuildableName = "NawgjExpenseTrackerTests.xctest"
+               BlueprintName = "NawgjExpenseTrackerTests"
+               ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "65DBC963217D5B320029C6AA"
-            BuildableName = "NawgjExpenceTracker.app"
-            BlueprintName = "NawgjExpenceTracker"
-            ReferencedContainer = "container:NawgjExpenceTracker.xcodeproj">
+            BuildableName = "NawgjExpenseTracker.app"
+            BlueprintName = "NawgjExpenseTracker"
+            ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "65DBC963217D5B320029C6AA"
-            BuildableName = "NawgjExpenceTracker.app"
-            BlueprintName = "NawgjExpenceTracker"
-            ReferencedContainer = "container:NawgjExpenceTracker.xcodeproj">
+            BuildableName = "NawgjExpenseTracker.app"
+            BlueprintName = "NawgjExpenseTracker"
+            ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "65DBC963217D5B320029C6AA"
-            BuildableName = "NawgjExpenceTracker.app"
-            BlueprintName = "NawgjExpenceTracker"
-            ReferencedContainer = "container:NawgjExpenceTracker.xcodeproj">
+            BuildableName = "NawgjExpenseTracker.app"
+            BlueprintName = "NawgjExpenseTracker"
+            ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

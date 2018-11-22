@@ -10,7 +10,7 @@ import XCTest
 
 @testable import NawgjExpenceTracker
 
-class NawgjExpenceTrackerTests: XCTestCase {
+class NawgjExpenseTrackerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

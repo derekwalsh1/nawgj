@@ -13,7 +13,7 @@
 		65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC96B217D5B320029C6AA /* Main.storyboard */; };
 		65DBC96F217D5B320029C6AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC96E217D5B320029C6AA /* Assets.xcassets */; };
 		65DBC972217D5B320029C6AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC970217D5B320029C6AA /* LaunchScreen.storyboard */; };
-		65DBC97D217D5B320029C6AA /* NawgjExpenceTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC97C217D5B320029C6AA /* NawgjExpenceTrackerTests.swift */; };
+		65DBC97D217D5B320029C6AA /* NawgjExpenseTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC97C217D5B320029C6AA /* NawgjExpenseTrackerTests.swift */; };
 		65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC987217EBB7F0029C6AA /* Meet.swift */; };
 		65DBC98A217EC0DA0029C6AA /* MeetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC989217EC0DA0029C6AA /* MeetTableViewCell.swift */; };
 		65DBC98C217EC5D40029C6AA /* MeetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */; };
@@ -40,15 +40,15 @@
 
 /* Begin PBXFileReference section */
 		65B413DA21A3C26400AF9E68 /* MeetDayDateTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDayDateTimeCell.swift; sourceTree = "<group>"; };
-		65DBC964217D5B320029C6AA /* NawgjExpenceTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NawgjExpenceTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65DBC964217D5B320029C6AA /* NawgjExpenseTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NawgjExpenseTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDetailViewController.swift; sourceTree = "<group>"; };
 		65DBC96C217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		65DBC96E217D5B320029C6AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65DBC971217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65DBC973217D5B320029C6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		65DBC978217D5B320029C6AA /* NawgjExpenceTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawgjExpenceTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		65DBC97C217D5B320029C6AA /* NawgjExpenceTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NawgjExpenceTrackerTests.swift; sourceTree = "<group>"; };
+		65DBC978217D5B320029C6AA /* NawgjExpenseTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawgjExpenseTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65DBC97C217D5B320029C6AA /* NawgjExpenseTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NawgjExpenseTrackerTests.swift; sourceTree = "<group>"; };
 		65DBC97E217D5B320029C6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65DBC987217EBB7F0029C6AA /* Meet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meet.swift; sourceTree = "<group>"; };
 		65DBC989217EC0DA0029C6AA /* MeetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetTableViewCell.swift; sourceTree = "<group>"; };
@@ -85,8 +85,8 @@
 		65DBC95B217D5B320029C6AA = {
 			isa = PBXGroup;
 			children = (
-				65DBC966217D5B320029C6AA /* NawgjExpenceTracker */,
-				65DBC97B217D5B320029C6AA /* NawgjExpenceTrackerTests */,
+				65DBC966217D5B320029C6AA /* NawgjExpenseTracker */,
+				65DBC97B217D5B320029C6AA /* NawgjExpenseTrackerTests */,
 				65DBC965217D5B320029C6AA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -94,13 +94,13 @@
 		65DBC965217D5B320029C6AA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65DBC964217D5B320029C6AA /* NawgjExpenceTracker.app */,
-				65DBC978217D5B320029C6AA /* NawgjExpenceTrackerTests.xctest */,
+				65DBC964217D5B320029C6AA /* NawgjExpenseTracker.app */,
+				65DBC978217D5B320029C6AA /* NawgjExpenseTrackerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		65DBC966217D5B320029C6AA /* NawgjExpenceTracker */ = {
+		65DBC966217D5B320029C6AA /* NawgjExpenseTracker */ = {
 			isa = PBXGroup;
 			children = (
 				65DBC99D218D7A450029C6AA /* DataTypes */,
@@ -113,15 +113,17 @@
 				65EE305B219FE01D0011B2B8 /* Meet */,
 				65EE305C219FE02A0011B2B8 /* Judge */,
 			);
+			name = NawgjExpenseTracker;
 			path = NawgjExpenceTracker;
 			sourceTree = "<group>";
 		};
-		65DBC97B217D5B320029C6AA /* NawgjExpenceTrackerTests */ = {
+		65DBC97B217D5B320029C6AA /* NawgjExpenseTrackerTests */ = {
 			isa = PBXGroup;
 			children = (
-				65DBC97C217D5B320029C6AA /* NawgjExpenceTrackerTests.swift */,
+				65DBC97C217D5B320029C6AA /* NawgjExpenseTrackerTests.swift */,
 				65DBC97E217D5B320029C6AA /* Info.plist */,
 			);
+			name = NawgjExpenseTrackerTests;
 			path = NawgjExpenceTrackerTests;
 			sourceTree = "<group>";
 		};
@@ -170,9 +172,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65DBC963217D5B320029C6AA /* NawgjExpenceTracker */ = {
+		65DBC963217D5B320029C6AA /* NawgjExpenseTracker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65DBC981217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenceTracker" */;
+			buildConfigurationList = 65DBC981217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenseTracker" */;
 			buildPhases = (
 				65DBC960217D5B320029C6AA /* Sources */,
 				65DBC961217D5B320029C6AA /* Frameworks */,
@@ -182,14 +184,14 @@
 			);
 			dependencies = (
 			);
-			name = NawgjExpenceTracker;
+			name = NawgjExpenseTracker;
 			productName = NawgjExpenceTracker;
-			productReference = 65DBC964217D5B320029C6AA /* NawgjExpenceTracker.app */;
+			productReference = 65DBC964217D5B320029C6AA /* NawgjExpenseTracker.app */;
 			productType = "com.apple.product-type.application";
 		};
-		65DBC977217D5B320029C6AA /* NawgjExpenceTrackerTests */ = {
+		65DBC977217D5B320029C6AA /* NawgjExpenseTrackerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65DBC984217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenceTrackerTests" */;
+			buildConfigurationList = 65DBC984217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenseTrackerTests" */;
 			buildPhases = (
 				65DBC974217D5B320029C6AA /* Sources */,
 				65DBC975217D5B320029C6AA /* Frameworks */,
@@ -200,9 +202,9 @@
 			dependencies = (
 				65DBC97A217D5B320029C6AA /* PBXTargetDependency */,
 			);
-			name = NawgjExpenceTrackerTests;
+			name = NawgjExpenseTrackerTests;
 			productName = NawgjExpenceTrackerTests;
-			productReference = 65DBC978217D5B320029C6AA /* NawgjExpenceTrackerTests.xctest */;
+			productReference = 65DBC978217D5B320029C6AA /* NawgjExpenseTrackerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -228,7 +230,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 65DBC95F217D5B320029C6AA /* Build configuration list for PBXProject "NawgjExpenceTracker" */;
+			buildConfigurationList = 65DBC95F217D5B320029C6AA /* Build configuration list for PBXProject "NawgjExpenseTracker" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -241,8 +243,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65DBC963217D5B320029C6AA /* NawgjExpenceTracker */,
-				65DBC977217D5B320029C6AA /* NawgjExpenceTrackerTests */,
+				65DBC963217D5B320029C6AA /* NawgjExpenseTracker */,
+				65DBC977217D5B320029C6AA /* NawgjExpenseTrackerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -294,7 +296,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65DBC97D217D5B320029C6AA /* NawgjExpenceTrackerTests.swift in Sources */,
+				65DBC97D217D5B320029C6AA /* NawgjExpenseTrackerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,7 +305,7 @@
 /* Begin PBXTargetDependency section */
 		65DBC97A217D5B320029C6AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65DBC963217D5B320029C6AA /* NawgjExpenceTracker */;
+			target = 65DBC963217D5B320029C6AA /* NawgjExpenseTracker */;
 			targetProxy = 65DBC979217D5B320029C6AA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -458,7 +460,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.1d.NawgjExpenceTrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NawgjExpenceTracker.app/NawgjExpenceTracker";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NawgjExpenseTracker.app/NawgjExpenseTracker";
 			};
 			name = Debug;
 		};
@@ -473,14 +475,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.1d.NawgjExpenceTrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NawgjExpenceTracker.app/NawgjExpenceTracker";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NawgjExpenseTracker.app/NawgjExpenseTracker";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		65DBC95F217D5B320029C6AA /* Build configuration list for PBXProject "NawgjExpenceTracker" */ = {
+		65DBC95F217D5B320029C6AA /* Build configuration list for PBXProject "NawgjExpenseTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65DBC97F217D5B320029C6AA /* Debug */,
@@ -489,7 +491,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65DBC981217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenceTracker" */ = {
+		65DBC981217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenseTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65DBC982217D5B320029C6AA /* Debug */,
@@ -498,7 +500,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65DBC984217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenceTrackerTests" */ = {
+		65DBC984217D5B320029C6AA /* Build configuration list for PBXNativeTarget "NawgjExpenseTrackerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65DBC985217D5B320029C6AA /* Debug */,
