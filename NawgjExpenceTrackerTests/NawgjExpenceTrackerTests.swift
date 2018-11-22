@@ -7,6 +7,7 @@
 //
 
 import XCTest
+
 @testable import NawgjExpenceTracker
 
 class NawgjExpenceTrackerTests: XCTestCase {
@@ -33,4 +34,21 @@ class NawgjExpenceTrackerTests: XCTestCase {
         }
     }
     
+    //MARK: Meet Class Tests
+    
+    // Confirm that the Meet initializer returns a Meet object when passed valid parameters.
+    func testMeetInitializationSucceeds() {
+        let firstMeet = Meet.init(name: "Meet #1", photo: nil)
+        XCTAssertNotNil(firstMeet)
+        
+        // Highest positive rating
+        let secondMeet = Meet.init(name: "Meet #2", photo: nil)
+        XCTAssertNotNil(secondMeet)
+    }
+    
+    // Confirm that the Meal initialier returns nil when passed a negative rating or an empty name.
+    func testMealInitializationFails() {
+        let noNameMeet = Meet.init(name: "", photo: nil)
+        XCTAssertNil(noNameMeet)
+    }
 }
