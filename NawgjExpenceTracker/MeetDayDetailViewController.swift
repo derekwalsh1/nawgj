@@ -121,6 +121,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                 meetDay?.startTime = startTimePicker.date
                 meetDay?.endTime = endTimePicker.date
                 meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex + 1
+                meetDay?.name = formatter.string(from: (meetDay?.meetDate)!)
             }
             else
             {
