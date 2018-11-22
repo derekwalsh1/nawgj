@@ -12,14 +12,14 @@
         <!--Your Meets-->
         <scene sceneID="M6R-qH-7kk">
             <objects>
-                <tableViewController id="gUO-a8-LDX" customClass="MeetTableViewController" customModule="NawgjExpenceTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="gUO-a8-LDX" customClass="MeetTableViewController" customModule="NawgjExpenseTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="28" sectionFooterHeight="28" id="wdt-X7-trk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MeetTableViewCell" rowHeight="90" id="Nrs-Au-SOJ" customClass="MeetTableViewCell" customModule="NawgjExpenceTracker" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MeetTableViewCell" rowHeight="90" id="Nrs-Au-SOJ" customClass="MeetTableViewCell" customModule="NawgjExpenseTracker" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nrs-Au-SOJ" id="3mR-S5-hCr">
@@ -124,7 +124,7 @@
         <!--Meet Details-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MeetDetailViewController" customModule="NawgjExpenceTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MeetDetailViewController" customModule="NawgjExpenseTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -204,13 +204,13 @@
         <!--Meet Days Table View Controller-->
         <scene sceneID="Bvo-wW-RgO">
             <objects>
-                <tableViewController id="4fP-Va-s7C" userLabel="Meet Days Table View Controller" customClass="MeetDayTableViewController" customModule="NawgjExpenceTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="4fP-Va-s7C" userLabel="Meet Days Table View Controller" customClass="MeetDayTableViewController" customModule="NawgjExpenseTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="WBG-oJ-4no">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MeetDayTableCell" id="3oP-Ih-JgB" customClass="MeetDayTableViewCell" customModule="NawgjExpenceTracker" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MeetDayTableCell" id="3oP-Ih-JgB" customClass="MeetDayTableViewCell" customModule="NawgjExpenseTracker" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3oP-Ih-JgB" id="NlD-FQ-7Zv">
@@ -252,13 +252,13 @@
         <!--Judge Table View Controller-->
         <scene sceneID="Or1-gJ-ELw">
             <objects>
-                <tableViewController id="sIT-nW-oQY" customClass="JudgeTableViewController" customModule="NawgjExpenceTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="sIT-nW-oQY" customClass="JudgeTableViewController" customModule="NawgjExpenseTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="jwp-LG-6Gj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="JudgeTableCell" id="nwM-iy-ThK" customClass="JudgeTableViewCell" customModule="NawgjExpenceTracker" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="JudgeTableCell" id="nwM-iy-ThK" customClass="JudgeTableViewCell" customModule="NawgjExpenseTracker" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nwM-iy-ThK" id="5Iu-4z-PJi">
@@ -328,7 +328,7 @@
         <!--Meet Day Details-->
         <scene sceneID="NKp-jS-KNk">
             <objects>
-                <tableViewController id="1sl-fT-dWN" customClass="MeetDayDetailViewController" customModule="NawgjExpenceTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="1sl-fT-dWN" customClass="MeetDayDetailViewController" customModule="NawgjExpenseTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="M3r-bu-Omr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
