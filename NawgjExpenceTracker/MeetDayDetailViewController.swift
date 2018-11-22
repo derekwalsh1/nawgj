@@ -17,12 +17,11 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     @IBOutlet weak var endTimePicker: UIDatePicker!
     @IBOutlet weak var breaksSegmentedControl: UISegmentedControl!
     
-    @IBOutlet weak var saveButton: UIBarButtonItem!
-    
     @IBOutlet weak var totalTimeLabel: UILabel!
     @IBOutlet weak var billableTimeLabel: UILabel!
     @IBOutlet weak var breakTimeLabel: UILabel!
     
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
@@ -81,17 +80,12 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             endTimePicker.setDate(endTime!, animated: false)
             
             navigationItem.title = formatter.string(from: meetDate)
-            
         }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        
-        
     }
-    
-    
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -122,8 +116,11 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         
         // Configure the destination view controller only when the save button is pressed.
         if let button = sender as? UIBarButtonItem{
-            if button === saveButton {
-                meetDay?.meetDate = Date.distantPast
+            if button === doneButton {
+                meetDay?.meetDate = meetDatePicker.date
+                meetDay?.startTime = startTimePicker.date
+                meetDay?.endTime = endTimePicker.date
+                meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex + 1
             }
             else
             {
@@ -181,5 +178,4 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         startTimePicker.setDate(Calendar.current.date(byAdding: components, to: startTimePicker.date)!, animated: false)
         endTimePicker.setDate(Calendar.current.date(byAdding: components, to: endTimePicker.date)!, animated: false)
     }
-
 }

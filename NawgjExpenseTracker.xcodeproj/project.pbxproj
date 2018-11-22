@@ -109,8 +109,8 @@
 				65DBC96E217D5B320029C6AA /* Assets.xcassets */,
 				65DBC970217D5B320029C6AA /* LaunchScreen.storyboard */,
 				65DBC973217D5B320029C6AA /* Info.plist */,
-				65EE306121A0C1900011B2B8 /* MeetDay */,
 				65EE305B219FE01D0011B2B8 /* Meet */,
+				65EE306121A0C1900011B2B8 /* MeetDay */,
 				65EE305C219FE02A0011B2B8 /* Judge */,
 			);
 			name = NawgjExpenseTracker;
