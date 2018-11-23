@@ -32,7 +32,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        formatter.dateFormat = "dd-MMM-yyyy"
+        formatter.dateFormat = "MMMM dd yyyy"
         
         // Set up views if editing an existing Meet day.
         if let meetDay = meetDay {
@@ -79,7 +79,12 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             let endTime = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: meetDate)
             endTimePicker.setDate(endTime!, animated: false)
             
+            let numberOfBreaks = 2
+            breaksSegmentedControl.selectedSegmentIndex = numberOfBreaks - 1
+            
             navigationItem.title = formatter.string(from: meetDate)
+            meetDay = MeetDay(meetDate: meetDate, startTime: startTime!, endTime: endTime!, breaks: numberOfBreaks)
+            
         }
     }
     override func didReceiveMemoryWarning() {

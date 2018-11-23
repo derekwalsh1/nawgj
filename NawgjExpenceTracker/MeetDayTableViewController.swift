@@ -116,19 +116,23 @@ class MeetDayTableViewController: UITableViewController {
     
     //MARK: Actions
     @IBAction func unwindToMeetDayList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? MeetDayDetailViewController, let meetDay = sourceViewController.meetDay {
+        
+        let sourceViewController = sender.source as? MeetDayDetailViewController
+        let meetDay = sourceViewController?.meetDay
+        
+        if (sourceViewController != nil), (meetDay != nil){
             
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 
                 // Update an existing meet day.
-                meet?.days[selectedIndexPath.row] = meetDay
+                meet?.days[selectedIndexPath.row] = meetDay!
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
             }
             else {
                 // Add a new meet day.
                 let newIndexPath = IndexPath(row: (meet?.days.count)!, section: 0)
                 
-                meet?.days.append(meetDay)
+                meet?.days.append(meetDay!)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
         }
