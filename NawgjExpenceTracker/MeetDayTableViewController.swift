@@ -13,9 +13,11 @@ class MeetDayTableViewController: UITableViewController {
     
     //MARK: Properties
     var meet : Meet?
+    var formatter : DateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        formatter.dateFormat = MeetDay.DATE_FORMAT
     }
     
     override func didReceiveMemoryWarning() {
@@ -42,7 +44,7 @@ class MeetDayTableViewController: UITableViewController {
         
         // Fetches the appropriate day for the data source layout.
         let meetDay = meet?.days[indexPath.row]
-        cell.nameLabel.text = meetDay?.name
+        cell.nameLabel.text = formatter.string(from: (meetDay?.meetDate)!)
         
         return cell
     }

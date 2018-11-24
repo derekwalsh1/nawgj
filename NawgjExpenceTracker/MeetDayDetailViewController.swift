@@ -32,14 +32,10 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        formatter.dateFormat = "MMMM dd yyyy"
+        formatter.dateFormat = MeetDay.DATE_FORMAT
         
         // Set up views if editing an existing Meet day.
         if let meetDay = meetDay {
-            navigationItem.title = meetDay.name
-            totalTimeLabel.text = NSString(format: "%.2f", meetDay.totalTime!) as String
-            billableTimeLabel.text = NSString(format: "%.2f", meetDay.billableTime!) as String
-            breakTimeLabel.text = NSString(format: "%.2f", meetDay.breakTime!) as String
             
             // Round each date down to the nearest quarter hour
             let calendar = Calendar.current
@@ -68,6 +64,8 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                                                of: meetDay.endTime)!
             
             breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks - 1
+            
+            updateUILabels()
         }
         else{
             let meetDate = Date()
@@ -126,7 +124,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                 meetDay?.startTime = startTimePicker.date
                 meetDay?.endTime = endTimePicker.date
                 meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex + 1
-                meetDay?.name = formatter.string(from: (meetDay?.meetDate)!)
             }
             else
             {
