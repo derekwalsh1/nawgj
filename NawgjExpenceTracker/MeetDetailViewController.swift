@@ -14,6 +14,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     //MARK: Properties
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var meetDatePicker: UIDatePicker!
+    @IBOutlet weak var levelsTextField: UITextField!
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
@@ -28,7 +30,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         // Set up views if editing an existing Meal.
         navigationItem.title = meet.name
         nameTextField.text = meet.name
-        
+        meetDatePicker.date = meet.startDate
+        levelsTextField.text = meet.levels.joined(separator: ",")
         
         // Enable the Save button only if the text field has a valid meet name.
         updateSaveButtonState()
@@ -113,14 +116,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         if let button = sender as? UIBarButtonItem{
             if button === saveButton {
                 meet.name = nameTextField.text!
-/*                let days = [MeetDay]()
-                let judges = [Judge]()
-                let startDate = Date()
-                let levels = [String]()
-                
-                // Set the meet to be passed to MeetTableViewController after the unwind segue.
-                meet = Meet(name: name!, days: days, judges: judges, startDate: startDate, levels: levels)*/
-                return
+                meet.startDate = meetDatePicker.date
+                meet.levels = (levelsTextField.text?.components(separatedBy: ","))!
             }
             else
             {
@@ -141,7 +138,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
                 guard let meetDayTableViewController = segue.destination as? MeetDayTableViewController else {
                     fatalError("Unexpected destination: \(segue.destination)")
                 }
-                
+                meet.startDate = meetDatePicker.date
                 meetDayTableViewController.meet = meet
                 
             default:

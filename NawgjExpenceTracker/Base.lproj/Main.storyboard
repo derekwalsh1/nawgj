@@ -270,6 +270,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="levelsTextField" destination="prB-Vb-S3J" id="v32-f3-gsv"/>
+                        <outlet property="meetDatePicker" destination="PRH-5e-8Uy" id="LTA-4c-ul7"/>
                         <outlet property="nameTextField" destination="sPv-cZ-4Zb" id="c2h-wS-Pw1"/>
                         <outlet property="saveButton" destination="yih-uf-6Lx" id="9NK-N0-eWx"/>
                         <segue destination="4fP-Va-s7C" kind="show" identifier="ShowMeetDayTable" id="Rct-xn-PKR"/>

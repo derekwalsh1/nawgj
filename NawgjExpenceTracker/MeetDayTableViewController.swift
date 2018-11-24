@@ -96,7 +96,11 @@ class MeetDayTableViewController: UITableViewController {
                 os_log("Adding a new meet day.", log: OSLog.default, type: .debug)
                 
                 // If any existing meet days have been defined, then add a new item using the 
-                // date from the previous day to setup the date for the next day
+                // date from the previous day to setup the date for the next day otherwise use the meet start date
+                let destinationNavigationController = segue.destination as! UINavigationController
+                guard let meetDayDetailViewController = destinationNavigationController.topViewController as? MeetDayDetailViewController else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+                }
                 
                 if (meet?.days.count)! > 0 {
                     let nextMeetDay = MeetDay(meetDate: Date(), startTime: Date(), endTime: Date(), breaks: 2)
@@ -106,11 +110,15 @@ class MeetDayTableViewController: UITableViewController {
                     nextMeetDay.startTime = (previousMeetDay?.startTime)!
                     nextMeetDay.endTime = (previousMeetDay?.endTime)!
                     
-                    let destinationNavigationController = segue.destination as! UINavigationController
-                    guard let meetDayDetailViewController = destinationNavigationController.topViewController as? MeetDayDetailViewController else {
-                        fatalError("Unexpected destination: \(segue.destination)")
-                    }
+                    
                     meetDayDetailViewController.meetDay = nextMeetDay
+                }
+                else{
+                    let date = meet?.startDate
+                    let startTime = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: date!)
+                    let endTime = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: date!)
+                    let firstMeetDay = MeetDay(meetDate: date!, startTime: startTime!, endTime: endTime!, breaks: 2)
+                    meetDayDetailViewController.meetDay = firstMeetDay
                 }
                 
             case "ShowDetail":
