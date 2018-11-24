@@ -64,10 +64,7 @@ class MeetDay: NSObject, NSCoding {
             return nil
         }
         
-        guard let breaks = aDecoder.decodeObject(forKey: PropertyKey.breaks) as? Int else{
-            os_log("Unable to decode the breaks for a MeetDay object.", log: OSLog.default, type: .debug)
-            return nil
-        }
+        let breaks = aDecoder.decodeInteger(forKey: PropertyKey.breaks)
         
         // Must call designated initializer.
         self.init(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks)

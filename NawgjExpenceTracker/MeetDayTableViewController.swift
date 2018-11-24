@@ -15,9 +15,15 @@ class MeetDayTableViewController: UITableViewController {
     var meet : Meet?
     var formatter : DateFormatter = DateFormatter()
     
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         formatter.dateFormat = MeetDay.DATE_FORMAT
+        
+        if meet == nil{
+            meet = Meet(name: "", days: Array<MeetDay>(), judges: Array<Judge>(), startDate: Date(), levels: Array<String>())
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -32,7 +38,13 @@ class MeetDayTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (meet?.days.count)!
+        
+        if let meet = meet {
+            return meet.days.count
+        }
+        else{
+            return 0
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -68,22 +80,6 @@ class MeetDayTableViewController: UITableViewController {
     }
     
     
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -91,27 +87,51 @@ class MeetDayTableViewController: UITableViewController {
         
         super.prepare(for: segue, sender: sender)
         
-        switch(segue.identifier ?? "") {
-        case "AddItem":
-            os_log("Adding a new meet day.", log: OSLog.default, type: .debug)
-        case "ShowDetail":
-            guard let meetDayDetailViewController = segue.destination as? MeetDayDetailViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
+        if let button = sender as? UIBarButtonItem, button === doneButton {
+            return
+        }
+        else{
+            switch(segue.identifier ?? "") {
+            case "AddItem":
+                os_log("Adding a new meet day.", log: OSLog.default, type: .debug)
+                
+                // If any existing meet days have been defined, then add a new item using the 
+                // date from the previous day to setup the date for the next day
+                
+                if (meet?.days.count)! > 0 {
+                    let nextMeetDay = MeetDay(meetDate: Date(), startTime: Date(), endTime: Date(), breaks: 2)
+                    let previousMeetDay = meet?.days[(meet?.days.count)! - 1]
+                    nextMeetDay.breaks = (previousMeetDay?.breaks)!
+                    nextMeetDay.meetDate = (previousMeetDay?.meetDate.addingTimeInterval(24*60*60))!
+                    nextMeetDay.startTime = (previousMeetDay?.startTime)!
+                    nextMeetDay.endTime = (previousMeetDay?.endTime)!
+                    
+                    let destinationNavigationController = segue.destination as! UINavigationController
+                    guard let meetDayDetailViewController = destinationNavigationController.topViewController as? MeetDayDetailViewController else {
+                        fatalError("Unexpected destination: \(segue.destination)")
+                    }
+                    meetDayDetailViewController.meetDay = nextMeetDay
+                }
+                
+            case "ShowDetail":
+                guard let meetDayDetailViewController = segue.destination as? MeetDayDetailViewController else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+                }
+                
+                guard let selectedMeetDayCell = sender as? MeetDayTableViewCell else {
+                    fatalError("Unexpected sender: \(sender)")
+                }
+                
+                guard let indexPath = tableView.indexPath(for: selectedMeetDayCell) else {
+                    fatalError("The selected cell is not being displayed by the table")
+                }
+                
+                let meetDay = meet?.days[indexPath.row]
+                meetDayDetailViewController.meetDay = meetDay
+                
+            default:
+                fatalError("Unexpected Segue Identifier; \(segue.identifier)")
             }
-            
-            guard let selectedMeetDayCell = sender as? MeetDayTableViewCell else {
-                fatalError("Unexpected sender: \(sender)")
-            }
-            
-            guard let indexPath = tableView.indexPath(for: selectedMeetDayCell) else {
-                fatalError("The selected cell is not being displayed by the table")
-            }
-            
-            let meetDay = meet?.days[indexPath.row]
-            meetDayDetailViewController.meetDay = meetDay
-            
-        default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
         }
     }
     

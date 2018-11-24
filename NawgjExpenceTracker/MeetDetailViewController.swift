@@ -9,31 +9,26 @@
 import UIKit
 import os.log
 
-class MeetDetailViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate{
     
     //MARK: Properties
-    @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var nameTextField: UITextField!
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
      or constructed as part of adding a new meal.
      */
-    var meet: Meet?
+    var meet: Meet = Meet(name: "New Meet", days: Array<MeetDay>(), judges: Array<Judge>(), startDate: Date(), levels: Array<String>())!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         nameTextField.delegate = self
-        tableView.delegate = self
         
         // Set up views if editing an existing Meal.
-        if let meet = meet {
-            navigationItem.title = meet.name
-            nameTextField.text   = meet.name
-        }
+        navigationItem.title = meet.name
+        nameTextField.text = meet.name
         
-        tableView.dataSource = self
         
         // Enable the Save button only if the text field has a valid meet name.
         updateSaveButtonState()
@@ -44,50 +39,36 @@ class MeetDetailViewController: UIViewController, UITextFieldDelegate, UINavigat
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK : UI Table View Data Source
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "JudgeSummaryViewCell", for: indexPath)
-        switch indexPath.section
-        {
-        case 0:
-            cell.textLabel?.text = "Meet Days"
-        case 1:
-            cell.textLabel?.text = "Judges"
-        default:
-            cell.textLabel?.text = "Unknown"
-        }
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    
-    //MARK: UITableViewDelegate
-    
-    /*
-     Two sections, 1 for the cell that links to the list of judges and one for the cell that
-     links to the list of days that the meet is on for.
-     */
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
+        let row = indexPath.row
+        
         switch(section){
         case 0:
-            self.performSegue(withIdentifier: "ShowMeetDayTable", sender: self)
+            switch(row){
+            case 3:
+                self.performSegue(withIdentifier: "ShowMeetDayTable", sender: self)
+            case 4:
+                self.performSegue(withIdentifier: "ShowJudgeTable", sender: self)
+            default:
+                break
+            }
+        
         case 1:
-            self.performSegue(withIdentifier: "ShowJudgeTable", sender: self)
+            break
+            
         default: break
             
         }
     }
-
+    
     //MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -131,14 +112,15 @@ class MeetDetailViewController: UIViewController, UITextFieldDelegate, UINavigat
         // Configure the destination view controller only when the save button is pressed.
         if let button = sender as? UIBarButtonItem{
             if button === saveButton {
-                let name = nameTextField.text ?? ""
-                let days = [MeetDay]()
+                meet.name = nameTextField.text!
+/*                let days = [MeetDay]()
                 let judges = [Judge]()
                 let startDate = Date()
                 let levels = [String]()
                 
                 // Set the meet to be passed to MeetTableViewController after the unwind segue.
-                meet = Meet(name: name, days: days, judges: judges, startDate: startDate, levels: levels)
+                meet = Meet(name: name!, days: days, judges: judges, startDate: startDate, levels: levels)*/
+                return
             }
             else
             {
@@ -147,21 +129,20 @@ class MeetDetailViewController: UIViewController, UITextFieldDelegate, UINavigat
         }
         else{
             switch(segue.identifier ?? "") {
-            case "AddItem":
-                os_log("Adding a new meet.", log: OSLog.default, type: .debug)
+            
             case "ShowJudgeTable":
-                guard let judgeDetailViewController = segue.destination as? JudgeTableViewController else {
+                guard let judgeTableViewController = segue.destination as? JudgeTableViewController else {
                     fatalError("Unexpected destination: \(segue.destination)")
                 }
                 
-                judgeDetailViewController.meet = meet
+                judgeTableViewController.meet = meet
+            
             case "ShowMeetDayTable":
-                guard let meetDayDetailViewController = segue.destination as? MeetDayTableViewController else {
+                guard let meetDayTableViewController = segue.destination as? MeetDayTableViewController else {
                     fatalError("Unexpected destination: \(segue.destination)")
                 }
                 
-                meetDayDetailViewController.meet = meet
-
+                meetDayTableViewController.meet = meet
                 
             default:
                 fatalError("Unexpected Segue Identifier; \(segue.identifier)")
@@ -170,7 +151,16 @@ class MeetDetailViewController: UIViewController, UITextFieldDelegate, UINavigat
     }
     
     //MARK: Actions
-    
+    @IBAction func unwindToMeetDetails(sender: UIStoryboardSegue) {
+        
+        let sourceViewController = sender.source as? MeetDayTableViewController
+        let updatedMeet = sourceViewController?.meet
+        
+        if (sourceViewController != nil), (updatedMeet != nil){
+            // Update an existing meet day.
+            meet = updatedMeet!
+        }
+    }
     
     //MARK: Private Methods
     private func updateSaveButtonState() {

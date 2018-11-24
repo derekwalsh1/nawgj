@@ -38,11 +38,6 @@ class Meet: NSObject, NSCoding {
             return nil
         }
         
-        // Fail initialization of the number of days is less than one
-        guard !days.isEmpty else {
-            return nil
-        }
-        
         if levels.isEmpty {
             _ = [String]()
         }

@@ -25,10 +25,6 @@ class MeetTableViewController: UITableViewController {
         if let savedMeets = loadMeets() {
             meets += savedMeets
         }
-        else{
-            // Load the sample data.
-            loadSampleMeets()
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,7 +42,6 @@ class MeetTableViewController: UITableViewController {
         return meets.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Configure the cell...
@@ -80,33 +75,15 @@ class MeetTableViewController: UITableViewController {
         }    
     }
     
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         super.prepare(for: segue, sender: sender)
         
         switch(segue.identifier ?? "") {
         case "AddItem":
             os_log("Adding a new meet.", log: OSLog.default, type: .debug)
+                        
         case "ShowDetail":
             guard let meetDetailViewController = segue.destination as? MeetDetailViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -131,60 +108,28 @@ class MeetTableViewController: UITableViewController {
     
     //MARK: Actions
     @IBAction func unwindToMeetList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? MeetDetailViewController, let meet = sourceViewController.meet {
+        let sourceViewController = sender.source as? MeetDetailViewController
+        let meet = sourceViewController?.meet
+        
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
             
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            
-                // Update an existing meal.
-                meets[selectedIndexPath.row] = meet
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
-            }
-            else {
-                // Add a new meet.
-                let newIndexPath = IndexPath(row: meets.count, section: 0)
-            
-                meets.append(meet)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-            
-            // Save the meets
-            saveMeets()
+            // Update an existing meal.
+            meets[selectedIndexPath.row] = meet!
+            tableView.reloadRows(at: [selectedIndexPath], with: .none)
         }
+        else {
+            // Add a new meet.
+            let newIndexPath = IndexPath(row: meets.count, section: 0)
+            
+            meets.append(meet!)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+            
+        // Save the meets
+        saveMeets()
     }
     
     //MARK: Private Methods
-    
-    private func loadSampleMeets() {
-        var expenses = Array<Expense>()
-        expenses.append(Expense(type: Expense.ExpenseType.Meals, amount: 45.0, notes: ""))
-        expenses.append(Expense(type: Expense.ExpenseType.Other, amount: 300.34, notes: "Hotel Room"))
-        expenses.append(Expense(type: Expense.ExpenseType.Toll, amount: 12.0, notes: "Hotel Room"))
-        
-        var judges = [Judge]()
-        judges.append(Judge(name: "Judge 1", level: Judge.Level.National, expenses: expenses))
-        judges.append(Judge(name: "Judge 2", level: Judge.Level.Brevet, expenses: expenses))
-        judges.append(Judge(name: "Judge 3", level: Judge.Level.FourToEight, expenses: expenses))
-        judges.append(Judge(name: "Judge 4", level: Judge.Level.Ten, expenses: expenses))
-        
-        var meetDays = Array<MeetDay>()
-        meetDays.append(MeetDay(meetDate: Date(), startTime: Date(), endTime: Date().addingTimeInterval(TimeInterval(8.0*3600.0)), breaks: 3))
-        meetDays.append(MeetDay(meetDate: Date(), startTime: Date(), endTime: Date().addingTimeInterval(TimeInterval(5.0*3600.0)), breaks: 2))
-        meetDays.append(MeetDay(meetDate: Date(), startTime: Date(), endTime: Date().addingTimeInterval(TimeInterval(2.0*3600.0)), breaks: 1))
-        
-        guard let meet1 = Meet(name: "Reach for the Stars", days: meetDays, judges: judges, startDate: Date(), levels: [String]()) else {
-            fatalError("Unable to instantiate meet1")
-        }
-        
-        guard let meet2 = Meet(name: "Meet by the Bay", days: meetDays, judges: judges, startDate: Date(), levels: [String]()) else {
-            fatalError("Unable to instantiate meet2")
-        }
-        
-        guard let meet3 = Meet(name: "Flip to the Finish", days: meetDays, judges: judges, startDate: Date(), levels: [String]()) else {
-            fatalError("Unable to instantiate meet3")
-        }
-        
-        meets += [meet1, meet2, meet3]
-    }
     
     private func saveMeets() {
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(meets, toFile: Meet.ArchiveURL.path)
