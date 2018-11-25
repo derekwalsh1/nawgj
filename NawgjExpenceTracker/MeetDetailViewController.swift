@@ -159,6 +159,19 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         }
     }
     
+    
+    //MARK: Actions
+    @IBAction func unwindToMeetDetailsFromJudgeList(sender: UIStoryboardSegue) {
+        
+        let sourceViewController = sender.source as? JudgeTableViewController
+        let updatedMeet = sourceViewController?.meet
+        
+        if (sourceViewController != nil), (updatedMeet != nil){
+            // Update an existing meet day.
+            meet = updatedMeet!
+        }
+    }
+    
     //MARK: Private Methods
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
