@@ -395,6 +395,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="doneButton" destination="GrY-Rh-ySI" id="AUf-xt-QMF"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZwB-Rm-EC6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="fxC-ij-q3P" userLabel="Exit" sceneMemberID="exit"/>
@@ -513,6 +516,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="doneButton" destination="RKl-1X-d5N" id="oy7-H4-Dot"/>
                         <outlet property="levelTextField" destination="Nxa-k2-Mvb" id="AsY-6S-tJW"/>
                         <outlet property="nameTextField" destination="lPh-ay-9Y0" id="4uW-eq-PjO"/>
                     </connections>

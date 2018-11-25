@@ -13,6 +13,7 @@ class JudgeTableViewController: UITableViewController {
     
     //MARK: Properties
     var meet : Meet?
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,46 +90,55 @@ class JudgeTableViewController: UITableViewController {
         
         super.prepare(for: segue, sender: sender)
         
-        switch(segue.identifier ?? "") {
-        case "AddItem":
-            os_log("Adding a new judge.", log: OSLog.default, type: .debug)
-        case "ShowDetail":
-            guard let judgeDetailViewController = segue.destination as? JudgeDetailViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
+        if let button = sender as? UIBarButtonItem, button === doneButton {
+            return
+        }
+        else{
+            
+            switch(segue.identifier ?? "") {
+            case "AddItem":
+                os_log("Adding a new judge.", log: OSLog.default, type: .debug)
+            case "ShowDetail":
+                guard let judgeDetailViewController = segue.destination as? JudgeDetailViewController else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+                }
+                
+                guard let selectedJudgeCell = sender as? JudgeTableViewCell else {
+                    fatalError("Unexpected sender: \(sender)")
+                }
+                
+                guard let indexPath = tableView.indexPath(for: selectedJudgeCell) else {
+                    fatalError("The selected cell is not being displayed by the table")
+                }
+                
+                let judge = meet?.judges[indexPath.row]
+                judgeDetailViewController.judge = judge
+                
+            default:
+                fatalError("Unexpected Segue Identifier; \(segue.identifier)")
             }
-            
-            guard let selectedJudgeCell = sender as? JudgeTableViewCell else {
-                fatalError("Unexpected sender: \(sender)")
-            }
-            
-            guard let indexPath = tableView.indexPath(for: selectedJudgeCell) else {
-                fatalError("The selected cell is not being displayed by the table")
-            }
-            
-            let judge = meet?.judges[indexPath.row]
-            judgeDetailViewController.judge = judge
-            
-        default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
         }
     }
     
     
     //MARK: Actions
     @IBAction func unwindToJudgeList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? JudgeDetailViewController, let judge = sourceViewController.judge {
+        let sourceViewController = sender.source as? JudgeDetailViewController
+        let judge = sourceViewController?.judge
+        
+        if (sourceViewController != nil), (judge != nil) {
             
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 
                 // Update an existing meal.
-                meet?.judges[selectedIndexPath.row] = judge
+                meet?.judges[selectedIndexPath.row] = judge!
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
             }
             else {
                 // Add a new meet.
                 let newIndexPath = IndexPath(row: (meet?.judges.count)!, section: 0)
                 
-                meet?.judges.append(judge)
+                meet?.judges.append(judge!)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
         }

@@ -12,8 +12,9 @@ import os.log
 class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate,UIPickerViewDelegate, UIPickerViewDataSource  {
     
     @IBOutlet weak var nameTextField: UITextField!
-        
     @IBOutlet weak var levelTextField: UITextField!
+    
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     //MARK: Properties
     
     /*
@@ -31,6 +32,9 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             navigationItem.title = judge.name
             nameTextField.text = judge.name
             levelTextField.text = judge.level.description
+        }
+        else{
+            judge = Judge(name: "New Judge", level: Judge.Level.FourToEight, expenses:Array<Expense>())
         }
         let levelPickerView = UIPickerView()
         levelPickerView.delegate = self
@@ -91,9 +95,17 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             fatalError("The JudgeDetailViewController is not inside a navigation controller.")
         }
     }
+    
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-     }
+        
+        // Configure the destination view controller only when the save button is pressed.
+        if let button = sender as? UIBarButtonItem, button === doneButton{
+            judge?.name = nameTextField.text!
+            judge?.level = Judge.Level.valueFor(description: levelTextField.text!)!
+        }
+    }
+
 }

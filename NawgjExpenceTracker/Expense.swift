@@ -68,10 +68,7 @@ class Expense: NSObject, NSCoding {
             return nil
         }
         
-        guard let amount = aDecoder.decodeObject(forKey: PropertyKey.amount) as? Float else{
-            os_log("Unable to decode the amount of an Expense object.", log: OSLog.default, type: .debug)
-            return nil
-        }
+        let amount = aDecoder.decodeFloat(forKey: PropertyKey.amount)
         let notes = aDecoder.decodeObject(forKey: PropertyKey.notes) as? String
         
         // Must call designated initializer.
