@@ -9,10 +9,12 @@
 import UIKit
 import os.log
 
-class JudgeDetailViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate  {
+class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate,UIPickerViewDelegate, UIPickerViewDataSource  {
     
-    //MARK: Properties
     @IBOutlet weak var nameTextField: UITextField!
+        
+    @IBOutlet weak var levelTextField: UITextField!
+    //MARK: Properties
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
@@ -27,8 +29,14 @@ class JudgeDetailViewController: UIViewController, UITextFieldDelegate, UINaviga
         // Set up views if editing an existing Judge.
         if let judge = judge {
             navigationItem.title = judge.name
-            nameTextField.text   = judge.name
+            nameTextField.text = judge.name
+            levelTextField.text = judge.level.description
         }
+        let levelPickerView = UIPickerView()
+        levelPickerView.delegate = self
+        levelPickerView.dataSource = self
+        
+        levelTextField.inputView = levelPickerView
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,9 +52,28 @@ class JudgeDetailViewController: UIViewController, UITextFieldDelegate, UINaviga
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         navigationItem.title = textField.text
+        textField.resignFirstResponder()
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+    }
+    
+    //MARK: UIPickerView
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return Judge.Level.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return Judge.Level(rawValue: row)?.description;
+    }
+    
+    func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        levelTextField.text = Judge.Level(rawValue: row)?.description
+        levelTextField.resignFirstResponder()
     }
     
     //MARK: Navigation

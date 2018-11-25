@@ -11,14 +11,27 @@ import os.log
 
 class Judge: NSObject, NSCoding {
     
-    enum Level : String {
-        case FourToFive = "Levels 4 and 5"
-        case SixToEight = "Levels 6, 7 and 8"
-        case FourToEight = "Levels 4 to 8"
-        case Nine = "Level 9"
-        case Ten = "Level 10"
-        case Brevet = "Brevet"
-        case National = "National"
+    enum Level : Int {
+        case FourToFive = 0
+        case SixToEight = 1
+        case FourToEight = 2
+        case Nine = 3
+        case Ten = 4
+        case Brevet = 5
+        case National = 6
+        
+        var description: String {
+            switch self {
+                case .FourToFive : return "Levels 4 and 5"
+                case .SixToEight : return "Levels 6, 7 and 8"
+                case .FourToEight : return "Levels 4 to 8"
+                case .Nine : return "Level 9"
+                case .Ten : return "Level 10"
+                case .Brevet : return "Brevet"
+                case .National : return "National"
+            }
+        }
+        static var count: Int { return Level.National.hashValue + 1}
     }
     
     // MARK: Properties

@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/MeetDayDetailViewController.swift"
-            timestampString = "564692792.330641"
+            timestampString = "564806394.015438"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "endTimeChanged(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/MeetDayDetailViewController.swift"
-            timestampString = "564692792.330641"
+            timestampString = "564806394.015438"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "updateUILabels()"
             landmarkType = "7">
          </BreakpointContent>

@@ -118,17 +118,12 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         super.prepare(for: segue, sender: sender)
         
         // Configure the destination view controller only when the save button is pressed.
-        if let button = sender as? UIBarButtonItem{
-            if button === doneButton {
-                meetDay?.meetDate = meetDatePicker.date
-                meetDay?.startTime = startTimePicker.date
-                meetDay?.endTime = endTimePicker.date
-                meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex + 1
-            }
-            else
-            {
-                return
-            }
+        if let button = sender as? UIBarButtonItem, button === doneButton{
+            meetDay?.meetDate = meetDatePicker.date
+            meetDay?.startTime = startTimePicker.date
+            meetDay?.endTime = endTimePicker.date
+            meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex + 1
+        
         }
     }
     
