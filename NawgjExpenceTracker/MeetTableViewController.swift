@@ -63,7 +63,7 @@ class MeetTableViewController: UITableViewController {
     }
     
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             meets.remove(at: indexPath.row)
@@ -90,7 +90,7 @@ class MeetTableViewController: UITableViewController {
             }
                 
             guard let selectedMeetCell = sender as? MeetTableViewCell else {
-                fatalError("Unexpected sender: \(sender)")
+                fatalError("Unexpected sender: Sender i ?? <#default value#>s not a MeetTableViewCell")
             }
                 
             guard let indexPath = tableView.indexPath(for: selectedMeetCell) else {
@@ -101,7 +101,7 @@ class MeetTableViewController: UITableViewController {
             meetDetailViewController.meet = selectedMeet
             
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            fatalError("Unexpected Segue Identifier")
         }
     }
     

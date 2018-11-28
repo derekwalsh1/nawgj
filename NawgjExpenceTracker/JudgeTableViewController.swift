@@ -55,7 +55,7 @@ class JudgeTableViewController: UITableViewController {
     }
     
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             meet?.judges.remove(at: indexPath.row)
@@ -104,7 +104,7 @@ class JudgeTableViewController: UITableViewController {
                 }
                 
                 guard let selectedJudgeCell = sender as? JudgeTableViewCell else {
-                    fatalError("Unexpected sender: \(sender)")
+                    fatalError("Unexpected sender: Sender is not a JudgeTableViewCell")
                 }
                 
                 guard let indexPath = tableView.indexPath(for: selectedJudgeCell) else {
@@ -115,7 +115,7 @@ class JudgeTableViewController: UITableViewController {
                 judgeDetailViewController.judge = judge
                 
             default:
-                fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+                fatalError("Unexpected Segue Identifier")
             }
         }
     }

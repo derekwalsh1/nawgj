@@ -28,12 +28,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         nameTextField.delegate = self
         
         // Set up views if editing an existing Judge.
-        if let judge = judge {
-            navigationItem.title = judge.name
-            nameTextField.text = judge.name
-            levelTextField.text = judge.level.description
-        }
-        else{
+        if judge == nil{
             judge = Judge(name: "New Judge", level: Judge.Level.FourToEight, expenses:Array<Expense>())
         }
         let levelPickerView = UIPickerView()
@@ -41,6 +36,9 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         levelPickerView.dataSource = self
         
         levelTextField.inputView = levelPickerView
+        navigationItem.title = judge!.name
+        nameTextField.text = judge!.name
+        levelTextField.text = judge!.level.description
     }
     
     override func didReceiveMemoryWarning() {
