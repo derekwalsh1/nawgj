@@ -127,7 +127,7 @@ class MeetDayTableViewController: UITableViewController {
                 }
                 
                 guard let selectedMeetDayCell = sender as? MeetDayTableViewCell else {
-                    fatalError("Unexpected sender: \(sender)")
+                    fatalError("Unexpected sender: \(sender ?? <#default value#>)")
                 }
                 
                 guard let indexPath = tableView.indexPath(for: selectedMeetDayCell) else {
@@ -138,7 +138,7 @@ class MeetDayTableViewController: UITableViewController {
                 meetDayDetailViewController.meetDay = meetDay
                 
             default:
-                fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+                fatalError("Unexpected Segue Identifier; \(segue.identifier ?? <#default value#>)")
             }
         }
     }
