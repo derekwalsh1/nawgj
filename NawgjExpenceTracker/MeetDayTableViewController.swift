@@ -68,7 +68,7 @@ class MeetDayTableViewController: UITableViewController {
     }
     
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             meet?.days.remove(at: indexPath.row)
@@ -127,7 +127,7 @@ class MeetDayTableViewController: UITableViewController {
                 }
                 
                 guard let selectedMeetDayCell = sender as? MeetDayTableViewCell else {
-                    fatalError("Unexpected sender: \(sender ?? <#default value#>)")
+                    fatalError("Unexpected sender - Expected MeetDayTableViewCell")
                 }
                 
                 guard let indexPath = tableView.indexPath(for: selectedMeetDayCell) else {
@@ -138,7 +138,7 @@ class MeetDayTableViewController: UITableViewController {
                 meetDayDetailViewController.meetDay = meetDay
                 
             default:
-                fatalError("Unexpected Segue Identifier; \(segue.identifier ?? <#default value#>)")
+                fatalError("Unexpected Segue Identifier")
             }
         }
     }
