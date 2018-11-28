@@ -90,7 +90,7 @@ class MeetTableViewController: UITableViewController {
             }
                 
             guard let selectedMeetCell = sender as? MeetTableViewCell else {
-                fatalError("Unexpected sender: \(sender)")
+                fatalError("Unexpected sender: Sender i ?? <#default value#>s not a MeetTableViewCell")
             }
                 
             guard let indexPath = tableView.indexPath(for: selectedMeetCell) else {
@@ -101,7 +101,7 @@ class MeetTableViewController: UITableViewController {
             meetDetailViewController.meet = selectedMeet
             
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            fatalError("Unexpected Segue Identifier")
         }
     }
     

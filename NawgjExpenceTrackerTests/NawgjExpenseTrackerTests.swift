@@ -8,8 +8,6 @@
 
 import XCTest
 
-@testable import NawgjExpenceTracker
-
 class NawgjExpenseTrackerTests: XCTestCase {
     
     override func setUp() {

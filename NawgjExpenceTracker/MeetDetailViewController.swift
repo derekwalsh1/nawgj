@@ -142,7 +142,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
                 meetDayTableViewController.meet = meet
                 
             default:
-                fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+                fatalError("Unexpected Segue Identifier")
             }
         }
     }

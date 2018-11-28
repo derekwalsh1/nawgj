@@ -104,7 +104,7 @@ class JudgeTableViewController: UITableViewController {
                 }
                 
                 guard let selectedJudgeCell = sender as? JudgeTableViewCell else {
-                    fatalError("Unexpected sender: \(sender)")
+                    fatalError("Unexpected sender: Sender is not a JudgeTableViewCell")
                 }
                 
                 guard let indexPath = tableView.indexPath(for: selectedJudgeCell) else {
@@ -115,7 +115,7 @@ class JudgeTableViewController: UITableViewController {
                 judgeDetailViewController.judge = judge
                 
             default:
-                fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+                fatalError("Unexpected Segue Identifier")
             }
         }
     }
