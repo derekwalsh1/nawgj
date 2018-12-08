@@ -22,7 +22,7 @@ class MeetDayTableViewController: UITableViewController {
         formatter.dateFormat = MeetDay.DATE_FORMAT
         
         if meet == nil{
-            meet = Meet(name: "", days: Array<MeetDay>(), judges: Array<Judge>(), startDate: Date(), levels: Array<String>())
+            meet = Meet(name: "", days: Array<MeetDay>(), judges: Array<Judge>(), startDate: Date(), levels: "")
         }
     }
     
@@ -56,7 +56,7 @@ class MeetDayTableViewController: UITableViewController {
         
         // Fetches the appropriate day for the data source layout.
         let meetDay = meet?.days[indexPath.row]
-        cell.nameLabel.text = formatter.string(from: (meetDay?.meetDate)!)
+        cell.textLabel?.text = formatter.string(from: (meetDay?.meetDate)!)
         
         return cell
     }
@@ -66,6 +66,8 @@ class MeetDayTableViewController: UITableViewController {
         // Return false if you do not want the specified item to be editable.
         return true
     }
+    
+    
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

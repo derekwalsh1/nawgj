@@ -19,13 +19,11 @@ class Expense: NSObject, NSCoding {
         case Parking
         case Other
         case MeetReferee
-        case Fee
     }
     
     // MARK: Properties
     var type : ExpenseType
     var amount : Float
-    var taxable : Bool
     var notes : String?
     
     //MARK: Types
@@ -44,15 +42,6 @@ class Expense: NSObject, NSCoding {
         self.type = type
         self.amount = amount
         self.notes = notes
-        
-        switch self.type{
-        case .Fee:
-            self.taxable = true
-            break
-        default:
-            self.taxable = false
-        }
-        
     }
     
     //MARK: NSCoding

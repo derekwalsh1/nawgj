@@ -16,7 +16,7 @@ class Meet: NSObject, NSCoding {
     var days: Array<MeetDay>    // The specific meet days; 1 or more days
     var judges: Array<Judge>    // The Judges that worked at the meet
     var startDate: Date         // The first day of the meet
-    var levels: [String]        // The levels competing at this meet
+    var levels: String        // The levels competing at this meet
     
     //MARK: Archiving Paths
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -32,14 +32,14 @@ class Meet: NSObject, NSCoding {
     }
     
     //MARK: Initialization
-    init?(name: String, days: Array<MeetDay>, judges: Array<Judge>, startDate: Date, levels: Array<String>) {
+    init?(name: String, days: Array<MeetDay>, judges: Array<Judge>, startDate: Date, levels: String) {
         // Initialization should fail if there is an empty name
         guard !name.isEmpty else {
             return nil
         }
         
         if levels.isEmpty {
-            _ = [String]()
+            _ = ""
         }
         
         // Initialize stored properties.
@@ -81,11 +81,41 @@ class Meet: NSObject, NSCoding {
             return nil
         }
         
-        guard let levels = aDecoder.decodeObject(forKey: PropertyKey.levels) as? Array<String> else{
+        guard let levels = aDecoder.decodeObject(forKey: PropertyKey.levels) as? String else{
             os_log("Unable to decode the levels for a Meet object.", log: OSLog.default, type: .debug)
             return nil
         }
         // Must call designated initializer.
         self.init(name: name, days: days, judges: judges, startDate: startDate, levels: levels)
+    }
+    
+    func totalCost() -> Float {
+        var totalCost : Float = 0.0
+        
+        for judge in self.judges {
+            totalCost += judge.totalCost()
+        }
+        
+        return totalCost
+    }
+    
+    func totalHours() -> Float {
+        var totalHours : Float = 0.0
+        
+        for day in self.days {
+            totalHours += day.totalTimeInHours()
+        }
+        
+        return totalHours
+    }
+    
+    func totalBillableHours() -> Float {
+        var totalHours : Float = 0.0
+        
+        for day in self.days {
+            totalHours += day.totalBillableTimeInHours()
+        }
+        
+        return totalHours
     }
 }

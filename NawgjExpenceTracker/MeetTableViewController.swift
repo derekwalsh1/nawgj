@@ -45,13 +45,13 @@ class MeetTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Configure the cell...
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableViewCell", for: indexPath) as? MeetTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of MeetTableViewCell.")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableViewCell", for: indexPath)
         
         // Fetches the appropriate meet for the data source layout.
         let meet = meets[indexPath.row]
-        cell.nameLabel.text = meet.name
+        cell.textLabel?.textColor = self.view.tintColor
+        cell.textLabel?.text = meet.name
+        cell.detailTextLabel?.text = meet.levels
         
         return cell
     }
@@ -89,8 +89,8 @@ class MeetTableViewController: UITableViewController {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
                 
-            guard let selectedMeetCell = sender as? MeetTableViewCell else {
-                fatalError("Unexpected sender: Sender i ?? <#default value#>s not a MeetTableViewCell")
+            guard let selectedMeetCell = sender as? UITableViewCell else {
+                fatalError("Unexpected sender : sender is not a UITableViewCell")
             }
                 
             guard let indexPath = tableView.indexPath(for: selectedMeetCell) else {

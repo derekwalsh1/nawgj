@@ -10,8 +10,6 @@ import UIKit
 
 class MeetDayTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var nameLabel: UILabel!
-    
     //MARK: Properties
     override func awakeFromNib() {
         super.awakeFromNib()
