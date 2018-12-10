@@ -73,7 +73,7 @@ class MeetDayTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            meet?.days.remove(at: indexPath.row)
+            meet?.removeMeetDay(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class
@@ -164,7 +164,7 @@ class MeetDayTableViewController: UITableViewController {
                 // Add a new meet day.
                 let newIndexPath = IndexPath(row: (meet?.days.count)!, section: 0)
                 
-                meet?.days.append(meetDay!)
+                meet?.addMeetDay(day: meetDay!)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
         }

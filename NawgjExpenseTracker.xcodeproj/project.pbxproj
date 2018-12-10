@@ -19,6 +19,10 @@
 		65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC99E219347F20029C6AA /* MeetDay.swift */; };
 		65DBC9A52193A1820029C6AA /* Judge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A42193A1820029C6AA /* Judge.swift */; };
 		65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A62193A1BB0029C6AA /* Expense.swift */; };
+		65DDA61021BDB9D2004B4DD2 /* FeeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA60F21BDB9D2004B4DD2 /* FeeTableViewController.swift */; };
+		65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA61121BDBA0B004B4DD2 /* FeeDetailsViewController.swift */; };
+		65DDA61521BDBA28004B4DD2 /* ExpensesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA61421BDBA28004B4DD2 /* ExpensesTableViewController.swift */; };
+		65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewContoroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA61621BDBA4F004B4DD2 /* ExpenseDetailsViewContoroller.swift */; };
 		65EE305A219FDDF90011B2B8 /* JudgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE3059219FDDF90011B2B8 /* JudgeTableViewController.swift */; };
 		65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */; };
 		65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */; };
@@ -54,6 +58,10 @@
 		65DBC99E219347F20029C6AA /* MeetDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDay.swift; sourceTree = "<group>"; };
 		65DBC9A42193A1820029C6AA /* Judge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Judge.swift; sourceTree = "<group>"; };
 		65DBC9A62193A1BB0029C6AA /* Expense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		65DDA60F21BDB9D2004B4DD2 /* FeeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeTableViewController.swift; sourceTree = "<group>"; };
+		65DDA61121BDBA0B004B4DD2 /* FeeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeDetailsViewController.swift; sourceTree = "<group>"; };
+		65DDA61421BDBA28004B4DD2 /* ExpensesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesTableViewController.swift; sourceTree = "<group>"; };
+		65DDA61621BDBA4F004B4DD2 /* ExpenseDetailsViewContoroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailsViewContoroller.swift; sourceTree = "<group>"; };
 		65EE3059219FDDF90011B2B8 /* JudgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeTableViewController.swift; sourceTree = "<group>"; };
 		65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeTableViewCell.swift; sourceTree = "<group>"; };
 		65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeDetailViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +109,8 @@
 		65DBC966217D5B320029C6AA /* NawgjExpenseTracker */ = {
 			isa = PBXGroup;
 			children = (
+				65DDA61321BDBA11004B4DD2 /* Expenses */,
+				65DDA60E21BDB99E004B4DD2 /* Fees */,
 				65DBC99D218D7A450029C6AA /* DataTypes */,
 				65DBC967217D5B320029C6AA /* AppDelegate.swift */,
 				65DBC96B217D5B320029C6AA /* Main.storyboard */,
@@ -135,6 +145,24 @@
 				65C386CB21BB77F70070D76B /* Fee.swift */,
 			);
 			name = DataTypes;
+			sourceTree = "<group>";
+		};
+		65DDA60E21BDB99E004B4DD2 /* Fees */ = {
+			isa = PBXGroup;
+			children = (
+				65DDA60F21BDB9D2004B4DD2 /* FeeTableViewController.swift */,
+				65DDA61121BDBA0B004B4DD2 /* FeeDetailsViewController.swift */,
+			);
+			path = Fees;
+			sourceTree = "<group>";
+		};
+		65DDA61321BDBA11004B4DD2 /* Expenses */ = {
+			isa = PBXGroup;
+			children = (
+				65DDA61421BDBA28004B4DD2 /* ExpensesTableViewController.swift */,
+				65DDA61621BDBA4F004B4DD2 /* ExpenseDetailsViewContoroller.swift */,
+			);
+			path = Expenses;
 			sourceTree = "<group>";
 		};
 		65EE305B219FE01D0011B2B8 /* Meet */ = {
@@ -281,11 +309,15 @@
 				65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */,
 				65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */,
 				65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */,
+				65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewContoroller.swift in Sources */,
 				65C386CC21BB77F70070D76B /* Fee.swift in Sources */,
 				65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */,
+				65DDA61021BDB9D2004B4DD2 /* FeeTableViewController.swift in Sources */,
 				65DBC9A52193A1820029C6AA /* Judge.swift in Sources */,
 				65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */,
+				65DDA61521BDBA28004B4DD2 /* ExpensesTableViewController.swift in Sources */,
 				65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */,
+				65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */,
 				65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

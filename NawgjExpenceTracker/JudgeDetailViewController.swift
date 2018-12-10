@@ -35,8 +35,8 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             
             // Add fees for each configured meet day if any days have been configured
             for day in (meet?.days)!{
-                let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), notes: "")
-                judge?.fees.append(fee)
+                let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: (judge?.level.rate)!, notes: "")
+                judge?.fees.append(fee!)
             }
         }
         self.levelPicker.delegate = self
@@ -55,11 +55,25 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     
     //MARK: Show/Hide Date Picker Code
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
         
-        if (indexPath.row == 1){
-            showLevelPicker = !showLevelPicker
-            tableView.beginUpdates()
-            tableView.endUpdates()
+        switch(section){
+        case 0:
+            switch(row){
+            case 1:
+                showLevelPicker = !showLevelPicker
+                tableView.beginUpdates()
+                tableView.endUpdates()
+                
+            default:
+                break
+            }
+            
+        case 1:
+            break
+            
+        default: break
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -103,6 +117,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)?.description
+        judge?.changeLevel(level: Judge.Level(rawValue: row)!)
     }
     
     //MARK: Navigation
@@ -129,8 +144,32 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         // Configure the destination view controller only when the save button is pressed.
         if let button = sender as? UIBarButtonItem, button === doneButton{
             judge?.name = nameTextField.text!
-            judge?.level = Judge.Level.valueFor(description: (levelCell.detailTextLabel?.text!)!)!
+            judge?.changeLevel(level:  Judge.Level.valueFor(description: (levelCell.detailTextLabel?.text!)!)!)
+        }
+        
+        switch segue.identifier {
+        case "ShowFeeTable":
+            guard let feeTableViewController = segue.destination as? FeeTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            feeTableViewController.judge = judge
+            feeTableViewController.meet = meet
+            break
+        default:
+            break
         }
     }
 
+    //MARK: Actions
+    @IBAction func unwindToJudgeDetailsFromFeeList(sender: UIStoryboardSegue) {
+        /*let sourceViewController = sender.source as? FeeDetailsViewController
+        let fee = sourceViewController?.fee
+        
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            
+            // Update an existing meal.
+            judge?.fees[selectedIndexPath.row] = fee!
+            tableView.reloadRows(at: [selectedIndexPath], with: .none)
+        }*/
+    }
 }

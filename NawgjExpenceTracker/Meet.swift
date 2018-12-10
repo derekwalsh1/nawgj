@@ -118,4 +118,40 @@ class Meet: NSObject, NSCoding {
         
         return totalHours
     }
+    
+    func addMeetDay(day: MeetDay) {
+        self.days.append(day)
+        // add fees to judges for this day
+        for judge in self.judges {
+            judge.fees.append(Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "")!)
+        }
+    }
+    
+    func removeMeetDay(at: Int) {
+        let date = self.days[at].meetDate
+        
+        for judge in self.judges {
+            var idx : Int? = nil
+            for (index, fee) in judge.fees.enumerated() {
+                if fee.date == date {
+                    idx = index
+                }
+            }
+            if idx != nil {
+                judge.fees.remove(at: idx!)
+            }
+        }
+        
+        self.days.remove(at: at)
+    }
+    
+    func totalJudgeFeesAndExpenses() -> Float{
+        var total : Float = 0.0
+        
+        for judge in self.judges {
+            total += judge.totalCost()
+        }
+        
+        return total
+    }
 }

@@ -112,13 +112,7 @@ class Judge: NSObject, NSCoding {
     }
     
     func totalCost() -> Float {
-        var totalCost : Float = 0.0
-        
-        for expense in expenses {
-            totalCost += expense.amount
-        }
-        
-        return totalCost
+        return self.totalTaxableCost() + self.totalTaxDeductibleCost()
     }
     
     func totalTaxDeductibleCost() -> Float {
@@ -139,5 +133,14 @@ class Judge: NSObject, NSCoding {
         }
         
         return totalTaxableCost
+    }
+    
+    func changeLevel(level: Level){
+        if level != self.level{
+            self.level = level
+            for fee in self.fees{
+                fee.rate = self.level.rate
+            }
+        }
     }
 }

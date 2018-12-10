@@ -44,7 +44,7 @@ class JudgeTableViewController: UITableViewController {
         // Fetches the appropriate meet for the data source layout.
         let judge = meet?.judges[indexPath.row]
         cell.textLabel?.text = judge?.name
-        cell.detailTextLabel?.text = "Total: $s\(String(describing: judge?.totalCost()))"
+        cell.detailTextLabel?.text = "Expenses: $\(judge?.totalTaxDeductibleCost() ?? 0.00) Fees: $\(judge?.totalTaxableCost() ?? 0.00)"
         
         return cell
     }

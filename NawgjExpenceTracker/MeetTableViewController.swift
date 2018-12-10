@@ -53,6 +53,12 @@ class MeetTableViewController: UITableViewController {
         cell.textLabel?.text = meet.name
         cell.detailTextLabel?.text = meet.levels
         
+        if indexPath.row == 0 {
+            cell.imageView?.image = UIImage(named: "complete")
+        }
+        else {
+            cell.imageView?.image = UIImage(named: "inprogress")
+        }
         return cell
     }
     

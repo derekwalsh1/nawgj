@@ -143,18 +143,23 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     //MARK: Navigation
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        
-        let isPresentingInAddMeetMode = presentingViewController is UINavigationController
-        
-        if isPresentingInAddMeetMode {
-            dismiss(animated: true, completion: nil)
-        }
-        else if let owningNavigationController = navigationController{
-            owningNavigationController.popViewController(animated: true)
-        }
-        else {
-            fatalError("The MeetViewController is not inside a navigation controller.")
-        }
+        let alert = UIAlertController(title: "Discard Changes to Meet?", message: nil, preferredStyle: .alert)
+        let actionCancel = UIAlertAction(title: "Cancel", style: .default) { (action:UIAlertAction) in }
+        let actionDiscard = UIAlertAction(title: "Discard Changes", style: .default) { (action:UIAlertAction) in
+            let isPresentingInAddMeetMode = self.presentingViewController is UINavigationController
+            
+            if isPresentingInAddMeetMode {
+                self.dismiss(animated: true, completion: nil)
+            }
+            else if let owningNavigationController = self.navigationController{
+                owningNavigationController.popViewController(animated: true)
+            }
+            else {
+                fatalError("The MeetViewController is not inside a navigation controller.")
+            }        }
+        alert.addAction(actionCancel)
+        alert.addAction(actionDiscard)
+        self.present(alert, animated: true)
     }
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -207,7 +212,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     func judgeDetailText() -> String {
         let judgeText = meet.judges.count == 1 ? "Judge" : "Judges"
-        return "\(meet.judges.count) \(judgeText)"
+        return "\(meet.judges.count) \(judgeText) - " + String(format: "$%.2f", meet.totalJudgeFeesAndExpenses())
     }
     
     //MARK: Actions
@@ -220,6 +225,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             // Update an existing meet day.
             meet = updatedMeet!
             super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 1)).detailTextLabel?.text = meetDaysDetailText()
+            super.tableView(tableView, cellForRowAt: IndexPath(row: 1, section: 1)).detailTextLabel?.text = judgeDetailText()
         }
     }
     
