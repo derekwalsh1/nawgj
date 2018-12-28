@@ -70,4 +70,27 @@ class MeetDay: NSObject, NSCoding {
         self.init(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks)
     }
 
+    func totalTimeInHours() -> Float {
+        return Float(endTime.timeIntervalSince(startTime)) / 3600
+    }
+    
+    static func totalTimeInHours(startTime : Date, endTime : Date) -> Float {
+        return Float(endTime.timeIntervalSince(startTime)) / 3600
+    }
+    
+    func breakTimeInHours() -> Float {
+        return Float(breaks) * MeetDay.BREAK_TIME_HOURS
+    }
+    
+    static func breakTimeInHours(breaks : Int) -> Float {
+        return Float(breaks) * MeetDay.BREAK_TIME_HOURS
+    }
+    
+    func totalBillableTimeInHours() -> Float {
+        return max(MeetDay.MIN_BILLING_HOURS, totalTimeInHours() - breakTimeInHours()) as Float
+    }
+    
+    static func totalBillableTimeInHours(startTime : Date, endTime : Date, breaks : Int) -> Float {
+        return max(MeetDay.MIN_BILLING_HOURS, totalTimeInHours(startTime: startTime, endTime: endTime) - breakTimeInHours(breaks: breaks))
+    }
 }

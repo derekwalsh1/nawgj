@@ -9,19 +9,23 @@
 import UIKit
 import os.log
 
-class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate,UIPickerViewDelegate, UIPickerViewDataSource  {
+class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource  {
     
+    @IBOutlet weak var levelCell: UITableViewCell!
+    @IBOutlet weak var manageExpensesCell: UITableViewCell!
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var levelTextField: UITextField!
-    
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    //MARK: Properties
+    @IBOutlet weak var levelPicker: UIPickerView!
+    @IBOutlet weak var manageFeesCell: UITableViewCell!
     
+    //MARK: Properties
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
      or constructed as part of adding a new meal.
      */
     var judge: Judge?
+    var meet: Meet?
+    var showLevelPicker : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,21 +33,66 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         
         // Set up views if editing an existing Judge.
         if judge == nil{
-            judge = Judge(name: "New Judge", level: Judge.Level.FourToEight, expenses:Array<Expense>())
+            judge = Judge(name: "New Judge", level: Judge.Level.FourToEight, fees: Array<Fee>())
+            
+            // Add fees for each configured meet day if any days have been configured
+            for day in (meet?.days)!{
+                let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: (judge?.level.rate)!, notes: "")
+                judge?.fees.append(fee!)
+            }
         }
-        let levelPickerView = UIPickerView()
-        levelPickerView.delegate = self
-        levelPickerView.dataSource = self
+        self.levelPicker.delegate = self
+        self.levelPicker.dataSource = self
         
-        levelTextField.inputView = levelPickerView
         navigationItem.title = judge!.name
         nameTextField.text = judge!.name
-        levelTextField.text = judge!.level.description
+        levelCell.textLabel?.textColor = self.view.tintColor
+        levelCell.detailTextLabel?.text = judge!.level.description
+        levelPicker.selectRow(judge!.level.rawValue, inComponent: 0, animated: false)
+        
+        manageFeesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalFees())!)
+        
+        manageExpensesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalExpenses())!)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK: Show/Hide Date Picker Code
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        
+        switch(section){
+        case 0:
+            switch(row){
+            case 1:
+                showLevelPicker = !showLevelPicker
+                tableView.beginUpdates()
+                tableView.endUpdates()
+                
+            default:
+                break
+            }
+            
+        case 1:
+            break
+            
+        default: break
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if !showLevelPicker && indexPath.row == 2 {
+            return 0
+        }
+        else {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
     }
     
     //MARK: UITextFieldDelegate
@@ -74,8 +123,8 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        levelTextField.text = Judge.Level(rawValue: row)?.description
-        levelTextField.resignFirstResponder()
+        levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)?.description
+        judge?.changeLevel(level: Judge.Level(rawValue: row)!)
     }
     
     //MARK: Navigation
@@ -102,8 +151,35 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         // Configure the destination view controller only when the save button is pressed.
         if let button = sender as? UIBarButtonItem, button === doneButton{
             judge?.name = nameTextField.text!
-            judge?.level = Judge.Level.valueFor(description: levelTextField.text!)!
+            judge?.changeLevel(level:  Judge.Level.valueFor(description: (levelCell.detailTextLabel?.text!)!)!)
+        }
+        
+        switch segue.identifier {
+        case "ShowFeeTable":
+            guard let feeTableViewController = segue.destination as? FeeTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            feeTableViewController.judge = judge
+            feeTableViewController.meet = meet
+            break
+        case "ShowExpenseTable":
+            guard let expenseTableViewController = segue.destination as? ExpensesTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            expenseTableViewController.judge = judge
+            expenseTableViewController.meet = meet
+            break
+        default:
+            break
         }
     }
 
+    //MARK: Actions
+    @IBAction func unwindToJudgeDetailsFromFeeList(sender: UIStoryboardSegue) {
+        manageFeesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalFees())!)
+    }
+    
+    @IBAction func unwindToJudgeDetailsFromExpenseList(sender: UIStoryboardSegue) {
+        manageExpensesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalExpenses())!)
+    }
 }

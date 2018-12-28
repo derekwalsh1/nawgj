@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "meals.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "defaultphoto_2x.png",
       "scale" : "2x"
     },
     {

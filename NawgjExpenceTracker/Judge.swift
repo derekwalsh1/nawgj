@@ -32,6 +32,18 @@ class Judge: NSObject, NSCoding {
             }
         }
         
+        var rate: Float {
+            switch self {
+                case .FourToFive : return 18.0
+                case .SixToEight : return 20.0
+                case .FourToEight : return 22.0
+                case .Nine : return 26.0
+                case .Ten : return 30.0
+                case .National : return 33.0
+                case .Brevet : return 36.0
+            }
+        }
+        
         static func valueFor(description: String) -> Level?{
             switch description{
             case Level.FourToFive.description : return .FourToFive
@@ -45,34 +57,51 @@ class Judge: NSObject, NSCoding {
             }
         }
         
-        static var count: Int { return Level.National.hashValue + 1}
+        static var count: Int { return Level.National.rawValue + 1}
     }
     
     // MARK: Properties
     var name : String
     var level : Level
     var expenses : Array<Expense>
+    var fees : Array<Fee>
     
     //MARK: Types
     struct PropertyKey {
         static let name = "Name"
         static let level = "Level"
         static let expenses = "Expenses"
+        static let fees = "Fees"
     }
     
     //MARK: Initialization
-    init(name: String, level: Level, expenses: Array<Expense>) {
+    init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>) {
         // Initialize stored properties.
         self.name = name
         self.level = level
         self.expenses = expenses
+        self.fees = fees
     }
     
+    required convenience init?(name: String, level: Level, fees: Array<Fee>) {
+        let expenses = [
+            Expense(type: Expense.ExpenseType.Mileage),
+            Expense(type: Expense.ExpenseType.Parking),
+            Expense(type: Expense.ExpenseType.Toll),
+            Expense(type: Expense.ExpenseType.Transportation),
+            Expense(type: Expense.ExpenseType.Airfare),
+            Expense(type: Expense.ExpenseType.Meals),
+            Expense(type: Expense.ExpenseType.Other)
+        ]
+        
+        self.init(name: name, level: level, expenses: expenses as! Array<Expense>, fees: fees)
+    }
     //MARK: NSCoding
     func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: PropertyKey.name)
         aCoder.encode(level.rawValue, forKey: PropertyKey.level)
         aCoder.encode(expenses, forKey: PropertyKey.expenses)
+        aCoder.encode(fees, forKey: PropertyKey.fees)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -86,9 +115,43 @@ class Judge: NSObject, NSCoding {
             os_log("Unable to decode the expenses of a Judge object.", log: OSLog.default, type: .debug)
             return nil
         }
+        guard let fees = aDecoder.decodeObject(forKey: PropertyKey.fees) as? Array<Fee> else{
+            os_log("Unable to decode the fees of a Judge object.", log: OSLog.default, type: .debug)
+            return nil
+        }
         
         // Must call designated initializer.
-        self.init(name: name, level: Level.init(rawValue: level)!, expenses: expenses)
+        self.init(name: name, level: Level.init(rawValue: level)!, expenses: expenses, fees: fees)
     }
     
+    func totalCost() -> Float {
+        return self.totalFees() + self.totalExpenses()
+    }
+    
+    func totalExpenses() -> Float {
+        var total : Float = 0.0
+        
+        for expense in expenses {
+            total += expense.amount
+        }
+        
+        return total
+    }
+    
+    func totalFees() -> Float {
+        var totalFees : Float = 0.0
+        
+        for fee in fees {
+            totalFees += fee.hours * level.rate
+        }
+        
+        return totalFees
+    }
+    
+    func changeLevel(level: Level){
+        self.level = level
+        for fee in self.fees{
+            fee.rate = self.level.rate
+        }
+    }
 }

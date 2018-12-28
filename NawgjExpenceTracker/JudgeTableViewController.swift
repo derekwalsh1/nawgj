@@ -43,7 +43,8 @@ class JudgeTableViewController: UITableViewController {
         
         // Fetches the appropriate meet for the data source layout.
         let judge = meet?.judges[indexPath.row]
-        cell.nameLabel.text = judge?.name
+        cell.textLabel?.text = judge?.name
+        cell.detailTextLabel?.text = "Expenses: $\(judge?.totalExpenses() ?? 0.00) Fees: $\(judge?.totalFees() ?? 0.00)"
         
         return cell
     }
@@ -98,6 +99,12 @@ class JudgeTableViewController: UITableViewController {
             switch(segue.identifier ?? "") {
             case "AddItem":
                 os_log("Adding a new judge.", log: OSLog.default, type: .debug)
+                let destinationNavigationController = segue.destination as! UINavigationController
+                guard let judgeDetailViewController = destinationNavigationController.topViewController as? JudgeDetailViewController else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+                }
+                judgeDetailViewController.meet = meet
+                
             case "ShowDetail":
                 guard let judgeDetailViewController = segue.destination as? JudgeDetailViewController else {
                     fatalError("Unexpected destination: \(segue.destination)")
@@ -113,7 +120,7 @@ class JudgeTableViewController: UITableViewController {
                 
                 let judge = meet?.judges[indexPath.row]
                 judgeDetailViewController.judge = judge
-                
+                judgeDetailViewController.meet = meet
             default:
                 fatalError("Unexpected Segue Identifier")
             }

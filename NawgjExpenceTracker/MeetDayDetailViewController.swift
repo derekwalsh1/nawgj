@@ -12,27 +12,48 @@ import os.log
 class MeetDayDetailViewController: UITableViewController, UINavigationControllerDelegate {
     
     //MARK: Properties
-    @IBOutlet weak var meetDatePicker: UIDatePicker!
+    @IBOutlet weak var meetDayDateCell: UITableViewCell!
+    @IBOutlet weak var meetDayDatePicker: UIDatePicker!
+    @IBOutlet weak var meetDayStartTimeCell: UITableViewCell!
     @IBOutlet weak var startTimePicker: UIDatePicker!
+    @IBOutlet weak var meetDayEndTimeCell: UITableViewCell!
     @IBOutlet weak var endTimePicker: UIDatePicker!
     @IBOutlet weak var breaksSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var numberOfBreaksLabel: UILabel!
     
-    @IBOutlet weak var totalTimeLabel: UILabel!
-    @IBOutlet weak var billableTimeLabel: UILabel!
-    @IBOutlet weak var breakTimeLabel: UILabel!
+    @IBOutlet weak var totalTimeCell: UITableViewCell!
+    @IBOutlet weak var billableTimeCell: UITableViewCell!
+    @IBOutlet weak var breakTimeCell: UITableViewCell!
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    
+    var showMeetDayDatePicker : Bool = false
+    var showMeetDayStartTimePicker : Bool = false
+    var showMeetDayEndTimePicker : Bool = false
+    
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
      or constructed as part of adding a new meal.
      */
     var meetDay: MeetDay?
-    var formatter : DateFormatter = DateFormatter()
+    var dateFormatter : DateFormatter = DateFormatter()
+    var timeFormatter : DateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        formatter.dateFormat = MeetDay.DATE_FORMAT
+        
+        dateFormatter.dateFormat = "EEEE, MMM d, yyyy"
+        timeFormatter.dateFormat = "h:mm a"
+        
+        meetDayDateCell.textLabel?.textColor = self.view.tintColor
+        meetDayStartTimeCell.textLabel?.textColor = self.view.tintColor
+        meetDayEndTimeCell.textLabel?.textColor = self.view.tintColor
+        numberOfBreaksLabel.textColor = self.view.tintColor
+        
+        totalTimeCell.textLabel?.textColor = self.view.tintColor
+        billableTimeCell.textLabel?.textColor = self.view.tintColor
+        breakTimeCell.textLabel?.textColor = self.view.tintColor
         
         // Set up views if editing an existing Meet day.
         if let meetDay = meetDay {
@@ -42,7 +63,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             var hour = calendar.component(.hour, from: meetDay.meetDate)
             var minute = calendar.component(.minute, from: meetDay.meetDate)
             var floorMinute = minute - (minute % 15)
-            meetDatePicker.date = calendar.date(bySettingHour: hour,
+            meetDayDatePicker.date = calendar.date(bySettingHour: hour,
                                           minute: floorMinute,
                                           second: 0, 
                                           of: meetDay.meetDate)!
@@ -63,13 +84,12 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                                                second: 0,
                                                of: meetDay.endTime)!
             
-            breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks - 1
-            
+            breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
             updateUILabels()
         }
         else{
             let meetDate = Date()
-            meetDatePicker.setDate(meetDate, animated: false)
+            meetDayDatePicker.setDate(meetDate, animated: false)
 
             let startTime = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: meetDate)
             startTimePicker.setDate(startTime!, animated: false)
@@ -78,9 +98,9 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             endTimePicker.setDate(endTime!, animated: false)
             
             let numberOfBreaks = 2
-            breaksSegmentedControl.selectedSegmentIndex = numberOfBreaks - 1
+            breaksSegmentedControl.selectedSegmentIndex = numberOfBreaks
             
-            navigationItem.title = formatter.string(from: meetDate)
+            navigationItem.title = dateFormatter.string(from: meetDate)
             meetDay = MeetDay(meetDate: meetDate, startTime: startTime!, endTime: endTime!, breaks: numberOfBreaks)
             
         }
@@ -119,32 +139,31 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         
         // Configure the destination view controller only when the save button is pressed.
         if let button = sender as? UIBarButtonItem, button === doneButton{
-            meetDay?.meetDate = meetDatePicker.date
+            meetDay?.meetDate = meetDayDatePicker.date
             meetDay?.startTime = startTimePicker.date
             meetDay?.endTime = endTimePicker.date
-            meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex + 1
-        
+            meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex
         }
     }
     
     func updateUILabels()
     {
-        let totalTime = Float(endTimePicker.date.timeIntervalSince(startTimePicker.date))
-        let totalTimeHours = totalTime / 3600
-        let breakTime = Float(breaksSegmentedControl.selectedSegmentIndex + 1) * MeetDay.BREAK_TIME_HOURS
-        let billingTime = max(MeetDay.MIN_BILLING_HOURS, totalTimeHours - breakTime)
+        totalTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.totalTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date)) as String
+        billableTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.totalBillableTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date, breaks: breaksSegmentedControl.selectedSegmentIndex)) as String
+        breakTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.breakTimeInHours(breaks: breaksSegmentedControl.selectedSegmentIndex)) as String
         
-        totalTimeLabel.text = NSString(format: "%.2f", totalTimeHours) as String
-        billableTimeLabel.text = NSString(format: "%.2f", billingTime) as String
-        breakTimeLabel.text = NSString(format: "%.2f", breakTime) as String
+        meetDayDateCell.detailTextLabel?.text = dateFormatter.string(from: meetDayDatePicker.date)
+        meetDayStartTimeCell.detailTextLabel?.text = timeFormatter.string(from: startTimePicker.date)
+        meetDayEndTimeCell.detailTextLabel?.text = timeFormatter.string(from: endTimePicker.date)
+        navigationItem.title = dateFormatter.string(from: meetDayDatePicker.date)
     }
     
     @IBAction func numberOfBreaksChanged(_ sender: UISegmentedControl) {
-        meetDay?.breaks = sender.selectedSegmentIndex + 1
+        meetDay?.breaks = sender.selectedSegmentIndex
         updateUILabels()
     }
     
-    @IBAction func startTimeChanged(_ sender: UIDatePicker) {
+    @IBAction func meetDayStartTimeChanged(_ sender: UIDatePicker) {
         if sender.date >= endTimePicker.date{
             endTimePicker.setDate(sender.date + 15 * 60, animated: true)
         }
@@ -152,7 +171,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         updateUILabels()
     }
     
-    @IBAction func endTimeChanged(_ sender: UIDatePicker) {
+    @IBAction func meetDayEndTimeChanged(_ sender: UIDatePicker) {
         if sender.date <= startTimePicker.date{
             startTimePicker.setDate(sender.date - 15 * 60, animated: true)
         }
@@ -160,10 +179,9 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         updateUILabels()
     }
     
-    @IBAction func meetDateChanged(_ sender: UIDatePicker) {
-        navigationItem.title = formatter.string(from: sender.date)
+    @IBAction func meetDayDateChanged(_ sender: UIDatePicker) {
         var components = DateComponents()
-        let newDate = meetDatePicker.date
+        let newDate = meetDayDatePicker.date
         
         let day = Calendar.current.component(Calendar.Component.day, from: newDate)
         let month = Calendar.current.component(Calendar.Component.month, from: newDate)
@@ -175,5 +193,55 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         
         startTimePicker.setDate(Calendar.current.date(byAdding: components, to: startTimePicker.date)!, animated: false)
         endTimePicker.setDate(Calendar.current.date(byAdding: components, to: endTimePicker.date)!, animated: false)
+        
+        updateUILabels()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0{
+            var updateTable = false
+            
+            if (indexPath.row == 0){
+                showMeetDayDatePicker = !showMeetDayDatePicker
+                if showMeetDayDatePicker{
+                    showMeetDayStartTimePicker = false
+                    showMeetDayEndTimePicker = false
+                }
+                updateTable = true
+            }
+            else if (indexPath.row == 2){
+                showMeetDayStartTimePicker = !showMeetDayStartTimePicker
+                if showMeetDayStartTimePicker{
+                    showMeetDayDatePicker = false
+                    showMeetDayEndTimePicker = false
+                }
+                updateTable = true
+            }
+            else if (indexPath.row == 4){
+                showMeetDayEndTimePicker = !showMeetDayEndTimePicker
+                
+                if showMeetDayEndTimePicker{
+                    showMeetDayDatePicker = false
+                    showMeetDayStartTimePicker = false
+                }
+                updateTable = true
+            }
+            
+            if updateTable {
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.section == 0 && (!showMeetDayDatePicker && indexPath.row == 1) || (!showMeetDayStartTimePicker && indexPath.row == 3) || !showMeetDayEndTimePicker && indexPath.row == 5) {
+            return 0
+        }
+        else {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
     }
 }
