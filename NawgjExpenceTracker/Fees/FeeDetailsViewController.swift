@@ -18,10 +18,8 @@ class FeeDetailsViewController: UITableViewController {
     @IBOutlet weak var billableHoursCell: UITableViewCell!
     @IBOutlet weak var rateCell: UITableViewCell!
     @IBOutlet weak var totalFeeCell: UITableViewCell!
-    
     @IBOutlet weak var stepperValueLabel: UILabel!
     @IBOutlet weak var judgeHoursStepper: UIStepper!
-    
     @IBOutlet weak var overrideHoursSwitch: UISwitch!
     
     /*
