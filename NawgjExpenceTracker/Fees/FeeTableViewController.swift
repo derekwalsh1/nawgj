@@ -62,7 +62,7 @@ class FeeTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        switch(segue.identifier ?? "") {
+        switch(segue.identifier ?? "Unwind") {
         case "ShowDetail":
             guard let feeDetailsViewController = segue.destination as? FeeDetailsViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -81,9 +81,10 @@ class FeeTableViewController: UITableViewController {
             feeDetailsViewController.fee = selectedFee!
             feeDetailsViewController.judge = judge
             feeDetailsViewController.meetDay = meetDay
-            
+        case "Unwind":
+            break
         default:
-            fatalError("Unexpected Segue Identifier")
+            fatalError("Unexpected Segue Identifier - \(segue.identifier!)")
         }
     }
     

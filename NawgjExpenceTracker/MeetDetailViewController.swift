@@ -15,15 +15,14 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var meetDatePicker: UIDatePicker!
-    @IBOutlet weak var levelsTextField: UITextField!
+    @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var meetDateCell: UITableViewCell!
+    @IBOutlet weak var meetLocationField: UITextField!
     
     /*
-     This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
-     or constructed as part of adding a new meal.
+     This value is either passed by `MeetTableViewController` in `prepare(for:sender:)` or constructed as part of adding a new meal.
      */
-    var meet: Meet = Meet(name: "New Meet", days: Array<MeetDay>(), judges: Array<Judge>(), startDate: Date(), levels: "")!
-    
+    var meet: Meet = Meet(name: "New Meet", startDate: Date())!
     var dateFormatter : DateFormatter = DateFormatter()
     var showMeetDatePicker : Bool = false
     
@@ -34,11 +33,12 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         meetDateCell.textLabel?.textColor = self.view.tintColor
         meetDateCell.detailTextLabel?.text = dateFormatter.string(from: meet.startDate)
         
-        // Set up views if editing an existing Meal.
+        // Set up views if editing an existing Meet.
         navigationItem.title = meet.name
         nameTextField.text = meet.name
         meetDatePicker.date = meet.startDate
-        levelsTextField.text = meet.levels
+        descriptionTextField.text = meet.meetDescription
+        meetLocationField.text = meet.location
         
         // Enable the Save button only if the text field has a valid meet name.
         updateSaveButtonState()
@@ -60,16 +60,10 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         
         switch indexPath.section {
         case 1:
-            switch indexPath.row{
-            case 0:
-                cell.detailTextLabel?.text = meetDaysDetailText()
-                break
-            case 1:
-                cell.detailTextLabel?.text = judgeDetailText()
-                break
-            default:
-                break
-            }
+            cell.detailTextLabel?.text = meetDaysDetailText()
+        case 2:
+            cell.detailTextLabel?.text = judgeDetailText()
+        
         default:
             break
         }
@@ -85,7 +79,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         switch(section){
         case 0:
             switch(row){
-            case 2:
+            case 3:
                 showMeetDatePicker = !showMeetDatePicker
                 tableView.beginUpdates()
                 tableView.endUpdates()
@@ -95,15 +89,10 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             }
         
         case 1:
-            switch(row){
-            case 0:
-                self.performSegue(withIdentifier: "ShowMeetDayTable", sender: self)
-            case 1:
-                self.performSegue(withIdentifier: "ShowJudgeTable", sender: self)
-            default:
-                break
-            }
-            
+            self.performSegue(withIdentifier: "ShowMeetDayTable", sender: self)
+        case 2:
+            self.performSegue(withIdentifier: "ShowJudgeTable", sender: self)
+
         default: break
         }
         
@@ -111,7 +100,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 0 && (!showMeetDatePicker && indexPath.row == 3)) {
+        if (indexPath.section == 0 && (!showMeetDatePicker && indexPath.row == 4)) {
             return 0
         }
         else {
@@ -143,7 +132,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     //MARK: Navigation
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Discard Changes to Meet?", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Discard Changes?", message: nil, preferredStyle: .alert)
         let actionCancel = UIAlertAction(title: "Cancel", style: .default) { (action:UIAlertAction) in }
         let actionDiscard = UIAlertAction(title: "Discard Changes", style: .default) { (action:UIAlertAction) in
             let isPresentingInAddMeetMode = self.presentingViewController is UINavigationController
@@ -164,10 +153,6 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        // TODO : Add another 2 options here
-        // We can seque to editing the meet days or editing the judges or back to the meet table
-        // or
-        
         super.prepare(for: segue, sender: sender)
         
         // Configure the destination view controller only when the save button is pressed.
@@ -175,7 +160,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             if button === saveButton {
                 meet.name = nameTextField.text!
                 meet.startDate = meetDatePicker.date
-                meet.levels = levelsTextField.text!
+                meet.meetDescription = descriptionTextField.text!
+                meet.location = meetLocationField.text!
             }
             else
             {
@@ -207,7 +193,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     func meetDaysDetailText() -> String {
         let meetDayText = meet.days.count == 1 ? "Day" : "Days"
-        return "\(meet.days.count) \(meetDayText) - \(meet.totalBillableHours()) Hours"
+        return "\(meet.days.count) \(meetDayText) - \(meet.billableMeetHours()) Hours"
     }
     
     func judgeDetailText() -> String {
@@ -225,7 +211,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             // Update an existing meet day.
             meet = updatedMeet!
             super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 1)).detailTextLabel?.text = meetDaysDetailText()
-            super.tableView(tableView, cellForRowAt: IndexPath(row: 1, section: 1)).detailTextLabel?.text = judgeDetailText()
+            super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 2)).detailTextLabel?.text = judgeDetailText()
         }
     }
     
@@ -239,7 +225,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         if (sourceViewController != nil), (updatedMeet != nil){
             // Update an existing meet day.
             meet = updatedMeet!
-            super.tableView(tableView, cellForRowAt: IndexPath(row: 1, section: 1)).detailTextLabel?.text = judgeDetailText()
+            super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 2)).detailTextLabel?.text = judgeDetailText()
         }
     }
     

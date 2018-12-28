@@ -22,7 +22,7 @@ class MeetDayTableViewController: UITableViewController {
         formatter.dateFormat = MeetDay.DATE_FORMAT
         
         if meet == nil{
-            meet = Meet(name: "", days: Array<MeetDay>(), judges: Array<Judge>(), startDate: Date(), levels: "")
+            meet = Meet(name: "", startDate: Date())
         }
     }
     
@@ -50,9 +50,8 @@ class MeetDayTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Configure the cell...
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MeetDayTableCell", for: indexPath) as? MeetDayTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of MeetDayTableViewCell.")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableCell", for: indexPath)
+        
         
         // Fetches the appropriate day for the data source layout.
         let meetDay = meet?.days[indexPath.row]
@@ -128,8 +127,8 @@ class MeetDayTableViewController: UITableViewController {
                     fatalError("Unexpected destination: \(segue.destination)")
                 }
                 
-                guard let selectedMeetDayCell = sender as? MeetDayTableViewCell else {
-                    fatalError("Unexpected sender - Expected MeetDayTableViewCell")
+                guard let selectedMeetDayCell = sender as? UITableViewCell else {
+                    fatalError("Unexpected sender - Expected UITableViewCell")
                 }
                 
                 guard let indexPath = tableView.indexPath(for: selectedMeetDayCell) else {

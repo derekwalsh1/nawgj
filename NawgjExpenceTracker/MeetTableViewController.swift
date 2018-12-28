@@ -45,20 +45,22 @@ class MeetTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Configure the cell...
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableViewCell", for: indexPath) as! MeetTableViewCell
         
         // Fetches the appropriate meet for the data source layout.
         let meet = meets[indexPath.row]
-        cell.textLabel?.textColor = self.view.tintColor
+        cell.meet = meet
+        cell.setupCellContent()
+        /*cell.textLabel?.textColor = self.view.tintColor
         cell.textLabel?.text = meet.name
-        cell.detailTextLabel?.text = meet.levels
+        cell.detailTextLabel?.text = meet.meetDescription
         
         if indexPath.row == 0 {
             cell.imageView?.image = UIImage(named: "complete")
         }
         else {
             cell.imageView?.image = UIImage(named: "inprogress")
-        }
+        }*/
         return cell
     }
     

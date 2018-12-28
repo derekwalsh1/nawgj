@@ -84,7 +84,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                                                second: 0,
                                                of: meetDay.endTime)!
             
-            breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks - 1
+            breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
             updateUILabels()
         }
         else{
@@ -98,7 +98,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             endTimePicker.setDate(endTime!, animated: false)
             
             let numberOfBreaks = 2
-            breaksSegmentedControl.selectedSegmentIndex = numberOfBreaks - 1
+            breaksSegmentedControl.selectedSegmentIndex = numberOfBreaks
             
             navigationItem.title = dateFormatter.string(from: meetDate)
             meetDay = MeetDay(meetDate: meetDate, startTime: startTime!, endTime: endTime!, breaks: numberOfBreaks)
@@ -142,15 +142,15 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             meetDay?.meetDate = meetDayDatePicker.date
             meetDay?.startTime = startTimePicker.date
             meetDay?.endTime = endTimePicker.date
-            meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex + 1
+            meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex
         }
     }
     
     func updateUILabels()
     {
         totalTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.totalTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date)) as String
-        billableTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.totalBillableTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date, breaks: breaksSegmentedControl.selectedSegmentIndex + 1)) as String
-        breakTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.breakTimeInHours(breaks: breaksSegmentedControl.selectedSegmentIndex + 1)) as String
+        billableTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.totalBillableTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date, breaks: breaksSegmentedControl.selectedSegmentIndex)) as String
+        breakTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.breakTimeInHours(breaks: breaksSegmentedControl.selectedSegmentIndex)) as String
         
         meetDayDateCell.detailTextLabel?.text = dateFormatter.string(from: meetDayDatePicker.date)
         meetDayStartTimeCell.detailTextLabel?.text = timeFormatter.string(from: startTimePicker.date)
@@ -159,7 +159,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func numberOfBreaksChanged(_ sender: UISegmentedControl) {
-        meetDay?.breaks = sender.selectedSegmentIndex + 1
+        meetDay?.breaks = sender.selectedSegmentIndex
         updateUILabels()
     }
     

@@ -12,9 +12,11 @@ import os.log
 class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource  {
     
     @IBOutlet weak var levelCell: UITableViewCell!
+    @IBOutlet weak var manageExpensesCell: UITableViewCell!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var levelPicker: UIPickerView!
+    @IBOutlet weak var manageFeesCell: UITableViewCell!
     
     //MARK: Properties
     /*
@@ -31,7 +33,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         
         // Set up views if editing an existing Judge.
         if judge == nil{
-            judge = Judge(name: "New Judge", level: Judge.Level.FourToEight, expenses:Array<Expense>(), fees: Array<Fee>())
+            judge = Judge(name: "New Judge", level: Judge.Level.FourToEight, fees: Array<Fee>())
             
             // Add fees for each configured meet day if any days have been configured
             for day in (meet?.days)!{
@@ -46,6 +48,11 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         nameTextField.text = judge!.name
         levelCell.textLabel?.textColor = self.view.tintColor
         levelCell.detailTextLabel?.text = judge!.level.description
+        levelPicker.selectRow(judge!.level.rawValue, inComponent: 0, animated: false)
+        
+        manageFeesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalFees())!)
+        
+        manageExpensesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalExpenses())!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -155,6 +162,13 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             feeTableViewController.judge = judge
             feeTableViewController.meet = meet
             break
+        case "ShowExpenseTable":
+            guard let expenseTableViewController = segue.destination as? ExpensesTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            expenseTableViewController.judge = judge
+            expenseTableViewController.meet = meet
+            break
         default:
             break
         }
@@ -162,14 +176,10 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
 
     //MARK: Actions
     @IBAction func unwindToJudgeDetailsFromFeeList(sender: UIStoryboardSegue) {
-        /*let sourceViewController = sender.source as? FeeDetailsViewController
-        let fee = sourceViewController?.fee
-        
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            
-            // Update an existing meal.
-            judge?.fees[selectedIndexPath.row] = fee!
-            tableView.reloadRows(at: [selectedIndexPath], with: .none)
-        }*/
+        manageFeesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalFees())!)
+    }
+    
+    @IBAction func unwindToJudgeDetailsFromExpenseList(sender: UIStoryboardSegue) {
+        manageExpensesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalExpenses())!)
     }
 }

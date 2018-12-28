@@ -23,7 +23,6 @@ class FeeDetailsViewController: UITableViewController {
     @IBOutlet weak var judgeHoursStepper: UIStepper!
     
     @IBOutlet weak var overrideHoursSwitch: UISwitch!
-    @IBOutlet weak var overrideRateSwitch: UISwitch!
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
@@ -49,12 +48,10 @@ class FeeDetailsViewController: UITableViewController {
         dateCell.detailTextLabel?.text = dateFormatter.string(from: (fee?.date)!)
         totalHoursCell.detailTextLabel?.text = String(format: "%0.2f Hours", (meetDay?.totalTimeInHours())!)
         breakTimeCell.detailTextLabel?.text = String(format: "%0.2f Hours", (meetDay?.breakTimeInHours())!)
-        billableHoursCell.detailTextLabel?.text = String(format: "%0.2f Hours", (meetDay?.totalBillableTimeInHours())!)
-        rateCell.detailTextLabel?.text = String(format: "%0.1f/Hour ", (judge?.level.rate)!) + "(\(judge?.level.description ?? "Unknown"))"
-        totalFeeCell.detailTextLabel?.text = String(format: "$%0.2f", (fee?.getFeeTotal())!)
-        
-        stepperValueLabel.text = String(format: "%0.2f Hours", fee!.hours)
         judgeHoursStepper.value = Double(fee!.hours)
+        
+        overrideHoursSwitch.setOn(fee!.hoursOverridden, animated: false)
+        updateAdjustableLabels()
     }
     
     override func didReceiveMemoryWarning() {
@@ -73,20 +70,40 @@ class FeeDetailsViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 && indexPath.row == 1 {
+            return overrideHoursSwitch.isOn ? 120 : 0
+        }
+        else {
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     @IBAction func hoursStepperValueChanged(_ sender: UIStepper) {
-        stepperValueLabel.text = String(format: "%0.2f Hours", sender.value)
+        updateAdjustableLabels()
     }
     
     //MARK: Navigation
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
+    @IBAction func done(_ sender: UIBarButtonItem) {
         
-        if let owningNavigationController = navigationController{
-            owningNavigationController.popViewController(animated: true)
+        if (fee!.hoursOverridden != overrideHoursSwitch.isOn){
+            let alert = UIAlertController(title: "Discard Changes to Fees?", message: nil, preferredStyle: .alert)
+            let actionCancel = UIAlertAction(title: "Cancel", style: .default) { (action:UIAlertAction) in }
+            let actionDiscard = UIAlertAction(title: "Discard Changes", style: .default) { (action:UIAlertAction) in
+                self.navigationController?.popViewController(animated: true)
+            }
+            alert.addAction(actionCancel)
+            alert.addAction(actionDiscard)
+            self.present(alert, animated: true)
         }
+        else{
+            navigationController?.popViewController(animated: true)
+        }
+        
     }
     
     // This method lets you configure a view controller before it's presented.
@@ -96,14 +113,41 @@ class FeeDetailsViewController: UITableViewController {
         // Configure the destination view controller only when the save button is pressed.
         if let button = sender as? UIBarButtonItem{
             if button === saveButton {
-                // TODO : Update the fee object
-            }
-            else
-            {
-                return
+                saveUpdatedFees()
             }
         }
     }
+    
+    func saveUpdatedFees()
+    {
+        fee?.hoursOverridden = overrideHoursSwitch.isOn
+        fee?.hours = (fee?.hoursOverridden)! ? Float(judgeHoursStepper.value) : (meetDay?.totalBillableTimeInHours())!
+    }
+    
+    @IBAction func overrideHoursSwitchChanged(_ sender: UISwitch) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        
+        updateAdjustableLabels()
+    }
+    
+    @IBAction func overrideRateSwitchChanged(_ sender: UISwitch) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        
+        updateAdjustableLabels()
+    }
+    
+    func updateAdjustableLabels(){
+        let adjustedHours = Float(judgeHoursStepper.value)
+        let billableHours = overrideHoursSwitch.isOn ? adjustedHours : meetDay?.totalBillableTimeInHours()
+        
+        stepperValueLabel.text = String(format: "%0.2f Hours", adjustedHours)
+        billableHoursCell.detailTextLabel?.text = String(format: "%0.2f Hours", billableHours!)
+        let rate = judge?.level.rate
+        rateCell.detailTextLabel?.text = String(format: "$%0.1f/Hour ", (judge?.level.rate)!) + "(\(judge?.level.description ?? "Unknown"))"
+        
+        let totalFee = billableHours! * rate!
+        totalFeeCell.detailTextLabel?.text = String(format: "$%0.2f", totalFee)
+    }
 }
-
-

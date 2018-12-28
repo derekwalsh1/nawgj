@@ -11,12 +11,16 @@ import os.log
 
 class Meet: NSObject, NSCoding {
     
+    static let FED_MILEAGE_RATE : Float = 0.545
+    
     //MARK: Properties
     var name: String            // Identifies the name of the meet
     var days: Array<MeetDay>    // The specific meet days; 1 or more days
     var judges: Array<Judge>    // The Judges that worked at the meet
     var startDate: Date         // The first day of the meet
-    var levels: String        // The levels competing at this meet
+    var meetDescription: String // The levels competing at this meet or some meaningful description
+    var location: String        // The location of the meet
+    var mileageRate: Float      // The federal mileage rate used for this meet - may be different than the current rate depending on when the event and expenses occurred.
     
     //MARK: Archiving Paths
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -28,18 +32,24 @@ class Meet: NSObject, NSCoding {
         static let days = "Days"
         static let judges = "Judges"
         static let startDate = "Start Date"
-        static let levels = "Levels"
+        static let meetDescription = "Description"
+        static let mileageRate = "Mileage Rate"
+        static let location = "Location"
     }
     
     //MARK: Initialization
-    init?(name: String, days: Array<MeetDay>, judges: Array<Judge>, startDate: Date, levels: String) {
+    init?(name: String, days: Array<MeetDay>, judges: Array<Judge>, startDate: Date, meetDescription: String?, mileageRate: Float, location: String?) {
         // Initialization should fail if there is an empty name
         guard !name.isEmpty else {
             return nil
         }
         
-        if levels.isEmpty {
-            _ = ""
+        if meetDescription == nil{
+            _ = " "
+        }
+        
+        if location == nil{
+            _ = " "
         }
         
         // Initialize stored properties.
@@ -47,7 +57,13 @@ class Meet: NSObject, NSCoding {
         self.days = days
         self.judges = judges
         self.startDate = startDate
-        self.levels = levels
+        self.meetDescription = meetDescription!
+        self.location = location!
+        self.mileageRate = mileageRate
+    }
+    
+    required convenience init?(name: String, startDate: Date) {
+        self.init(name: name, days: Array<MeetDay>(), judges: Array<Judge>(), startDate: startDate, meetDescription: " ", mileageRate: Meet.FED_MILEAGE_RATE, location: " ")
     }
     
     //MARK: NSCoding
@@ -56,7 +72,9 @@ class Meet: NSObject, NSCoding {
         aCoder.encode(days, forKey: PropertyKey.days)
         aCoder.encode(judges, forKey: PropertyKey.judges)
         aCoder.encode(startDate, forKey: PropertyKey.startDate)
-        aCoder.encode(levels, forKey: PropertyKey.levels)
+        aCoder.encode(meetDescription, forKey: PropertyKey.meetDescription)
+        aCoder.encode(mileageRate, forKey: PropertyKey.mileageRate)
+        aCoder.encode(location, forKey: PropertyKey.location)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -81,15 +99,27 @@ class Meet: NSObject, NSCoding {
             return nil
         }
         
-        guard let levels = aDecoder.decodeObject(forKey: PropertyKey.levels) as? String else{
-            os_log("Unable to decode the levels for a Meet object.", log: OSLog.default, type: .debug)
+        guard let description = aDecoder.decodeObject(forKey: PropertyKey.meetDescription) as? String else{
+            os_log("Unable to decode the description for a Meet object.", log: OSLog.default, type: .debug)
             return nil
         }
+        
+        guard let location = aDecoder.decodeObject(forKey: PropertyKey.location) as? String else{
+            os_log("Unable to decode the location for a Meet object.", log: OSLog.default, type: .debug)
+            return nil
+        }
+        
+        var mileageRate = aDecoder.decodeFloat(forKey: PropertyKey.mileageRate)
+        
+        if mileageRate == 0{
+            mileageRate = Meet.FED_MILEAGE_RATE
+        }
         // Must call designated initializer.
-        self.init(name: name, days: days, judges: judges, startDate: startDate, levels: levels)
+        self.init(name: name, days: days, judges: judges, startDate: startDate, meetDescription: description, mileageRate: mileageRate, location: location)
     }
     
-    func totalCost() -> Float {
+    //MARK: Meet management and intergotation
+    func totalCostOfMeet() -> Float {
         var totalCost : Float = 0.0
         
         for judge in self.judges {
@@ -99,7 +129,7 @@ class Meet: NSObject, NSCoding {
         return totalCost
     }
     
-    func totalHours() -> Float {
+    func totalMeetHours() -> Float {
         var totalHours : Float = 0.0
         
         for day in self.days {
@@ -109,7 +139,7 @@ class Meet: NSObject, NSCoding {
         return totalHours
     }
     
-    func totalBillableHours() -> Float {
+    func billableMeetHours() -> Float {
         var totalHours : Float = 0.0
         
         for day in self.days {

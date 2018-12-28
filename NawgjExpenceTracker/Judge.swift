@@ -83,6 +83,19 @@ class Judge: NSObject, NSCoding {
         self.fees = fees
     }
     
+    required convenience init?(name: String, level: Level, fees: Array<Fee>) {
+        let expenses = [
+            Expense(type: Expense.ExpenseType.Mileage),
+            Expense(type: Expense.ExpenseType.Parking),
+            Expense(type: Expense.ExpenseType.Toll),
+            Expense(type: Expense.ExpenseType.Transportation),
+            Expense(type: Expense.ExpenseType.Airfare),
+            Expense(type: Expense.ExpenseType.Meals),
+            Expense(type: Expense.ExpenseType.Other)
+        ]
+        
+        self.init(name: name, level: level, expenses: expenses as! Array<Expense>, fees: fees)
+    }
     //MARK: NSCoding
     func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: PropertyKey.name)
@@ -112,35 +125,33 @@ class Judge: NSObject, NSCoding {
     }
     
     func totalCost() -> Float {
-        return self.totalTaxableCost() + self.totalTaxDeductibleCost()
+        return self.totalFees() + self.totalExpenses()
     }
     
-    func totalTaxDeductibleCost() -> Float {
-        var totalDeductibleCost : Float = 0.0
+    func totalExpenses() -> Float {
+        var total : Float = 0.0
         
         for expense in expenses {
-            totalDeductibleCost += expense.amount
+            total += expense.amount
         }
         
-        return totalDeductibleCost
+        return total
     }
     
-    func totalTaxableCost() -> Float {
-        var totalTaxableCost : Float = 0.0
+    func totalFees() -> Float {
+        var totalFees : Float = 0.0
         
         for fee in fees {
-            totalTaxableCost += fee.hours * level.rate
+            totalFees += fee.hours * level.rate
         }
         
-        return totalTaxableCost
+        return totalFees
     }
     
     func changeLevel(level: Level){
-        if level != self.level{
-            self.level = level
-            for fee in self.fees{
-                fee.rate = self.level.rate
-            }
+        self.level = level
+        for fee in self.fees{
+            fee.rate = self.level.rate
         }
     }
 }
