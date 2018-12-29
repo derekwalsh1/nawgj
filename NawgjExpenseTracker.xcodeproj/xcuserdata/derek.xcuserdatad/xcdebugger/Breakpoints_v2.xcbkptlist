@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/MeetTableViewController.swift"
-            timestampString = "567021144.359778"
+            timestampString = "567742284.417667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
@@ -122,13 +122,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/MeetDay.swift"
-            timestampString = "566979464.539596"
+            timestampString = "567742284.421801"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "init(meetDate:startTime:endTime:breaks:)"
-            landmarkType = "7">
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "MeetDay"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -330,7 +330,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/MeetTableViewController.swift"
-            timestampString = "567021144.36178"
+            timestampString = "567742284.422423"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
@@ -346,7 +346,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/MeetTableViewController.swift"
-            timestampString = "567021144.3618979"
+            timestampString = "567742284.422543"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "94"
@@ -410,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/Meet.swift"
-            timestampString = "567021144.362412"
+            timestampString = "567742284.422783"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
             landmarkName = "init(name:days:judges:startDate:meetDescription:mileageRate:location:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -426,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/Meet.swift"
-            timestampString = "567021144.362519"
+            timestampString = "567742284.423164"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "init(name:days:judges:startDate:meetDescription:mileageRate:location:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -442,11 +442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/Meet.swift"
-            timestampString = "567021144.362622"
+            timestampString = "567742284.423292"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
             landmarkName = "init(name:days:judges:startDate:meetDescription:mileageRate:location:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -458,7 +458,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/MeetTableViewController.swift"
-            timestampString = "567021144.362716"
+            timestampString = "567742284.423444"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "25"
@@ -496,102 +496,6 @@
             startingLineNumber = "207"
             endingLineNumber = "207"
             landmarkName = "unwindToMeetDetails(sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/MeetTableViewController.swift"
-            timestampString = "567021144.362998"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "saveMeets()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/Meet.swift"
-            timestampString = "567021144.3630871"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "init(coder:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/MeetDay.swift"
-            timestampString = "566979464.540184"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "encode(with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/MeetDay.swift"
-            timestampString = "566979464.540257"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "init(coder:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/MeetDay.swift"
-            timestampString = "566979464.540318"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "init(coder:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/MeetDay.swift"
-            timestampString = "566979464.540379"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "init(coder:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -713,29 +617,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/Judge.swift"
-            timestampString = "566966474.9489059"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
-            landmarkName = "encode(with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/Expense.swift"
-            timestampString = "566937935.161543"
+            timestampString = "567742284.423792"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "init(type:amount:notes:)"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "init(type:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -890,13 +778,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/Meet.swift"
-            timestampString = "567021144.3647569"
+            timestampString = "567742284.4242589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "removeMeetDay(at:)"
-            landmarkType = "7">
+            startingLineNumber = "98"
+            endingLineNumber = "98">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -986,13 +872,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/Fee.swift"
-            timestampString = "566937935.163074"
+            timestampString = "567742284.4245189"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "getFeeTotal()"
-            landmarkType = "7">
+            startingLineNumber = "43"
+            endingLineNumber = "43">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1226,29 +1110,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenceTracker/Expense.swift"
-            timestampString = "566937935.164107"
+            timestampString = "567742284.425231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "encode(with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenceTracker/Expense.swift"
-            timestampString = "566937935.164239"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "init(type:)"
-            landmarkType = "7">
+            startingLineNumber = "52"
+            endingLineNumber = "52">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1280,6 +1146,22 @@
             startingLineNumber = "39"
             endingLineNumber = "39"
             landmarkName = "setupCellContent()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenceTracker/MeetTableViewController.swift"
+            timestampString = "567742284.425492"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "loadMeets()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

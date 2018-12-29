@@ -45,7 +45,7 @@
 		65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableViewCell.swift; sourceTree = "<group>"; };
 		65C386C921B5AE350070D76B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NawgjExpenseTracker/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
-		65DBC964217D5B320029C6AA /* NawgjExpenseTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NawgjExpenseTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65DBC964217D5B320029C6AA /* Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDetailViewController.swift; sourceTree = "<group>"; };
 		65DBC96C217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 		65DBC965217D5B320029C6AA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65DBC964217D5B320029C6AA /* NawgjExpenseTracker.app */,
+				65DBC964217D5B320029C6AA /* Expenses.app */,
 				65DBC978217D5B320029C6AA /* NawgjExpenseTrackerTests.xctest */,
 			);
 			name = Products;
@@ -121,8 +121,7 @@
 				65EE305C219FE02A0011B2B8 /* Judge */,
 				65C386C921B5AE350070D76B /* Images.xcassets */,
 			);
-			name = NawgjExpenseTracker;
-			path = NawgjExpenceTracker;
+			path = NawgjExpenseTracker;
 			sourceTree = "<group>";
 		};
 		65DBC97B217D5B320029C6AA /* NawgjExpenseTrackerTests */ = {
@@ -131,8 +130,7 @@
 				65DBC97C217D5B320029C6AA /* NawgjExpenseTrackerTests.swift */,
 				65DBC97E217D5B320029C6AA /* Info.plist */,
 			);
-			name = NawgjExpenseTrackerTests;
-			path = NawgjExpenceTrackerTests;
+			path = NawgjExpenseTrackerTests;
 			sourceTree = "<group>";
 		};
 		65DBC99D218D7A450029C6AA /* DataTypes */ = {
@@ -211,7 +209,7 @@
 			);
 			name = NawgjExpenseTracker;
 			productName = NawgjExpenceTracker;
-			productReference = 65DBC964217D5B320029C6AA /* NawgjExpenseTracker.app */;
+			productReference = 65DBC964217D5B320029C6AA /* Expenses.app */;
 			productType = "com.apple.product-type.application";
 		};
 		65DBC977217D5B320029C6AA /* NawgjExpenseTrackerTests */ = {
@@ -408,9 +406,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Expenses;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -460,8 +459,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Expenses;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -472,12 +472,14 @@
 		65DBC982217D5B320029C6AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 788FSZBKWN;
-				INFOPLIST_FILE = NawgjExpenceTracker/Info.plist;
+				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.1d.NawgjExpenceTracker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTracker;
+				PRODUCT_NAME = Expenses;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 			};
@@ -486,12 +488,14 @@
 		65DBC983217D5B320029C6AA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 788FSZBKWN;
-				INFOPLIST_FILE = NawgjExpenceTracker/Info.plist;
+				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.1d.NawgjExpenceTracker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTracker;
+				PRODUCT_NAME = Expenses;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 			};
@@ -503,9 +507,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
-				INFOPLIST_FILE = NawgjExpenceTrackerTests/Info.plist;
+				INFOPLIST_FILE = NawgjExpenseTrackerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.1d.NawgjExpenceTrackerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
@@ -519,9 +523,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
-				INFOPLIST_FILE = NawgjExpenceTrackerTests/Info.plist;
+				INFOPLIST_FILE = NawgjExpenseTrackerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.1d.NawgjExpenceTrackerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
