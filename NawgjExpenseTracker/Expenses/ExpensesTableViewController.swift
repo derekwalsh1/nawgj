@@ -85,7 +85,6 @@ class ExpensesTableViewController: UITableViewController {
             case "ShowTollsExpenseDetails":
                 selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Toll})
                 break
-                
             case "ShowTransportationExpenseDetails":
                 selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Transportation})
                 break
