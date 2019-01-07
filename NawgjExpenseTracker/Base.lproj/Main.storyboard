@@ -417,6 +417,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="descriptionLabel" destination="4eT-yn-AtR" id="1mp-He-10u"/>
                         <outlet property="descriptionTextField" destination="mBj-Cs-9Pw" id="vSE-fi-KbT"/>
                         <outlet property="locationLabel" destination="Y9I-8o-es3" id="wEt-Uu-GAw"/>
                         <outlet property="meetDateCell" destination="rtD-CM-ghr" id="LtM-yi-5WA"/>

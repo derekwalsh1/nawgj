@@ -96,6 +96,17 @@ class Meet: Codable {
         }
     }
     
+    func meetDayChanged(atIndex: Int){
+        let meetDay = days[atIndex]
+        for judge in judges{
+            if let fee = judge.fees.first(where: { $0.date == meetDay.meetDate }) {
+                if !fee.exclude! && !fee.hoursOverridden{
+                    fee.hours = meetDay.totalBillableTimeInHours()
+                }
+            }
+        }
+    }
+    
     func removeMeetDay(at: Int) {
         let date = self.days[at].meetDate
         

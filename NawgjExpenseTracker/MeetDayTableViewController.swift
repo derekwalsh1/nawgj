@@ -161,6 +161,7 @@ class MeetDayTableViewController: UITableViewController {
                 
                 // Update an existing meet day.
                 meet?.days[selectedIndexPath.row] = meetDay!
+                meet?.meetDayChanged(atIndex: selectedIndexPath.row)
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
             }
             else {
