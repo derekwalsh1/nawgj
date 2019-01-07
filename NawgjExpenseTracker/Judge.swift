@@ -76,14 +76,16 @@ class Judge: Codable {
     }
     
     required convenience init?(name: String, level: Level, fees: Array<Fee>) {
+        let expenseDate = (fees.isEmpty ? Date() : fees.last?.date)!
+        
         let expenses = [
-            Expense(type: Expense.ExpenseType.Mileage),
-            Expense(type: Expense.ExpenseType.Parking),
-            Expense(type: Expense.ExpenseType.Toll),
-            Expense(type: Expense.ExpenseType.Transportation),
-            Expense(type: Expense.ExpenseType.Airfare),
-            Expense(type: Expense.ExpenseType.Meals),
-            Expense(type: Expense.ExpenseType.Other)
+            Expense(type: .Mileage, date: expenseDate),
+            Expense(type: .Parking, date: expenseDate),
+            Expense(type: .Toll, date: expenseDate),
+            Expense(type: .Transportation, date: expenseDate),
+            Expense(type: .Airfare, date: expenseDate),
+            Expense(type: .Meals, date: expenseDate),
+            Expense(type: .Other, date: expenseDate)
         ]
         
         self.init(name: name, level: level, expenses: expenses as! Array<Expense>, fees: fees)
@@ -97,7 +99,7 @@ class Judge: Codable {
         var total : Float = 0.0
         
         for expense in expenses {
-            total += expense.amount
+            total += expense.getExpenseTotal()
         }
         
         return total
@@ -107,7 +109,7 @@ class Judge: Codable {
         var totalFees : Float = 0.0
         
         for fee in fees {
-            totalFees += fee.hours * level.rate
+            totalFees += fee.getFeeTotal()
         }
         
         return totalFees

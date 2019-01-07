@@ -18,9 +18,10 @@ class Fee: Codable {
     var rate : Float
     var rateOverridden : Bool
     var hoursOverridden : Bool
+    var exclude : Bool? = false
     
     //MARK: Initialization
-    init(date: Date, hours: Float, rate: Float, rateOverridden: Bool, hoursOverridden: Bool, notes: String? ) {
+    init(date: Date, hours: Float, rate: Float, rateOverridden: Bool, hoursOverridden: Bool, notes: String?, exclude: Bool ) {
         // If notes aren't provided (they are optional, then use an empty string
         if notes == nil { _ = ""}
         
@@ -31,15 +32,20 @@ class Fee: Codable {
         self.rateOverridden = false
         self.hoursOverridden = false
         self.rate = rate
+        self.exclude = exclude
     }
     
     required convenience init?(date: Date, hours: Float, rate: Float, notes : String?){
         
         if notes == nil { _ = ""}
-        self.init(date: date, hours: hours, rate: rate, rateOverridden: false, hoursOverridden: false, notes: notes)
+        self.init(date: date, hours: hours, rate: rate, rateOverridden: false, hoursOverridden: false, notes: notes, exclude: false)
     }
     
     func getFeeTotal() -> Float{
-        return hours * rate
+        return (exclude ?? false) ? 0.0 : hours * rate
+    }
+    
+    func getHours() -> Float{
+        return (exclude ?? false) ? 0.0 : hours
     }
 }

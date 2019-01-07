@@ -13,10 +13,15 @@ class JudgeTableViewController: UITableViewController {
     
     //MARK: Properties
     var meet : Meet?
+    var numberFormatter : NumberFormatter = NumberFormatter()
+    
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
     }
     
     override func didReceiveMemoryWarning() {
@@ -43,8 +48,8 @@ class JudgeTableViewController: UITableViewController {
         
         // Fetches the appropriate meet for the data source layout.
         let judge = meet?.judges[indexPath.row]
-        cell.textLabel?.text = judge?.name
-        cell.detailTextLabel?.text = "Expenses: $\(judge?.totalExpenses() ?? 0.00) Fees: $\(judge?.totalFees() ?? 0.00)"
+        cell.textLabel?.text = (judge?.name)! + " (\(judge!.level.description))"
+        cell.detailTextLabel?.text = String(format: "Fees: %@ | Expenses: %@", numberFormatter.string(from: judge!.totalFees() as NSNumber)!, numberFormatter.string(from: judge!.totalExpenses() as NSNumber)!)
         
         return cell
     }

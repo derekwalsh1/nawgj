@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */; };
+		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
 		65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */; };
 		65C386CA21B5AE350070D76B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65C386C921B5AE350070D76B /* Images.xcassets */; };
 		65C386CC21BB77F70070D76B /* Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C386CB21BB77F70070D76B /* Fee.swift */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetPDFCreator.swift; sourceTree = "<group>"; };
+		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableViewCell.swift; sourceTree = "<group>"; };
 		65C386C921B5AE350070D76B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NawgjExpenseTracker/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
@@ -88,6 +92,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		650F7B8321D94C4C00D5A632 /* PDFConversion */ = {
+			isa = PBXGroup;
+			children = (
+				650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */,
+			);
+			path = PDFConversion;
+			sourceTree = "<group>";
+		};
 		65DBC95B217D5B320029C6AA = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +121,7 @@
 		65DBC966217D5B320029C6AA /* NawgjExpenseTracker */ = {
 			isa = PBXGroup;
 			children = (
+				650F7B8321D94C4C00D5A632 /* PDFConversion */,
 				65DDA61321BDBA11004B4DD2 /* Expenses */,
 				65DDA60E21BDB99E004B4DD2 /* Fees */,
 				65DBC99D218D7A450029C6AA /* DataTypes */,
@@ -179,6 +192,7 @@
 				65EE3059219FDDF90011B2B8 /* JudgeTableViewController.swift */,
 				65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */,
 				65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */,
+				652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */,
 			);
 			name = Judge;
 			sourceTree = "<group>";
@@ -256,7 +270,7 @@
 				};
 			};
 			buildConfigurationList = 65DBC95F217D5B320029C6AA /* Build configuration list for PBXProject "NawgjExpenseTracker" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -309,10 +323,12 @@
 				65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift in Sources */,
 				65C386CC21BB77F70070D76B /* Fee.swift in Sources */,
 				65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */,
+				652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */,
 				65DDA61021BDB9D2004B4DD2 /* FeeTableViewController.swift in Sources */,
 				65DBC9A52193A1820029C6AA /* Judge.swift in Sources */,
 				65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */,
 				65DDA61521BDBA28004B4DD2 /* ExpensesTableViewController.swift in Sources */,
+				650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */,
 				65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */,
 				65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */,
 				65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */,
@@ -463,7 +479,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = Expenses;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -477,7 +494,10 @@
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTracker;
 				PRODUCT_NAME = Expenses;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -493,7 +513,10 @@
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTracker;
 				PRODUCT_NAME = Expenses;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -508,7 +531,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTrackerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -524,7 +551,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTrackerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

@@ -15,12 +15,17 @@ class MeetTableViewCell: UITableViewCell {
     @IBOutlet weak var descriptionCell: UITableViewCell!
     @IBOutlet weak var hoursCell: UITableViewCell!
     @IBOutlet weak var costCell: UITableViewCell!
-    @IBOutlet weak var titelLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     
     var meet : Meet?
+    var numberFormatter : NumberFormatter = NumberFormatter()
+    var dateFormatter : DateFormatter = DateFormatter()
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        numberFormatter.numberStyle = .currency
+        dateFormatter.dateStyle = .short
         
         if meet == nil{
             _ = Meet(name: "New Meet", startDate: Date())
@@ -39,13 +44,13 @@ class MeetTableViewCell: UITableViewCell {
         locationCell.detailTextLabel?.text = meet?.location
         descriptionCell.detailTextLabel?.text = meet?.meetDescription
         hoursCell.detailTextLabel?.text = String(format: "%0.2f", (meet?.billableMeetHours())!)
-        costCell.detailTextLabel?.text = String(format: "$%0.2f", (meet?.totalCostOfMeet())!)
+        costCell.detailTextLabel?.text = numberFormatter.string(from: meet!.totalCostOfMeet() as NSNumber)!
         
         for cell in [locationCell, descriptionCell, hoursCell, costCell]{
             cell?.textLabel?.textColor = titleColor
         }
         
-        titelLabel.text = meet?.name
+        titleLabel.text = (meet?.name)! + " (\(dateFormatter.string(from: (meet?.startDate)!)))"
     }
     
 }

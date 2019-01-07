@@ -21,36 +21,38 @@ class ExpensesTableViewController: UITableViewController {
     //MARK: Properties
     var judge : Judge?
     var meet : Meet?
+    var numberFormatter : NumberFormatter = NumberFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateExpenseLabels()
+        numberFormatter.numberStyle = .currency
         
+        updateExpenseLabels()
     }
 
     func updateExpenseLabels(){
         for expense in (judge?.expenses)!{
             switch expense.type{
             case .Airfare:
-                airfareCell.detailTextLabel?.text = String(format: "$%0.2f", expense.amount)
+                airfareCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             case .Toll:
-                tollsCell.detailTextLabel?.text = String(format: "$%0.2f", expense.amount)
+                tollsCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             case .Meals:
-                mealsCell.detailTextLabel?.text = String(format: "$%0.2f", expense.amount)
+                mealsCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             case .Transportation:
-                transportationCell.detailTextLabel?.text = String(format: "$%0.2f", expense.amount)
+                transportationCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             case .Other:
-                otherCell.detailTextLabel?.text = String(format: "$%0.2f", expense.amount)
+                otherCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             case .Mileage:
-                mileageCell.detailTextLabel?.text = String(format: "%0.1f miles ($%0.2f)", expense.amount, expense.amount * (meet?.mileageRate)!)
+                mileageCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             case .Parking:
-                parkingCell.detailTextLabel?.text = String(format: "$%0.2f", expense.amount)
+                parkingCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             }
         }
@@ -86,22 +88,22 @@ class ExpensesTableViewController: UITableViewController {
                 selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Toll})
                 break
             case "ShowTransportationExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Transportation})
+                selectedExpense = judge?.expenses.first(where:{$0.type == .Transportation})
                 break
             case "ShowParkingExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Parking})
+                selectedExpense = judge?.expenses.first(where:{$0.type == .Parking})
                 break
             case "ShowAirfareExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Airfare})
+                selectedExpense = judge?.expenses.first(where:{$0.type == .Airfare})
                 break
             case "ShowOtherExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Other})
+                selectedExpense = judge?.expenses.first(where:{$0.type == .Other})
                 break
             case "ShowMealsExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Meals})
+                selectedExpense = judge?.expenses.first(where:{$0.type == .Meals})
                 break
             case "ShowMileageExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Mileage})
+                selectedExpense = judge?.expenses.first(where:{$0.type == .Mileage})
                 break
             default:
                 break
@@ -124,6 +126,7 @@ class ExpensesTableViewController: UITableViewController {
             // Update an existing expense.
             selectedExpense!.amount = (expense?.amount)!
             selectedExpense!.notes = (expense?.notes)!
+            selectedExpense!.date = (expense?.date)!
             
             updateExpenseLabels()
             

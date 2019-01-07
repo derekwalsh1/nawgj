@@ -9,7 +9,7 @@
 import UIKit
 import os.log
 
-class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource  {
+class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var levelCell: UITableViewCell!
     @IBOutlet weak var manageExpensesCell: UITableViewCell!
@@ -17,6 +17,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var levelPicker: UIPickerView!
     @IBOutlet weak var manageFeesCell: UITableViewCell!
+    @IBOutlet weak var judgeSummaryTable: UITableView!
     
     //MARK: Properties
     /*
@@ -26,10 +27,14 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     var judge: Judge?
     var meet: Meet?
     var showLevelPicker : Bool = false
+    var judgeSummaryDelegate : JudgeSummaryTableViewDelegate? = nil
+    var numberFormatter : NumberFormatter = NumberFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        numberFormatter.numberStyle = .currency
         nameTextField.delegate = self
+        
         
         // Set up views if editing an existing Judge.
         if judge == nil{
@@ -44,15 +49,23 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         self.levelPicker.delegate = self
         self.levelPicker.dataSource = self
         
+        judgeSummaryDelegate = JudgeSummaryTableViewDelegate(judge: judge!, meet: meet!)
+        judgeSummaryTable.delegate = judgeSummaryDelegate
+        judgeSummaryTable.dataSource = judgeSummaryDelegate
+        
         navigationItem.title = judge!.name
         nameTextField.text = judge!.name
         levelCell.textLabel?.textColor = self.view.tintColor
         levelCell.detailTextLabel?.text = judge!.level.description
         levelPicker.selectRow(judge!.level.rawValue, inComponent: 0, animated: false)
         
-        manageFeesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalFees())!)
-        
-        manageExpensesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalExpenses())!)
+        handleJudgeDetailsChanged()
+    }
+    
+    func handleJudgeDetailsChanged(){
+        manageFeesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge!.totalFees() as NSNumber)!)
+        manageExpensesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge!.totalExpenses() as NSNumber)!)
+        judgeSummaryTable.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,11 +100,22 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if !showLevelPicker && indexPath.row == 2 {
+        if !showLevelPicker && indexPath.row == 2 && indexPath.section == 0{
             return 0
         }
         else {
-            return super.tableView(tableView, heightForRowAt: indexPath)
+            if indexPath.section == 3{
+                let numberOfFeeCells : CGFloat = CGFloat((judge?.fees.count)! + 1)
+                let numberOfExpenseCells : CGFloat = CGFloat((judge?.expenses.count)! + 1)
+                let rowHeight = judgeSummaryTable!.estimatedRowHeight
+                let headerHeight = judgeSummaryTable!.estimatedSectionHeaderHeight
+                let footerHeight = judgeSummaryTable!.estimatedSectionFooterHeight
+                
+                return (2 * headerHeight) + (2 * footerHeight) + CGFloat(((numberOfFeeCells + numberOfExpenseCells)) * rowHeight)
+            }
+            else{
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            }
         }
     }
     
@@ -125,6 +149,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)?.description
         judge?.changeLevel(level: Judge.Level(rawValue: row)!)
+        handleJudgeDetailsChanged()
     }
     
     //MARK: Navigation
@@ -176,10 +201,14 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
 
     //MARK: Actions
     @IBAction func unwindToJudgeDetailsFromFeeList(sender: UIStoryboardSegue) {
-        manageFeesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalFees())!)
+        manageFeesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge!.totalFees() as NSNumber)!)
+        judgeSummaryDelegate?.judge = judge!
+        handleJudgeDetailsChanged()
     }
     
     @IBAction func unwindToJudgeDetailsFromExpenseList(sender: UIStoryboardSegue) {
-        manageExpensesCell.detailTextLabel?.text = String(format: "Total: $%0.2f", (judge?.totalExpenses())!)
+        manageExpensesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge!.totalExpenses() as NSNumber)!)
+        judgeSummaryDelegate?.judge = judge!
+        handleJudgeDetailsChanged()
     }
 }

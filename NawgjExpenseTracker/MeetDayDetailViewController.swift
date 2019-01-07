@@ -36,6 +36,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
      or constructed as part of adding a new meal.
      */
+    var meet : Meet?
     var meetDay: MeetDay?
     var dateFormatter : DateFormatter = DateFormatter()
     var timeFormatter : DateFormatter = DateFormatter()
@@ -181,20 +182,32 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     
     @IBAction func meetDayDateChanged(_ sender: UIDatePicker) {
         var components = DateComponents()
+        
+        // Check if this date is already in the meet days
         let newDate = meetDayDatePicker.date
         
-        let day = Calendar.current.component(Calendar.Component.day, from: newDate)
-        let month = Calendar.current.component(Calendar.Component.month, from: newDate)
-        let year = Calendar.current.component(Calendar.Component.year, from: newDate)
-        
-        components.day = day
-        components.month = month
-        components.year = year
-        
-        startTimePicker.setDate(Calendar.current.date(byAdding: components, to: startTimePicker.date)!, animated: false)
-        endTimePicker.setDate(Calendar.current.date(byAdding: components, to: endTimePicker.date)!, animated: false)
-        
-        updateUILabels()
+        let matchingMeetDate = meet?.days.first(where: { $0.meetDate == newDate })
+        if matchingMeetDate == nil{
+            let day = Calendar.current.component(Calendar.Component.day, from: newDate)
+            let month = Calendar.current.component(Calendar.Component.month, from: newDate)
+            let year = Calendar.current.component(Calendar.Component.year, from: newDate)
+            
+            components.day = day
+            components.month = month
+            components.year = year
+            
+            startTimePicker.setDate(Calendar.current.date(byAdding: components, to: startTimePicker.date)!, animated: false)
+            endTimePicker.setDate(Calendar.current.date(byAdding: components, to: endTimePicker.date)!, animated: false)
+            
+            updateUILabels()
+        }
+        else{
+            meetDayDatePicker.date = (meetDay?.meetDate)!
+            let alert = UIAlertController(title: "\(dateFormatter.string(from: newDate)) is already in use", message: nil, preferredStyle: .alert)
+            let actionOk = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction) in }
+            alert.addAction(actionOk)
+            self.present(alert, animated: true)
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

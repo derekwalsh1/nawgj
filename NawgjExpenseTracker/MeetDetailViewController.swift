@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import MessageUI
+import PDFKit
 import os.log
 
-class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate{
+class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, MFMailComposeViewControllerDelegate{
     
     //MARK: Properties
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -19,17 +21,31 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     @IBOutlet weak var meetDateCell: UITableViewCell!
     @IBOutlet weak var meetLocationField: UITextField!
     
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)` or constructed as part of adding a new meal.
      */
     var meet: Meet = Meet(name: "New Meet", startDate: Date())!
     var dateFormatter : DateFormatter = DateFormatter()
+    var numberFormatter : NumberFormatter = NumberFormatter()
     var showMeetDatePicker : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nameTextField.delegate = self
+        
+        for textField in [nameTextField, descriptionTextField, meetLocationField] {
+            textField!.delegate = self
+        }
+        
+        for label in [nameLabel, locationLabel, descriptionLabel]{
+            label?.textColor = self.view.tintColor
+        }
+        
         dateFormatter.dateStyle = .medium
+        numberFormatter.numberStyle = .currency
         meetDateCell.textLabel?.textColor = self.view.tintColor
         meetDateCell.detailTextLabel?.text = dateFormatter.string(from: meet.startDate)
         
@@ -37,8 +53,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         navigationItem.title = meet.name
         nameTextField.text = meet.name
         meetDatePicker.date = meet.startDate
-        descriptionTextField.text = meet.meetDescription
-        meetLocationField.text = meet.location
+        descriptionTextField.text = meet.meetDescription.trimmingCharacters(in: .whitespaces)
+        meetLocationField.text = meet.location.trimmingCharacters(in: .whitespaces)
         
         // Enable the Save button only if the text field has a valid meet name.
         updateSaveButtonState()
@@ -114,14 +130,10 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        updateSaveButtonState()
-        navigationItem.title = textField.text
-    }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // Disable the Save button while editing.
-        saveButton.isEnabled = false
+    @IBAction func nameTextFieldEditingChanged(_ sender: UITextField) {
+        navigationItem.title = sender.text
+        updateSaveButtonState()
     }
     
     // MARK: Meet date selection
@@ -162,6 +174,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
                 meet.startDate = meetDatePicker.date
                 meet.meetDescription = descriptionTextField.text!
                 meet.location = meetLocationField.text!
+                
+                
             }
             else
             {
@@ -198,7 +212,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     func judgeDetailText() -> String {
         let judgeText = meet.judges.count == 1 ? "Judge" : "Judges"
-        return "\(meet.judges.count) \(judgeText) - " + String(format: "$%.2f", meet.totalJudgeFeesAndExpenses())
+        return "\(meet.judges.count) \(judgeText) - " + numberFormatter.string(from: meet.totalJudgeFeesAndExpenses() as NSNumber)!
     }
     
     //MARK: Actions
@@ -232,8 +246,40 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     //MARK: Private Methods
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
-        let text = nameTextField.text ?? ""
-        saveButton.isEnabled = !text.isEmpty
+        saveButton.isEnabled = !(nameTextField.text ?? "").isEmpty
+    }
+    
+    /*
+    func showPDF()
+    {
+        
+         let email = "derek.walsh@gmail.com"
+        let path = Meet.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
+        MeetPDFCreator.createPDFFromView(meet: meet, atLocation: path)
+        
+        //let pdfView = PDFView()
+        if let document = PDFDocument(url: path) {
+            pdfView.autoScales = true
+            pdfView.displayMode = .singlePageContinuous
+            pdfView.displayDirection = .vertical
+            pdfView.document = document
+        }
+            
+        if( MFMailComposeViewController.canSendMail()){
+            let mailComposer = MFMailComposeViewController()
+            mailComposer.mailComposeDelegate = self
+            
+            mailComposer.setToRecipients([email])
+            mailComposer.setSubject("Meet Details for \(meet.name)")
+            mailComposer.setMessageBody("Meet details attached", isHTML: false)
+            
+            try! mailComposer.addAttachmentData(NSData(contentsOf: path) as Data, mimeType: "application/pdf", fileName: "MeetDetails.pdf")
+            self.navigationController?.present(mailComposer, animated: true, completion: nil)
+        }
+    }*/
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

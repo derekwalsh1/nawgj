@@ -21,6 +21,7 @@ class FeeDetailsViewController: UITableViewController {
     @IBOutlet weak var stepperValueLabel: UILabel!
     @IBOutlet weak var judgeHoursStepper: UIStepper!
     @IBOutlet weak var overrideHoursSwitch: UISwitch!
+    @IBOutlet weak var judgeNotWorkingSwitch: UISwitch!
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
@@ -30,10 +31,12 @@ class FeeDetailsViewController: UITableViewController {
     var judge: Judge?
     var meetDay: MeetDay?
     var dateFormatter : DateFormatter = DateFormatter()
+    var numberFormatter : NumberFormatter = NumberFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dateFormatter.dateStyle = .medium
+        dateFormatter.dateStyle = .full
+        numberFormatter.numberStyle = .currency
         let tintColor = self.view.tintColor
         
         // Initialize the title and use the blue tint color for the title labels
@@ -49,6 +52,8 @@ class FeeDetailsViewController: UITableViewController {
         judgeHoursStepper.value = Double(fee!.hours)
         
         overrideHoursSwitch.setOn(fee!.hoursOverridden, animated: false)
+        overrideHoursSwitch.isEnabled = !(fee!.exclude ?? false)
+        judgeNotWorkingSwitch.setOn(fee!.exclude ?? false, animated: false)
         updateAdjustableLabels()
     }
     
@@ -70,7 +75,7 @@ class FeeDetailsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 && indexPath.row == 1 {
-            return overrideHoursSwitch.isOn ? 120 : 0
+            return overrideHoursSwitch.isOn ? 80 : 0
         }
         else {
             return super.tableView(tableView, heightForRowAt: indexPath)
@@ -119,6 +124,7 @@ class FeeDetailsViewController: UITableViewController {
     func saveUpdatedFees()
     {
         fee?.hoursOverridden = overrideHoursSwitch.isOn
+        fee?.exclude = judgeNotWorkingSwitch.isOn
         fee?.hours = (fee?.hoursOverridden)! ? Float(judgeHoursStepper.value) : (meetDay?.totalBillableTimeInHours())!
     }
     
@@ -126,6 +132,10 @@ class FeeDetailsViewController: UITableViewController {
         tableView.beginUpdates()
         tableView.endUpdates()
         
+        updateAdjustableLabels()
+    }
+    
+    @IBAction func udgeNotWorkingSwitchChanged(_ sender: UISwitch) {
         updateAdjustableLabels()
     }
     
@@ -145,7 +155,9 @@ class FeeDetailsViewController: UITableViewController {
         let rate = judge?.level.rate
         rateCell.detailTextLabel?.text = String(format: "$%0.1f/Hour ", (judge?.level.rate)!) + "(\(judge?.level.description ?? "Unknown"))"
         
-        let totalFee = billableHours! * rate!
-        totalFeeCell.detailTextLabel?.text = String(format: "$%0.2f", totalFee)
+        let totalFee = judgeNotWorkingSwitch.isOn ? 0.0 : billableHours! * rate!
+        totalFeeCell.detailTextLabel?.text = numberFormatter.string(from: totalFee as NSNumber)
+        
+        overrideHoursSwitch.isEnabled = !judgeNotWorkingSwitch.isOn
     }
 }

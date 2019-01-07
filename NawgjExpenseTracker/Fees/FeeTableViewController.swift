@@ -15,12 +15,14 @@ class FeeTableViewController: UITableViewController {
     var judge : Judge?
     var meet : Meet?
     var dateFormatter : DateFormatter = DateFormatter()
+    var numberFormatter : NumberFormatter = NumberFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Use the edit button item provided by the table view controller.
-        dateFormatter.dateStyle = .medium
+        dateFormatter.dateStyle = .full
+        numberFormatter.numberStyle = .currency
     }
     
     override func didReceiveMemoryWarning() {
@@ -46,7 +48,7 @@ class FeeTableViewController: UITableViewController {
         // Fetches the appropriate meet for the data source layout.
         let fee = judge?.fees[indexPath.row]
         cell.textLabel?.text = dateFormatter.string(from: (fee?.date)!)
-        cell.detailTextLabel?.text = String(format: "Hours: %0.2f - Total Fees: $%0.2f", (fee?.hours)!, (fee?.hours)! * (judge?.level.rate)!)
+        cell.detailTextLabel?.text = String(format: "Hours: %0.2f - Total Fees: %@", (fee?.getHours())!, numberFormatter.string(from: fee!.getFeeTotal() as NSNumber)!)
         
         return cell
     }

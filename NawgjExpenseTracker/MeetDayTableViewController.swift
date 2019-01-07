@@ -56,6 +56,7 @@ class MeetDayTableViewController: UITableViewController {
         // Fetches the appropriate day for the data source layout.
         let meetDay = meet?.days[indexPath.row]
         cell.textLabel?.text = formatter.string(from: (meetDay?.meetDate)!)
+        cell.detailTextLabel?.text = String(format: "%.2f Hours", (meetDay?.totalBillableTimeInHours())!)
         
         return cell
     }
@@ -103,6 +104,8 @@ class MeetDayTableViewController: UITableViewController {
                     fatalError("Unexpected destination: \(segue.destination)")
                 }
                 
+                meetDayDetailViewController.meet = meet
+                
                 if (meet?.days.count)! > 0 {
                     let nextMeetDay = MeetDay(meetDate: Date(), startTime: Date(), endTime: Date(), breaks: 2)
                     let previousMeetDay = meet?.days[(meet?.days.count)! - 1]
@@ -137,6 +140,7 @@ class MeetDayTableViewController: UITableViewController {
                 
                 let meetDay = meet?.days[indexPath.row]
                 meetDayDetailViewController.meetDay = meetDay
+                meetDayDetailViewController.meet = meet
                 
             default:
                 fatalError("Unexpected Segue Identifier")
