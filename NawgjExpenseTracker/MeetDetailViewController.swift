@@ -25,6 +25,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     
+    @IBOutlet weak var summaryTableView: UITableView!
+    
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)` or constructed as part of adding a new meal.
      */
@@ -32,6 +34,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     var dateFormatter : DateFormatter = DateFormatter()
     var numberFormatter : NumberFormatter = NumberFormatter()
     var showMeetDatePicker : Bool = false
+    var summaryTableDelegate : MeetSummaryTableViewDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +46,10 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         for label in [nameLabel, locationLabel, descriptionLabel]{
             label?.textColor = self.view.tintColor
         }
+        
+        summaryTableDelegate = MeetSummaryTableViewDelegate(meet: meet)
+        summaryTableView.dataSource = summaryTableDelegate
+        summaryTableView.delegate = summaryTableDelegate
         
         dateFormatter.dateStyle = .medium
         numberFormatter.numberStyle = .currency
@@ -119,6 +126,15 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         if (indexPath.section == 0 && (!showMeetDatePicker && indexPath.row == 4)) {
             return 0
         }
+        else if (indexPath.section == 3 && indexPath.row == 0){
+            let numberOfCells : CGFloat = CGFloat((meet.judges.count) + 1)
+            let numberOfSections : CGFloat = CGFloat(meet.days.count)
+            let rowHeight = summaryTableView!.estimatedRowHeight
+            let headerHeight = summaryTableView!.estimatedSectionHeaderHeight
+            let footerHeight = summaryTableView!.estimatedSectionFooterHeight
+            
+            return (numberOfSections * (headerHeight + footerHeight)) + ((numberOfCells * numberOfSections) * rowHeight)
+        }
         else {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
@@ -174,8 +190,6 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
                 meet.startDate = meetDatePicker.date
                 meet.meetDescription = descriptionTextField.text!
                 meet.location = meetLocationField.text!
-                
-                
             }
             else
             {
@@ -226,9 +240,22 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             meet = updatedMeet!
             super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 1)).detailTextLabel?.text = meetDaysDetailText()
             super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 2)).detailTextLabel?.text = judgeDetailText()
+            reloadSummary()
         }
     }
     
+    func reloadSummary(){
+        summaryTableDelegate?.meet = meet
+        
+        tableView.reloadData()
+        tableView.setNeedsDisplay()
+        
+        summaryTableView.reloadData()
+        summaryTableView.setNeedsDisplay()
+        summaryTableView.setNeedsLayout()
+        
+        self.view.setNeedsDisplay()
+    }
     
     //MARK: Actions
     @IBAction func unwindToMeetDetailsFromJudgeList(sender: UIStoryboardSegue) {
@@ -240,6 +267,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             // Update an existing meet day.
             meet = updatedMeet!
             super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 2)).detailTextLabel?.text = judgeDetailText()
+            reloadSummary()
         }
     }
     

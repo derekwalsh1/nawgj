@@ -54,7 +54,7 @@ class Meet: Codable {
     }
     
     func getMileageRate() -> Float{
-        return Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: startDate)]!
+        return Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: startDate)] ?? Meet.FED_MILEAGE_RATES[Meet.FED_MILEAGE_RATES.count - 1]!
     }
     
     //MARK: Meet management and interogation
@@ -130,6 +130,25 @@ class Meet: Codable {
         
         for judge in self.judges {
             total += judge.totalCost()
+        }
+        
+        return total
+    }
+    
+    func judgesFeeForDay(dayIndex: Int, judge: Judge) -> Float{
+        let date = days[dayIndex].meetDate
+        if let fee = judge.fees.first(where: { $0.date == date}){
+            return fee.getFeeTotal()
+        }
+        else{
+            return 0.0
+        }
+    }
+    
+    func totalJudgesFeeForDay(dayIndex: Int) -> Float{
+        var total : Float = 0.0
+        for judge in judges{
+            total += judgesFeeForDay(dayIndex: dayIndex, judge: judge)
         }
         
         return total

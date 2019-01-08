@@ -55,6 +55,20 @@ class Expense: Codable {
     }
     
     func getExpenseTotal() -> Float{
-        return amount * (type == .Mileage ? Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: date ?? Date())]! : 1.0)
+        if date == nil{
+            date = Date()
+        }
+        
+        switch type{
+        case .Mileage:
+            if Meet.FED_MILEAGE_RATES.keys.contains(Calendar.current.component(.year, from: date!)){
+                return amount * Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: date!)]!
+            }
+            else{
+                return amount * (Meet.FED_MILEAGE_RATES.reversed().first?.value)!
+            }
+        default:
+            return amount
+        }
     }
 }

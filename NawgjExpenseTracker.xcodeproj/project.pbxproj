@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */; };
 		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
+		652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */; };
 		65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */; };
 		65C386CA21B5AE350070D76B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65C386C921B5AE350070D76B /* Images.xcassets */; };
 		65C386CC21BB77F70070D76B /* Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C386CB21BB77F70070D76B /* Fee.swift */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetPDFCreator.swift; sourceTree = "<group>"; };
 		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
+		652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableViewCell.swift; sourceTree = "<group>"; };
 		65C386C921B5AE350070D76B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NawgjExpenseTracker/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */,
 				65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */,
 				65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */,
+				652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */,
 			);
 			name = Meet;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */,
 				65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */,
 				65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift in Sources */,
+				652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */,
 				65C386CC21BB77F70070D76B /* Fee.swift in Sources */,
 				65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */,
 				652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */,
