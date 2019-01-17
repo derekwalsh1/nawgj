@@ -17,8 +17,8 @@ class Judge: Codable {
         case FourToEight = 2
         case Nine = 3
         case Ten = 4
-        case Brevet = 5
-        case National = 6
+        case National = 5
+        case Brevet = 6
         
         var description: String {
             switch self {
@@ -27,8 +27,20 @@ class Judge: Codable {
                 case .FourToEight : return "Levels 4 to 8"
                 case .Nine : return "Level 9"
                 case .Ten : return "Level 10"
-                case .Brevet : return "Brevet"
                 case .National : return "National"
+                case .Brevet : return "Brevet"
+            }
+        }
+        
+        var fullDescription: String {
+            switch self {
+            case .FourToFive : return "Levels 4 and 5 (" + String(format: "$%0.1f/hr)", rate)
+            case .SixToEight : return "Levels 6, 7 and 8 (" + String(format: "$%0.1f/hr)", rate)
+            case .FourToEight : return "Levels 4 to 8 (" + String(format: "$%0.1f/hr)", rate)
+            case .Nine : return "Level 9 (" + String(format: "$%0.1f/hr)", rate)
+            case .Ten : return "Level 10 (" + String(format: "$%0.1f/hr)", rate)
+            case .National : return "National (" + String(format: "$%0.1f/hr)", rate)
+            case .Brevet : return "Brevet (" + String(format: "$%0.1f/hr)", rate)
             }
         }
         
@@ -51,13 +63,20 @@ class Judge: Codable {
             case Level.FourToEight.description : return .FourToEight
             case Level.Nine.description : return .Nine
             case Level.Ten.description : return .Ten
-            case Level.Brevet.description : return .Brevet
             case Level.National.description : return .National
+            case Level.Brevet.description : return .Brevet
+            case Level.FourToFive.fullDescription : return .FourToFive
+            case Level.SixToEight.fullDescription : return .SixToEight
+            case Level.FourToEight.fullDescription : return .FourToEight
+            case Level.Nine.fullDescription : return .Nine
+            case Level.Ten.fullDescription : return .Ten
+            case Level.National.fullDescription : return .National
+            case Level.Brevet.fullDescription : return .Brevet
             default : return nil
             }
         }
         
-        static var count: Int { return Level.National.rawValue + 1}
+        static var count: Int { return Level.Brevet.rawValue + 1}
     }
     
     // MARK: Properties
@@ -113,6 +132,16 @@ class Judge: Codable {
         }
         
         return totalFees
+    }
+    
+    func totalBillableHours() -> Float {
+        var totalHours : Float = 0.0
+        
+        for fee in fees {
+            totalHours += fee.getHours()
+        }
+        
+        return totalHours
     }
     
     func changeLevel(level: Level){

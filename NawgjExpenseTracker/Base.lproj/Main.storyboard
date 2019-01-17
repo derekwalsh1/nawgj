@@ -407,7 +407,7 @@
                                         <rect key="frame" x="0.0" y="628" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uDb-Of-Vpf" id="hiU-ty-Fiv">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" estimatedRowHeight="44" sectionHeaderHeight="28" estimatedSectionHeaderHeight="28" sectionFooterHeight="28" estimatedSectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Di-8j-Uwm">
@@ -463,11 +463,18 @@
                                 <action selector="cancel:" destination="BYZ-38-t0r" id="Ds9-34-krV"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="save" id="yih-uf-6Lx">
-                            <connections>
-                                <segue destination="j3Q-AC-al5" kind="unwind" unwindAction="unwindToMeetListWithSender:" id="6oK-fb-HLp"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem enabled="NO" systemItem="save" id="yih-uf-6Lx">
+                                <connections>
+                                    <segue destination="j3Q-AC-al5" kind="unwind" unwindAction="unwindToMeetListWithSender:" id="6oK-fb-HLp"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="compose" id="lTP-xK-Zmz">
+                                <connections>
+                                    <segue destination="hUD-qq-wz8" kind="show" identifier="showPDFView" id="czF-gY-ueJ"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="descriptionLabel" destination="4eT-yn-AtR" id="1mp-He-10u"/>
@@ -487,7 +494,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <exit id="j3Q-AC-al5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1864.8" y="35.532233883058474"/>
+            <point key="canvasLocation" x="1983" y="82"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="oUU-7z-Iiz">
+            <objects>
+                <viewController id="hUD-qq-wz8" customClass="PDFViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="p6t-VO-NFr"/>
+                        <viewControllerLayoutGuide type="bottom" id="EQj-UF-UUQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Q5Y-RY-DgX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Kf-1X-zeq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2679" y="-569"/>
         </scene>
         <!--Meet Days Table View Controller-->
         <scene sceneID="Bvo-wW-RgO">
@@ -1722,7 +1747,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="217.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" translatesAutoresizingMaskIntoConstraints="NO" id="b1I-wE-eJf">
+                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="b1I-wE-eJf">
                                                     <rect key="frame" x="0.0" y="1" width="375" height="216"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="565412554.27933502">
@@ -1766,7 +1791,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="217.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" translatesAutoresizingMaskIntoConstraints="NO" id="Lfr-kK-yRT">
+                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Lfr-kK-yRT">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="564519169.85316098">
@@ -1804,7 +1829,6 @@
                                                                 <segment title="None"/>
                                                                 <segment title="One"/>
                                                                 <segment title="Two"/>
-                                                                <segment title="Three"/>
                                                             </segments>
                                                             <connections>
                                                                 <action selector="numberOfBreaksChanged:" destination="1sl-fT-dWN" eventType="valueChanged" id="i87-Bj-qmK"/>

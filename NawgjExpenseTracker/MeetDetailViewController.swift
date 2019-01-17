@@ -27,6 +27,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     @IBOutlet weak var summaryTableView: UITableView!
     
+    
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)` or constructed as part of adding a new meal.
      */
@@ -193,7 +194,12 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             }
             else
             {
-                return
+                guard let pdfViewController = segue.destination as? PDFViewController else{
+                    fatalError("Unexpected destination when trying to navigate to PDF View")
+                }
+                let path = Meet.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
+                MeetPDFCreator.createPDFFrom(meet: meet, atLocation: path)
+                pdfViewController.pdfURL = path
             }
         }
         else{
@@ -212,7 +218,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
                 }
                 meet.startDate = meetDatePicker.date
                 meetDayTableViewController.meet = meet
-                
+                   
             default:
                 fatalError("Unexpected Segue Identifier")
             }
@@ -277,15 +283,13 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         saveButton.isEnabled = !(nameTextField.text ?? "").isEmpty
     }
     
-    /*
     func showPDF()
     {
-        
-         let email = "derek.walsh@gmail.com"
+        let email = "derek.walsh@gmail.com"
         let path = Meet.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
-        MeetPDFCreator.createPDFFromView(meet: meet, atLocation: path)
+        MeetPDFCreator.createPDFFrom(meet: meet, atLocation: path)
         
-        //let pdfView = PDFView()
+        let pdfView = PDFView()
         if let document = PDFDocument(url: path) {
             pdfView.autoScales = true
             pdfView.displayMode = .singlePageContinuous
@@ -301,10 +305,10 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
             mailComposer.setSubject("Meet Details for \(meet.name)")
             mailComposer.setMessageBody("Meet details attached", isHTML: false)
             
-            try! mailComposer.addAttachmentData(NSData(contentsOf: path) as Data, mimeType: "application/pdf", fileName: "MeetDetails.pdf")
+            try! mailComposer.addAttachmentData(NSData(contentsOf: path) as Data, mimeType: "application/pdf", fileName: "MeetReport.pdf")
             self.navigationController?.present(mailComposer, animated: true, completion: nil)
         }
-    }*/
+    }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self.dismiss(animated: true, completion: nil)

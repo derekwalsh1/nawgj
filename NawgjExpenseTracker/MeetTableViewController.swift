@@ -18,12 +18,10 @@ class MeetTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Use the edit button item provided by the table view controller.
-        navigationItem.leftBarButtonItem = editButtonItem
-        
         // Load any saved meets, otherwise load sample data.
         if let savedMeets = loadMeets() {
-            meets += savedMeets
+            meets = savedMeets
+            updateEditButton(false)
         }
     }
 
@@ -51,16 +49,7 @@ class MeetTableViewController: UITableViewController {
         let meet = meets[indexPath.row]
         cell.meet = meet
         cell.setupCellContent()
-        /*cell.textLabel?.textColor = self.view.tintColor
-        cell.textLabel?.text = meet.name
-        cell.detailTextLabel?.text = meet.meetDescription
-        
-        if indexPath.row == 0 {
-            cell.imageView?.image = UIImage(named: "complete")
-        }
-        else {
-            cell.imageView?.image = UIImage(named: "inprogress")
-        }*/
+
         return cell
     }
     
@@ -77,10 +66,11 @@ class MeetTableViewController: UITableViewController {
             meets.remove(at: indexPath.row)
             saveMeets()
             tableView.deleteRows(at: [indexPath], with: .fade)
+            updateEditButton(false)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class 
             // insert it into the array, and add a new row to the table view
-        }    
+        }
     }
     
     // MARK: - Navigation
@@ -91,6 +81,7 @@ class MeetTableViewController: UITableViewController {
         switch(segue.identifier ?? "") {
         case "AddItem":
             os_log("Adding a new meet.", log: OSLog.default, type: .debug)
+            self.setEditing(false, animated: false)
                         
         case "ShowDetail":
             guard let meetDetailViewController = segue.destination as? MeetDetailViewController else {
@@ -131,8 +122,9 @@ class MeetTableViewController: UITableViewController {
             
             meets.append(meet!)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
+            updateEditButton(false)
         }
-            
+        
         // Save the meets
         saveMeets()
     }
@@ -140,6 +132,7 @@ class MeetTableViewController: UITableViewController {
     //MARK: Private Methods
     
     private func saveMeets() {
+        meets.sort(by: {$0.startDate < $1.startDate})
         do{
             let encodedData = try JSONEncoder().encode(meets)
             try encodedData.write(to: Meet.ArchiveURL)
@@ -156,6 +149,20 @@ class MeetTableViewController: UITableViewController {
         } catch{
             os_log("Failed to load meets...", log: OSLog.default, type: .error)
             return Array<Meet>()
+        }
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool){
+        super.setEditing(editing, animated: animated)
+        updateEditButton(editing)
+    }
+    
+    private func updateEditButton(_ editing: Bool){
+        if self.tableView.numberOfRows(inSection: 0) < 1{
+            self.navigationItem.leftBarButtonItem = nil
+        }
+        else{
+            navigationItem.leftBarButtonItem = editButtonItem
         }
     }
 }

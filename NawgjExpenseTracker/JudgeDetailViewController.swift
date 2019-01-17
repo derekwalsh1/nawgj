@@ -56,7 +56,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         navigationItem.title = judge!.name
         nameTextField.text = judge!.name
         levelCell.textLabel?.textColor = self.view.tintColor
-        levelCell.detailTextLabel?.text = judge!.level.description
+        levelCell.detailTextLabel?.text = judge!.level.fullDescription
         levelPicker.selectRow(judge!.level.rawValue, inComponent: 0, animated: false)
         
         handleJudgeDetailsChanged()
@@ -143,11 +143,12 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return Judge.Level(rawValue: row)?.description;
+        let level = Judge.Level(rawValue: row)!
+        return level.description;
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)?.description
+        levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)?.fullDescription
         judge?.changeLevel(level: Judge.Level(rawValue: row)!)
         handleJudgeDetailsChanged()
     }

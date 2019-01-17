@@ -10,6 +10,10 @@
 		650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */; };
 		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
 		652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */; };
+		652236F421E59A730024F1E6 /* HTMLtoPDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F321E59A730024F1E6 /* HTMLtoPDFViewController.swift */; };
+		652236F621E70AA60024F1E6 /* meetreport.html in Resources */ = {isa = PBXBuildFile; fileRef = 652236F521E70AA60024F1E6 /* meetreport.html */; };
+		652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F721EFDD4C0024F1E6 /* PDFViewController.swift */; };
+		652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */; };
 		65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */; };
 		65C386CA21B5AE350070D76B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65C386C921B5AE350070D76B /* Images.xcassets */; };
 		65C386CC21BB77F70070D76B /* Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C386CB21BB77F70070D76B /* Fee.swift */; };
@@ -48,6 +52,10 @@
 		650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetPDFCreator.swift; sourceTree = "<group>"; };
 		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
+		652236F321E59A730024F1E6 /* HTMLtoPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLtoPDFViewController.swift; sourceTree = "<group>"; };
+		652236F521E70AA60024F1E6 /* meetreport.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = meetreport.html; sourceTree = "<group>"; };
+		652236F721EFDD4C0024F1E6 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
+		652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetUIPrintPageRender.swift; sourceTree = "<group>"; };
 		65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableViewCell.swift; sourceTree = "<group>"; };
 		65C386C921B5AE350070D76B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NawgjExpenseTracker/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
@@ -98,6 +106,9 @@
 			isa = PBXGroup;
 			children = (
 				650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */,
+				652236F321E59A730024F1E6 /* HTMLtoPDFViewController.swift */,
+				652236F721EFDD4C0024F1E6 /* PDFViewController.swift */,
+				652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */,
 			);
 			path = PDFConversion;
 			sourceTree = "<group>";
@@ -105,6 +116,7 @@
 		65DBC95B217D5B320029C6AA = {
 			isa = PBXGroup;
 			children = (
+				652236F521E70AA60024F1E6 /* meetreport.html */,
 				65DBC966217D5B320029C6AA /* NawgjExpenseTracker */,
 				65DBC97B217D5B320029C6AA /* NawgjExpenseTrackerTests */,
 				65DBC965217D5B320029C6AA /* Products */,
@@ -297,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65C386CA21B5AE350070D76B /* Images.xcassets in Resources */,
+				652236F621E70AA60024F1E6 /* meetreport.html in Resources */,
 				65DBC972217D5B320029C6AA /* LaunchScreen.storyboard in Resources */,
 				65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */,
 			);
@@ -316,6 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */,
 				65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */,
 				65EE305A219FDDF90011B2B8 /* JudgeTableViewController.swift in Sources */,
 				65EE306721A1148B0011B2B8 /* MeetDayDetailViewController.swift in Sources */,
@@ -324,6 +338,7 @@
 				65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */,
 				65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */,
 				65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift in Sources */,
+				652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */,
 				652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */,
 				65C386CC21BB77F70070D76B /* Fee.swift in Sources */,
 				65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */,
@@ -337,6 +352,7 @@
 				65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */,
 				65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */,
 				65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */,
+				652236F421E59A730024F1E6 /* HTMLtoPDFViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -135,6 +135,16 @@ class Meet: Codable {
         return total
     }
     
+    func totalJudgeFees() -> Float{
+        var total : Float = 0.0
+        
+        for judge in self.judges {
+            total += judge.totalFees()
+        }
+        
+        return total
+    }
+    
     func judgesFeeForDay(dayIndex: Int, judge: Judge) -> Float{
         let date = days[dayIndex].meetDate
         if let fee = judge.fees.first(where: { $0.date == date}){
@@ -149,6 +159,15 @@ class Meet: Codable {
         var total : Float = 0.0
         for judge in judges{
             total += judgesFeeForDay(dayIndex: dayIndex, judge: judge)
+        }
+        
+        return total
+    }
+    
+    func totalBillableJudgeHours() -> Float{
+        var total : Float = 0.0
+        for judge in judges{
+            total += judge.totalBillableHours()
         }
         
         return total
