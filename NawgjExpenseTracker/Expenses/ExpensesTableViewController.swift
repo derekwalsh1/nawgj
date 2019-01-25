@@ -18,6 +18,8 @@ class ExpensesTableViewController: UITableViewController {
     @IBOutlet weak var parkingCell: UITableViewCell!
     @IBOutlet weak var otherCell: UITableViewCell!
     
+    @IBOutlet weak var backButton: UIBarButtonItem!
+    
     //MARK: Properties
     var judge : Judge?
     var meet : Meet?
@@ -27,6 +29,12 @@ class ExpensesTableViewController: UITableViewController {
         super.viewDidLoad()
         numberFormatter.numberStyle = .currency
         
+        meet = MeetListManager.GetInstance().getSelectedMeet()
+        judge = MeetListManager.GetInstance().getSelectedJudge()
+        
+        if let judge = judge{
+            backButton.title = judge.name
+        }
         updateExpenseLabels()
     }
 
@@ -74,63 +82,42 @@ class ExpensesTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        switch(segue.identifier ?? "Unwind") {
-        case "Unwind":
+        var selectedExpenseIndex : Int?
+        
+        switch(segue.identifier){
+        case "ShowTollsExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == Expense.ExpenseType.Toll})
+            break
+        case "ShowTransportationExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Transportation})
+            break
+        case "ShowParkingExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Parking})
+            break
+        case "ShowAirfareExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Airfare})
+            break
+        case "ShowOtherExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Other})
+            break
+        case "ShowMealsExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Meals})
+            break
+        case "ShowMileageExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Mileage})
             break
         default:
-            guard let expenseDetailsViewController = segue.destination as? ExpenseDetailsViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-            
-            var selectedExpense : Expense? = nil
-            switch(segue.identifier){
-            case "ShowTollsExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == Expense.ExpenseType.Toll})
-                break
-            case "ShowTransportationExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == .Transportation})
-                break
-            case "ShowParkingExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == .Parking})
-                break
-            case "ShowAirfareExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == .Airfare})
-                break
-            case "ShowOtherExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == .Other})
-                break
-            case "ShowMealsExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == .Meals})
-                break
-            case "ShowMileageExpenseDetails":
-                selectedExpense = judge?.expenses.first(where:{$0.type == .Mileage})
-                break
-            default:
-                break
-            }
-            expenseDetailsViewController.navigationItem.title = selectedExpense?.type.description
-            expenseDetailsViewController.judge = judge
-            expenseDetailsViewController.expense = selectedExpense!
+            break
+        }
+        
+        if let index = selectedExpenseIndex{
+            MeetListManager.GetInstance().selectExpenseAt(index: index)
         }
     }
     
     //MARK: Actions
     @IBAction func unwindToExpenseList(sender: UIStoryboardSegue) {
-        let sourceViewController = sender.source as? ExpenseDetailsViewController
-        let expense = sourceViewController?.expense
-        
-        let selectedExpense = judge?.expenses.first(where:{$0.type == expense?.type})
-        
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            
-            // Update an existing expense.
-            selectedExpense!.amount = (expense?.amount)!
-            selectedExpense!.notes = (expense?.notes)!
-            selectedExpense!.date = (expense?.date)!
-            
-            updateExpenseLabels()
-            
-            tableView.reloadRows(at: [selectedIndexPath], with: .none)
-        }
+        tableView.reloadData()
+        updateExpenseLabels()
     }
 }

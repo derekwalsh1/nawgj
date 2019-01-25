@@ -20,11 +20,7 @@ class Meet: Codable {
     var startDate: Date         // The first day of the meet
     var meetDescription: String // The levels competing at this meet or some meaningful description
     var location: String        // The location of the meet
-    
-    //MARK: Archiving Paths
-    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("Meets")
-    
+        
     //MARK: Initialization
     init?(name: String, days: Array<MeetDay>, judges: Array<Judge>, startDate: Date, meetDescription: String?, location: String?) {
         // Initialization should fail if there is an empty name
@@ -96,6 +92,16 @@ class Meet: Codable {
         }
     }
     
+    func addJudge(judge : Judge){
+        
+        for day in self.days{
+            let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "")
+            judge.fees.append(fee!)
+        }
+        
+        self.judges.append(judge)
+    }
+    
     func meetDayChanged(atIndex: Int){
         let meetDay = days[atIndex]
         for judge in judges{
@@ -123,6 +129,10 @@ class Meet: Codable {
         }
         
         self.days.remove(at: at)
+    }
+    
+    func removeJudgeAt(index: Int) {
+        self.judges.remove(at: index)
     }
     
     func totalJudgeFeesAndExpenses() -> Float{

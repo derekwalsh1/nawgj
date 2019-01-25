@@ -91,14 +91,14 @@ class MeetPDFCreator{
         let sortedJudges = meet.judges.sorted(by: { $0.name < $1.name })
         var judgeNames = ""
         for (index, judge) in sortedJudges.enumerated(){
-            judgeNames += "\(index == 0 ? "" : "<br>")\(judge.name)"
+            judgeNames += "\(index == 0 ? "" : "<br>")\(judge.name) - \(judge.level.fullDescription)"
         }
         
         let totalFeesString = numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!
         let totalHoursString = String(format: "%0.2f Hours", meet.totalMeetHours())
         
         return """
-        <h1 class="pagebreak-before">Meet Summary</h1>
+        <h1 class="pagebreak-before">Meet Summary : \(meet.name)</h1>
         <hr>
         <table cellpadding="5" cellspacing="0" border="0">
             <tr align="left">

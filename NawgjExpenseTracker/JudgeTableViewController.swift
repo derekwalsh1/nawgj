@@ -14,7 +14,6 @@ class JudgeTableViewController: UITableViewController {
     //MARK: Properties
     var meet : Meet?
     var numberFormatter : NumberFormatter = NumberFormatter()
-    
     @IBOutlet weak var doneButton: UIBarButtonItem!
     
     
@@ -22,6 +21,8 @@ class JudgeTableViewController: UITableViewController {
         super.viewDidLoad()
         numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
+        
+        meet = MeetListManager.GetInstance().getSelectedMeet()
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,6 +52,13 @@ class JudgeTableViewController: UITableViewController {
         cell.textLabel?.text = (judge?.name)! + " (\(judge!.level.description))"
         cell.detailTextLabel?.text = String(format: "Fees: %@ | Expenses: %@", numberFormatter.string(from: judge!.totalFees() as NSNumber)!, numberFormatter.string(from: judge!.totalExpenses() as NSNumber)!)
         
+        if (judge?.isPaid())!{
+            cell.imageView?.image = UIImage(named: "complete")
+        }
+        else{
+            cell.imageView?.image = nil
+        }
+        
         return cell
     }
     
@@ -73,86 +81,32 @@ class JudgeTableViewController: UITableViewController {
     }
     
     
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    
     // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
         
-        if let button = sender as? UIBarButtonItem, button === doneButton {
-            return
-        }
-        else{
+        switch(segue.identifier ?? "") {
+        case "AddItem":
+            let newJudge = Judge(name: "New Judge", level: .FourToEight, fees: Array<Fee>())!
+            let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
+            MeetListManager.GetInstance().addJudge(judge: newJudge)
+            MeetListManager.GetInstance().selectJudgeAt(index: newIndexPath.row)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
             
-            switch(segue.identifier ?? "") {
-            case "AddItem":
-                os_log("Adding a new judge.", log: OSLog.default, type: .debug)
-                let destinationNavigationController = segue.destination as! UINavigationController
-                guard let judgeDetailViewController = destinationNavigationController.topViewController as? JudgeDetailViewController else {
-                    fatalError("Unexpected destination: \(segue.destination)")
-                }
-                judgeDetailViewController.meet = meet
-                
-            case "ShowDetail":
-                guard let judgeDetailViewController = segue.destination as? JudgeDetailViewController else {
-                    fatalError("Unexpected destination: \(segue.destination)")
-                }
-                
-                guard let selectedJudgeCell = sender as? JudgeTableViewCell else {
-                    fatalError("Unexpected sender: Sender is not a JudgeTableViewCell")
-                }
-                
-                guard let indexPath = tableView.indexPath(for: selectedJudgeCell) else {
-                    fatalError("The selected cell is not being displayed by the table")
-                }
-                
-                let judge = meet?.judges[indexPath.row]
-                judgeDetailViewController.judge = judge
-                judgeDetailViewController.meet = meet
-            default:
-                fatalError("Unexpected Segue Identifier")
+        case "ShowDetail":
+            guard let selectedJudgeCell = sender as? JudgeTableViewCell, let indexPath = tableView.indexPath(for: selectedJudgeCell) else {
+                fatalError("The selected cell is not being displayed by the table")
             }
+            MeetListManager.GetInstance().selectJudgeAt(index: indexPath.row)
+            
+        default:
+            break
         }
     }
     
-    
     //MARK: Actions
     @IBAction func unwindToJudgeList(sender: UIStoryboardSegue) {
-        let sourceViewController = sender.source as? JudgeDetailViewController
-        let judge = sourceViewController?.judge
-        
-        if (sourceViewController != nil), (judge != nil) {
-            
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                
-                // Update an existing meal.
-                meet?.judges[selectedIndexPath.row] = judge!
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
-            }
-            else {
-                // Add a new meet.
-                let newIndexPath = IndexPath(row: (meet?.judges.count)!, section: 0)
-                
-                meet?.judges.append(judge!)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-        }
+        tableView.reloadData()
     }
 }

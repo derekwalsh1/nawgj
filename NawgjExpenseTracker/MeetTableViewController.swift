@@ -11,33 +11,27 @@ import os.log
 
 class MeetTableViewController: UITableViewController {
     
-    //MARK: Properties
-    
-    var meets = [Meet]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Load any saved meets, otherwise load sample data.
-        if let savedMeets = loadMeets() {
-            meets = savedMeets
-            updateEditButton(false)
-        }
+        MeetListManager.GetInstance().loadMeets()
+        JudgeListManager.GetInstance().loadJudges()
+        
+        synchronizeJudgeList()
+        updateEditButton(false)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return meets.count
+        return MeetListManager.GetInstance().meets!.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -46,7 +40,7 @@ class MeetTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableViewCell", for: indexPath) as! MeetTableViewCell
         
         // Fetches the appropriate meet for the data source layout.
-        let meet = meets[indexPath.row]
+        let meet = MeetListManager.GetInstance().meets![indexPath.row]
         cell.meet = meet
         cell.setupCellContent()
 
@@ -63,14 +57,10 @@ class MeetTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            meets.remove(at: indexPath.row)
-            saveMeets()
+            MeetListManager.GetInstance().removeMeetAt(index: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateEditButton(false)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class 
-            // insert it into the array, and add a new row to the table view
-        }
+        } 
     }
     
     // MARK: - Navigation
@@ -81,13 +71,17 @@ class MeetTableViewController: UITableViewController {
         switch(segue.identifier ?? "") {
         case "AddItem":
             os_log("Adding a new meet.", log: OSLog.default, type: .debug)
+            let meet = Meet(name: "New Meet", startDate: Date())
+            let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
+            MeetListManager.GetInstance().addMeet(meet: meet!)
+            MeetListManager.GetInstance().selectMeetAt(index: newIndexPath.row)
+            MeetListManager.GetInstance().saveMeets()
+            
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            updateEditButton(false)
             self.setEditing(false, animated: false)
                         
         case "ShowDetail":
-            guard let meetDetailViewController = segue.destination as? MeetDetailViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-                
             guard let selectedMeetCell = sender as? UITableViewCell else {
                 fatalError("Unexpected sender : sender is not a UITableViewCell")
             }
@@ -96,62 +90,22 @@ class MeetTableViewController: UITableViewController {
                 fatalError("The selected cell is not being displayed by the table")
             }
                 
-            let selectedMeet = meets[indexPath.row]
-            meetDetailViewController.meet = selectedMeet
+            MeetListManager.GetInstance().selectMeetAt(index: indexPath.row)
             
         default:
-            fatalError("Unexpected Segue Identifier")
+            break
         }
     }
     
     
     //MARK: Actions
     @IBAction func unwindToMeetList(sender: UIStoryboardSegue) {
-        let sourceViewController = sender.source as? MeetDetailViewController
-        let meet = sourceViewController?.meet
-        
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            
-            // Update an existing meal.
-            meets[selectedIndexPath.row] = meet!
-            tableView.reloadRows(at: [selectedIndexPath], with: .none)
-        }
-        else {
-            // Add a new meet.
-            let newIndexPath = IndexPath(row: meets.count, section: 0)
-            
-            meets.append(meet!)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-            updateEditButton(false)
-        }
-        
-        // Save the meets
-        saveMeets()
+        MeetListManager.GetInstance().loadMeets()
+        tableView.reloadData()
+        self.view.reloadInputViews()
     }
     
     //MARK: Private Methods
-    
-    private func saveMeets() {
-        meets.sort(by: {$0.startDate < $1.startDate})
-        do{
-            let encodedData = try JSONEncoder().encode(meets)
-            try encodedData.write(to: Meet.ArchiveURL)
-        } catch{
-            os_log("Failed to save meets...", log: OSLog.default, type: .error)
-        }
-    }
-    
-    private func loadMeets() -> [Meet]? {
-        do{
-            let data:Data = try Data(contentsOf: Meet.ArchiveURL)
-            let jsonDecoder = JSONDecoder()
-            return try! jsonDecoder.decode([Meet].self, from: data) as [Meet]
-        } catch{
-            os_log("Failed to load meets...", log: OSLog.default, type: .error)
-            return Array<Meet>()
-        }
-    }
-    
     override func setEditing(_ editing: Bool, animated: Bool){
         super.setEditing(editing, animated: animated)
         updateEditButton(editing)
@@ -163,6 +117,23 @@ class MeetTableViewController: UITableViewController {
         }
         else{
             navigationItem.leftBarButtonItem = editButtonItem
+        }
+    }
+    
+    func synchronizeJudgeList(){
+        // In case someone has used an older version of the app, go through
+        // the list of meets and add any existing judges. If a judge appears
+        // in a meet that is not in the judge list, then add the judge and
+        // save the list
+        if let meets = MeetListManager.GetInstance().meets{
+            for meet in meets{
+                for meetJudge in meet.judges{
+                    if JudgeListManager.GetInstance().judges!.first(where: {$0.name == meetJudge.name}) == nil{
+                        let judgeInfo = JudgeInfo(name: meetJudge.name, level: meetJudge.level)
+                        JudgeListManager.GetInstance().addJudge(judgeInfo)
+                    }
+                }
+            }
         }
     }
 }

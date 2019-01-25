@@ -25,8 +25,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     @IBOutlet weak var billableTimeCell: UITableViewCell!
     @IBOutlet weak var breakTimeCell: UITableViewCell!
     
-    @IBOutlet weak var doneButton: UIBarButtonItem!
-    
     var showMeetDayDatePicker : Bool = false
     var showMeetDayStartTimePicker : Bool = false
     var showMeetDayEndTimePicker : Bool = false
@@ -36,7 +34,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
      or constructed as part of adding a new meal.
      */
-    var meet : Meet?
     var meetDay: MeetDay?
     var dateFormatter : DateFormatter = DateFormatter()
     var timeFormatter : DateFormatter = DateFormatter()
@@ -55,6 +52,8 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         totalTimeCell.textLabel?.textColor = self.view.tintColor
         billableTimeCell.textLabel?.textColor = self.view.tintColor
         breakTimeCell.textLabel?.textColor = self.view.tintColor
+        
+        meetDay = MeetListManager.GetInstance().getSelectedMeetDay()
         
         // Set up views if editing an existing Meet day.
         if let meetDay = meetDay {
@@ -88,24 +87,8 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
             updateUILabels()
         }
-        else{
-            let meetDate = Date()
-            meetDayDatePicker.setDate(meetDate, animated: false)
-
-            let startTime = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: meetDate)
-            startTimePicker.setDate(startTime!, animated: false)
-            
-            let endTime = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: meetDate)
-            endTimePicker.setDate(endTime!, animated: false)
-            
-            let numberOfBreaks = 2
-            breaksSegmentedControl.selectedSegmentIndex = numberOfBreaks
-            
-            navigationItem.title = dateFormatter.string(from: meetDate)
-            meetDay = MeetDay(meetDate: meetDate, startTime: startTime!, endTime: endTime!, breaks: numberOfBreaks)
-            
-        }
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -118,32 +101,25 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     }
     
     //MARK: Navigation
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-        
-        let isPresentingInAddMeetDayMode = presentingViewController is UINavigationController
-        
-        if isPresentingInAddMeetDayMode {
-            dismiss(animated: true, completion: nil)
-        }
-        else if let owningNavigationController = navigationController{
-            owningNavigationController.popViewController(animated: true)
-        }
-        else {
-            fatalError("The MeetDayDetailViewController is not inside a navigation controller.")
-        }
+    @IBAction func backToMeetDaysPressed(_ sender: UIBarButtonItem) {
+        saveMeetDay()
     }
     
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         super.prepare(for: segue, sender: sender)
         
-        // Configure the destination view controller only when the save button is pressed.
-        if let button = sender as? UIBarButtonItem, button === doneButton{
-            meetDay?.meetDate = meetDayDatePicker.date
-            meetDay?.startTime = startTimePicker.date
-            meetDay?.endTime = endTimePicker.date
-            meetDay?.breaks = breaksSegmentedControl.selectedSegmentIndex
+        saveMeetDay()
+    }
+    
+    func saveMeetDay(){
+        if let meetDay = meetDay{
+            meetDay.meetDate = meetDayDatePicker.date
+            meetDay.startTime = startTimePicker.date
+            meetDay.endTime = endTimePicker.date
+            meetDay.breaks = breaksSegmentedControl.selectedSegmentIndex
+            
+            MeetListManager.GetInstance().updateSelectedMeetDayWith(meetDay: meetDay)
         }
     }
     
@@ -168,7 +144,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         if sender.date >= endTimePicker.date{
             endTimePicker.setDate(sender.date + 15 * 60, animated: true)
         }
-        
         updateUILabels()
     }
     
@@ -176,7 +151,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         if sender.date <= startTimePicker.date{
             startTimePicker.setDate(sender.date - 15 * 60, animated: true)
         }
-        
         updateUILabels()
     }
     
@@ -186,7 +160,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         // Check if this date is already in the meet days
         let newDate = meetDayDatePicker.date
         
-        let matchingMeetDate = meet?.days.first(where: { $0.meetDate == newDate })
+        let matchingMeetDate = MeetListManager.GetInstance().getSelectedMeet()?.days.first(where: { $0.meetDate == newDate })
         if matchingMeetDate == nil{
             let day = Calendar.current.component(Calendar.Component.day, from: newDate)
             let month = Calendar.current.component(Calendar.Component.month, from: newDate)

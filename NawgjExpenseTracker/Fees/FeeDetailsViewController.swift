@@ -39,11 +39,20 @@ class FeeDetailsViewController: UITableViewController {
         numberFormatter.numberStyle = .currency
         let tintColor = self.view.tintColor
         
+        fee = MeetListManager.GetInstance().getSelectedFee()
+        judge = MeetListManager.GetInstance().getSelectedJudge()
+        
         // Initialize the title and use the blue tint color for the title labels
         navigationItem.title = dateFormatter.string(from: (fee?.date)!)
         for item in [dateCell, totalHoursCell, breakTimeCell, billableHoursCell, rateCell, totalFeeCell]{
                 item?.textLabel?.textColor = tintColor
         }
+        
+        // There should be a meet day that corresponds to the date of the
+        // fee. We load that here so that we can present details about the
+        // meet day that this fee is associated with
+        MeetListManager.GetInstance().selectMeetDayForFee(fee : fee!)
+        meetDay = MeetListManager.GetInstance().getSelectedMeetDay()
         
         // Now fill in the detail for each cell
         dateCell.detailTextLabel?.text = dateFormatter.string(from: (fee?.date)!)
@@ -90,35 +99,10 @@ class FeeDetailsViewController: UITableViewController {
         updateAdjustableLabels()
     }
     
-    //MARK: Navigation
-    @IBAction func done(_ sender: UIBarButtonItem) {
-        
-        if (fee!.hoursOverridden != overrideHoursSwitch.isOn){
-            let alert = UIAlertController(title: "Discard Changes to Fees?", message: nil, preferredStyle: .alert)
-            let actionCancel = UIAlertAction(title: "Cancel", style: .default) { (action:UIAlertAction) in }
-            let actionDiscard = UIAlertAction(title: "Discard Changes", style: .default) { (action:UIAlertAction) in
-                self.navigationController?.popViewController(animated: true)
-            }
-            alert.addAction(actionCancel)
-            alert.addAction(actionDiscard)
-            self.present(alert, animated: true)
-        }
-        else{
-            navigationController?.popViewController(animated: true)
-        }
-        
-    }
-    
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
-        // Configure the destination view controller only when the save button is pressed.
-        if let button = sender as? UIBarButtonItem{
-            if button === saveButton {
-                saveUpdatedFees()
-            }
-        }
+        saveUpdatedFees()
     }
     
     func saveUpdatedFees()
@@ -126,6 +110,8 @@ class FeeDetailsViewController: UITableViewController {
         fee?.hoursOverridden = overrideHoursSwitch.isOn
         fee?.exclude = judgeNotWorkingSwitch.isOn
         fee?.hours = (fee?.hoursOverridden)! ? Float(judgeHoursStepper.value) : (meetDay?.totalBillableTimeInHours())!
+        
+        MeetListManager.GetInstance().updateSelectedFeeWith(fee: fee!)
     }
     
     @IBAction func overrideHoursSwitchChanged(_ sender: UISwitch) {
@@ -136,13 +122,6 @@ class FeeDetailsViewController: UITableViewController {
     }
     
     @IBAction func udgeNotWorkingSwitchChanged(_ sender: UISwitch) {
-        updateAdjustableLabels()
-    }
-    
-    @IBAction func overrideRateSwitchChanged(_ sender: UISwitch) {
-        tableView.beginUpdates()
-        tableView.endUpdates()
-        
         updateAdjustableLabels()
     }
     

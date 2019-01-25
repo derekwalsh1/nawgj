@@ -11,10 +11,9 @@ import MessageUI
 import PDFKit
 import os.log
 
-class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, MFMailComposeViewControllerDelegate{
+class MeetDetailViewController: UITableViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate{
     
     //MARK: Properties
-    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var meetDatePicker: UIDatePicker!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -39,6 +38,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        meet = MeetListManager.GetInstance().getSelectedMeet()!
         
         for textField in [nameTextField, descriptionTextField, meetLocationField] {
             textField!.delegate = self
@@ -59,13 +59,12 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         
         // Set up views if editing an existing Meet.
         navigationItem.title = meet.name
+        navigationItem.backBarButtonItem?.title = "Meet List"
         nameTextField.text = meet.name
         meetDatePicker.date = meet.startDate
         descriptionTextField.text = meet.meetDescription.trimmingCharacters(in: .whitespaces)
         meetLocationField.text = meet.location.trimmingCharacters(in: .whitespaces)
         
-        // Enable the Save button only if the text field has a valid meet name.
-        updateSaveButtonState()
     }
 
     override func didReceiveMemoryWarning() {
@@ -150,7 +149,6 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     @IBAction func nameTextFieldEditingChanged(_ sender: UITextField) {
         navigationItem.title = sender.text
-        updateSaveButtonState()
     }
     
     // MARK: Meet date selection
@@ -159,70 +157,25 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
         meetDateCell.detailTextLabel?.text = dateFormatter.string(from: meetDatePicker.date)
     }
     
-    //MARK: Navigation
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Discard Changes?", message: nil, preferredStyle: .alert)
-        let actionCancel = UIAlertAction(title: "Cancel", style: .default) { (action:UIAlertAction) in }
-        let actionDiscard = UIAlertAction(title: "Discard Changes", style: .default) { (action:UIAlertAction) in
-            let isPresentingInAddMeetMode = self.presentingViewController is UINavigationController
-            
-            if isPresentingInAddMeetMode {
-                self.dismiss(animated: true, completion: nil)
-            }
-            else if let owningNavigationController = self.navigationController{
-                owningNavigationController.popViewController(animated: true)
-            }
-            else {
-                fatalError("The MeetViewController is not inside a navigation controller.")
-            }        }
-        alert.addAction(actionCancel)
-        alert.addAction(actionDiscard)
-        self.present(alert, animated: true)
-    }
+    
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         super.prepare(for: segue, sender: sender)
+        updateSelectedMeet()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateSelectedMeet()
+        super.viewWillDisappear(animated)
+    }
+    
+    func updateSelectedMeet(){
+        meet.name = nameTextField.text ?? "New Meet"
+        meet.startDate = meetDatePicker.date
+        meet.meetDescription = descriptionTextField.text ?? ""
+        meet.location = meetLocationField.text ?? ""
         
-        // Configure the destination view controller only when the save button is pressed.
-        if let button = sender as? UIBarButtonItem{
-            if button === saveButton {
-                meet.name = nameTextField.text!
-                meet.startDate = meetDatePicker.date
-                meet.meetDescription = descriptionTextField.text!
-                meet.location = meetLocationField.text!
-            }
-            else
-            {
-                guard let pdfViewController = segue.destination as? PDFViewController else{
-                    fatalError("Unexpected destination when trying to navigate to PDF View")
-                }
-                let path = Meet.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
-                MeetPDFCreator.createPDFFrom(meet: meet, atLocation: path)
-                pdfViewController.pdfURL = path
-            }
-        }
-        else{
-            switch(segue.identifier ?? "") {
-            
-            case "ShowJudgeTable":
-                guard let judgeTableViewController = segue.destination as? JudgeTableViewController else {
-                    fatalError("Unexpected destination: \(segue.destination)")
-                }
-                
-                judgeTableViewController.meet = meet
-            
-            case "ShowMeetDayTable":
-                guard let meetDayTableViewController = segue.destination as? MeetDayTableViewController else {
-                    fatalError("Unexpected destination: \(segue.destination)")
-                }
-                meet.startDate = meetDatePicker.date
-                meetDayTableViewController.meet = meet
-                   
-            default:
-                fatalError("Unexpected Segue Identifier")
-            }
-        }
+        MeetListManager.GetInstance().updateSelectedMeetWith(meet: meet)
     }
     
     func meetDaysDetailText() -> String {
@@ -237,56 +190,17 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, UINa
     
     //MARK: Actions
     @IBAction func unwindToMeetDetails(sender: UIStoryboardSegue) {
-        
-        let sourceViewController = sender.source as? MeetDayTableViewController
-        let updatedMeet = sourceViewController?.meet
-        
-        if (sourceViewController != nil), (updatedMeet != nil){
-            // Update an existing meet day.
-            meet = updatedMeet!
-            super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 1)).detailTextLabel?.text = meetDaysDetailText()
-            super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 2)).detailTextLabel?.text = judgeDetailText()
-            reloadSummary()
+        if let delegate = summaryTableDelegate, let meet = MeetListManager.GetInstance().getSelectedMeet(){
+            delegate.meet = meet
         }
-    }
-    
-    func reloadSummary(){
-        summaryTableDelegate?.meet = meet
-        
         tableView.reloadData()
-        tableView.setNeedsDisplay()
-        
         summaryTableView.reloadData()
-        summaryTableView.setNeedsDisplay()
-        summaryTableView.setNeedsLayout()
-        
-        self.view.setNeedsDisplay()
-    }
-    
-    //MARK: Actions
-    @IBAction func unwindToMeetDetailsFromJudgeList(sender: UIStoryboardSegue) {
-        
-        let sourceViewController = sender.source as? JudgeTableViewController
-        let updatedMeet = sourceViewController?.meet
-        
-        if (sourceViewController != nil), (updatedMeet != nil){
-            // Update an existing meet day.
-            meet = updatedMeet!
-            super.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 2)).detailTextLabel?.text = judgeDetailText()
-            reloadSummary()
-        }
-    }
-    
-    //MARK: Private Methods
-    private func updateSaveButtonState() {
-        // Disable the Save button if the text field is empty.
-        saveButton.isEnabled = !(nameTextField.text ?? "").isEmpty
     }
     
     func showPDF()
     {
         let email = "derek.walsh@gmail.com"
-        let path = Meet.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
+        let path = MeetListManager.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
         MeetPDFCreator.createPDFFrom(meet: meet, atLocation: path)
         
         let pdfView = PDFView()

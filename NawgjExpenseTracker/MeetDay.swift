@@ -31,15 +31,27 @@ class MeetDay: Codable {
     }
     
     func totalTimeInHours() -> Float {
-        return Float(endTime.timeIntervalSince(startTime)) / 3600
+        return MeetDay.totalTimeInHours(startTime: startTime, endTime: endTime)
     }
     
     static func totalTimeInHours(startTime : Date, endTime : Date) -> Float {
-        return Float(endTime.timeIntervalSince(startTime)) / 3600
+        let timeInterval = endTime.timeIntervalSince(startTime)
+        let timeInHours = timeInterval / 3600
+        var hours = floor(timeInHours)
+        let remainingMinutes = timeInHours.truncatingRemainder(dividingBy: 1)
+        
+        if remainingMinutes > 0.25 && remainingMinutes <= 0.75{
+            hours += 0.5
+        }
+        else if remainingMinutes > 0.75{
+            hours += 1
+        }
+        
+        return Float(hours)
     }
     
     func breakTimeInHours() -> Float {
-        return Float(breaks) * MeetDay.BREAK_TIME_HOURS
+        return MeetDay.breakTimeInHours(breaks: breaks)
     }
     
     static func breakTimeInHours(breaks : Int) -> Float {
@@ -47,7 +59,7 @@ class MeetDay: Codable {
     }
     
     func totalBillableTimeInHours() -> Float {
-        return max(MeetDay.MIN_BILLING_HOURS, totalTimeInHours() - breakTimeInHours()) as Float
+        return MeetDay.totalBillableTimeInHours(startTime: startTime, endTime: endTime, breaks: breaks)
     }
     
     static func totalBillableTimeInHours(startTime : Date, endTime : Date, breaks : Int) -> Float {

@@ -11,6 +11,7 @@ import os.log
 
 class FeeTableViewController: UITableViewController {
     
+    @IBOutlet weak var backButton: UIBarButtonItem!
     //MARK: Properties
     var judge : Judge?
     var meet : Meet?
@@ -23,6 +24,13 @@ class FeeTableViewController: UITableViewController {
         // Use the edit button item provided by the table view controller.
         dateFormatter.dateStyle = .full
         numberFormatter.numberStyle = .currency
+        
+        meet = MeetListManager.GetInstance().getSelectedMeet()
+        judge = MeetListManager.GetInstance().getSelectedJudge()
+        
+        if let judge = judge{
+            backButton.title = judge.name
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,7 +39,6 @@ class FeeTableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -60,47 +67,21 @@ class FeeTableViewController: UITableViewController {
     }
     
     // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        switch(segue.identifier ?? "Unwind") {
+        switch(segue.identifier) {
         case "ShowDetail":
-            guard let feeDetailsViewController = segue.destination as? FeeDetailsViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
+            if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell){
+                MeetListManager.GetInstance().selectFeeAt(index: indexPath.row)
             }
-            
-            guard let selectedFeeCell = sender as? UITableViewCell else {
-                fatalError("Unexpected sender : sender is not a UITableViewCell")
-            }
-            
-            guard let indexPath = tableView.indexPath(for: selectedFeeCell) else {
-                fatalError("The selected cell is not being displayed by the table")
-            }
-            
-            let selectedFee = judge?.fees[indexPath.row]
-            let meetDay = meet?.days[(meet?.days.index(where: {$0.meetDate == selectedFee?.date}))!]
-            feeDetailsViewController.fee = selectedFee!
-            feeDetailsViewController.judge = judge
-            feeDetailsViewController.meetDay = meetDay
-        case "Unwind":
-            break
         default:
-            fatalError("Unexpected Segue Identifier - \(segue.identifier!)")
+            break
         }
     }
     
     //MARK: Actions
     @IBAction func unwindToFeeList(sender: UIStoryboardSegue) {
-        let sourceViewController = sender.source as? FeeDetailsViewController
-        let fee = sourceViewController?.fee
-        
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            
-            // Update an existing meal.
-            judge?.fees[selectedIndexPath.row] = fee!
-            tableView.reloadRows(at: [selectedIndexPath], with: .none)
-        }
+        tableView.reloadData()
     }
 }
-

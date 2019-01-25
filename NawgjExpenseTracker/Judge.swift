@@ -84,14 +84,23 @@ class Judge: Codable {
     var level : Level
     var expenses : Array<Expense>
     var fees : Array<Fee>
+    private var notes : String?
+    private var paid : Bool?
+    
     
     //MARK: Initialization
-    init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>) {
+    init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>, notes: String, paid: Bool) {
         // Initialize stored properties.
         self.name = name
         self.level = level
         self.expenses = expenses
         self.fees = fees
+        self.notes = notes
+        self.paid = paid
+    }
+    
+    required convenience init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>) {
+        self.init(name: name, level: level, expenses: expenses, fees: fees, notes: "", paid: false)
     }
     
     required convenience init?(name: String, level: Level, fees: Array<Fee>) {
@@ -149,5 +158,21 @@ class Judge: Codable {
         for fee in self.fees{
             fee.rate = self.level.rate
         }
+    }
+    
+    func getNotes() -> String{
+        return notes ?? ""
+    }
+    
+    func isPaid() -> Bool{
+        return paid ?? false
+    }
+    
+    func setPaid(_ paid : Bool){
+        self.paid = paid
+    }
+    
+    func setNotes(_ notes : String){
+        self.notes = notes
     }
 }

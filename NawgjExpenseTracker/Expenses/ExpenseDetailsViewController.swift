@@ -22,7 +22,6 @@ class ExpenseDetailsViewController: UITableViewController {
     var showDatePicker : Bool = false
     
     //MARK: Outlets
-    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var amountTextField: UITextField!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -31,6 +30,9 @@ class ExpenseDetailsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        expense = MeetListManager.GetInstance().getSelectedExpense()
+        judge = MeetListManager.GetInstance().getSelectedJudge()
         
         numberFormatter.numberStyle = .currency
         dateFormatter.dateStyle = .long
@@ -90,24 +92,20 @@ class ExpenseDetailsViewController: UITableViewController {
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-
-        // Configure the destination view controller only when the save button is pressed.
-        if let button = sender as? UIBarButtonItem{
-            if button === saveButton {
-                let text = amountTextField.text!
-                expense?.amount = Float(isMileageExpense ? text : text.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ""))!
-                expense?.notes = notesTextView.text ?? " "
-                expense?.date = expenseDatePicker.date
-            }
-            else
-            {
-                return
-            }
-        }
+        saveExpense()
     }
     
     @IBAction func expenseDateChanged(_ sender: UIDatePicker) {
         expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: sender.date)
+    }
+    
+    func saveExpense(){
+        if let text = amountTextField.text, let expense = expense{
+            expense.amount = Float(isMileageExpense ? text : text.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ""))!
+            expense.notes = notesTextView.text ?? " "
+            expense.date = expenseDatePicker.date
+            MeetListManager.GetInstance().updateSelectedExpenseWith(expense: expense)
+        }
     }
 }
 

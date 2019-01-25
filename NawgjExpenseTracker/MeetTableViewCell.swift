@@ -30,6 +30,8 @@ class MeetTableViewCell: UITableViewCell {
         if meet == nil{
             _ = Meet(name: "New Meet", startDate: Date())
         }
+        
+        setupCellContent()
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -40,17 +42,17 @@ class MeetTableViewCell: UITableViewCell {
     
     func setupCellContent(){
         let titleColor = self.contentView.tintColor
-        
-        locationCell.detailTextLabel?.text = meet?.location
-        descriptionCell.detailTextLabel?.text = meet?.meetDescription
-        hoursCell.detailTextLabel?.text = String(format: "%0.2f", (meet?.billableMeetHours())!)
-        costCell.detailTextLabel?.text = numberFormatter.string(from: meet!.totalCostOfMeet() as NSNumber)!
-        
         for cell in [locationCell, descriptionCell, hoursCell, costCell]{
             cell?.textLabel?.textColor = titleColor
         }
         
-        titleLabel.text = (meet?.name)! + " (\(dateFormatter.string(from: (meet?.startDate)!)))"
+        if let meet = meet{
+            locationCell.detailTextLabel?.text = meet.location
+            descriptionCell.detailTextLabel?.text = meet.meetDescription
+            hoursCell.detailTextLabel?.text = String(format: "%0.2f", (meet.billableMeetHours()))
+            costCell.detailTextLabel?.text = numberFormatter.string(from: meet.totalCostOfMeet() as NSNumber)!
+            titleLabel.text = meet.name + " (\(dateFormatter.string(from: meet.startDate)))"
+        }
     }
     
 }
