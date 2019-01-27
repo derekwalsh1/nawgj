@@ -175,4 +175,13 @@ class Judge: Codable {
     func setNotes(_ notes : String){
         self.notes = notes
     }
+    
+    func getFeesFor(date: Date) -> Float{
+        if let fee = fees.first(where: {$0.date == date}){
+            return fee.getFeeTotal()
+        }
+        else{
+            return 0
+        }
+    }
 }

@@ -78,7 +78,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 3{
             let numberOfFeeCells : CGFloat = CGFloat((judge?.fees.count)! + 1)
-            let numberOfExpenseCells : CGFloat = CGFloat((judge?.expenses.count)! + 1)
+            let numberOfExpenseCells : CGFloat = CGFloat((judge?.expenses.count)! + 2)
             let rowHeight = judgeSummaryTable!.estimatedRowHeight
             let headerHeight = judgeSummaryTable!.estimatedSectionHeaderHeight
             let footerHeight = judgeSummaryTable!.estimatedSectionFooterHeight
@@ -130,5 +130,9 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         tableView.reloadData()
         judgeSummaryTable.reloadData()
         handleJudgeDetailsChanged()
+    }
+    
+    @IBAction func unwindFromJudgeListWithSender(sender: UIStoryboardSegue){
+        self.unwindToJudgeDetails(sender: sender)
     }
 }

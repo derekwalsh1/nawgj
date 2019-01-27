@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import MessageUI
 import PDFKit
 import os.log
 
-class MeetDetailViewController: UITableViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate{
+class MeetDetailViewController: UITableViewController, UITextFieldDelegate{
     
     //MARK: Properties
     @IBOutlet weak var nameTextField: UITextField!
@@ -195,37 +194,6 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate, MFMa
         }
         tableView.reloadData()
         summaryTableView.reloadData()
-    }
-    
-    func showPDF()
-    {
-        let email = "derek.walsh@gmail.com"
-        let path = MeetListManager.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
-        MeetPDFCreator.createPDFFrom(meet: meet, atLocation: path)
-        
-        let pdfView = PDFView()
-        if let document = PDFDocument(url: path) {
-            pdfView.autoScales = true
-            pdfView.displayMode = .singlePageContinuous
-            pdfView.displayDirection = .vertical
-            pdfView.document = document
-        }
-            
-        if( MFMailComposeViewController.canSendMail()){
-            let mailComposer = MFMailComposeViewController()
-            mailComposer.mailComposeDelegate = self
-            
-            mailComposer.setToRecipients([email])
-            mailComposer.setSubject("Meet Details for \(meet.name)")
-            mailComposer.setMessageBody("Meet details attached", isHTML: false)
-            
-            try! mailComposer.addAttachmentData(NSData(contentsOf: path) as Data, mimeType: "application/pdf", fileName: "MeetReport.pdf")
-            self.navigationController?.present(mailComposer, animated: true, completion: nil)
-        }
-    }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        self.dismiss(animated: true, completion: nil)
     }
 }
 

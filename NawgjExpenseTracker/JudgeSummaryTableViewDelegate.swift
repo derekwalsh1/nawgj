@@ -27,7 +27,7 @@ class JudgeSummaryTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
         case 0:
             return judge.fees.count + 1 // additional row for total
         default:
-            return judge.expenses.count + 1 // additional row for total
+            return judge.expenses.count + 2 // additional rows for totals
         }
     }
     
@@ -61,6 +61,12 @@ class JudgeSummaryTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
                 cell.textLabel?.textColor = tableView.tintColor
                 cell.textLabel?.font = UIFont.boldSystemFont(ofSize: (cell.textLabel?.font.pointSize)!)
                 cell.detailTextLabel?.text = String(format: "%@", numberFormatter.string(from: judge.totalExpenses() as NSNumber)!)
+                cell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
+            case judge.expenses.count + 1:
+                cell.textLabel?.text = "Total Fees & Expenses"
+                cell.textLabel?.textColor = tableView.tintColor
+                cell.textLabel?.font = UIFont.boldSystemFont(ofSize: (cell.textLabel?.font.pointSize)!)
+                cell.detailTextLabel?.text = String(format: "%@", numberFormatter.string(from: (judge.totalExpenses() + judge.totalFees()) as NSNumber)!)
                 cell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
             default:
                 let expense = judge.expenses[indexPath.row]

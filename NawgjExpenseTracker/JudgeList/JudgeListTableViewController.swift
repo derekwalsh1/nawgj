@@ -12,6 +12,7 @@ import os.log
 class JudgeListTableViewController: UITableViewController {
     
     var addingNewJudge : Bool = false
+    var unwindToMeetList : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,13 +88,19 @@ class JudgeListTableViewController: UITableViewController {
         tableView.reloadData()
         
         if addingNewJudge{
-            self.performSegue(withIdentifier: "unwindToJudgeDetails", sender: self)
+            self.performSegue(withIdentifier: "unwindFromJudgeList", sender: self)
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         JudgeListManager.GetInstance().selectJudgeInfoAt(indexPath.row)
-        self.performSegue(withIdentifier: "unwindToJudgeDetails", sender: self)
+        
+        if unwindToMeetList{
+            self.performSegue(withIdentifier: "ShowDetail", sender: self)
+        }
+        else{
+            self.performSegue(withIdentifier: "unwindFromJudgeList", sender: self)
+        }
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {

@@ -155,11 +155,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Meets" id="rKz-xE-uwU">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Nfn-Pd-hjf">
-                            <connections>
-                                <segue destination="BYZ-38-t0r" kind="show" identifier="AddItem" id="vN3-Wo-Q8C"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="Nfn-Pd-hjf">
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="AddItem" id="vN3-Wo-Q8C"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="bookmarks" id="NrG-PH-rCq">
+                                <connections>
+                                    <segue destination="hgm-bA-SWF" kind="show" identifier="showJudgesFromMeetList" id="qeZ-ho-MIv"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I8c-2c-EhP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -463,7 +470,7 @@
                                 <segue destination="I3a-9F-Wj5" kind="unwind" unwindAction="unwindToMeetListWithSender:" id="Uty-5Z-yzq"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="ZNi-kw-fke">
+                        <barButtonItem key="rightBarButtonItem" title="Report" id="ZNi-kw-fke">
                             <connections>
                                 <segue destination="hUD-qq-wz8" kind="show" identifier="shareMeet" id="4ZE-1Q-zvf"/>
                             </connections>
@@ -488,7 +495,7 @@
             </objects>
             <point key="canvasLocation" x="2030" y="81"/>
         </scene>
-        <!--View Controller-->
+        <!--Meet Report-->
         <scene sceneID="oUU-7z-Iiz">
             <objects>
                 <viewController id="hUD-qq-wz8" customClass="PDFViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
@@ -501,6 +508,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Meet Report" id="I8n-Pn-rMB">
+                        <rightBarButtonItems>
+                            <barButtonItem title="✉️" id="AJg-wC-ATr">
+                                <connections>
+                                    <action selector="shareButtonClicked:" destination="hUD-qq-wz8" id="mgd-O2-hAX"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="🖨" id="L6x-l2-yNC">
+                                <connections>
+                                    <action selector="printWithSender:" destination="hUD-qq-wz8" id="H1d-og-8xS"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="emailButton" destination="AJg-wC-ATr" id="Fsa-gQ-gYv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Kf-1X-zeq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -947,7 +971,7 @@
                     <navigationItem key="navigationItem" title="All Judges" id="X7J-Q9-bZN">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="1fD-lR-vvs">
                             <connections>
-                                <segue destination="deA-lW-cMf" kind="unwind" identifier="unwindToJudgeDetails" unwindAction="unwindToJudgeDetailsWithSender:" id="I2a-HK-cLE"/>
+                                <segue destination="deA-lW-cMf" kind="unwind" identifier="unwindFromJudgeList" unwindAction="unwindFromJudgeListWithSenderWithSender:" id="gds-1e-UA2"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="h4Q-v0-NPG">
@@ -992,7 +1016,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Judge Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I22-qF-viG">
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Judge Name" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I22-qF-viG">
                                                             <rect key="frame" x="53" y="0.0" width="294" height="41.5"/>
                                                             <nil key="textColor"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -2160,6 +2184,7 @@
         <segue reference="HbJ-xx-d82"/>
         <segue reference="n1b-bk-T4A"/>
         <segue reference="Oy7-CL-9Wr"/>
+        <segue reference="qeZ-ho-MIv"/>
         <segue reference="gse-Mg-m5W"/>
         <segue reference="uOP-f1-qfK"/>
     </inferredMetricsTieBreakers>

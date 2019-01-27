@@ -91,12 +91,17 @@ class MeetTableViewController: UITableViewController {
             }
                 
             MeetListManager.GetInstance().selectMeetAt(index: indexPath.row)
-            
+        case "showJudgesFromMeetList":
+            let destination = segue.destination as! JudgeListTableViewController
+            destination.unwindToMeetList = true
         default:
             break
         }
     }
-    
+
+    @IBAction func unwindFromJudgeListWithSender(sender: UIStoryboardSegue){
+        self.unwindToMeetList(sender: sender)
+    }
     
     //MARK: Actions
     @IBAction func unwindToMeetList(sender: UIStoryboardSegue) {

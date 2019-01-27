@@ -13,6 +13,7 @@ class MeetPDFCreator{
     static var dateFormatter : DateFormatter = DateFormatter()
     static var dateFormatterMedium : DateFormatter = DateFormatter()
     static var dateFormatterShort : DateFormatter = DateFormatter()
+    static var timeFormatter : DateFormatter = DateFormatter()
     
     static var numberFormatter : NumberFormatter = NumberFormatter()
     
@@ -21,12 +22,15 @@ class MeetPDFCreator{
         dateFormatter.dateStyle = .full
         dateFormatterShort.dateStyle = .short
         dateFormatterMedium.dateStyle = .medium
+        timeFormatter.timeStyle = .medium
+        
         numberFormatter.numberStyle = .currency
         
         var html = generateHTMLHeader()
         html += generateMeetSummaryTable(meet: meet)
         html += generateFeeTable(meet: meet)
         html += generateFeeTableFooter(meet: meet)
+        html += generateMeetDayDetailsTable(meet: meet)
         html += generateHTMLFooter()
         
         let fmt = UIMarkupTextPrintFormatter(markupText: html)
@@ -45,7 +49,7 @@ class MeetPDFCreator{
         
         // 4. Create PDF context and draw
         let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, CGRect(x: 0, y: 0, width: 620, height: 900), nil)
+        UIGraphicsBeginPDFContextToData(pdfData, CGRect(x: 0, y: 0, width: 620, height: 900), nil) 
         
         for i in 0..<render.numberOfPages{
             UIGraphicsBeginPDFPage();
@@ -85,7 +89,7 @@ class MeetPDFCreator{
         let sortedDays = meet.days.sorted(by: { $0.meetDate < $1.meetDate })
         var datesString = ""
         for (index, day) in sortedDays.enumerated(){
-            datesString += "\(index == 0 ? "" : "<br>")\(dateFormatter.string(from: day.meetDate))"
+            datesString += "\(index == 0 ? "" : "<br>")\(dateFormatter.string(from: day.meetDate)) - \(String(format: "%0.2f hrs", day.totalTimeInHours())) (\(String(format: "%d", day.breaks)) break\(day.breaks != 0 ? "s" : ""))"
         }
         
         let sortedJudges = meet.judges.sorted(by: { $0.name < $1.name })
@@ -138,7 +142,7 @@ class MeetPDFCreator{
                 <td>\(totalFeesString)</td>
             </tr>
             <tr align="left">
-                <th valign="top">Federal Mileage Rate</th>
+                <th valign="top">Mileage Rate</th>
                 <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
             </tr>
         </table>
@@ -202,6 +206,136 @@ class MeetPDFCreator{
             """
         }
         
+        return htmlString
+    }
+    
+    static func generateMeetDayDetailsTable(meet: Meet) -> String{
+        
+        let numberOfDays = meet.days.count
+        
+        var htmlString : String = """
+
+        <h1 class="pagebreak-before">Meet Day Details</h1>
+        <hr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr bgcolor=\"EEEEEE">
+                <th align="left">Date</th>
+        """
+        // The header row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+                <th align="left">\(dateFormatterShort.string(from: meet.days[index].meetDate))</th>
+            """
+        }
+        htmlString += """
+            </tr>
+            <tr>
+                <th align="left">Start Time</th>
+        """
+        // The start time row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+                <td>\(timeFormatter.string(from: meet.days[index].startTime))</td>
+            """
+        }
+        htmlString += """
+        </tr>
+        <tr>
+        <th align="left">End Time</th>
+        """
+        // The end time row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+            <td>\(timeFormatter.string(from: meet.days[index].endTime))</td>
+            """
+        }
+        htmlString += """
+        </tr>
+        <tr>
+        <th align="left">Total Time</th>
+        """
+        // The end time row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+            <td>\(String(format: "%0.2f hrs", meet.days[index].totalTimeInHours()))</td>
+            """
+        }
+        htmlString += """
+        </tr>
+        <tr>
+        <th align="left">Breaks</th>
+        """
+        // The end time row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+            <td>\(String(format: "%d", meet.days[index].breaks))</td>
+            """
+        }
+        htmlString += """
+        </tr>
+        <tr>
+        <th align="left">Break Time</th>
+        """
+        // The end time row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+            <td>\(String(format: "%0.2f hrs", meet.days[index].breakTimeInHours()))</td>
+            """
+        }
+        htmlString += """
+        </tr>
+        <tr>
+        <th align="left">Billed Time</th>
+        """
+        // The end time row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+            <td>\(String(format: "%0.2f hrs", meet.days[index].totalBillableTimeInHours()))</td>
+            """
+        }
+        htmlString += """
+        </tr>
+        <tr>
+        <th align="left" valign="top">Judges</th>
+        """
+        // The end time row
+        for index in 0...numberOfDays - 1{
+            htmlString += """
+            <td valign="top">
+            """
+            let judges = meet.judges.filter({$0.getFeesFor(date: meet.days[index].meetDate) > 0})
+            for (index, judge) in judges.enumerated(){
+                htmlString += "\(index == 0 ? "" : "<br>")\(judge.name)"
+            }
+            htmlString += """
+            </td>
+            """
+        }
+        
+        htmlString += """
+        </tr>
+        """
+        
+        
+        // The start time row
+        /*
+                <td>Date</td>
+                <td>Start Time</td>
+                <td>End Time</td>
+                <td>Total Time</td>
+                <td>No. of Breaks</td>
+                <td>Total Break Time</td>
+                <td>No. of Judges</td>
+                <td>Billed Hours</td>
+                <td valign="top">Judges</td>
+                <td>Total Judge Fees</td>
+            </tr>
+         */
+        
+        
+        htmlString += """
+        </table>
+        """
         return htmlString
     }
     
