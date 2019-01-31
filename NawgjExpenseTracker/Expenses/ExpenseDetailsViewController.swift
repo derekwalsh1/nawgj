@@ -9,7 +9,7 @@
 import UIKit
 import os.log
 
-class ExpenseDetailsViewController: UITableViewController {
+class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate {
     
     //MARK: Properties
     var expense: Expense?
@@ -27,12 +27,15 @@ class ExpenseDetailsViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var expenseDateCell: UITableViewCell!
     @IBOutlet weak var expenseDatePicker: UIDatePicker!
+    @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         expense = MeetListManager.GetInstance().getSelectedExpense()
         judge = MeetListManager.GetInstance().getSelectedJudge()
+        
+        loadExpenseImage()
         
         numberFormatter.numberStyle = .currency
         dateFormatter.dateStyle = .long
@@ -47,6 +50,42 @@ class ExpenseDetailsViewController: UITableViewController {
         
         expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: (expense?.date) ?? Date())
         expenseDatePicker.date = (expense?.date) ?? Date()
+        
+        notesTextView.delegate = self
+        amountTextField.delegate = self
+    }
+    
+    //MARK: UITextFieldDelegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        textView.resignFirstResponder()
+        return true
+    }
+    
+    func loadExpenseImage(){
+        if let type = expense?.type{
+            switch type{
+            case .Meals:
+                imageView.image = UIImage(named: "meals")
+            case .Transportation:
+                imageView.image = UIImage(named: "transportation")
+            case .Toll:
+                imageView.image = UIImage(named: "tolls")
+            case .Mileage:
+                imageView.image = UIImage(named: "mileage")
+            case .Parking:
+                imageView.image = UIImage(named: "parking")
+            case .Airfare:
+                imageView.image = UIImage(named: "airfare")
+            case .Other:
+                imageView.image = UIImage(named: "other")
+            }
+            
+        }
     }
     
     @objc func myTextFieldDidChange(_ textField: UITextField) {
@@ -73,14 +112,14 @@ class ExpenseDetailsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 && indexPath.row == 2 && !showDatePicker {
+        if indexPath.section == 1 && indexPath.row == 2 && !showDatePicker {
             return 0
         }
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 && indexPath.row == 1 {
+        if indexPath.section == 1 && indexPath.row == 1 {
             showDatePicker = !showDatePicker
             tableView.beginUpdates()
             tableView.endUpdates()

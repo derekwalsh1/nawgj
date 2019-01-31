@@ -49,15 +49,9 @@ class JudgeTableViewController: UITableViewController {
         
         // Fetches the appropriate meet for the data source layout.
         let judge = meet?.judges[indexPath.row]
-        cell.textLabel?.text = (judge?.name)! + " (\(judge!.level.description))"
-        cell.detailTextLabel?.text = String(format: "Fees: %@ | Expenses: %@", numberFormatter.string(from: judge!.totalFees() as NSNumber)!, numberFormatter.string(from: judge!.totalExpenses() as NSNumber)!)
-        
-        if (judge?.isPaid())!{
-            cell.imageView?.image = UIImage(named: "complete")
-        }
-        else{
-            cell.imageView?.image = nil
-        }
+        let prefix = (judge?.isPaid())! ? "✓ " : " "
+        cell.textLabel?.text = prefix + (judge?.name)! + " (\(judge!.level.description))"
+        cell.detailTextLabel?.text = String(format: " Fees: %@ | Expenses: %@", numberFormatter.string(from: judge!.totalFees() as NSNumber)!, numberFormatter.string(from: judge!.totalExpenses() as NSNumber)!)
         
         return cell
     }
