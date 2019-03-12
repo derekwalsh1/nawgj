@@ -392,7 +392,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" image="judgeexpenses" id="0yE-Pi-2RX">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="paying" id="0yE-Pi-2RX">
                                                     <rect key="frame" x="16" y="0.0" width="44" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
@@ -836,7 +836,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="schedule" id="fV4-Du-tbI">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="expenses" id="fV4-Du-tbI">
                                                     <rect key="frame" x="16" y="0.0" width="44" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
@@ -1167,7 +1167,7 @@
                         <sections>
                             <tableViewSection id="UTi-Vz-7A8">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="tso-NR-QZN" detailTextLabel="L3Q-4M-Mtt" imageView="aqY-ny-eV2" style="IBUITableViewCellStyleSubtitle" id="blg-a1-Pid">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="tso-NR-QZN" detailTextLabel="L3Q-4M-Mtt" imageView="aqY-ny-eV2" style="IBUITableViewCellStyleSubtitle" id="blg-a1-Pid">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="blg-a1-Pid" id="EMV-Ox-9Pt">
@@ -1198,7 +1198,7 @@
                                             <segue destination="eIy-sH-LWc" kind="show" identifier="ShowMileageExpenseDetails" id="n1b-bk-T4A"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="Hhr-1C-BKh" detailTextLabel="21H-vW-rJH" imageView="jaW-Wm-PIY" style="IBUITableViewCellStyleSubtitle" id="sOg-yO-nb1">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="Hhr-1C-BKh" detailTextLabel="21H-vW-rJH" imageView="jaW-Wm-PIY" style="IBUITableViewCellStyleSubtitle" id="sOg-yO-nb1">
                                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sOg-yO-nb1" id="06g-OO-Xrt">
@@ -1229,7 +1229,7 @@
                                             <segue destination="eIy-sH-LWc" kind="show" identifier="ShowMealsExpenseDetails" id="kGy-6h-SqT"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="E8P-nP-lLf" detailTextLabel="vt5-JZ-XgJ" imageView="Qkg-fG-ZMV" style="IBUITableViewCellStyleSubtitle" id="eou-Rf-d1g">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="E8P-nP-lLf" detailTextLabel="vt5-JZ-XgJ" imageView="Qkg-fG-ZMV" style="IBUITableViewCellStyleSubtitle" id="eou-Rf-d1g">
                                         <rect key="frame" x="0.0" y="88" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eou-Rf-d1g" id="5g2-iE-6pa">
@@ -1260,7 +1260,7 @@
                                             <segue destination="eIy-sH-LWc" kind="show" identifier="ShowTollsExpenseDetails" id="dwJ-fp-ld1"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="8Ad-83-MXb" detailTextLabel="592-Ka-OY4" imageView="MH2-te-FoR" style="IBUITableViewCellStyleSubtitle" id="TNh-mp-9Cn">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="8Ad-83-MXb" detailTextLabel="592-Ka-OY4" imageView="MH2-te-FoR" style="IBUITableViewCellStyleSubtitle" id="TNh-mp-9Cn">
                                         <rect key="frame" x="0.0" y="132" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TNh-mp-9Cn" id="lFP-7u-1Uz">
@@ -1291,7 +1291,7 @@
                                             <segue destination="eIy-sH-LWc" kind="show" identifier="ShowAirfareExpenseDetails" id="sNw-uB-daG"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="anZ-rI-8lX" detailTextLabel="zjd-0J-DM2" imageView="wK2-YB-oZG" style="IBUITableViewCellStyleSubtitle" id="ycq-Pz-77D">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="anZ-rI-8lX" detailTextLabel="zjd-0J-DM2" imageView="wK2-YB-oZG" style="IBUITableViewCellStyleSubtitle" id="ycq-Pz-77D">
                                         <rect key="frame" x="0.0" y="176" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ycq-Pz-77D" id="FOb-j8-ceO">
@@ -1322,7 +1322,7 @@
                                             <segue destination="eIy-sH-LWc" kind="show" identifier="ShowTransportationExpenseDetails" id="jLE-Zc-lIz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="IqH-aH-TOq" detailTextLabel="SsD-Sd-7Tc" imageView="AeY-k4-sVS" style="IBUITableViewCellStyleSubtitle" id="Y6U-4P-ZeD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="IqH-aH-TOq" detailTextLabel="SsD-Sd-7Tc" imageView="AeY-k4-sVS" style="IBUITableViewCellStyleSubtitle" id="Y6U-4P-ZeD">
                                         <rect key="frame" x="0.0" y="220" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y6U-4P-ZeD" id="iqG-YV-gZI">
@@ -1353,7 +1353,7 @@
                                             <segue destination="eIy-sH-LWc" kind="show" identifier="ShowParkingExpenseDetails" id="7Wp-gQ-Pbo"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="vQd-wU-16D" detailTextLabel="ndd-pO-2wp" imageView="JCh-1N-foG" style="IBUITableViewCellStyleSubtitle" id="h6k-8P-B1i">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExpenseTableViewCell" textLabel="vQd-wU-16D" detailTextLabel="ndd-pO-2wp" imageView="JCh-1N-foG" style="IBUITableViewCellStyleSubtitle" id="h6k-8P-B1i">
                                         <rect key="frame" x="0.0" y="264" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="h6k-8P-B1i" id="Jk5-6z-dPJ">
@@ -1439,6 +1439,7 @@
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.45009386540000001" green="0.98132258650000004" blue="0.4743030667" alpha="0.2072185359589041" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -2190,12 +2191,13 @@
     </scenes>
     <resources>
         <image name="airfare" width="100" height="100"/>
-        <image name="judgeexpenses" width="227" height="227"/>
+        <image name="expenses" width="100" height="100"/>
         <image name="meals" width="100" height="100"/>
         <image name="mileage" width="100" height="100"/>
-        <image name="other" width="225" height="225"/>
+        <image name="other" width="100" height="100"/>
         <image name="parking" width="100" height="100"/>
-        <image name="schedule" width="186" height="186"/>
+        <image name="paying" width="100" height="100"/>
+        <image name="schedule" width="100" height="100"/>
         <image name="tolls" width="100" height="100"/>
         <image name="transportation" width="100" height="100"/>
     </resources>

@@ -93,7 +93,7 @@ class MeetTableViewController: UITableViewController {
             MeetListManager.GetInstance().selectMeetAt(index: indexPath.row)
         case "showJudgesFromMeetList":
             let destination = segue.destination as! JudgeListTableViewController
-            destination.unwindToMeetList = true
+            destination.shouldUnwindToMeetList = true
         default:
             break
         }
@@ -126,16 +126,16 @@ class MeetTableViewController: UITableViewController {
     }
     
     func synchronizeJudgeList(){
-        // In case someone has used an older version of the app, go through
-        // the list of meets and add any existing judges. If a judge appears
-        // in a meet that is not in the judge list, then add the judge and
-        // save the list
+        // In case someone has used an older version of the app, go through the list of meets and add any existing judges. If a judge
+        // appears in a meet that is not in the judge list, then add the judge and save the list
         if let meets = MeetListManager.GetInstance().meets{
             for meet in meets{
                 for meetJudge in meet.judges{
-                    if JudgeListManager.GetInstance().judges!.first(where: {$0.name == meetJudge.name}) == nil{
-                        let judgeInfo = JudgeInfo(name: meetJudge.name, level: meetJudge.level)
-                        JudgeListManager.GetInstance().addJudge(judgeInfo)
+                    let judgeInfo = JudgeInfo(name: meetJudge.name, level: meetJudge.level)
+                    if JudgeListManager.GetInstance().addJudge(judgeInfo){
+                        os_log("Added Judge %@", log: OSLog.default, type: .debug, judgeInfo.name)
+                    } else{
+                        os_log("Judge %@ not added because they already exist in the Judge List", log: OSLog.default, type: .debug, judgeInfo.name)
                     }
                 }
             }

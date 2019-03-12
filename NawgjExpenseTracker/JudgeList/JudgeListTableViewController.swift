@@ -9,21 +9,45 @@
 import UIKit
 import os.log
 
+/**
+ This class is responsible for presenting the list of Judges.
+ 
+ From this controller Judges can be:
+ * Added
+ * Removed
+ * Edited
+ 
+ 
+ */
 class JudgeListTableViewController: UITableViewController {
     
+    // This variable is set if the view controller is activated from the 'Add New Judge' segue
     var addingNewJudge : Bool = false
-    var unwindToMeetList : Bool = false
     
+    // Judge Management can be done outside of the meet at the main window. This variable indicates that
+    // Judge management is being done from there and so we should unwind to the main meet list
+    var shouldUnwindToMeetList : Bool = false
+    
+    /*
+     * Load the list of Judges from a persistent storage so that the table can be populated
+     * when the view is presented
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         JudgeListManager.GetInstance().loadJudges()
     }
     
+    /*
+     * We save as we go so there is nothing to be performed here.
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
     // MARK: - Table view data source
+    /*
+     * We just have one section for the list of Judges in this table
+     */
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -67,13 +91,22 @@ class JudgeListTableViewController: UITableViewController {
         super.prepare(for: segue, sender: sender)
         
         if segue.identifier! == "AddJudge"{
-            JudgeListManager.GetInstance().addJudge(JudgeInfo(name: "New Judge", level: Judge.Level.FourToEight))
-            
-            let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
-            JudgeListManager.GetInstance().selectJudgeInfoAt(newIndexPath.row)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-            self.addingNewJudge = true
+            // Create a New Judge named new Judge, if New Judge is already there then select that Judge
+            let judgeInfo = JudgeInfo(name: "New Judge", level: Judge.Level.National)
+            let judgeIndex = JudgeListManager.GetInstance().indexOfJudge(judgeInfo)
+            if judgeIndex < 0{
+                if JudgeListManager.GetInstance().addJudge(JudgeInfo(name: "New Judge", level: Judge.Level.National)){
+                    let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
+                    JudgeListManager.GetInstance().selectJudgeInfoAt(newIndexPath.row)
+                    tableView.insertRows(at: [newIndexPath], with: .automatic)
+                    self.addingNewJudge = true
+                } else{
+                    os_log("Didn't add judge %@", log: OSLog.default, type: .debug, judgeInfo.name)
+                }
+            } else{
+                self.addingNewJudge = false
+                JudgeListManager.GetInstance().selectJudgeInfoAt(judgeIndex)
+            }
         }
         else{
             self.addingNewJudge = false
@@ -87,7 +120,7 @@ class JudgeListTableViewController: UITableViewController {
         JudgeListManager.GetInstance().loadJudges()
         tableView.reloadData()
         
-        if addingNewJudge{
+        if addingNewJudge && !shouldUnwindToMeetList {
             self.performSegue(withIdentifier: "unwindFromJudgeList", sender: self)
         }
     }
@@ -95,10 +128,13 @@ class JudgeListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         JudgeListManager.GetInstance().selectJudgeInfoAt(indexPath.row)
         
-        if unwindToMeetList{
+        // If we came from the meet list then (because we should unwind to there) then segue
+        // to the Judge details view so that the user can start editing Judge details.
+        if shouldUnwindToMeetList{
             self.performSegue(withIdentifier: "ShowDetail", sender: self)
         }
         else{
+            // This allows us to navigate back to the previous screen when a Judge is selected
             self.performSegue(withIdentifier: "unwindFromJudgeList", sender: self)
         }
     }

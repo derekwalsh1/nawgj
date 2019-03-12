@@ -2,16 +2,16 @@
 //  MeetPDFCreator.swift
 //  NawgjExpenseTracker
 //
-//  Created by Derek on 12/30/18.
+//  Created by Derek on 2/19/19.
 //  Copyright © 2018 Derek Walsh. All rights reserved.
 //
 
 import PDFKit
 import UIKit
 
-class MeetPDFCreator : PDFCreator{
+class JudgePDFCreator : PDFCreator{
     
-    static func createPDFFrom(meet: Meet, atLocation: URL){
+    static func createPDFFrom(judge: Judge, meet: Meet, atLocation: URL){
         
         dateFormatter.dateStyle = .full
         dateFormatterShort.dateStyle = .short
@@ -21,10 +21,8 @@ class MeetPDFCreator : PDFCreator{
         numberFormatter.numberStyle = .currency
         
         var html = generateHTMLHeader()
-        html += generateMeetSummaryTable(meet: meet)
-        html += generateFeeTable(meet: meet)
-        html += generateFeeTableFooter(meet: meet)
-        html += generateMeetDayDetailsTable(meet: meet)
+        html += generateJudgeFeesTable(judge: judge, meet: meet)
+        html += generateJudgeExpensesTable(judge: judge, meet : meet)
         html += generateHTMLFooter()
         
         let fmt = UIMarkupTextPrintFormatter(markupText: html)
@@ -34,7 +32,7 @@ class MeetPDFCreator : PDFCreator{
         render.addPrintFormatter(fmt, startingAtPageAt: 0)
         render.footerHeight = 10
         render.headerHeight = 10
-        
+                
         // 3. Assign paperRect and printableRect
         //let page = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
         //let printable = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
@@ -54,7 +52,7 @@ class MeetPDFCreator : PDFCreator{
         }
         
         UIGraphicsEndPDFContext()
-   
+        
         pdfData.write(to: atLocation, atomically: true)
         
     }
@@ -62,21 +60,14 @@ class MeetPDFCreator : PDFCreator{
     static func generateHTMLHeader() -> String{
         return """
         <html>
-            <head>
-                <style type="text/css">
-        
-                @media print {
-                    .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-                    .pagebreak-before { display: block; page-break-before: always; }
-                    table, tr, td, th {
-                    page-break-inside: avoid;
-                    }
-                    tr {
-                    page-break-before: auto;
-                    }
-                }
-                </style>
-            </head>
+        <head>
+        <style type="text/css">
+        @media print {
+        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+        .pagebreak-before { display: block; page-break-before: always; }
+        }
+        </style>
+        </head>
         <body>
         """
     }
@@ -88,7 +79,7 @@ class MeetPDFCreator : PDFCreator{
         """
     }
     
-    static func generateMeetSummaryTable(meet: Meet) -> String{
+    static func generateJudgeFeesTable(judge: Judge, meet: Meet) -> String{
         let sortedDays = meet.days.sorted(by: { $0.meetDate < $1.meetDate })
         var datesString = ""
         for (index, day) in sortedDays.enumerated(){
@@ -108,46 +99,46 @@ class MeetPDFCreator : PDFCreator{
         <h1 class="pagebreak-before">Meet Summary : \(meet.name)</h1>
         <hr>
         <table cellpadding="5" cellspacing="0" border="0">
-            <tr align="left">
-                <th width="10">Meet Name</th>
-                <td width="300">\(meet.name)</td>
-            </tr>
-            <tr align="left">
-                <th>Date</th>
-                <td>\(dateFormatter.string(from: meet.startDate))</td>
-            </tr>
-            <tr align="left">
-                <th>Location</th>
-                <td>\(meet.location)</td>
-            </tr>
-            <tr align="left">
-                <th>Details/Description</th>
-                <td>\(meet.meetDescription)</td>
-            </tr>
-            <tr align="left">
-                <th valign="top">Meet Dates</th>
-                <td>\(datesString)</td>
-            </tr>
-            <tr align="left">
-                <th valign="top">Judges</th>
-                <td>\(judgeNames)</td>
-            </tr>
-            <tr align="left">
-                <th valign="top">Total Hours</th>
-                <td>\(totalHoursString)</td>
-            </tr>
-            <tr align="left">
-                <th valign="top">Total Billed Judge Hours</th>
-                <td>\(String(format: "%0.2f Hours", meet.totalBillableJudgeHours()))</td>
-            </tr>
-            <tr align="left">
-                <th valign="top">Total Fees</th>
-                <td>\(totalFeesString)</td>
-            </tr>
-            <tr align="left">
-                <th valign="top">Mileage Rate</th>
-                <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
-            </tr>
+        <tr align="left">
+        <th width="10">Meet Name</th>
+        <td width="300">\(meet.name)</td>
+        </tr>
+        <tr align="left">
+        <th>Date</th>
+        <td>\(dateFormatter.string(from: meet.startDate))</td>
+        </tr>
+        <tr align="left">
+        <th>Location</th>
+        <td>\(meet.location)</td>
+        </tr>
+        <tr align="left">
+        <th>Details/Description</th>
+        <td>\(meet.meetDescription)</td>
+        </tr>
+        <tr align="left">
+        <th valign="top">Meet Dates</th>
+        <td>\(datesString)</td>
+        </tr>
+        <tr align="left">
+        <th valign="top">Judges</th>
+        <td>\(judgeNames)</td>
+        </tr>
+        <tr align="left">
+        <th valign="top">Total Hours</th>
+        <td>\(totalHoursString)</td>
+        </tr>
+        <tr align="left">
+        <th valign="top">Total Billed Judge Hours</th>
+        <td>\(String(format: "%0.2f Hours", meet.totalBillableJudgeHours()))</td>
+        </tr>
+        <tr align="left">
+        <th valign="top">Total Fees</th>
+        <td>\(totalFeesString)</td>
+        </tr>
+        <tr align="left">
+        <th valign="top">Mileage Rate</th>
+        <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
+        </tr>
         </table>
         
         
@@ -155,7 +146,7 @@ class MeetPDFCreator : PDFCreator{
         """
     }
     
-    static func generateFeeTable(meet: Meet) -> String{
+    static func generateJudgeExpensesTable(judge: Judge, meet: Meet) -> String{
         var htmlString : String = """
 
         <h1 class="pagebreak-before">Meet Fee Details</h1>
@@ -174,15 +165,9 @@ class MeetPDFCreator : PDFCreator{
         for (dayIndex, day) in meet.days.sorted(by: { $0.meetDate < $1.meetDate }).enumerated(){
             for (judgeIndex, judge) in meet.judges.sorted(by: { $0.name < $1.name }).enumerated(){
                 if let fee = judge.fees.first(where: {$0.date == day.meetDate}){
-                
+                    
                     htmlString += """
                     <tr align="left" height="26" \(dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-                    <style type="text/css">
-                    @media print {
-                    .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-                    .pagebreak-before { display: block; page-break-before: always; }
-                    }
-                    </style>
                     """
                     
                     if( judgeIndex == 0){
@@ -194,12 +179,12 @@ class MeetPDFCreator : PDFCreator{
                     let hours = String(format: "%0.2f", fee.getHours())
                     let total = numberFormatter.string(from: fee.getFeeTotal() as NSNumber)!
                     htmlString += """
-                        <td>\(judge.name)</td>
-                        <td>\(rate)</td>
-                        <td>\(judge.level.description)</td>
-                        <td>\(hours)</td>
-                        <td>\(total)</td>
-                        </tr>
+                    <td>\(judge.name)</td>
+                    <td>\(rate)</td>
+                    <td>\(judge.level.description)</td>
+                    <td>\(hours)</td>
+                    <td>\(total)</td>
+                    </tr>
                     """
                 }
             }
@@ -207,11 +192,11 @@ class MeetPDFCreator : PDFCreator{
             let colorString = dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : ""
             let totalDayCost = numberFormatter.string(from: meet.totalJudgesFeeForDay(dayIndex: dayIndex) as NSNumber)!
             htmlString += """
-                <tr align="left" height="26" \(colorString)>
-                    <th colspan="4"></th>
-                    <th align="left">Total Day Fees</th>
-                    <th>\(totalDayCost)</th>
-                </tr>
+            <tr align="left" height="26" \(colorString)>
+            <th colspan="4"></th>
+            <th align="left">Total Day Fees</th>
+            <th>\(totalDayCost)</th>
+            </tr>
             """
         }
         
@@ -233,18 +218,18 @@ class MeetPDFCreator : PDFCreator{
         // The header row
         for index in 0...numberOfDays - 1{
             htmlString += """
-                <th align="left">\(dateFormatterShort.string(from: meet.days[index].meetDate))</th>
+            <th align="left">\(dateFormatterShort.string(from: meet.days[index].meetDate))</th>
             """
         }
         htmlString += """
-            </tr>
-            <tr>
-                <th align="left">Start Time</th>
+        </tr>
+        <tr>
+        <th align="left">Start Time</th>
         """
         // The start time row
         for index in 0...numberOfDays - 1{
             htmlString += """
-                <td>\(timeFormatter.string(from: meet.days[index].startTime))</td>
+            <td>\(timeFormatter.string(from: meet.days[index].startTime))</td>
             """
         }
         htmlString += """
@@ -328,17 +313,17 @@ class MeetPDFCreator : PDFCreator{
         
         // The start time row
         /*
-                <td>Date</td>
-                <td>Start Time</td>
-                <td>End Time</td>
-                <td>Total Time</td>
-                <td>No. of Breaks</td>
-                <td>Total Break Time</td>
-                <td>No. of Judges</td>
-                <td>Billed Hours</td>
-                <td valign="top">Judges</td>
-                <td>Total Judge Fees</td>
-            </tr>
+         <td>Date</td>
+         <td>Start Time</td>
+         <td>End Time</td>
+         <td>Total Time</td>
+         <td>No. of Breaks</td>
+         <td>Total Break Time</td>
+         <td>No. of Judges</td>
+         <td>Billed Hours</td>
+         <td valign="top">Judges</td>
+         <td>Total Judge Fees</td>
+         </tr>
          */
         
         
@@ -350,11 +335,11 @@ class MeetPDFCreator : PDFCreator{
     
     static func generateFeeTableFooter(meet: Meet) -> String{
         return """
-            <tr align="left" height="26" bgcolor="lightgray">
-                <th colspan="4"></th>
-                <th align="left">Total Meet Fees</th>
-                <th>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</th>
-            </tr>
+        <tr align="left" height="26" bgcolor="lightgray">
+        <th colspan="4"></th>
+        <th align="left">Total Meet Fees</th>
+        <th>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</th>
+        </tr>
         </table>
         """
     }

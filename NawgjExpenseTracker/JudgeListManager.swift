@@ -22,7 +22,6 @@ class JudgeListManager{
     }
     
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("Judges")
     
     var judges : [JudgeInfo]?
@@ -53,9 +52,14 @@ class JudgeListManager{
         }
     }
 
-    func addJudge(_ judgeInfo: JudgeInfo){
-        judges?.append(judgeInfo)
-        saveJudges()
+    func addJudge(_ judgeInfo: JudgeInfo) -> Bool {
+        var judgeAdded = false
+        if self.indexOfJudge(judgeInfo) < 0{
+            judges?.append(judgeInfo)
+            saveJudges()
+            judgeAdded = true
+        }
+        return judgeAdded
     }
     
     func removeJudgeAt(_ index: Int){
@@ -75,6 +79,14 @@ class JudgeListManager{
             judges[index] = judgeInfo
             selectedJudge = judgeInfo
             saveJudges()
+        }
+    }
+    
+    func indexOfJudge(_ judgeInfo : JudgeInfo) -> Int{
+        if let judgeList = judges{
+            return judgeList.firstIndex(where: {$0.name == judgeInfo.name}) ?? -1
+        } else{
+            return -1
         }
     }
 }
