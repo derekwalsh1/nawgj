@@ -28,6 +28,13 @@ class JudgeListManager{
     var selectedJudge : JudgeInfo?
     var selectedJudgeIndex : Int?
     
+    func loadAndSortJudges(){
+        self.loadJudges()
+        if let originalJudgeList = judges{
+            judges = originalJudgeList.sorted(by: {$0.name < $1.name})
+        }
+    }
+    
     func loadJudges(){
         do{
             let data:Data = try Data(contentsOf: JudgeListManager.ArchiveURL)

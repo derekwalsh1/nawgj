@@ -89,7 +89,6 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     }
     
     @objc func myTextFieldDidChange(_ textField: UITextField) {
-        
         if let amountString = isMileageExpense ? textField.text?.milesInputFormatting() : textField.text?.currencyInputFormatting() {
             textField.text = amountString
         }
@@ -126,6 +125,10 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+        notesTextView.resignFirstResponder()
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.notesTextView.resignFirstResponder()
     }
     
     // This method lets you configure a view controller before it's presented.

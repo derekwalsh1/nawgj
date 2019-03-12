@@ -34,7 +34,7 @@ class JudgeListTableViewController: UITableViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        JudgeListManager.GetInstance().loadJudges()
+        JudgeListManager.GetInstance().loadAndSortJudges()
     }
     
     /*
@@ -104,7 +104,6 @@ class JudgeListTableViewController: UITableViewController {
                     os_log("Didn't add judge %@", log: OSLog.default, type: .debug, judgeInfo.name)
                 }
             } else{
-                self.addingNewJudge = false
                 JudgeListManager.GetInstance().selectJudgeInfoAt(judgeIndex)
             }
         }

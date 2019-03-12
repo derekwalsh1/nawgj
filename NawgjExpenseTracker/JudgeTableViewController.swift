@@ -23,6 +23,7 @@ class JudgeTableViewController: UITableViewController {
         numberFormatter.numberStyle = .currency
         
         meet = MeetListManager.GetInstance().getSelectedMeet()
+        meet!.judges = (meet?.judges.sorted(by: {$0.name < $1.name}))!
     }
     
     override func didReceiveMemoryWarning() {

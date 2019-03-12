@@ -68,13 +68,13 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
     
     func saveJudgeInfo(){
         if let judgeInfo = judgeInfo{
-            judgeInfo.name = nameTextField.text ?? "New Judge"
+            judgeInfo.name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespaces) ?? "New Judge"
+            if judgeInfo.name == ""{
+                judgeInfo.name = "New Judge"
+            }
             judgeInfo.level = Judge.Level.valueFor(description: (levelCell.detailTextLabel?.text)!)!
             
-            // If a judge with this name already exists don't update the judge info
-            if JudgeListManager.GetInstance().indexOfJudge(judgeInfo) < 0{
-                JudgeListManager.GetInstance().updateSelectedJudgeWith(judgeInfo)
-            }
+            JudgeListManager.GetInstance().updateSelectedJudgeWith(judgeInfo)
         }
         
         cleanupJudgeList()

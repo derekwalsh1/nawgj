@@ -63,6 +63,13 @@ class MeetTableViewController: UITableViewController {
         } 
     }
     
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        //let movedObject = self.headlines[sourceIndexPath.row]
+        //headlines.remove(at: sourceIndexPath.row)
+        //headlines.insert(movedObject, at: destinationIndexPath.row)
+        MeetListManager.GetInstance().moveMeet(fromIndex: sourceIndexPath.row, toIndex: destinationIndexPath.row)
+    }
+    
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

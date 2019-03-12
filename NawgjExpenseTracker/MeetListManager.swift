@@ -202,4 +202,10 @@ class MeetListManager{
         }
         return nil
     }
+    
+    func moveMeet(fromIndex: Int, toIndex: Int){
+        let meet = meets?.remove(at: fromIndex)
+        meets?.insert(meet!, at: toIndex)
+        saveMeets()
+    }
 }
