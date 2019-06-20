@@ -22,8 +22,8 @@ class MeetPDFCreator : PDFCreator{
         
         var html = generateHTMLHeader()
         html += generateMeetSummaryTable(meet: meet)
+        html += generateInvoiceTable(meet: meet)
         html += generateFeeTable(meet: meet)
-        html += generateFeeTableFooter(meet: meet)
         html += generateMeetDayDetailsTable(meet: meet)
         html += generateHTMLFooter()
         
@@ -38,8 +38,8 @@ class MeetPDFCreator : PDFCreator{
         // 3. Assign paperRect and printableRect
         //let page = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
         //let printable = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
-        let page = CGRect(x: 20, y: 20, width: 680, height: 960) // A4, 72 dpi
-        let printable = CGRect(x: 20, y: 20, width: 680, height: 960) // A4, 72 dpi
+        let page = CGRect(x: 20, y: 20, width: 690, height: 960) // A4, 72 dpi
+        let printable = CGRect(x: 20, y: 20, width: 690, height: 960) // A4, 72 dpi
         render.setValue(page, forKey: "paperRect")
         render.setValue(printable, forKey: "printableRect")
         
@@ -75,6 +75,10 @@ class MeetPDFCreator : PDFCreator{
                     page-break-before: auto;
                     }
                 }
+        
+                @page {
+                size: landscape;
+                }
                 </style>
             </head>
         <body>
@@ -105,7 +109,7 @@ class MeetPDFCreator : PDFCreator{
         let totalHoursString = String(format: "%0.2f Hours", meet.totalMeetHours())
         
         return """
-        <h1 class="pagebreak-before">Meet Summary : \(meet.name)</h1>
+        <h1 class="pagebreak-before">Meet Summary: \(meet.name)</h1>
         <hr>
         <table cellpadding="5" cellspacing="0" border="0">
             <tr align="left">
@@ -149,16 +153,164 @@ class MeetPDFCreator : PDFCreator{
                 <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
             </tr>
         </table>
-        
-        
-        
         """
+    }
+    
+    static func generateInvoiceTable(meet: Meet) -> String{
+        var htmlString : String = """
+
+        <h1 class="pagebreak-before">Meet Invoice:</h1>
+        <hr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td>
+                <b>Meet:</b>\(meet.name) | <b>Date:</b> \(dateFormatter.string(from: meet.startDate)) | <b>Description/Levels</b>: \(meet.meetDescription)
+            </td>
+        </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" width="100%">
+        <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
+            <th>Name</th>
+            <th>Rate</th>
+            <th colspan="3">Fees</th>
+            <th colspan="2">Expenses</th>
+            <th>Taxable Fee</th>
+            <th>Total Due</th>
+            <th>Paid</th>
+        </tr>
+        """
+        
+        for (judgeIndex, judge) in meet.judges.sorted(by: { $0.name < $1.name }).enumerated(){
+            
+            // Determine how many rows are needed for this judge; it will be the greater of the
+            // number of days worked and the number of expense types with an additional row for
+            // the judge totals
+            let totalRows = max(judge.expenses.count, judge.fees.count)
+            
+            for rowNumber in 0...totalRows - 1{
+                htmlString += """
+                    <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
+                    <style type="text/css">
+                    @media print {
+                    .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+                    .pagebreak-before { display: block; page-break-before: always; }
+                    }
+                    </style>
+                """
+                
+                if rowNumber == 0{ // We are on the first row that prints
+                    let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
+                    let hours = judge.fees[rowNumber].getHours()
+                    let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)!
+                    let expense = judge.expenses[rowNumber]
+                    let expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
+                    let expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                    
+                    let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                    let expensesRowSpan = judge.expenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                    
+                    htmlString += """
+                        <td rowspan="\(totalRows)" valign="top">\(judge.name)</td>
+                        <td rowspan="\(totalRows)" valign="top">\(judge.level.fullDescription)</td>
+                        <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
+                        <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
+                        <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
+                        <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
+                        <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
+                        <td rowspan="\(totalRows)">&nbsp;</td>
+                        <td rowspan="\(totalRows)">&nbsp;</td>
+                        <td rowspan="\(totalRows)">&nbsp;</td>
+                    </tr>
+                    """
+                }
+                else{ // We are in the middle rows
+                    if rowNumber < judge.fees.count{
+                        let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                        let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
+                        let hours = judge.fees[rowNumber].getHours()
+                        let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)!
+                        htmlString += """
+                            <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
+                            <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
+                            <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
+                        """
+                    }
+                    
+                    if rowNumber < judge.expenses.count{
+                        let expensesRowSpan = judge.expenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                        let expense = judge.expenses[rowNumber]
+                        let expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
+                        let expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                        htmlString += """
+                            <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
+                            <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
+                        """
+                    }
+                    
+                    if rowNumber < judge.expenses.count || rowNumber < judge.fees.count{
+                        htmlString += """
+                            </tr>
+                        """
+                    }
+                }
+            }
+            
+            htmlString += """
+            <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
+            <style type="text/css">
+            @media print {
+            .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+            .pagebreak-before { display: block; page-break-before: always; }
+            }
+            </style>
+            """
+            let totalFees = numberFormatter.string(from: judge.totalFees() as NSNumber)!
+            let totalExpenses = numberFormatter.string(from: judge.totalExpenses() as NSNumber)!
+            let totalHours = String(format: "%0.1f hrs", judge.totalBillableHours())
+            let totalDue = numberFormatter.string(from: judge.totalCost() as NSNumber)!
+            htmlString += """
+            <td colspan="3" align="left"><b>Totals for \(judge.name):</b></td>
+            <td><b>\(totalHours)</b></td>
+            <td align="right"><b>\(totalFees)</b></td>
+            <td>&nbsp;</td>
+            <td align="right"><b>\(totalExpenses)</b></td>
+            <td align="right"><b>\(totalFees)</b></td>
+            <td align="right"><b>\(totalDue)</b></td>
+            <td align="center"><b>\(judge.isPaid() ? "Yes" : "No")</b></td>
+            </tr>
+            """
+        }
+        
+        htmlString += """
+        <tr align="left" height="26" bgcolor="#BBBBBB" : "")>
+        <style type="text/css">
+        @media print {
+        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+        .pagebreak-before { display: block; page-break-before: always; }
+        }
+        </style>
+            <td colspan="3" align="left"><b>Grand Total for all Judges:</b></td>
+            <td><b>\(meet.totalBillableJudgeHours()) hrs</b></td>
+            <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</b></td>
+            <td>&nbsp;</td>
+            <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFeesAndExpenses() - meet.totalJudgeFees() as NSNumber)!)</b></td>
+            <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</b></td>
+            <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFeesAndExpenses() as NSNumber)!)</b></td>
+            <td>&nbsp;</td>
+        </tr>
+        """
+        
+        htmlString += """
+        </table>
+        """
+        
+        return htmlString
     }
     
     static func generateFeeTable(meet: Meet) -> String{
         var htmlString : String = """
 
-        <h1 class="pagebreak-before">Meet Fee Details</h1>
+        <h1 class="pagebreak-before">Daily Judging Fees:</h1>
         <hr>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr align="left" height="26">
@@ -174,7 +326,7 @@ class MeetPDFCreator : PDFCreator{
         for (dayIndex, day) in meet.days.sorted(by: { $0.meetDate < $1.meetDate }).enumerated(){
             for (judgeIndex, judge) in meet.judges.sorted(by: { $0.name < $1.name }).enumerated(){
                 if let fee = judge.fees.first(where: {$0.date == day.meetDate}){
-                
+                    
                     htmlString += """
                     <tr align="left" height="26" \(dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
                     <style type="text/css">
@@ -194,12 +346,12 @@ class MeetPDFCreator : PDFCreator{
                     let hours = String(format: "%0.2f", fee.getHours())
                     let total = numberFormatter.string(from: fee.getFeeTotal() as NSNumber)!
                     htmlString += """
-                        <td>\(judge.name)</td>
-                        <td>\(rate)</td>
-                        <td>\(judge.level.description)</td>
-                        <td>\(hours)</td>
-                        <td>\(total)</td>
-                        </tr>
+                    <td>\(judge.name)</td>
+                    <td>\(rate)</td>
+                    <td>\(judge.level.description)</td>
+                    <td>\(hours)</td>
+                    <td>\(total)</td>
+                    </tr>
                     """
                 }
             }
@@ -207,13 +359,22 @@ class MeetPDFCreator : PDFCreator{
             let colorString = dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : ""
             let totalDayCost = numberFormatter.string(from: meet.totalJudgesFeeForDay(dayIndex: dayIndex) as NSNumber)!
             htmlString += """
-                <tr align="left" height="26" \(colorString)>
-                    <th colspan="4"></th>
-                    <th align="left">Total Day Fees</th>
-                    <th>\(totalDayCost)</th>
-                </tr>
+            <tr align="left" height="26" \(colorString)>
+            <th colspan="4"></th>
+            <th align="left">Total Day Fees</th>
+            <th>\(totalDayCost)</th>
+            </tr>
             """
         }
+        
+        htmlString += """
+            <tr align="left" height="26" bgcolor="lightgray">
+            <th colspan="4"></th>
+            <th align="left">Total Meet Fees</th>
+            <th>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</th>
+            </tr>
+        </table>
+        """
         
         return htmlString
     }
@@ -346,16 +507,5 @@ class MeetPDFCreator : PDFCreator{
         </table>
         """
         return htmlString
-    }
-    
-    static func generateFeeTableFooter(meet: Meet) -> String{
-        return """
-            <tr align="left" height="26" bgcolor="lightgray">
-                <th colspan="4"></th>
-                <th align="left">Total Meet Fees</th>
-                <th>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</th>
-            </tr>
-        </table>
-        """
     }
 }

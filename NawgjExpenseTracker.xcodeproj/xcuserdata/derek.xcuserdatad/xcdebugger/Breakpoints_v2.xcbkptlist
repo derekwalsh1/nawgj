@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/Expense.swift"
-            timestampString = "569404728.617986"
+            timestampString = "582609347.407952"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "47"
@@ -74,76 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/Expense.swift"
-            timestampString = "569404728.618247"
+            timestampString = "582609347.408188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "62"
             endingLineNumber = "62"
             landmarkName = "getExpenseTotal()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
-            timestampString = "574062692.052808"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
-            landmarkName = "generateFeeTable(meet:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static Expenses.MeetPDFCreator.generateFeeTable(meet: Expenses.Meet, dateFormat: __C.NSDateFormatter, numberFormat: __C.NSNumberFormatter) -&gt; Swift.String"
-                  moduleName = "Expenses"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/derek/workspace/NawgjExpenseTracker/NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
-                  timestampString = "568880203.86099"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "1052">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Expenses.Fee) -&gt; Swift.Bool in static Expenses.MeetPDFCreator.generateFeeTable(meet: Expenses.Meet, dateFormat: __C.NSDateFormatter, numberFormat: __C.NSNumberFormatter) -&gt; Swift.String"
-                  moduleName = "Expenses"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/derek/workspace/NawgjExpenseTracker/NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
-                  timestampString = "568880203.865869"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
-            timestampString = "574062692.053381"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
-            landmarkName = "generateFeeTable(meet:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -170,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/MeetTableViewController.swift"
-            timestampString = "574062692.0537699"
+            timestampString = "574063807.615073"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
@@ -202,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeTableViewController.swift"
-            timestampString = "574062692.0538729"
+            timestampString = "574063807.615186"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "21"
@@ -282,7 +218,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/MeetTableViewController.swift"
-            timestampString = "574062692.0540251"
+            timestampString = "574063807.61534"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "140"
@@ -314,7 +250,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeList/JudgeListTableViewController.swift"
-            timestampString = "574062692.054121"
+            timestampString = "574063807.615448"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "91"
@@ -330,7 +266,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeList/JudgeInfoDetailsTableViewController.swift"
-            timestampString = "574062692.054204"
+            timestampString = "574063807.615545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
@@ -506,7 +442,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeList/JudgeListTableViewController.swift"
-            timestampString = "574062692.054428"
+            timestampString = "574063807.615782"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "93"
@@ -522,7 +458,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
-            timestampString = "574062692.054511"
+            timestampString = "574063807.615865"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "35"
@@ -538,7 +474,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeListManager.swift"
-            timestampString = "574062692.054582"
+            timestampString = "574063807.6159461"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "78"
@@ -554,7 +490,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeListManager.swift"
-            timestampString = "574062692.054651"
+            timestampString = "574063807.6160311"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "79"
@@ -570,7 +506,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/MeetTableViewController.swift"
-            timestampString = "574062692.054718"
+            timestampString = "574063807.6161079"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
@@ -586,7 +522,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeListManager.swift"
-            timestampString = "574062692.054786"
+            timestampString = "574063807.616186"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "63"
@@ -602,7 +538,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeList/JudgeInfoDetailsTableViewController.swift"
-            timestampString = "574062692.0548511"
+            timestampString = "574063807.616264"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "65"
@@ -618,7 +554,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeList/JudgeListTableViewController.swift"
-            timestampString = "574062692.05492"
+            timestampString = "574063807.616344"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "119"
@@ -634,7 +570,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/JudgeList/JudgeListTableViewController.swift"
-            timestampString = "574062692.054996"
+            timestampString = "574063807.616421"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "95"
@@ -650,12 +586,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
-            timestampString = "574062692.0550669"
+            timestampString = "574063807.616493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "131"
             endingLineNumber = "131"
             landmarkName = "touchesBegan(_:with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
+            timestampString = "582709486.897553"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "generateInvoiceTable(meet:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static Expenses.MeetPDFCreator.generateInvoiceTable(meet: Expenses.Meet) -&gt; Swift.String"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/workspace/NawgjExpenseTracker/NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
+                  timestampString = "582705368.871433"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "186"
+                  endingLineNumber = "186"
+                  offsetFromSymbolStart = "702">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Expenses.Judge, Expenses.Judge) -&gt; Swift.Bool in static Expenses.MeetPDFCreator.generateInvoiceTable(meet: Expenses.Meet) -&gt; Swift.String"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/workspace/NawgjExpenseTracker/NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
+                  timestampString = "582705368.876681"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "186"
+                  endingLineNumber = "186"
+                  offsetFromSymbolStart = "34">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
+            timestampString = "582709486.8982069"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "generateInvoiceTable(meet:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

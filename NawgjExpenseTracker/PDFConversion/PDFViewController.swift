@@ -46,7 +46,7 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate {
     
     func emailPDF(){
         if let path = pdfURL{
-            let email = "derek.walsh@gmail.com"
+            let email = ""
             
             if( MFMailComposeViewController.canSendMail()){
                 let mailComposer = MFMailComposeViewController()
