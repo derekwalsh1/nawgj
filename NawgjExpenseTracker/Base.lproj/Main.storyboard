@@ -469,7 +469,7 @@
                                 <segue destination="I3a-9F-Wj5" kind="unwind" unwindAction="unwindToMeetListWithSender:" id="Uty-5Z-yzq"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Share" id="ZNi-kw-fke">
+                        <barButtonItem key="rightBarButtonItem" title="Reports" id="ZNi-kw-fke">
                             <connections>
                                 <segue destination="hUD-qq-wz8" kind="show" identifier="shareMeet" id="4ZE-1Q-zvf"/>
                             </connections>

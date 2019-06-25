@@ -23,6 +23,7 @@ class MeetPDFCreator : PDFCreator{
         var html = generateHTMLHeader()
         html += generateMeetSummaryTable(meet: meet)
         html += generateInvoiceTable(meet: meet)
+        html += generateCheckList(meet: meet)
         html += generateFeeTable(meet: meet)
         html += generateMeetDayDetailsTable(meet: meet)
         html += generateHTMLFooter()
@@ -156,6 +157,78 @@ class MeetPDFCreator : PDFCreator{
         """
     }
     
+    
+    static func generateCheckList(meet: Meet) -> String{
+        
+        var htmlString : String = """
+        
+        <h1 class="pagebreak-before">Checklist Report:</h1>
+        <hr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+        <td>
+        <b>Meet:</b>\(meet.name) | <b>Date:</b> \(dateFormatter.string(from: meet.startDate))
+        </td>
+        </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" width="100%">
+        <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
+        <th>Name</th>
+        <th>Rate</th>
+        <th>Fees</th>
+        <th>W9</th>
+        <th>Receipts</th>
+        <th>Paid</th>
+        <th>Other</th>
+        <th width="30%">Notes</th>
+        </tr>
+        """
+        
+        let sortedJudges = meet.judges.sorted(by: { $0.name < $1.name })
+        for (judgeIndex, judge) in sortedJudges.enumerated(){
+            let mileageExpense = judge.expenses.first(where: {$0.type == Expense.ExpenseType.Mileage})
+            let mileage = String(format: "%0.2f", mileageExpense?.amount ?? 0)
+            htmlString += """
+            <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
+            <style type="text/css">
+            @media print {
+            .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+            .pagebreak-before { display: block; page-break-before: always; }
+            }
+            </style>
+            <td>\(judge.name)</td>
+            <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
+            <td>\(mileage)</td>
+            <td></td>
+            <td></td>
+            <td align="middle">\(judge.isPaid() ? "Y" : "N")</td>
+            <td></td>
+            <td></td>
+            </tr>
+            """
+        }
+        htmlString += """
+        <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
+        <style type="text/css">
+        @media print {
+        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+        .pagebreak-before { display: block; page-break-before: always; }
+        }
+        </style>
+            <td>Totals:</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </table>
+        """
+        return htmlString
+    }
+    
     static func generateInvoiceTable(meet: Meet) -> String{
         var htmlString : String = """
 
@@ -168,7 +241,7 @@ class MeetPDFCreator : PDFCreator{
             </td>
         </tr>
         </table>
-        <table border="1" cellpadding="0" cellspacing="0" width="100%">
+        <table border="1" cellpadding="1" cellspacing="0" width="100%">
         <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
             <th>Name</th>
             <th>Rate</th>

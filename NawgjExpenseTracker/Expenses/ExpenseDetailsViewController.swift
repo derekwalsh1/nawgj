@@ -143,7 +143,7 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     
     func saveExpense(){
         if let text = amountTextField.text, let expense = expense{
-            expense.amount = Float(isMileageExpense ? text : text.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ""))!
+            expense.amount = Float(isMileageExpense ? text.replacingOccurrences(of: ",", with: "") : text.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ""))!
             expense.notes = notesTextView.text ?? " "
             expense.date = expenseDatePicker.date
             MeetListManager.GetInstance().updateSelectedExpenseWith(expense: expense)
