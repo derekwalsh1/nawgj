@@ -39,8 +39,8 @@ class MeetPDFCreator : PDFCreator{
         // 3. Assign paperRect and printableRect
         //let page = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
         //let printable = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
-        let page = CGRect(x: 20, y: 20, width: 690, height: 960) // A4, 72 dpi
-        let printable = CGRect(x: 20, y: 20, width: 690, height: 960) // A4, 72 dpi
+        let page = CGRect(x: 20, y: 20, width: 680, height: 960) // A4, 72 dpi
+        let printable = CGRect(x: 20, y: 20, width: 680, height: 960) // A4, 72 dpi
         render.setValue(page, forKey: "paperRect")
         render.setValue(printable, forKey: "printableRect")
         
