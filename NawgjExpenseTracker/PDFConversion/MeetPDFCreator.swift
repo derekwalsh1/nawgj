@@ -175,7 +175,7 @@ class MeetPDFCreator : PDFCreator{
         <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
         <th>Name</th>
         <th>Rate</th>
-        <th>Fees</th>
+        <th>Miles</th>
         <th>W9</th>
         <th>Receipts</th>
         <th>Paid</th>
@@ -197,7 +197,7 @@ class MeetPDFCreator : PDFCreator{
             }
             </style>
             <td>\(judge.name)</td>
-            <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
+            <td>\(judge.level.fullDescription)</td>
             <td>\(mileage)</td>
             <td></td>
             <td></td>
@@ -258,7 +258,8 @@ class MeetPDFCreator : PDFCreator{
             // Determine how many rows are needed for this judge; it will be the greater of the
             // number of days worked and the number of expense types with an additional row for
             // the judge totals
-            let totalRows = max(judge.expenses.count, judge.fees.count)
+            let filteredExpenses = judge.expenses.filter { $0.amount > 0.0 }
+            let totalRows = max(filteredExpenses.count, judge.fees.count)
             
             for rowNumber in 0...totalRows - 1{
                 htmlString += """
@@ -275,12 +276,16 @@ class MeetPDFCreator : PDFCreator{
                     let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
                     let hours = judge.fees[rowNumber].getHours()
                     let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)!
-                    let expense = judge.expenses[rowNumber]
-                    let expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
-                    let expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                    
+                    var expenseName = ""
+                    var expenseTotal = ""
+                    if let expense = filteredExpenses.count > 0  ? filteredExpenses[0] : nil {
+                        expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
+                        expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                    }
                     
                     let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
-                    let expensesRowSpan = judge.expenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                    let expensesRowSpan = filteredExpenses.count - 1 <= rowNumber ? totalRows - rowNumber : 0
                     
                     htmlString += """
                         <td rowspan="\(totalRows)" valign="top">\(judge.name)</td>
@@ -288,8 +293,20 @@ class MeetPDFCreator : PDFCreator{
                         <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
                         <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
                         <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
+                    """
+                    if filteredExpenses.count == 0 {
+                        htmlString += """
+                        <td colspan="2" rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
+                        """
+                    }
+                    else {
+                        htmlString += """
                         <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
                         <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
+                        """
+                        
+                    }
+                    htmlString += """
                         <td rowspan="\(totalRows)">&nbsp;</td>
                         <td rowspan="\(totalRows)">&nbsp;</td>
                         <td rowspan="\(totalRows)">&nbsp;</td>
@@ -309,9 +326,10 @@ class MeetPDFCreator : PDFCreator{
                         """
                     }
                     
-                    if rowNumber < judge.expenses.count{
-                        let expensesRowSpan = judge.expenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
-                        let expense = judge.expenses[rowNumber]
+                    if rowNumber < filteredExpenses.count{
+                        let expensesRowSpan = filteredExpenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                        
+                        let expense = filteredExpenses[rowNumber]
                         let expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
                         let expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                         htmlString += """
@@ -320,7 +338,7 @@ class MeetPDFCreator : PDFCreator{
                         """
                     }
                     
-                    if rowNumber < judge.expenses.count || rowNumber < judge.fees.count{
+                    if rowNumber < filteredExpenses.count || rowNumber < judge.fees.count{
                         htmlString += """
                             </tr>
                         """
@@ -349,7 +367,7 @@ class MeetPDFCreator : PDFCreator{
             <td align="right"><b>\(totalExpenses)</b></td>
             <td align="right"><b>\(totalFees)</b></td>
             <td align="right"><b>\(totalDue)</b></td>
-            <td align="center"><b>\(judge.isPaid() ? "Yes" : "No")</b></td>
+            <td align="center"><b>\(judge.isPaid() ? "Paid" : "Not Paid")</b></td>
             </tr>
             """
         }
@@ -456,129 +474,114 @@ class MeetPDFCreator : PDFCreator{
         
         let numberOfDays = meet.days.count
         
-        var htmlString : String = """
+        if numberOfDays > 0 {
+            var htmlString : String = """
 
-        <h1 class="pagebreak-before">Meet Day Details</h1>
-        <hr>
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr bgcolor=\"EEEEEE">
-                <th align="left">Date</th>
-        """
-        // The header row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-                <th align="left">\(dateFormatterShort.string(from: meet.days[index].meetDate))</th>
+            <h1 class="pagebreak-before">Meet Day Details</h1>
+            <hr>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr bgcolor=\"EEEEEE">
+                    <th align="left">Date</th>
             """
-        }
-        htmlString += """
-            </tr>
-            <tr>
-                <th align="left">Start Time</th>
-        """
-        // The start time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-                <td>\(timeFormatter.string(from: meet.days[index].startTime))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">End Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(timeFormatter.string(from: meet.days[index].endTime))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Total Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%0.2f hrs", meet.days[index].totalTimeInHours()))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Breaks</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%d", meet.days[index].breaks))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Break Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%0.2f hrs", meet.days[index].breakTimeInHours()))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Billed Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%0.2f hrs", meet.days[index].totalBillableTimeInHours()))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left" valign="top">Judges</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td valign="top">
-            """
-            let judges = meet.judges.filter({$0.getFeesFor(date: meet.days[index].meetDate) > 0})
-            for (index, judge) in judges.enumerated(){
-                htmlString += "\(index == 0 ? "" : "<br>")\(judge.name)"
+            // The header row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                    <th align="left">\(dateFormatterShort.string(from: meet.days[index].meetDate))</th>
+                """
             }
             htmlString += """
-            </td>
+                </tr>
+                <tr>
+                    <th align="left">Start Time</th>
             """
+            // The start time row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                    <td>\(timeFormatter.string(from: meet.days[index].startTime))</td>
+                """
+            }
+            htmlString += """
+            </tr>
+            <tr>
+            <th align="left">End Time</th>
+            """
+            // The end time row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                <td>\(timeFormatter.string(from: meet.days[index].endTime))</td>
+                """
+            }
+            htmlString += """
+            </tr>
+            <tr>
+            <th align="left">Total Time</th>
+            """
+            // The end time row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                <td>\(String(format: "%0.2f hrs", meet.days[index].totalTimeInHours()))</td>
+                """
+            }
+            htmlString += """
+            </tr>
+            <tr>
+            <th align="left">Breaks</th>
+            """
+            // The end time row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                <td>\(String(format: "%d", meet.days[index].breaks))</td>
+                """
+            }
+            htmlString += """
+            </tr>
+            <tr>
+            <th align="left">Break Time</th>
+            """
+            // The end time row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                <td>\(String(format: "%0.2f hrs", meet.days[index].breakTimeInHours()))</td>
+                """
+            }
+            htmlString += """
+            </tr>
+            <tr>
+            <th align="left">Billed Time</th>
+            """
+            // The end time row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                <td>\(String(format: "%0.2f hrs", meet.days[index].totalBillableTimeInHours()))</td>
+                """
+            }
+            htmlString += """
+            </tr>
+            <tr>
+            <th align="left" valign="top">Judges</th>
+            """
+            // The end time row
+            for index in 0...numberOfDays - 1{
+                htmlString += """
+                <td valign="top">
+                """
+                let judges = meet.judges.filter({$0.getFeesFor(date: meet.days[index].meetDate) > 0})
+                for (index, judge) in judges.enumerated(){
+                    htmlString += "\(index == 0 ? "" : "<br>")\(judge.name)"
+                }
+                htmlString += """
+                </td>
+                """
+            }
+            
+            htmlString += """
+            </tr>
+            </table>
+            """
+            
+            return htmlString
         }
         
-        htmlString += """
-        </tr>
-        """
-        
-        
-        // The start time row
-        /*
-                <td>Date</td>
-                <td>Start Time</td>
-                <td>End Time</td>
-                <td>Total Time</td>
-                <td>No. of Breaks</td>
-                <td>Total Break Time</td>
-                <td>No. of Judges</td>
-                <td>Billed Hours</td>
-                <td valign="top">Judges</td>
-                <td>Total Judge Fees</td>
-            </tr>
-         */
-        
-        
-        htmlString += """
-        </table>
-        """
-        return htmlString
+        return ""
     }
 }

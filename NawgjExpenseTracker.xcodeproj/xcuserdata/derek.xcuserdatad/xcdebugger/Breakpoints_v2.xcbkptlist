@@ -458,7 +458,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
-            timestampString = "583172639.438437"
+            timestampString = "583207801.7391109"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "35"
@@ -586,7 +586,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
-            timestampString = "583172639.438861"
+            timestampString = "583207801.739524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "131"
@@ -602,7 +602,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
-            timestampString = "583172639.439001"
+            timestampString = "583303873.577035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "256"
@@ -650,13 +650,61 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
-            timestampString = "583172639.439965"
+            timestampString = "583303873.577894"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "398"
+            endingLineNumber = "398"
             landmarkName = "generateInvoiceTable(meet:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
+            timestampString = "583303873.5784481"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
+            landmarkName = "generateInvoiceTable(meet:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static Expenses.MeetPDFCreator.generateInvoiceTable(meet: Expenses.Meet) -&gt; Swift.String"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/workspace/NawgjExpenseTracker/NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
+                  timestampString = "583302515.9015189"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "261"
+                  endingLineNumber = "261"
+                  offsetFromSymbolStart = "1866">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Expenses.Expense) -&gt; Swift.Bool in static Expenses.MeetPDFCreator.generateInvoiceTable(meet: Expenses.Meet) -&gt; Swift.String"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/workspace/NawgjExpenseTracker/NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
+                  timestampString = "583302515.9064209"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "261"
+                  endingLineNumber = "261"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
