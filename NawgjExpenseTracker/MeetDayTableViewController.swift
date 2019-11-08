@@ -73,40 +73,18 @@ class MeetDayTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
+        if let destinationViewController = segue.destination as? MeetDayDetailViewController{
+            destinationViewController.presentingInAddDayMode = segue.identifier == "AddItem"
+        }
+        
         switch(segue.identifier ?? "") {
-        case "AddItem":
-            // If there is already a meet day defined for this meet then base the new meet day
-            // details off information gleaned from the previous meet day. Otherwise use the
-            // start date if the meet and then a default start and end time and number of breaks
-            var newMeetDay : MeetDay
-            if (meet?.days.count)! > 0 {
-                newMeetDay = MeetDay(meetDate: Date(), startTime: Date(), endTime: Date(), breaks: 2)
-                let previousMeetDay = meet?.days[(meet?.days.count)! - 1]
-                newMeetDay.breaks = (previousMeetDay?.breaks)!
-                newMeetDay.meetDate = (previousMeetDay?.meetDate.addingTimeInterval(24*60*60))!
-                newMeetDay.startTime = (previousMeetDay?.startTime)!
-                newMeetDay.endTime = (previousMeetDay?.endTime)!
-            }
-            else{
-                let date = meet?.startDate
-                let startTime = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: date!)
-                let endTime = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: date!)
-                newMeetDay = MeetDay(meetDate: date!, startTime: startTime!, endTime: endTime!, breaks: 2)
-            }
+            case "ShowDetail":
+                if let selectedMeetDayCell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: selectedMeetDayCell){
+                    MeetListManager.GetInstance().selectMeetDayAt(index: indexPath.row)
+                }
             
-            // Add a new meet day.
-            let newIndexPath = IndexPath(row: (meet?.days.count)!, section: 0)
-            MeetListManager.GetInstance().addMeetDay(meetDay: newMeetDay)
-            MeetListManager.GetInstance().selectMeetDayAt(index: newIndexPath.row)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-        case "ShowDetail":
-            if let selectedMeetDayCell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: selectedMeetDayCell){
-                MeetListManager.GetInstance().selectMeetDayAt(index: indexPath.row)
-            }
-            
-        default:
-            break
+            default:
+                break
         }
     }
     

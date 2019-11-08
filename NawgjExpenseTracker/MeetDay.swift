@@ -12,7 +12,7 @@ import os.log
 class MeetDay: Codable {
     
     static let BREAK_TIME_HOURS : Float = 0.5
-    static let MIN_BILLING_HOURS : Float = 3.0
+    static let MIN_BILLING_HOURS : Float = 2.0
     static let DATE_FORMAT : String = "MMMM dd yyyy"
     
     // MARK: Properties

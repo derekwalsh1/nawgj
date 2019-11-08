@@ -162,7 +162,7 @@ class MeetListManager{
     
     func selectMeetDayForFee(fee : Fee){
         if let meet = getSelectedMeet(){
-            if let index = meet.days.index(where: { $0.meetDate == fee.date}){
+            if let index = meet.days.firstIndex(where: { $0.meetDate == fee.date}){
                 selectMeetDayAt(index: index)
             }
         }

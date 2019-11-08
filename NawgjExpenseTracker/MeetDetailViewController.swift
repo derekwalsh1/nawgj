@@ -25,7 +25,6 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate{
     
     @IBOutlet weak var summaryTableView: UITableView!
     
-    
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)` or constructed as part of adding a new meal.
      */
@@ -64,13 +63,21 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate{
         descriptionTextField.text = meet.meetDescription.trimmingCharacters(in: .whitespaces)
         meetLocationField.text = meet.location.trimmingCharacters(in: .whitespaces)
         
+        if meet.name == "New Meet"{
+            nameTextField.text = ""
+        }
+        
+        if nameTextField.text == ""{
+            nameTextField.becomeFirstResponder()
+        }
+        else if meetLocationField.text == ""{
+            meetLocationField.becomeFirstResponder()
+        }
+        else if descriptionTextField.text == ""{
+            descriptionTextField.becomeFirstResponder()
+        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
@@ -194,6 +201,11 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate{
         }
         tableView.reloadData()
         summaryTableView.reloadData()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 }
 

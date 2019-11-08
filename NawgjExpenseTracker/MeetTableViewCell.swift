@@ -53,6 +53,10 @@ class MeetTableViewCell: UITableViewCell {
             costCell.detailTextLabel?.text = numberFormatter.string(from: meet.totalCostOfMeet() as NSNumber)!
             titleLabel.text = meet.name + " (\(dateFormatter.string(from: meet.startDate)))"
         }
+        
+        locationCell.setNeedsLayout()
+        descriptionCell.setNeedsLayout()
+        hoursCell.setNeedsLayout()
+        costCell.setNeedsLayout()
     }
-    
 }

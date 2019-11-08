@@ -86,25 +86,25 @@ class ExpensesTableViewController: UITableViewController {
         
         switch(segue.identifier){
         case "ShowTollsExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == Expense.ExpenseType.Toll})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == Expense.ExpenseType.Toll})
             break
         case "ShowTransportationExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Transportation})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Transportation})
             break
         case "ShowParkingExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Parking})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Parking})
             break
         case "ShowAirfareExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Airfare})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Airfare})
             break
         case "ShowOtherExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Other})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Other})
             break
         case "ShowMealsExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Meals})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Meals})
             break
         case "ShowMileageExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.index(where:{$0.type == .Mileage})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Mileage})
             break
         default:
             break

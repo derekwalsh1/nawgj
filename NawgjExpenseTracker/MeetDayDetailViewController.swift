@@ -11,6 +11,8 @@ import os.log
 
 class MeetDayDetailViewController: UITableViewController, UINavigationControllerDelegate {
     
+    @IBOutlet weak var doneBarButton: UIBarButtonItem!
+    
     //MARK: Properties
     @IBOutlet weak var meetDayDateCell: UITableViewCell!
     @IBOutlet weak var meetDayDatePicker: UIDatePicker!
@@ -38,6 +40,8 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     var dateFormatter : DateFormatter = DateFormatter()
     var timeFormatter : DateFormatter = DateFormatter()
     
+    var presentingInAddDayMode : Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,39 +57,41 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         billableTimeCell.textLabel?.textColor = self.view.tintColor
         breakTimeCell.textLabel?.textColor = self.view.tintColor
         
-        meetDay = MeetListManager.GetInstance().getSelectedMeetDay()
-        
-        // Set up views if editing an existing Meet day.
-        if let meetDay = meetDay {
-            
-            // Round each date down to the nearest quarter hour
-            let calendar = Calendar.current
-            var hour = calendar.component(.hour, from: meetDay.meetDate)
-            var minute = calendar.component(.minute, from: meetDay.meetDate)
-            var floorMinute = minute - (minute % 15)
-            meetDayDatePicker.date = calendar.date(bySettingHour: hour,
-                                          minute: floorMinute,
-                                          second: 0, 
-                                          of: meetDay.meetDate)!
-            
-            hour = calendar.component(.hour, from: meetDay.startTime)
-            minute = calendar.component(.minute, from: meetDay.startTime)
-            floorMinute = minute - (minute % 15)
-            startTimePicker.date = calendar.date(bySettingHour: hour,
-                                                 minute: floorMinute,
-                                                 second: 0,
-                                                 of: meetDay.startTime)!
-            
-            hour = calendar.component(.hour, from: meetDay.endTime)
-            minute = calendar.component(.minute, from: meetDay.endTime)
-            floorMinute = minute - (minute % 15)
-            endTimePicker.date = calendar.date(bySettingHour: hour,
-                                               minute: floorMinute,
-                                               second: 0,
-                                               of: meetDay.endTime)!
-            
-            breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
+        if presentingInAddDayMode{
+            os_log("Presenting in Add Meet Day mode", log: OSLog.default, type: .debug)
+            if let meet = MeetListManager.GetInstance().getSelectedMeet(){
+                if meet.days.count > 0{
+                    // Grab the last meet day and use the data from that meet day as the
+                    // starting point for the new meet day. Just increment the start date
+                    // by 1 day
+                    let lastMeetDayAlreadyAdded = meet.days[meet.days.count - 1]
+                    meetDay = MeetDay(meetDate: lastMeetDayAlreadyAdded.meetDate.addingTimeInterval(24*60*60), startTime: lastMeetDayAlreadyAdded.startTime, endTime: lastMeetDayAlreadyAdded.endTime, breaks: lastMeetDayAlreadyAdded.breaks)
+                    
+                    if let meetDay = meetDay{
+                        meetDayDatePicker.date = meetDay.meetDate
+                        startTimePicker.date = meetDay.startTime
+                        endTimePicker.date = meetDay.endTime
+                    }
+                }
+            }
             updateUILabels()
+        }
+        else{
+            os_log("Presenting in Edit Meet Day mode", log: OSLog.default, type: .debug)
+            meetDay = MeetListManager.GetInstance().getSelectedMeetDay()
+            
+            if let meetDay = meetDay{
+                meetDayDatePicker.date = meetDay.meetDate
+                startTimePicker.date = meetDay.startTime
+                endTimePicker.date = meetDay.endTime
+                
+                breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
+                
+                if let meet = MeetListManager.GetInstance().getSelectedMeet(){
+                    meetDayDatePicker.minimumDate = meet.startDate
+                }
+                updateUILabels()
+            }
         }
     }
     
@@ -98,29 +104,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
-    }
-    
-    //MARK: Navigation
-    @IBAction func backToMeetDaysPressed(_ sender: UIBarButtonItem) {
-        saveMeetDay()
-    }
-    
-    // This method lets you configure a view controller before it's presented.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        saveMeetDay()
-    }
-    
-    func saveMeetDay(){
-        if let meetDay = meetDay{
-            meetDay.meetDate = meetDayDatePicker.date
-            meetDay.startTime = startTimePicker.date
-            meetDay.endTime = endTimePicker.date
-            meetDay.breaks = breaksSegmentedControl.selectedSegmentIndex
-            
-            MeetListManager.GetInstance().updateSelectedMeetDayWith(meetDay: meetDay)
-        }
     }
     
     func updateUILabels()
@@ -136,8 +119,10 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func numberOfBreaksChanged(_ sender: UISegmentedControl) {
-        meetDay?.breaks = sender.selectedSegmentIndex
-        updateUILabels()
+        if let meetDay = meetDay{
+            meetDay.breaks = sender.selectedSegmentIndex
+            updateUILabels()
+        }
     }
     
     @IBAction func meetDayStartTimeChanged(_ sender: UIDatePicker) {
@@ -148,7 +133,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func meetDayEndTimeChanged(_ sender: UIDatePicker) {
-        if sender.date <= startTimePicker.date{
+        if sender.date < startTimePicker.date{
             startTimePicker.setDate(sender.date - 15 * 60, animated: true)
         }
         updateUILabels()
@@ -230,5 +215,39 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         else {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
+    }
+    
+    @IBAction func doneBarButtonClicked(_ sender: UIBarButtonItem) {
+        if let meetDay = meetDay{
+            meetDay.meetDate = meetDayDatePicker.date
+            meetDay.startTime = startTimePicker.date
+            meetDay.endTime = endTimePicker.date
+            meetDay.breaks = breaksSegmentedControl.selectedSegmentIndex
+            
+            if presentingInAddDayMode{
+                MeetListManager.GetInstance().addMeetDay(meetDay: meetDay)
+            }
+            else{
+                MeetListManager.GetInstance().updateSelectedMeetDayWith(meetDay: meetDay)
+            }
+        }
+        
+        performSegue(withIdentifier: "unwindToDayList", sender: self)
+    }
+    
+    @IBAction func cancelBarButtonItemClicked(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "unwindToDayList", sender: self)
+    }
+    
+    func updateDoneButtonState(){
+        // Done button should be enable if the day settings are valid. This means that the day must
+        // be unique for the meet, i.e. the date of the meet day must not be already used. Other than
+        // that, the UI prevents all other invalid settings from occurring but we check anyway. The
+        // start time needs to be before the end time and the number of breaks can be 0, 1, 2 or 3 only.
+        // A meet day really only has 4 attributes
+        //   (1) A Date
+        //   (2) A Start Time
+        //   (3) An End TIme
+        //   (4) Number of 30 minute breaks
     }
 }

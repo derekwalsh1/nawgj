@@ -28,31 +28,43 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     @IBOutlet weak var expenseDateCell: UITableViewCell!
     @IBOutlet weak var expenseDatePicker: UIDatePicker!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Load the selected expense and judge from the meet list manager singleton
         expense = MeetListManager.GetInstance().getSelectedExpense()
         judge = MeetListManager.GetInstance().getSelectedJudge()
         
+        // Based on the expense type, load the appropriate image related to the expense
         loadExpenseImage()
         
-        numberFormatter.numberStyle = .currency
         dateFormatter.dateStyle = .long
-        
         navigationItem.title = expense?.type.description
-        isMileageExpense = expense?.type == .Mileage
-        amountTextField.text = isMileageExpense ? String(format: "%.2f", (expense?.amount)!) : numberFormatter.string(from: expense!.amount as NSNumber)!
-        notesTextView.text = expense?.notes ?? " "
+        numberFormatter.numberStyle = .decimal
         
-        titleLabel.text = isMileageExpense ? "Miles" : "Amount"
-        amountTextField.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
-        
-        expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: (expense?.date) ?? Date())
-        expenseDatePicker.date = (expense?.date) ?? Date()
-        
-        notesTextView.delegate = self
-        amountTextField.delegate = self
+        // Update the fields in the view based on the expense details. If no expense is available then the fields
+        // become unavailable and only the cancel button is enabled
+        if let expense = expense{
+            amountTextField.text = numberFormatter.string(from: NSNumber(value: expense.amount as Float))
+            notesTextView.text = expense.notes
+            expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: (expense.date) ?? Date())
+            expenseDatePicker.date = (expense.date) ?? Date()
+            titleLabel.text = expense.type == .Mileage ? "Miles" : "Amount($)"
+            amountTextField.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
+            notesTextView.delegate = self
+            amountTextField.delegate = self
+            
+            if expense.amount == 0{
+                amountTextField.becomeFirstResponder()
+            }
+        }
+        else{
+            amountTextField.isEnabled = false
+            notesTextView.isEditable = false
+            expenseDatePicker.isEnabled = false
+        }
     }
     
     //MARK: UITextFieldDelegate
@@ -61,6 +73,10 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         return true
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        checkAndEnableDoneButton()
+    }
+   
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         textView.resignFirstResponder()
         return true
@@ -85,13 +101,12 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
                 imageView.image = UIImage(named: "other")
             }
             
+            
         }
     }
     
     @objc func myTextFieldDidChange(_ textField: UITextField) {
-        if let amountString = isMileageExpense ? textField.text?.milesInputFormatting() : textField.text?.currencyInputFormatting() {
-            textField.text = amountString
-        }
+        checkAndEnableDoneButton()
     }
     
     override func didReceiveMemoryWarning() {
@@ -111,6 +126,10 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        // If the date entry field is in use, the showDatePicker variable will be true
+        // and the height of the row should be determined by the table view. Otherwise
+        // it is hiddent by setting the row height to 0.
         if indexPath.section == 1 && indexPath.row == 2 && !showDatePicker {
             return 0
         }
@@ -118,15 +137,22 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // If the user clicks on the date field, then expand or collapse the field and
+        // refresh the table to update the view
         if indexPath.section == 1 && indexPath.row == 1 {
             showDatePicker = !showDatePicker
             tableView.beginUpdates()
             tableView.endUpdates()
         }
         
+        // Since the date summary row is not selectable (we don't ever want to change the
+        // background), deselect the row when done, regardless of whether we are selecting
+        // or deselecting the row.
         tableView.deselectRow(at: indexPath, animated: true)
         notesTextView.resignFirstResponder()
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         self.notesTextView.resignFirstResponder()
     }
@@ -134,16 +160,38 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        saveExpense()
+
+        if let barButtonItem = sender as? UIBarButtonItem {
+            if barButtonItem.title != "Cancel"{
+                saveExpense()
+            }
+        }
     }
     
     @IBAction func expenseDateChanged(_ sender: UIDatePicker) {
         expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: sender.date)
     }
     
+    func checkAndEnableDoneButton(){
+        // The amount field needs to be a valid decimal value.
+        if let text = amountTextField.text, !text.isEmpty{
+            let number = numberFormatter.number(from: text)
+            let enable = number != nil
+            doneButton.isEnabled = enable
+        }
+        else{
+            doneButton.isEnabled = false
+        }
+    }
+    
     func saveExpense(){
         if let text = amountTextField.text, let expense = expense{
-            expense.amount = Float(isMileageExpense ? text.replacingOccurrences(of: ",", with: "") : text.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: ""))!
+            if let amount = numberFormatter.number(from: text){
+                expense.amount = amount.floatValue
+            }
+            else{
+                expense.amount = 0.0
+            }
             expense.notes = notesTextView.text ?? " "
             expense.date = expenseDatePicker.date
             MeetListManager.GetInstance().updateSelectedExpenseWith(expense: expense)

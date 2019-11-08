@@ -86,10 +86,13 @@ class Judge: Codable {
     var fees : Array<Fee>
     private var notes : String?
     private var paid : Bool?
+    private var meetReferee : Bool?
+    private var w9Received : Bool?
+    private var meetRefereeFee : Float?
     
     
     //MARK: Initialization
-    init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>, notes: String, paid: Bool) {
+    init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>, notes: String, paid: Bool, meetRef: Bool, w9Received : Bool, meetRefereeFee : Float) {
         // Initialize stored properties.
         self.name = name
         self.level = level
@@ -97,10 +100,13 @@ class Judge: Codable {
         self.fees = fees
         self.notes = notes
         self.paid = paid
+        self.meetReferee = meetRef
+        self.w9Received = w9Received
+        self.meetRefereeFee = meetRefereeFee
     }
     
     required convenience init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>) {
-        self.init(name: name, level: level, expenses: expenses, fees: fees, notes: "", paid: false)
+        self.init(name: name, level: level, expenses: expenses, fees: fees, notes: "", paid: false, meetRef: false, w9Received: false, meetRefereeFee: 0.0)
     }
     
     required convenience init?(name: String, level: Level, fees: Array<Fee>) {
@@ -170,6 +176,30 @@ class Judge: Codable {
     
     func setPaid(_ paid : Bool){
         self.paid = paid
+    }
+    
+    func isMeetRef() -> Bool{
+        return meetReferee ?? false
+    }
+    
+    func setMeetRef(_ isMeetRef : Bool){
+        self.meetReferee = isMeetRef
+    }
+    
+    func isW9Received() -> Bool{
+        return w9Received ?? false
+    }
+    
+    func setW9Received(_ isW9Received : Bool){
+        self.w9Received = isW9Received
+    }
+    
+    func getMeetRefereeFee() -> Float{
+        return meetRefereeFee ?? 0.0
+    }
+    
+    func setMeetRefereeFee(_ amount : Float){
+        self.meetRefereeFee = amount
     }
     
     func setNotes(_ notes : String){

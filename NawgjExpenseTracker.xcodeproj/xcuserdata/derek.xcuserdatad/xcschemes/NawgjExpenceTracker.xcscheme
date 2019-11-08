@@ -27,18 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "65DBC977217D5B320029C6AA"
-               BuildableName = "NawgjExpenseTrackerTests.xctest"
-               BlueprintName = "NawgjExpenseTrackerTests"
-               ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -48,8 +36,8 @@
             ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <Testables>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -71,8 +59,6 @@
             ReferencedContainer = "container:NawgjExpenseTracker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
       <LocationScenarioReference
          identifier = "San Francisco, CA, USA"
          referenceType = "1">

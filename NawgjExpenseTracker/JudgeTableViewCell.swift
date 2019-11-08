@@ -22,5 +22,4 @@ class JudgeTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    
 }

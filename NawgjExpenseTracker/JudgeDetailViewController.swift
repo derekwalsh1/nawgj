@@ -18,8 +18,15 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     @IBOutlet weak var notesTextField: UITextField!
     @IBOutlet weak var paidSwitch: UISwitch!
     @IBOutlet weak var paidLabel: UILabel!
+    @IBOutlet weak var meetRefLabel: UILabel!
     @IBOutlet weak var notesLabel: UILabel!
     @IBOutlet weak var judgeNameCell: UITableViewCell!
+    @IBOutlet weak var meetRefSwitch: UISwitch!
+    @IBOutlet weak var w9ReceivedSwitch: UISwitch!
+    @IBOutlet weak var w9ReceivedLabel: UILabel!
+    @IBOutlet weak var meetRefFeeCell: UITableViewCell!
+    @IBOutlet weak var meetRefFeeLabel: UILabel!
+    @IBOutlet weak var meetRefFeeAmountTextField: UITextField!
     
     //MARK: Properties
     var judge: Judge?
@@ -27,10 +34,13 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     var showJudgePicker : Bool = false
     var judgeSummaryDelegate : JudgeSummaryTableViewDelegate? = nil
     var numberFormatter : NumberFormatter = NumberFormatter()
+    var numberFormatterDecimal : NumberFormatter = NumberFormatter()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         numberFormatter.numberStyle = .currency
+        numberFormatterDecimal.numberStyle = .decimal
         notesTextField.delegate = self
         
         judge = MeetListManager.GetInstance().getSelectedJudge()
@@ -47,6 +57,9 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         levelCell.textLabel?.textColor = self.view.tintColor
         notesLabel.textColor = self.view.tintColor
         paidLabel.textColor = self.view.tintColor
+        meetRefLabel.textColor = self.view.tintColor
+        w9ReceivedLabel.textColor = self.view.tintColor
+        meetRefFeeLabel.textColor = self.view.tintColor
         
         levelCell.detailTextLabel?.text = judge!.level.fullDescription
         
@@ -60,7 +73,13 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             manageFeesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge.totalFees() as NSNumber)!)
             manageExpensesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge.totalExpenses() as NSNumber)!)
             notesTextField.text = judge.getNotes()
+            meetRefFeeAmountTextField.text = numberFormatterDecimal.string(from: NSNumber(value: judge.getMeetRefereeFee()))
+                
             paidSwitch.setOn(judge.isPaid(), animated: false)
+            meetRefSwitch.setOn(judge.isMeetRef(), animated: false)
+            w9ReceivedSwitch.setOn(judge.isW9Received(), animated: false)
+            
+            
             judgeSummaryTable.reloadData()
         }
     }
@@ -85,6 +104,12 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             
             return (2 * headerHeight) + (2 * footerHeight) + CGFloat(((numberOfFeeCells + numberOfExpenseCells)) * rowHeight)
         }
+        else if indexPath.section == 0 && indexPath.row == 5{
+            if let judge = judge{
+                return judge.isMeetRef() ? super.tableView(tableView, heightForRowAt: indexPath) : 0
+            }
+            return super.tableView(tableView, heightForRowAt: indexPath)
+        }
         else{
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
@@ -107,7 +132,9 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             judge.name = judgeNameCell.detailTextLabel!.text ?? "Unknown Judge"
             judge.setNotes(notesTextField.text ?? "")
             judge.setPaid(paidSwitch.isOn)
+            judge.setMeetRef(meetRefSwitch.isOn)
             judge.changeLevel(level: Judge.Level.valueFor(description: levelCell.detailTextLabel!.text!)!)
+            judge.setW9Received(w9ReceivedSwitch.isOn)
             
             MeetListManager.GetInstance().updateSelectedJudgeWith(judge: judge)
         }
@@ -134,5 +161,28 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     
     @IBAction func unwindFromJudgeListWithSender(sender: UIStoryboardSegue){
         self.unwindToJudgeDetails(sender: sender)
+    }
+    
+    @IBAction func meetRefSwitchChanged(_ sender: UISwitch) {
+        if let judge = self.judge{
+            judge.setMeetRef(meetRefSwitch.isOn)
+            
+        }
+        handleJudgeDetailsChanged()
+        tableView.reloadData()
+        
+        if meetRefSwitch.isOn{
+            meetRefFeeAmountTextField.becomeFirstResponder()
+        }
+    }
+    @IBAction func meetRefFeeEditingChanged(_ sender: UITextField) {
+        if let amount = numberFormatterDecimal.number(from: meetRefFeeAmountTextField.text ?? "0"){
+            judge?.setMeetRefereeFee(Float(truncating: amount))
+        }
+    }
+    @IBAction func meetRefFeeValueChanged(_ sender: UITextField) {
+        if let amount = numberFormatterDecimal.number(from: meetRefFeeAmountTextField.text ?? "0"){
+            judge?.setMeetRefereeFee(Float(truncating: amount))
+        }
     }
 }

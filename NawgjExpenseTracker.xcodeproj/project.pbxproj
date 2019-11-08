@@ -15,6 +15,8 @@
 		652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F721EFDD4C0024F1E6 /* PDFViewController.swift */; };
 		652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */; };
 		652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236FC21F029950024F1E6 /* MeetListManager.swift */; };
+		655150D82372804A00BED00A /* AddJudgesToMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */; };
+		655150DA23729ADA00BED00A /* CreateJudgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D923729ADA00BED00A /* CreateJudgeViewController.swift */; };
 		656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C521F686CC00DE4029 /* JudgeListManager.swift */; };
 		656EA4C821F68A1200DE4029 /* JudgeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C721F68A1200DE4029 /* JudgeInfo.swift */; };
 		656EA4CB21F693AE00DE4029 /* JudgeListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4CA21F693AE00DE4029 /* JudgeListTableViewController.swift */; };
@@ -28,7 +30,6 @@
 		65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */; };
 		65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC96B217D5B320029C6AA /* Main.storyboard */; };
 		65DBC972217D5B320029C6AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC970217D5B320029C6AA /* LaunchScreen.storyboard */; };
-		65DBC97D217D5B320029C6AA /* NawgjExpenseTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC97C217D5B320029C6AA /* NawgjExpenseTrackerTests.swift */; };
 		65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC987217EBB7F0029C6AA /* Meet.swift */; };
 		65DBC98C217EC5D40029C6AA /* MeetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */; };
 		65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC99E219347F20029C6AA /* MeetDay.swift */; };
@@ -64,6 +65,8 @@
 		652236F721EFDD4C0024F1E6 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetUIPrintPageRender.swift; sourceTree = "<group>"; };
 		652236FC21F029950024F1E6 /* MeetListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListManager.swift; sourceTree = "<group>"; };
+		655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJudgesToMeetViewController.swift; sourceTree = "<group>"; };
+		655150D923729ADA00BED00A /* CreateJudgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateJudgeViewController.swift; sourceTree = "<group>"; };
 		656EA4C521F686CC00DE4029 /* JudgeListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListManager.swift; sourceTree = "<group>"; };
 		656EA4C721F68A1200DE4029 /* JudgeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInfo.swift; sourceTree = "<group>"; };
 		656EA4CA21F693AE00DE4029 /* JudgeListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListTableViewController.swift; sourceTree = "<group>"; };
@@ -80,8 +83,6 @@
 		65DBC971217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65DBC973217D5B320029C6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65DBC978217D5B320029C6AA /* NawgjExpenseTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawgjExpenseTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		65DBC97C217D5B320029C6AA /* NawgjExpenseTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NawgjExpenseTrackerTests.swift; sourceTree = "<group>"; };
-		65DBC97E217D5B320029C6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65DBC987217EBB7F0029C6AA /* Meet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meet.swift; sourceTree = "<group>"; };
 		65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetTableViewController.swift; sourceTree = "<group>"; };
 		65DBC99E219347F20029C6AA /* MeetDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDay.swift; sourceTree = "<group>"; };
@@ -152,7 +153,6 @@
 			children = (
 				652236F521E70AA60024F1E6 /* meetreport.html */,
 				65DBC966217D5B320029C6AA /* NawgjExpenseTracker */,
-				65DBC97B217D5B320029C6AA /* NawgjExpenseTrackerTests */,
 				65DBC965217D5B320029C6AA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -185,15 +185,6 @@
 				65C386C921B5AE350070D76B /* Images.xcassets */,
 			);
 			path = NawgjExpenseTracker;
-			sourceTree = "<group>";
-		};
-		65DBC97B217D5B320029C6AA /* NawgjExpenseTrackerTests */ = {
-			isa = PBXGroup;
-			children = (
-				65DBC97C217D5B320029C6AA /* NawgjExpenseTrackerTests.swift */,
-				65DBC97E217D5B320029C6AA /* Info.plist */,
-			);
-			path = NawgjExpenseTrackerTests;
 			sourceTree = "<group>";
 		};
 		65DBC99D218D7A450029C6AA /* DataTypes */ = {
@@ -245,6 +236,8 @@
 				65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */,
 				65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */,
 				652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */,
+				655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */,
+				655150D923729ADA00BED00A /* CreateJudgeViewController.swift */,
 			);
 			name = Judge;
 			sourceTree = "<group>";
@@ -309,7 +302,7 @@
 					65DBC963217D5B320029C6AA = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 788FSZBKWN;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1110;
 						ProvisioningStyle = Automatic;
 					};
 					65DBC977217D5B320029C6AA = {
@@ -323,7 +316,7 @@
 			};
 			buildConfigurationList = 65DBC95F217D5B320029C6AA /* Build configuration list for PBXProject "NawgjExpenseTracker" */;
 			compatibilityVersion = "Xcode 10.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -370,6 +363,7 @@
 				65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */,
 				65EE305A219FDDF90011B2B8 /* JudgeTableViewController.swift in Sources */,
 				65EE306721A1148B0011B2B8 /* MeetDayDetailViewController.swift in Sources */,
+				655150DA23729ADA00BED00A /* CreateJudgeViewController.swift in Sources */,
 				65DBC98C217EC5D40029C6AA /* MeetTableViewController.swift in Sources */,
 				65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */,
 				652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */,
@@ -394,6 +388,7 @@
 				65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */,
 				65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */,
 				65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */,
+				655150D82372804A00BED00A /* AddJudgesToMeetViewController.swift in Sources */,
 				656EA4C821F68A1200DE4029 /* JudgeInfo.swift in Sources */,
 				65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */,
 				652236F421E59A730024F1E6 /* HTMLtoPDFViewController.swift in Sources */,
@@ -404,7 +399,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65DBC97D217D5B320029C6AA /* NawgjExpenseTrackerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,7 +551,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -565,7 +559,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTracker;
 				PRODUCT_NAME = Expenses;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -576,7 +570,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -584,7 +578,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.walshsoftware.NawgjExpenseTracker;
 				PRODUCT_NAME = Expenses;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

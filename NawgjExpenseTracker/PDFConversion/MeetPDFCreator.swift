@@ -134,6 +134,10 @@ class MeetPDFCreator : PDFCreator{
                 <td>\(datesString)</td>
             </tr>
             <tr align="left">
+                <th valign="top">Mileage Rate</th>
+                <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
+            </tr>
+            <tr align="left">
                 <th valign="top">Judges</th>
                 <td>\(judgeNames)</td>
             </tr>
@@ -142,16 +146,12 @@ class MeetPDFCreator : PDFCreator{
                 <td>\(totalHoursString)</td>
             </tr>
             <tr align="left">
-                <th valign="top">Total Billed Judge Hours</th>
+                <th valign="top">Total Billable Judge Hours</th>
                 <td>\(String(format: "%0.2f Hours", meet.totalBillableJudgeHours()))</td>
             </tr>
-            <tr align="left">
-                <th valign="top">Total Fees</th>
-                <td>\(totalFeesString)</td>
-            </tr>
-            <tr align="left">
-                <th valign="top">Mileage Rate</th>
-                <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
+            <tr align="left" height="26" bgcolor="#EEEEEE">
+                <th valign="top">Total Due</th>
+                <td><b>\(totalFeesString)</b></td>
             </tr>
         </table>
         """

@@ -43,7 +43,6 @@ class MeetTableViewController: UITableViewController {
         let meet = MeetListManager.GetInstance().meets![indexPath.row]
         cell.meet = meet
         cell.setupCellContent()
-
         return cell
     }
     
@@ -113,8 +112,7 @@ class MeetTableViewController: UITableViewController {
     //MARK: Actions
     @IBAction func unwindToMeetList(sender: UIStoryboardSegue) {
         MeetListManager.GetInstance().loadMeets()
-        tableView.reloadData()
-        self.view.reloadInputViews()
+        self.tableView.reloadData()
     }
     
     //MARK: Private Methods
