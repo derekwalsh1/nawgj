@@ -88,12 +88,14 @@ class Judge: Codable {
     private var paid : Bool?
     private var meetReferee : Bool?
     private var w9Received : Bool?
+    private var receiptsReceived : Bool?
     private var meetRefereeFee : Float?
     
     
     //MARK: Initialization
-    init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>, notes: String, paid: Bool, meetRef: Bool, w9Received : Bool, meetRefereeFee : Float) {
+    init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>, notes: String, paid: Bool, meetRef: Bool, w9Received : Bool, meetRefereeFee : Float, receiptsReceived: Bool) {
         // Initialize stored properties.
+        
         self.name = name
         self.level = level
         self.expenses = expenses
@@ -103,10 +105,11 @@ class Judge: Codable {
         self.meetReferee = meetRef
         self.w9Received = w9Received
         self.meetRefereeFee = meetRefereeFee
+        self.receiptsReceived = receiptsReceived
     }
     
     required convenience init(name: String, level: Level, expenses: Array<Expense>, fees: Array<Fee>) {
-        self.init(name: name, level: level, expenses: expenses, fees: fees, notes: "", paid: false, meetRef: false, w9Received: false, meetRefereeFee: 0.0)
+        self.init(name: name, level: level, expenses: expenses, fees: fees, notes: "", paid: false, meetRef: false, w9Received: false, meetRefereeFee: 0.0, receiptsReceived: false)
     }
     
     required convenience init?(name: String, level: Level, fees: Array<Fee>) {
@@ -144,6 +147,10 @@ class Judge: Codable {
         
         for fee in fees {
             totalFees += fee.getFeeTotal()
+        }
+        
+        if isMeetRef(){
+            totalFees += getMeetRefereeFee()
         }
         
         return totalFees
@@ -200,6 +207,14 @@ class Judge: Codable {
     
     func setMeetRefereeFee(_ amount : Float){
         self.meetRefereeFee = amount
+    }
+    
+    func isReceiptsReceived() -> Bool{
+        return receiptsReceived ?? false
+    }
+    
+    func setReceiptsReceived(_ received : Bool){
+        self.receiptsReceived = received
     }
     
     func setNotes(_ notes : String){

@@ -11,11 +11,32 @@ import os.log
 import PDFKit
 import MessageUI
 
-class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate {
+class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, UIActivityItemSource {
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return pdfURL!
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return "Invoice and Details for " + MeetListManager.GetInstance().getSelectedMeet()!.name
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return pdfURL
+    }
 
     @IBOutlet weak var emailButton: UIBarButtonItem!
     var pdfURL : URL?
     var pdfView : PDFView?
+    
+    @objc func share(sender: UIView){
+        //let docsurl = try! fileManager.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        if pdfURL != nil{
+            let items = [self]
+            let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            present(ac, animated: true)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +61,10 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate {
         }
     }
     
-    @IBAction func shareButtonClicked(_ sender: Any) {
-        emailPDF()
+    @IBAction func shareMeetReport(_ sender: UIBarButtonItem) {
+        self.share(sender: self.view)
     }
+    
     
     func emailPDF(){
         if let path = pdfURL{

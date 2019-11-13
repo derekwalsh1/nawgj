@@ -42,7 +42,58 @@ class MeetListManager{
             os_log("Failed to load meets...", log: OSLog.default, type: .error)
             meets = Array<Meet>()
         }
-        //meets!.sort(by: {$0.startDate > $1.startDate})
+        
+        
+        if let meets = meets{
+            for meet in meets{
+                // Make sure all meet days have uuid strings associated with them
+                // Touch the UUID attribute to ensure that one is created
+                for meetDay in meet.days{
+                    _ = meetDay.getUUID()
+                }
+                
+                // Make sure all the judge fees have a meet day UUID associated with them
+                // by adding a meet day uuid to fees that don't have them. The matchup uses
+                // the date. If a fee uuid already exists then skip that fee
+                for judge in meet.judges{
+                    var feesToDelete = Array<String>()
+                    for fee in judge.fees{
+                        if fee.getMeetDayUUID() == nil{
+                            // Find the meet day matching this fee (if none found, remove this fee)
+                            if let meetDay = meet.days.first(where: {$0.meetDate == fee.date}){
+                                fee.setMeetDayUUID(uuid: meetDay.getUUID())
+                            }
+                            else{
+                                let uuidString = UUID.init().uuidString
+                                feesToDelete.append(uuidString)
+                                fee.setMeetDayUUID(uuid: uuidString)
+                            }
+                        }
+                    }
+                    
+                    // Remove any fees that don't have a corresponding date
+                    if feesToDelete.count > 0{
+                        for feeToDelete in feesToDelete{
+                            if let index = judge.fees.firstIndex(where: {$0.getMeetDayUUID() == feeToDelete}){
+                                judge.fees.remove(at: index)
+                            }
+                        }
+                    }
+                    
+                    // Run through the list and find any meet days without a corresponding fee for it in the judges
+                    // fee list and add a fee entry
+                    for meetDay in meet.days{
+                        if !judge.fees.contains(where: {$0.getMeetDayUUID() == meetDay.getUUID()}){
+                            // Add a new fee to the judges fees list corresponding to this day
+                            if let fee = Fee(date: meetDay.meetDate, hours: meetDay.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID()){
+                                judge.fees.append(fee)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         saveMeets()
     }
     
@@ -74,9 +125,9 @@ class MeetListManager{
     }
     
     func addMeetDay(meetDay : MeetDay){
-        
         if let meet = getSelectedMeet(){
             meet.addMeetDay(day: meetDay)
+            meet.days = meet.days.sorted(by: {$0.meetDate < $1.meetDate})
             saveMeets()
         }
     }
@@ -92,6 +143,7 @@ class MeetListManager{
         if let meet = getSelectedMeet(), let meetDayIndex = selectedMeetDayIndex{
             meet.days[meetDayIndex] = meetDay
             meet.meetDayChanged(atIndex: meetDayIndex)
+            meet.days = meet.days.sorted(by: {$0.meetDate < $1.meetDate})
             saveMeets()
         }
     }
@@ -129,6 +181,7 @@ class MeetListManager{
     func removeMeetDayAt(index: Int){
         if let meet = getSelectedMeet(){
             meet.removeMeetDay(at: index)
+            meet.days = meet.days.sorted(by: {$0.meetDate < $1.meetDate})
             saveMeets()
         }
     }

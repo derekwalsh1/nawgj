@@ -40,6 +40,14 @@ class JudgeListManager{
             let data:Data = try Data(contentsOf: JudgeListManager.ArchiveURL)
             let jsonDecoder = JSONDecoder()
             judges = try! jsonDecoder.decode([JudgeInfo].self, from: data) as [JudgeInfo]
+            
+            if let judgeList = judges{
+                for judge in judgeList{
+                    _ = judge.getUUID() // Touch each Judge's uuid to make sure one has been created
+                }
+            }
+            
+            saveJudges()
         } catch{
             os_log("Failed to load judges...", log: OSLog.default, type: .error)
             judges = Array<JudgeInfo>()
@@ -79,6 +87,15 @@ class JudgeListManager{
             selectedJudgeIndex = index
             selectedJudge = judges[index]
         }
+    }
+    
+    func judgeInfo(forJudgeID: String) -> String?{
+        if let judgeList = judges{
+            if let judge = judgeList.first(where: {$0.getUUID() == forJudgeID}){
+                return judge.getUUID()
+            }
+        }
+        return nil
     }
     
     func updateSelectedJudgeWith(_ judgeInfo : JudgeInfo){

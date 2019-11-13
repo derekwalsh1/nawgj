@@ -20,18 +20,33 @@ class MeetDay: Codable {
     var startTime: Date
     var endTime : Date
     var breaks : Int
+    var uuid : String?
     
     //MARK: Initialization
-    init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int) {
+    required convenience init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int) {
+        self.init(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks, id: UUID.init().uuidString)
+    }
+    
+    //MARK: Initialization
+    init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int, id: String) {
         // Initialize stored properties.
         self.meetDate = meetDate
         self.startTime = startTime
         self.endTime = endTime
         self.breaks = breaks
+        self.uuid = id
     }
     
     func totalTimeInHours() -> Float {
         return MeetDay.totalTimeInHours(startTime: startTime, endTime: endTime)
+    }
+    
+    func getUUID() -> String{
+        if uuid == nil{
+            uuid = UUID.init().uuidString
+        }
+        
+        return self.uuid!
     }
     
     static func totalTimeInHours(startTime : Date, endTime : Date) -> Float {

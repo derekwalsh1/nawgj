@@ -19,9 +19,10 @@ class Fee: Codable {
     var rateOverridden : Bool
     var hoursOverridden : Bool
     var exclude : Bool? = false
+    var meetDayUUID : String?
     
     //MARK: Initialization
-    init(date: Date, hours: Float, rate: Float, rateOverridden: Bool, hoursOverridden: Bool, notes: String?, exclude: Bool ) {
+    init(date: Date, hours: Float, rate: Float, rateOverridden: Bool, hoursOverridden: Bool, notes: String?, exclude: Bool, meetDayUUID: String ) {
         // If notes aren't provided (they are optional, then use an empty string
         if notes == nil { _ = ""}
         
@@ -33,12 +34,13 @@ class Fee: Codable {
         self.hoursOverridden = false
         self.rate = rate
         self.exclude = exclude
+        self.meetDayUUID = meetDayUUID
     }
     
-    required convenience init?(date: Date, hours: Float, rate: Float, notes : String?){
+    required convenience init?(date: Date, hours: Float, rate: Float, notes : String?, meetDayUUID: String){
         
         if notes == nil { _ = ""}
-        self.init(date: date, hours: hours, rate: rate, rateOverridden: false, hoursOverridden: false, notes: notes, exclude: false)
+        self.init(date: date, hours: hours, rate: rate, rateOverridden: false, hoursOverridden: false, notes: notes, exclude: false, meetDayUUID: meetDayUUID)
     }
     
     func getFeeTotal() -> Float{
@@ -47,5 +49,13 @@ class Fee: Codable {
     
     func getHours() -> Float{
         return (exclude ?? false) ? 0.0 : hours
+    }
+    
+    func getMeetDayUUID() -> String?{
+        return meetDayUUID
+    }
+    
+    func setMeetDayUUID(uuid: String){
+        self.meetDayUUID = uuid
     }
 }

@@ -88,14 +88,14 @@ class Meet: Codable {
         self.days.append(day)
         // add fees to judges for this day
         for judge in self.judges {
-            judge.fees.append(Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "")!)
+            judge.fees.append(Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID())!)
         }
     }
     
     func addJudge(judge : Judge){
         
         for day in self.days{
-            let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "")
+            let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID())
             judge.fees.append(fee!)
         }
         
@@ -105,21 +105,22 @@ class Meet: Codable {
     func meetDayChanged(atIndex: Int){
         let meetDay = days[atIndex]
         for judge in judges{
-            if let fee = judge.fees.first(where: { $0.date == meetDay.meetDate }) {
+            if let fee = judge.fees.first(where: { $0.getMeetDayUUID() == meetDay.getUUID() }) {
                 if !fee.exclude! && !fee.hoursOverridden{
                     fee.hours = meetDay.totalBillableTimeInHours()
+                    fee.date = meetDay.meetDate
                 }
             }
         }
     }
     
     func removeMeetDay(at: Int) {
-        let date = self.days[at].meetDate
+        let uuid = self.days[at].getUUID()
         
         for judge in self.judges {
             var idx : Int? = nil
             for (index, fee) in judge.fees.enumerated() {
-                if fee.date == date {
+                if fee.getMeetDayUUID() == uuid {
                     idx = index
                 }
             }

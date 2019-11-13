@@ -179,7 +179,6 @@ class MeetPDFCreator : PDFCreator{
         <th>W9</th>
         <th>Receipts</th>
         <th>Paid</th>
-        <th>Other</th>
         <th width="30%">Notes</th>
         </tr>
         """
@@ -199,14 +198,17 @@ class MeetPDFCreator : PDFCreator{
             <td>\(judge.name)</td>
             <td>\(judge.level.fullDescription)</td>
             <td>\(mileage)</td>
-            <td></td>
-            <td></td>
-            <td align="middle">\(judge.isPaid() ? "Y" : "N")</td>
-            <td></td>
-            <td></td>
+            <td align="middle">\(judge.isW9Received() ? "Received" : "Not Received")</td>
+            <td align="middle">\(judge.isReceiptsReceived() ? "Received" : "Not Received")</td>
+            <td align="middle">\(judge.isPaid() ? "Paid" : "Not Paid")</td>
+            <td>\(judge.getNotes())</td>
             </tr>
             """
         }
+        htmlString += """
+        </table>
+        """
+        /*
         htmlString += """
         <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
         <style type="text/css">
@@ -225,7 +227,7 @@ class MeetPDFCreator : PDFCreator{
             <td></td>
         </tr>
         </table>
-        """
+        """*/
         return htmlString
     }
     
@@ -258,8 +260,12 @@ class MeetPDFCreator : PDFCreator{
             // Determine how many rows are needed for this judge; it will be the greater of the
             // number of days worked and the number of expense types with an additional row for
             // the judge totals
+            judge.fees = judge.fees.sorted(by: {$0.date < $1.date})
             let filteredExpenses = judge.expenses.filter { $0.amount > 0.0 }
             let totalRows = max(filteredExpenses.count, judge.fees.count)
+            /*if judge.isMeetRef(){
+                totalRows += 1
+            }*/
             
             for rowNumber in 0...totalRows - 1{
                 htmlString += """
@@ -288,8 +294,8 @@ class MeetPDFCreator : PDFCreator{
                     let expensesRowSpan = filteredExpenses.count - 1 <= rowNumber ? totalRows - rowNumber : 0
                     
                     htmlString += """
-                        <td rowspan="\(totalRows)" valign="top">\(judge.name)</td>
-                        <td rowspan="\(totalRows)" valign="top">\(judge.level.fullDescription)</td>
+                    <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.name)</td>
+                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.level.fullDescription)</td>
                         <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
                         <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
                         <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
@@ -307,12 +313,21 @@ class MeetPDFCreator : PDFCreator{
                         
                     }
                     htmlString += """
-                        <td rowspan="\(totalRows)">&nbsp;</td>
-                        <td rowspan="\(totalRows)">&nbsp;</td>
-                        <td rowspan="\(totalRows)">&nbsp;</td>
+                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
+                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
+                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
                     </tr>
                     """
-                }
+                }/*
+                else if rowNumber == totalRows - 1 && judge.isMeetRef(){ // We are adding in the judge ref fee (which is taxable)
+                    let totalRefFee = judge.getMeetRefereeFee()
+                    htmlString += """
+                        <td colspan="2" valign="top">Meet Referee Fee</td>
+                        <td valign="top" align="right">\(totalRefFee)</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    """
+                }*/
                 else{ // We are in the middle rows
                     if rowNumber < judge.fees.count{
                         let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
@@ -344,6 +359,24 @@ class MeetPDFCreator : PDFCreator{
                         """
                     }
                 }
+            }
+            
+            // Add a row for judge ref fees if the judge is a meet referee
+            if judge.isMeetRef(){
+                htmlString += """
+                <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
+                <style type="text/css">
+                @media print {
+                .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+                .pagebreak-before { display: block; page-break-before: always; }
+                }
+                </style>
+                <td colspan="2" align="right">Meet Referee Fee</td>
+                <td align="right">\(judge.getMeetRefereeFee())</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                </tr>
+                """
             }
             
             htmlString += """

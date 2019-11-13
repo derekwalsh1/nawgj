@@ -59,25 +59,46 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         
         if presentingInAddDayMode{
             os_log("Presenting in Add Meet Day mode", log: OSLog.default, type: .debug)
+            self.navigationItem.title = "Add Meet Day"
+            self.navigationItem.leftBarButtonItem?.title = "Add"
+            doneBarButton.title = "Add"
             if let meet = MeetListManager.GetInstance().getSelectedMeet(){
                 if meet.days.count > 0{
+                    self.navigationItem.prompt = "You are adding a new day to the \"" + meet.name + "\" meet"
                     // Grab the last meet day and use the data from that meet day as the
                     // starting point for the new meet day. Just increment the start date
                     // by 1 day
                     let lastMeetDayAlreadyAdded = meet.days[meet.days.count - 1]
                     meetDay = MeetDay(meetDate: lastMeetDayAlreadyAdded.meetDate.addingTimeInterval(24*60*60), startTime: lastMeetDayAlreadyAdded.startTime, endTime: lastMeetDayAlreadyAdded.endTime, breaks: lastMeetDayAlreadyAdded.breaks)
-                    
-                    if let meetDay = meetDay{
-                        meetDayDatePicker.date = meetDay.meetDate
-                        startTimePicker.date = meetDay.startTime
-                        endTimePicker.date = meetDay.endTime
-                    }
                 }
+                else{
+                    let units: Set<Calendar.Component> = [.year, .month, .day, .hour]
+                    var components = Calendar.current.dateComponents(units, from: Date())
+                    components.hour = 7
+                    let startTime = Calendar.current.date(from: components)
+                    components.hour = 17
+                    let endTime = Calendar.current.date(from: components)
+                    
+                    meetDay = MeetDay(meetDate: meet.startDate, startTime: startTime!, endTime: endTime!, breaks: 2)
+                }
+            }
+            
+            if let meetDay = meetDay{
+                meetDayDatePicker.date = meetDay.meetDate
+                startTimePicker.date = meetDay.startTime
+                endTimePicker.date = meetDay.endTime
+                breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
+                
+                endTimePicker.minimumDate = startTimePicker.date
             }
             updateUILabels()
         }
         else{
             os_log("Presenting in Edit Meet Day mode", log: OSLog.default, type: .debug)
+            self.title = "Meet Day Details"
+            if let meet = MeetListManager.GetInstance().getSelectedMeet(){
+                self.navigationItem.prompt = "You are editing an existing meet day in the \"" + meet.name + "\" meet"
+            }
             meetDay = MeetListManager.GetInstance().getSelectedMeetDay()
             
             if let meetDay = meetDay{
@@ -115,7 +136,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         meetDayDateCell.detailTextLabel?.text = dateFormatter.string(from: meetDayDatePicker.date)
         meetDayStartTimeCell.detailTextLabel?.text = timeFormatter.string(from: startTimePicker.date)
         meetDayEndTimeCell.detailTextLabel?.text = timeFormatter.string(from: endTimePicker.date)
-        navigationItem.title = dateFormatter.string(from: meetDayDatePicker.date)
+        //navigationItem.title = dateFormatter.string(from: meetDayDatePicker.date)
     }
     
     @IBAction func numberOfBreaksChanged(_ sender: UISegmentedControl) {
@@ -126,6 +147,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func meetDayStartTimeChanged(_ sender: UIDatePicker) {
+        endTimePicker.minimumDate = startTimePicker.date
         if sender.date >= endTimePicker.date{
             endTimePicker.setDate(sender.date + 15 * 60, animated: true)
         }
@@ -133,9 +155,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func meetDayEndTimeChanged(_ sender: UIDatePicker) {
-        if sender.date < startTimePicker.date{
-            startTimePicker.setDate(sender.date - 15 * 60, animated: true)
-        }
         updateUILabels()
     }
     
@@ -145,7 +164,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         // Check if this date is already in the meet days
         let newDate = meetDayDatePicker.date
         
-        let matchingMeetDate = MeetListManager.GetInstance().getSelectedMeet()?.days.first(where: { $0.meetDate == newDate })
+        let matchingMeetDate = MeetListManager.GetInstance().getSelectedMeet()?.days.first(where: { Calendar.current.compare($0.meetDate, to: newDate, toGranularity: .day) == .orderedSame})
         if matchingMeetDate == nil{
             let day = Calendar.current.component(Calendar.Component.day, from: newDate)
             let month = Calendar.current.component(Calendar.Component.month, from: newDate)
