@@ -167,7 +167,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I8c-2c-EhP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="758" y="0.0"/>
+            <point key="canvasLocation" x="-238" y="0.0"/>
         </scene>
         <!--Meet Overview-->
         <scene sceneID="tne-QT-ifu">
@@ -483,7 +483,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <exit id="I3a-9F-Wj5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2073" y="382"/>
+            <point key="canvasLocation" x="1633" y="0.0"/>
         </scene>
         <!--Meet Report-->
         <scene sceneID="oUU-7z-Iiz">
@@ -499,12 +499,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" title="Meet Report" id="I8n-Pn-rMB">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="e8V-Qt-QTf"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="e8V-Qt-QTf">
+                            <connections>
+                                <action selector="shareMeetReport:" destination="hUD-qq-wz8" id="3E0-s6-RWE"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Kf-1X-zeq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3823" y="359"/>
+            <point key="canvasLocation" x="2785" y="-879"/>
         </scene>
         <!--Meet Days Table View Controller-->
         <scene sceneID="Bvo-wW-RgO">
@@ -564,7 +568,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pw3-no-UX7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="DiQ-EX-rgK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2950" y="-574"/>
+            <point key="canvasLocation" x="2785" y="0.0"/>
         </scene>
         <!--Judges-->
         <scene sceneID="Or1-gJ-ELw">
@@ -626,7 +630,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZwB-Rm-EC6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="wQr-PW-wX0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2978" y="740"/>
+            <point key="canvasLocation" x="1633" y="829"/>
         </scene>
         <!--Select Judges-->
         <scene sceneID="BqG-0a-Aee">
@@ -726,7 +730,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tAb-0f-0mV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="uDe-qe-w4p" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2977" y="1514"/>
+            <point key="canvasLocation" x="1633" y="1691"/>
         </scene>
         <!--Create Judge-->
         <scene sceneID="geV-cw-jcf">
@@ -821,7 +825,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Gh-Cr-zrs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="WGm-8y-smq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2977" y="2326"/>
+            <point key="canvasLocation" x="1633" y="2561"/>
         </scene>
         <!--Judge Details-->
         <scene sceneID="dEo-Ne-L2S">
@@ -1190,7 +1194,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="shr-ds-Wj0">
-                                                                        <rect key="frame" x="316" y="12" width="44" height="20.5"/>
+                                                                        <rect key="frame" x="323" y="12" width="44" height="20.5"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <nil key="textColor"/>
@@ -1225,6 +1229,11 @@
                                 <segue destination="opv-7B-xfo" kind="unwind" unwindAction="unwindToJudgeListWithSender:" id="hW5-wr-piQ"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Invoice" id="s0q-aS-7ZM">
+                            <connections>
+                                <segue destination="tfe-81-EEV" kind="show" id="qNi-VL-K5Y"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="judgeNameCell" destination="1OP-W3-VYm" id="gon-v1-cRl"/>
@@ -1252,7 +1261,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Fg-mC-wZX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="opv-7B-xfo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4037.5999999999999" y="1124.8875562218891"/>
+            <point key="canvasLocation" x="2785" y="829"/>
         </scene>
         <!--All Judges-->
         <scene sceneID="8mQ-Lp-KlX">
@@ -1263,11 +1272,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="JudgeInfoCell" textLabel="MFF-Td-dCY" detailTextLabel="Z1W-Ui-0IE" style="IBUITableViewCellStyleSubtitle" id="grN-DO-Gva">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="JudgeInfoCell" textLabel="MFF-Td-dCY" detailTextLabel="Z1W-Ui-0IE" style="IBUITableViewCellStyleSubtitle" id="grN-DO-Gva">
                                 <rect key="frame" x="0.0" y="28" width="375" height="55.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="grN-DO-Gva" id="aKN-J6-n6R">
-                                    <rect key="frame" x="0.0" y="0.0" width="316" height="55.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="348" height="55.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MFF-Td-dCY">
@@ -1296,7 +1305,7 @@
                     <navigationItem key="navigationItem" title="All Judges" id="X7J-Q9-bZN">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="1fD-lR-vvs">
                             <connections>
-                                <segue destination="deA-lW-cMf" kind="unwind" identifier="unwindFromJudgeList" unwindAction="unwindFromJudgeListWithSenderWithSender:" id="gds-1e-UA2"/>
+                                <segue destination="deA-lW-cMf" kind="unwind" unwindAction="unwindToMeetListWithSender:" id="Bzp-oX-VvN"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="h4Q-v0-NPG">
@@ -1312,7 +1321,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wYi-qJ-NOg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="deA-lW-cMf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5342" y="-320"/>
+            <point key="canvasLocation" x="842" y="-879"/>
         </scene>
         <!--Judge Info-->
         <scene sceneID="JOM-bh-m9o">
@@ -1341,10 +1350,14 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Judge Name" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I22-qF-viG">
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Judge Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I22-qF-viG">
                                                             <rect key="frame" x="53" y="0.0" width="294" height="42"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" enablesReturnKeyAutomatically="YES" textContentType="name"/>
+                                                            <connections>
+                                                                <action selector="handleNameEditingChanged:" destination="twc-kn-0WF" eventType="editingChanged" id="BdU-ud-Uet"/>
+                                                                <action selector="nameEditingEnded:" destination="twc-kn-0WF" eventType="editingDidEnd" id="zkr-aD-eXq"/>
+                                                            </connections>
                                                         </textField>
                                                     </subviews>
                                                 </stackView>
@@ -1404,9 +1417,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Judge Info" id="42x-iI-i5j">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="6Dn-6r-oVB">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="6Dn-6r-oVB">
                             <connections>
-                                <segue destination="65k-NV-2SI" kind="unwind" unwindAction="unwindToJudgeInfoListWithSender:" id="EKq-vh-8CN"/>
+                                <action selector="cancelButtonPressed:" destination="twc-kn-0WF" id="aSz-GW-DXI"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="Rvb-5a-hVY">
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="twc-kn-0WF" id="fVq-o3-ufW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1415,12 +1433,14 @@
                         <outlet property="levelPicker" destination="2aD-LG-hhn" id="ktM-AN-GjM"/>
                         <outlet property="nameLabel" destination="qbz-TB-4Gd" id="Uvr-wR-CaD"/>
                         <outlet property="nameTextField" destination="I22-qF-viG" id="HPy-yO-aoc"/>
+                        <outlet property="saveButton" destination="Rvb-5a-hVY" id="AT9-Sr-oXL"/>
+                        <segue destination="65k-NV-2SI" kind="unwind" identifier="unwindToJudgeInfoList" unwindAction="unwindToJudgeInfoListWithSender:" id="9XZ-K8-8uY"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TP0-zO-hhP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="65k-NV-2SI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6348" y="-319.79010494752629"/>
+            <point key="canvasLocation" x="1695" y="-879"/>
         </scene>
         <!--Fees-->
         <scene sceneID="wY9-4U-apV">
@@ -1478,7 +1498,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CB5-WX-wKD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="vii-pD-w9W" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5188" y="485"/>
+            <point key="canvasLocation" x="4785" y="842"/>
         </scene>
         <!--Expenses-->
         <scene sceneID="MnK-Qe-6xx">
@@ -1737,7 +1757,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KkU-3l-B7I" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="hpO-v1-qBs" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5188" y="1343"/>
+            <point key="canvasLocation" x="2785" y="1691"/>
         </scene>
         <!--Expense Details-->
         <scene sceneID="t1V-Q6-atB">
@@ -1903,7 +1923,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aq3-5T-WBl" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="bx5-tR-TTi" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6361" y="1327"/>
+            <point key="canvasLocation" x="3828" y="1691"/>
         </scene>
         <!--Fee Details-->
         <scene sceneID="gYa-tu-BNr">
@@ -2164,7 +2184,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dTB-op-JvP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="RWx-Ld-aKT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6348" y="483.50824587706148"/>
+            <point key="canvasLocation" x="5842" y="842"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Wks-cw-2LN">
@@ -2182,7 +2202,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MA0-WY-7He" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-174" y="-36"/>
+            <point key="canvasLocation" x="-1417" y="0.0"/>
         </scene>
         <!--Meet Day Details-->
         <scene sceneID="NKp-jS-KNk">
@@ -2474,7 +2494,32 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="taW-B0-8z2" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="v1f-jF-adj" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4060" y="-879"/>
+            <point key="canvasLocation" x="3828" y="0.0"/>
+        </scene>
+        <!--Invoice-->
+        <scene sceneID="Mpu-qe-cad">
+            <objects>
+                <viewController id="tfe-81-EEV" customClass="JudgePDFViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="415-tu-dFY"/>
+                        <viewControllerLayoutGuide type="bottom" id="9ZY-RN-YQ9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KZW-05-Ye9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Invoice" id="JeF-jy-CJt">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="jaJ-yF-o2v">
+                            <connections>
+                                <action selector="shareMeetReport:" destination="tfe-81-EEV" id="b35-AT-pY5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CkR-za-dEp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5841" y="0.0"/>
         </scene>
     </scenes>
     <resources>

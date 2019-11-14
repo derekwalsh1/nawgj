@@ -99,9 +99,10 @@ class JudgeListManager{
     }
     
     func updateSelectedJudgeWith(_ judgeInfo : JudgeInfo){
-        if let index = selectedJudgeIndex, var judges = judges{
-            judges[index] = judgeInfo
-            selectedJudge = judgeInfo
+        if let index = selectedJudgeIndex, let judges = judges{
+            judges[index].name = judgeInfo.name
+            judges[index].level = judgeInfo.level
+            selectedJudge = judges[index]
             saveJudges()
         }
     }

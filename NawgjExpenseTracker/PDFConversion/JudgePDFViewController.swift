@@ -11,14 +11,14 @@ import os.log
 import PDFKit
 import MessageUI
 
-class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, UIActivityItemSource {
+class JudgePDFViewController: UIViewController, UIActivityItemSource {
     
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
         return pdfURL!
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
-        return "Invoice and Details for " + MeetListManager.GetInstance().getSelectedMeet()!.name
+        return "Invoice and Details for " + MeetListManager.GetInstance().getSelectedJudge()!.name.replacingOccurrences(of: " ", with: "_", options: .literal, range: nil)
     }
     
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
@@ -41,8 +41,8 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pdfURL = MeetListManager.DocumentsDirectory.appendingPathComponent("MeetDetails.pdf")
-        MeetPDFCreator.createPDFFrom(meet: MeetListManager.GetInstance().getSelectedMeet()!, atLocation: pdfURL!)
+        pdfURL = MeetListManager.DocumentsDirectory.appendingPathComponent("JudgeInvoice.pdf")
+        JudgePDFCreator.createPDFFrom(judge: MeetListManager.GetInstance().getSelectedJudge()!, meet: MeetListManager.GetInstance().getSelectedMeet()!, atLocation: pdfURL!)
         
         // Add PDFView to view controller.
         pdfView = PDFView(frame: self.view.bounds)
@@ -64,43 +64,4 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, 
     @IBAction func shareMeetReport(_ sender: UIBarButtonItem) {
         self.share(sender: self.view)
     }
-    
-    /*
-    func emailPDF(){
-        if let path = pdfURL{
-            let email = ""
-            
-            if( MFMailComposeViewController.canSendMail()){
-                let mailComposer = MFMailComposeViewController()
-                mailComposer.mailComposeDelegate = self
-                
-                mailComposer.setToRecipients([email])
-                mailComposer.setSubject("Meet Details for \(MeetListManager.GetInstance().getSelectedMeet()!.name)")
-                mailComposer.setMessageBody("Meet details attached", isHTML: false)
-                
-                try! mailComposer.addAttachmentData(NSData(contentsOf: path) as Data, mimeType: "application/pdf", fileName: "MeetReport.pdf")
-                self.navigationController?.present(mailComposer, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func print(sender: UIBarButtonItem) {
-        if let url = pdfURL{
-            if UIPrintInteractionController.canPrint(url) {
-                let printInfo = UIPrintInfo(dictionary: nil)
-                printInfo.jobName = url.lastPathComponent
-                printInfo.outputType = .grayscale
-                
-                let printController = UIPrintInteractionController.shared
-                printController.printInfo = printInfo
-                printController.showsNumberOfCopies = false
-                printController.printingItem = url
-                printController.present(animated: true, completionHandler: nil)
-            }
-        }
-    }*/
 }

@@ -14,31 +14,70 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
     @IBOutlet weak var levelPicker: UIPickerView!
     @IBOutlet weak var levelCell: UITableViewCell!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
-    var judgeInfo : JudgeInfo?
     var showPicker : Bool = false
+    var addingNewJudge : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        judgeInfo = JudgeListManager.GetInstance().selectedJudge
         nameTextField.delegate = self
         levelPicker.dataSource = self
         levelPicker.delegate = self
+        saveButton.isEnabled = false
         
-        if let judgeInfo = judgeInfo{
-            nameTextField.text = judgeInfo.name
-            levelCell.detailTextLabel!.text = judgeInfo.level.fullDescription
-            //levelPicker.selectedRow(inComponent: judgeInfo.level.rawValue)
+        if addingNewJudge{
+            // Well we have no information so let's populate the UI with some default
+            nameTextField.text = nil
+            let defaultLevel = Judge.Level.count > 1 ? Judge.Level.count - 2 : 0
+            levelPicker.selectRow(defaultLevel, inComponent: 0, animated: false)
+            levelCell.detailTextLabel?.text = Judge.Level(rawValue: defaultLevel)?.description
+            self.navigationItem.title = "Adding Judge Info"
+        }
+        else{
+            if let judgeInfo = JudgeListManager.GetInstance().selectedJudge{
+                nameTextField.text = judgeInfo.name
+                levelCell.detailTextLabel!.text = judgeInfo.level.fullDescription
+                levelPicker.selectRow(judgeInfo.level.rawValue, inComponent: 0, animated: false)
+                
+                saveButton.isEnabled = true
+                self.navigationItem.title = judgeInfo.name
+            }
         }
         
         nameLabel?.textColor = self.view.tintColor
         levelCell.textLabel?.textColor = self.view.tintColor
+        
+        nameTextField.becomeFirstResponder()
+        updateSaveButtonState()
+    }
+    
+    @IBAction func nameEditingEnded(_ sender: UITextField) {
+        updateNameField()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        updateSaveButtonState()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateNameField()
+    }
+    
+    func updateNameField(){
+        if let text = nameTextField.text{
+            if !addingNewJudge && text.isEmpty{
+                if let selectedJudge = JudgeListManager.GetInstance().selectedJudge{
+                    nameTextField.text = selectedJudge.name
+                }
+            }
+        }
     }
     
     //MARK: UIPickerView
@@ -56,37 +95,30 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        judgeInfo?.level = Judge.Level(rawValue: row)!
-        levelCell.detailTextLabel?.text = judgeInfo?.level.fullDescription
+        levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)!.fullDescription
+        pickerView.becomeFirstResponder()
     }
     
-    // This method lets you configure a view controller before it's presented.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        saveJudgeInfo()
-    }
-    
-    func saveJudgeInfo(){
-        if let judgeInfo = judgeInfo{
-            judgeInfo.name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespaces) ?? "New Judge"
-            if judgeInfo.name == ""{
-                judgeInfo.name = "New Judge"
-            }
-            judgeInfo.level = Judge.Level.valueFor(description: (levelCell.detailTextLabel?.text)!)!
+    @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let level = Judge.Level.valueFor(description: (levelCell.detailTextLabel?.text)!)
+              
+        if name != nil && level != nil{
+            let judgeInfo = JudgeInfo(name: name!, level: level!)
             
-            JudgeListManager.GetInstance().updateSelectedJudgeWith(judgeInfo)
+            if addingNewJudge{
+                _ = JudgeListManager.GetInstance().addJudge(judgeInfo)
+            }
+            else{
+                JudgeListManager.GetInstance().updateSelectedJudgeWith(judgeInfo)
+            }
         }
         
-        cleanupJudgeList()
+        self.performSegue(withIdentifier: "unwindToJudgeInfoList", sender: self)
     }
     
-    func cleanupJudgeList(){
-        let judgeInfo = JudgeInfo(name: "New Judge", level: Judge.Level.National)
-        let judgeIndex = JudgeListManager.GetInstance().indexOfJudge(judgeInfo)
-        
-        if judgeIndex >= 0{
-            JudgeListManager.GetInstance().removeJudgeAt(judgeIndex)
-        }
+    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: "unwindToJudgeInfoList", sender: self)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -99,18 +131,36 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        nameTextField.resignFirstResponder()
+        nameTextField.endEditing(true)
         
         if indexPath.row == 1{
             showPicker = !showPicker
-            
-            if showPicker{
-                levelPicker.selectRow((judgeInfo?.level.rawValue)!, inComponent: 0, animated: false)
-            }
-            
             tableView.beginUpdates()
             tableView.endUpdates()
         }
         
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    @IBAction func handleNameEditingChanged(_ sender: UITextField) {
+        updateSaveButtonState()
+    }
+    
+    func updateSaveButtonState(){
+        // Make sure that the judge name is valid and is not a duplicate of an existing judge
+        // Enabled the add new judge button if:
+        //  1. The Name is not empty and
+        //  2. The judge does not already exist
+        if let judgeNameText = nameTextField.text{
+            if !judgeNameText.isEmpty{
+                if let level = Judge.Level.init(rawValue: levelPicker.selectedRow(inComponent: 0)){
+                    let info = JudgeInfo(name: judgeNameText, level:level)
+                    saveButton.isEnabled = (addingNewJudge && JudgeListManager.GetInstance().indexOfJudge(info) == -1) || (!addingNewJudge && !judgeNameText.isEmpty)
+                    return
+                }
+            }
+        }
+        saveButton.isEnabled = false
     }
 }

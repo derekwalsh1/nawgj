@@ -10,7 +10,6 @@ import PDFKit
 import UIKit
 
 class JudgePDFCreator : PDFCreator{
-    
     static func createPDFFrom(judge: Judge, meet: Meet, atLocation: URL){
         
         dateFormatter.dateStyle = .full
@@ -19,16 +18,18 @@ class JudgePDFCreator : PDFCreator{
         timeFormatter.timeStyle = .medium
         
         numberFormatter.numberStyle = .currency
-        
+        let html = generateJudgeInvoice(judge: judge, meet: meet)
+        /*
         var html = generateHTMLHeader()
         html += generateJudgeFeesTable(judge: judge, meet: meet)
         html += generateJudgeExpensesTable(judge: judge, meet : meet)
         html += generateHTMLFooter()
+        */
         
         let fmt = UIMarkupTextPrintFormatter(markupText: html)
         
         // 2. Assign print formatter to UIPrintPageRenderer
-        let render = MeetUIPrintPageRender(date: Date(), meetName: meet.name)
+        let render = JudgeUIPrintPageRender(date: Date(), judge: judge, name: meet.name)
         render.addPrintFormatter(fmt, startingAtPageAt: 0)
         render.footerHeight = 10
         render.headerHeight = 10
@@ -54,293 +55,227 @@ class JudgePDFCreator : PDFCreator{
         UIGraphicsEndPDFContext()
         
         pdfData.write(to: atLocation, atomically: true)
-        
     }
     
-    static func generateHTMLHeader() -> String{
-        return """
-        <html>
-        <head>
-        <style type="text/css">
-        @media print {
-        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-        .pagebreak-before { display: block; page-break-before: always; }
-        }
-        </style>
-        </head>
-        <body>
-        """
-    }
-    
-    static func generateHTMLFooter() -> String{
-        return """
-        </body>
-        </html>
-        """
-    }
-    
-    static func generateJudgeFeesTable(judge: Judge, meet: Meet) -> String{
-        let sortedDays = meet.days.sorted(by: { $0.meetDate < $1.meetDate })
-        var datesString = ""
-        for (index, day) in sortedDays.enumerated(){
-            datesString += "\(index == 0 ? "" : "<br>")\(dateFormatter.string(from: day.meetDate)) - \(String(format: "%0.2f hrs", day.totalTimeInHours())) (\(String(format: "%d", day.breaks)) break\(day.breaks != 0 ? "s" : ""))"
-        }
+    static func generateJudgeInvoice(judge: Judge, meet: Meet) -> String{
+        let paidCheckedString = judge.isPaid() ? "checked" : ""
+        let w9CheckedString = judge.isW9Received() ? "checked" : ""
+        let receiptsCheckedString = judge.isReceiptsReceived() ? "checked" : ""
         
-        let sortedJudges = meet.judges.sorted(by: { $0.name < $1.name })
-        var judgeNames = ""
-        for (index, judge) in sortedJudges.enumerated(){
-            judgeNames += "\(index == 0 ? "" : "<br>")\(judge.name) - \(judge.level.fullDescription)"
-        }
-        
-        let totalFeesString = numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!
-        let totalHoursString = String(format: "%0.2f Hours", meet.totalMeetHours())
-        
-        return """
-        <h1 class="pagebreak-before">Meet Summary : \(meet.name)</h1>
-        <hr>
-        <table cellpadding="5" cellspacing="0" border="0">
-        <tr align="left">
-        <th width="10">Meet Name</th>
-        <td width="300">\(meet.name)</td>
-        </tr>
-        <tr align="left">
-        <th>Date</th>
-        <td>\(dateFormatter.string(from: meet.startDate))</td>
-        </tr>
-        <tr align="left">
-        <th>Location</th>
-        <td>\(meet.location)</td>
-        </tr>
-        <tr align="left">
-        <th>Details/Description</th>
-        <td>\(meet.meetDescription)</td>
-        </tr>
-        <tr align="left">
-        <th valign="top">Meet Dates</th>
-        <td>\(datesString)</td>
-        </tr>
-        <tr align="left">
-        <th valign="top">Judges</th>
-        <td>\(judgeNames)</td>
-        </tr>
-        <tr align="left">
-        <th valign="top">Total Hours</th>
-        <td>\(totalHoursString)</td>
-        </tr>
-        <tr align="left">
-        <th valign="top">Total Billed Judge Hours</th>
-        <td>\(String(format: "%0.2f Hours", meet.totalBillableJudgeHours()))</td>
-        </tr>
-        <tr align="left">
-        <th valign="top">Total Fees</th>
-        <td>\(totalFeesString)</td>
-        </tr>
-        <tr align="left">
-        <th valign="top">Mileage Rate</th>
-        <td>\(String(format: "$%0.2f/mile", meet.getMileageRate()))</td>
-        </tr>
-        </table>
-        
-        
-        
-        """
-    }
-    
-    static func generateJudgeExpensesTable(judge: Judge, meet: Meet) -> String{
-        var htmlString : String = """
-
-        <h1 class="pagebreak-before">Meet Fee Details</h1>
-        <hr>
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tr align="left" height="26">
-            <th>Date</th>
-            <th>Judge Name</th>
-            <th>Rate</th>
-            <th>Rate Code</th>
-            <th>Hours</th>
-            <th>Fee</th>
-        </tr>
-        """
-        
-        for (dayIndex, day) in meet.days.sorted(by: { $0.meetDate < $1.meetDate }).enumerated(){
-            for (judgeIndex, judge) in meet.judges.sorted(by: { $0.name < $1.name }).enumerated(){
-                if let fee = judge.fees.first(where: {$0.date == day.meetDate}){
-                    
-                    htmlString += """
-                    <tr align="left" height="26" \(dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-                    """
-                    
-                    if( judgeIndex == 0){
-                        htmlString += """
-                        <td rowspan="\(meet.judges.count)" valign="top">\(dateFormatter.string(from: day.meetDate))</td>
-                        """
-                    }
-                    let rate = String(format: "$%0.2f/hr", judge.level.rate)
-                    let hours = String(format: "%0.2f", fee.getHours())
-                    let total = numberFormatter.string(from: fee.getFeeTotal() as NSNumber)!
-                    htmlString += """
-                    <td>\(judge.name)</td>
-                    <td>\(rate)</td>
-                    <td>\(judge.level.description)</td>
-                    <td>\(hours)</td>
-                    <td>\(total)</td>
-                    </tr>
-                    """
+        var html = """
+            <html>
+            <head>
+              <style type="text/css">
+                @media print {
+                .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+                .pagebreak-before { display: block; page-break-before: always; }
                 }
-            }
-            
-            let colorString = dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : ""
-            let totalDayCost = numberFormatter.string(from: meet.totalJudgesFeeForDay(dayIndex: dayIndex) as NSNumber)!
-            htmlString += """
-            <tr align="left" height="26" \(colorString)>
-            <th colspan="4"></th>
-            <th align="left">Total Day Fees</th>
-            <th>\(totalDayCost)</th>
-            </tr>
+              </style>
+            </head>
+            <body>
+              <table border="1" width="100%" height="100%" cellpadding="5" cellspacing="0">
+                <tr height="200">
+                  <td width="300" align="center">
+                    <table width="100%" height="100%">
+                      <tr height="75">
+                        <td valign="center" align="center">
+                          <strong><font size="6">\(judge.name)</font></strong>
+                        </td>
+                      </tr>
+                      <tr height="25">
+                        <td valign="top" align="center">\(judge.level.description)</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <table width="100%" height="100">
+                      <tr>
+                        <td>
+                          Paid
+                        </td>
+                        <td><input type="checkbox" value="Paid" \(paidCheckedString) disabled></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          W9 Received
+                        </td>
+                        <td><input type="checkbox" value="W9" \(w9CheckedString) disabled></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Receipts Received
+                        </td>
+                        <td>
+                          <input type="checkbox" value="Receipts" \(receiptsCheckedString) disabled>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td valign="middle" width="400">
+                    <strong>Notes:</strong><br>
+                    \(judge.getNotes())
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <table cellspacing="5">
+                      <tr>
+                        <th width="150" align="left">Meet Name:</th>
+                        <td>\(meet.name)</td>
+                      </tr>
+                      <tr>
+                        <th align="left">Meet Dates:</th>
+                        <td>12/23/2019 (Thursday), 12/24/2019 (Friday), 12/25/2019 (Saturday) and 12/26/2019 (Sunday)</td>
+                      </tr>
+                      <tr>
+                        <th align="left">Meet Location:</th>
+                        <td>\(meet.location)</td>
+                      </tr>
+                      <tr>
+                        <th align="left">Meet Description:</th>
+                        <td>\(meet.meetDescription)</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr height="40">
+                  <td colspan="3" align="center"><strong>Meet Fee Summary</strong></td>
+                </tr>
+                <tr>
+                  <td valign="top" colspan="3">
+                    <table width="100%" cellspacing="0">
+                      <tr>
+                        <th align="left" width="50px">Date</th>
+                        <th align="left">Hours @ Level</th>
+                        <th align="right">Amount</th>
+                      </tr>
+        """
+        let feeList = judge.fees.sorted(by: {$0.date < $1.date})
+        var totalHours : Float = 0
+        var totalFees : Float = 0
+        for fee in feeList{
+            html += """
+                <tr>
+                    <td align="left">\(dateFormatterShort.string(from: fee.date))</td>
+                    <td align="left">\(fee.getHours()) Hours @ \(judge.level.fullDescription)</td>
+                    <td align="right">\(numberFormatter.string(from: NSNumber(value: fee.getFeeTotal())) ?? "$0.00")</td>
+                </tr>
+            """
+            totalHours += fee.getHours()
+            totalFees += fee.getFeeTotal()
+        }
+        
+        if judge.isMeetRef() && judge.getMeetRefereeFee() > 0{
+            totalFees += judge.getMeetRefereeFee()
+            html += """
+                <tr>
+                    <td align="left">&nbsp;</td>
+                    <td align="left">Meet Referee Fee</td>
+                    <td align="right">\(numberFormatter.string(from: NSNumber(value: judge.getMeetRefereeFee())) ?? "$0.00")</td>
+                </tr>
             """
         }
         
-        return htmlString
-    }
-    
-    static func generateMeetDayDetailsTable(meet: Meet) -> String{
-        
-        let numberOfDays = meet.days.count
-        
-        var htmlString : String = """
-
-        <h1 class="pagebreak-before">Meet Day Details</h1>
-        <hr>
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr bgcolor=\"EEEEEE">
-                <th align="left">Date</th>
+        html +=
+            """
+                      <tr>
+                        <td colspan="3">
+                          <hr>
+                        </td>
+                      </tr>
+                      <tr bgcolor="lightgray">
+                        <td align="left"><strong>Total Fees</strong></td>
+                        <td align="left"><strong>\(totalHours) Hours @ \(judge.level.fullDescription)</strong></td>
+                        <td align="right"><strong>\(numberFormatter.string(from: NSNumber(value: totalFees)) ?? "$0.00")</strong></td>
+                      </tr>
         """
-        // The header row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <th align="left">\(dateFormatterShort.string(from: meet.days[index].meetDate))</th>
+        html +=
             """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Start Time</th>
-        """
-        // The start time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(timeFormatter.string(from: meet.days[index].startTime))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">End Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(timeFormatter.string(from: meet.days[index].endTime))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Total Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%0.2f hrs", meet.days[index].totalTimeInHours()))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Breaks</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%d", meet.days[index].breaks))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Break Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%0.2f hrs", meet.days[index].breakTimeInHours()))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left">Billed Time</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td>\(String(format: "%0.2f hrs", meet.days[index].totalBillableTimeInHours()))</td>
-            """
-        }
-        htmlString += """
-        </tr>
-        <tr>
-        <th align="left" valign="top">Judges</th>
-        """
-        // The end time row
-        for index in 0...numberOfDays - 1{
-            htmlString += """
-            <td valign="top">
-            """
-            let judges = meet.judges.filter({$0.getFeesFor(date: meet.days[index].meetDate) > 0})
-            for (index, judge) in judges.enumerated(){
-                htmlString += "\(index == 0 ? "" : "<br>")\(judge.name)"
-            }
-            htmlString += """
-            </td>
-            """
-        }
-        
-        htmlString += """
-        </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr height="40">
+                  <td colspan="3" align="center"><strong>Meet Expenses Summary</strong></td>
+                </tr>
+                <tr valign="top">
+                  <td colspan="3">
+                    <table width="100%" cellspacing="0">
+                      <tr>
+                        <th align="left" width="50px">Date</th>
+                        <th align="left">Expense Type</th>
+                        <th align="right">Amount</th>
+                      </tr>
+                      <tr>
+                        <td align="left">12/23/2019</td>
+                        <td align="left">Mileage 120 miles @ $0.58/mile</td>
+                        <td align="right">$71.30</td>
+                      </tr>
+                      <tr>
+                        <td align="left">12/23/2019</td>
+                        <td align="left">Tolls</td>
+                        <td align="right">$10.00</td>
+                      </tr>
+                      <tr>
+                        <td align="left">12/23/2019</td>
+                        <td align="left">Transportation</td>
+                        <td align="right">$20.00</td>
+                      </tr>
+                      <tr>
+                        <td align="left">12/23/2019</td>
+                        <td align="left">Other</td>
+                        <td align="right">$0.00</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">
+                          <hr>
+                        </td>
+                      </tr>
+                      <tr bgcolor="lightgray">
+                        <td colspan="2" align="left"><strong>Total Expenses</strong></td>
+                        <td align="right"><strong>$101.03</strong></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" align="left">
+                          <hr>
+                        </td>
+                      </tr>
+                      <tr bgcolor="lightgray">
+                        <td colspan="2" align="left"><strong>Total Due</strong></td>
+                        <td align="right"><strong>$959.03</strong></td>
+                      </tr>
+                      <tr valign="bottom" height="100%">
+                        <td colspan="3" align="left">
+                          <table cellpadding="0" width="100%" height="300" border="0">
+                            <tr height="75%" valign="bottom">
+                              <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr valign="bttom" >
+                              <td align="left" width="55%">
+                                <hr>
+                              </td>
+                              <td width="5%"></td>
+                              <td align="right" width="40%">
+                                <hr>
+                              </td>
+                            </tr>
+                            <tr valign="bottom">
+                              <td align="left">Signature</td>
+                              <td width></td>
+                              <td align="left">Date</td>
+                            </tr>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              </td>
+              </tr>
+              </table>
+            </body>
+            </html>
         """
         
-        
-        // The start time row
-        /*
-         <td>Date</td>
-         <td>Start Time</td>
-         <td>End Time</td>
-         <td>Total Time</td>
-         <td>No. of Breaks</td>
-         <td>Total Break Time</td>
-         <td>No. of Judges</td>
-         <td>Billed Hours</td>
-         <td valign="top">Judges</td>
-         <td>Total Judge Fees</td>
-         </tr>
-         */
-        
-        
-        htmlString += """
-        </table>
-        """
-        return htmlString
-    }
-    
-    static func generateFeeTableFooter(meet: Meet) -> String{
-        return """
-        <tr align="left" height="26" bgcolor="lightgray">
-        <th colspan="4"></th>
-        <th align="left">Total Meet Fees</th>
-        <th>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</th>
-        </tr>
-        </table>
-        """
+        return html
     }
 }

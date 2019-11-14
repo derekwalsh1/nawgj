@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		650BC474237D078400A6951E /* JudgePDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650BC473237D078400A6951E /* JudgePDFViewController.swift */; };
 		650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */; };
 		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
 		652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */; };
-		652236F421E59A730024F1E6 /* HTMLtoPDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F321E59A730024F1E6 /* HTMLtoPDFViewController.swift */; };
 		652236F621E70AA60024F1E6 /* meetreport.html in Resources */ = {isa = PBXBuildFile; fileRef = 652236F521E70AA60024F1E6 /* meetreport.html */; };
 		652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F721EFDD4C0024F1E6 /* PDFViewController.swift */; };
 		652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */; };
@@ -21,6 +21,7 @@
 		656EA4C821F68A1200DE4029 /* JudgeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C721F68A1200DE4029 /* JudgeInfo.swift */; };
 		656EA4CB21F693AE00DE4029 /* JudgeListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4CA21F693AE00DE4029 /* JudgeListTableViewController.swift */; };
 		656EA4CD21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4CC21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift */; };
+		65830E40237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65830E3F237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift */; };
 		65A02951220FDBE90088681D /* JudgePDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A02950220FDBE90088681D /* JudgePDFCreator.swift */; };
 		65A02953220FDC1C0088681D /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A02952220FDC1C0088681D /* PDFCreator.swift */; };
 		65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */; };
@@ -57,10 +58,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		650BC473237D078400A6951E /* JudgePDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgePDFViewController.swift; sourceTree = "<group>"; };
 		650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetPDFCreator.swift; sourceTree = "<group>"; };
 		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
-		652236F321E59A730024F1E6 /* HTMLtoPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLtoPDFViewController.swift; sourceTree = "<group>"; };
 		652236F521E70AA60024F1E6 /* meetreport.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = meetreport.html; sourceTree = "<group>"; };
 		652236F721EFDD4C0024F1E6 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetUIPrintPageRender.swift; sourceTree = "<group>"; };
@@ -71,6 +72,7 @@
 		656EA4C721F68A1200DE4029 /* JudgeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInfo.swift; sourceTree = "<group>"; };
 		656EA4CA21F693AE00DE4029 /* JudgeListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListTableViewController.swift; sourceTree = "<group>"; };
 		656EA4CC21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInfoDetailsTableViewController.swift; sourceTree = "<group>"; };
+		65830E3F237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeUIPrintPageRenderer.swift; sourceTree = "<group>"; };
 		65A02950220FDBE90088681D /* JudgePDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgePDFCreator.swift; sourceTree = "<group>"; };
 		65A02952220FDC1C0088681D /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableViewCell.swift; sourceTree = "<group>"; };
@@ -121,11 +123,12 @@
 			isa = PBXGroup;
 			children = (
 				650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */,
-				652236F321E59A730024F1E6 /* HTMLtoPDFViewController.swift */,
 				652236F721EFDD4C0024F1E6 /* PDFViewController.swift */,
 				652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */,
 				65A02950220FDBE90088681D /* JudgePDFCreator.swift */,
 				65A02952220FDC1C0088681D /* PDFCreator.swift */,
+				650BC473237D078400A6951E /* JudgePDFViewController.swift */,
+				65830E3F237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift */,
 			);
 			path = PDFConversion;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				65DBC98C217EC5D40029C6AA /* MeetTableViewController.swift in Sources */,
 				65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */,
 				652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */,
+				650BC474237D078400A6951E /* JudgePDFViewController.swift in Sources */,
 				65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */,
 				65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */,
 				65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift in Sources */,
@@ -375,6 +379,7 @@
 				656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */,
 				65A02951220FDBE90088681D /* JudgePDFCreator.swift in Sources */,
 				652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */,
+				65830E40237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift in Sources */,
 				65C386CC21BB77F70070D76B /* Fee.swift in Sources */,
 				65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */,
 				65A02953220FDC1C0088681D /* PDFCreator.swift in Sources */,
@@ -391,7 +396,6 @@
 				655150D82372804A00BED00A /* AddJudgesToMeetViewController.swift in Sources */,
 				656EA4C821F68A1200DE4029 /* JudgeInfo.swift in Sources */,
 				65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */,
-				652236F421E59A730024F1E6 /* HTMLtoPDFViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

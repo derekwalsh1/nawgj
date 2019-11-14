@@ -21,13 +21,6 @@ import os.log
  */
 class JudgeListTableViewController: UITableViewController {
     
-    // This variable is set if the view controller is activated from the 'Add New Judge' segue
-    var addingNewJudge : Bool = false
-    
-    // Judge Management can be done outside of the meet at the main window. This variable indicates that
-    // Judge management is being done from there and so we should unwind to the main meet list
-    var shouldUnwindToMeetList : Bool = false
-    
     /*
      * Load the list of Judges from a persistent storage so that the table can be populated
      * when the view is presented
@@ -89,56 +82,24 @@ class JudgeListTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
-        if segue.identifier! == "AddJudge"{
-            // Create a New Judge named new Judge, if New Judge is already there then select that Judge
-            let judgeInfo = JudgeInfo(name: "New Judge", level: Judge.Level.National)
-            let judgeIndex = JudgeListManager.GetInstance().indexOfJudge(judgeInfo)
-            if judgeIndex < 0{
-                if JudgeListManager.GetInstance().addJudge(JudgeInfo(name: "New Judge", level: Judge.Level.National)){
-                    let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
-                    JudgeListManager.GetInstance().selectJudgeInfoAt(newIndexPath.row)
-                    tableView.insertRows(at: [newIndexPath], with: .automatic)
-                    self.addingNewJudge = true
-                } else{
-                    os_log("Didn't add judge %@", log: OSLog.default, type: .debug, judgeInfo.name)
-                }
-            } else{
-                JudgeListManager.GetInstance().selectJudgeInfoAt(judgeIndex)
+       
+        if let destinationViewController = segue.destination as? JudgeInfoDetailsTableViewController{
+            if segue.identifier! == "AddJudge"{
+                destinationViewController.addingNewJudge = true
+            }
+            else{
+               destinationViewController.addingNewJudge = false
             }
         }
-        else{
-            self.addingNewJudge = false
-        }
-        
-        JudgeListManager.GetInstance().saveJudges()
     }
     
     //MARK: Actions
     @IBAction func unwindToJudgeInfoList(sender: UIStoryboardSegue) {
-        JudgeListManager.GetInstance().loadJudges()
+        JudgeListManager.GetInstance().loadAndSortJudges()
         tableView.reloadData()
-        
-        if addingNewJudge && !shouldUnwindToMeetList {
-            self.performSegue(withIdentifier: "unwindFromJudgeList", sender: self)
-        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        JudgeListManager.GetInstance().selectJudgeInfoAt(indexPath.row)
-        
-        // If we came from the meet list then (because we should unwind to there) then segue
-        // to the Judge details view so that the user can start editing Judge details.
-        if shouldUnwindToMeetList{
-            self.performSegue(withIdentifier: "ShowDetail", sender: self)
-        }
-        else{
-            // This allows us to navigate back to the previous screen when a Judge is selected
-            self.performSegue(withIdentifier: "unwindFromJudgeList", sender: self)
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         JudgeListManager.GetInstance().selectJudgeInfoAt(indexPath.row)
         self.performSegue(withIdentifier: "ShowDetail", sender: self)
     }
