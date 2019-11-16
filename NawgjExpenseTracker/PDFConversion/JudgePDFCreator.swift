@@ -148,25 +148,28 @@ class JudgePDFCreator : PDFCreator{
                   -ms-transform: rotate(45deg);
                   transform: rotate(45deg);
                 }
+                .large {
+                  font-size: 22px; /* font-size 1em = 10px on default browser settings */
+                }
               </style>
             </head>
             <body>
-              <table border="1" width="100%" height="100%" cellpadding="5" cellspacing="0">
+              <table class="large" border="1" width="100%" height="100%" cellpadding="5" cellspacing="0">
                 <tr height="200">
                   <td width="300" align="center">
-                    <table width="100%" height="100%">
+                    <table width="100%" height="100%" cellpadding="10">
                       <tr height="75">
-                        <td valign="center" align="center">
+                        <td valign="top" align="center">
                           <strong><font size="6">\(judge.name)</font></strong>
                         </td>
                       </tr>
                       <tr height="25">
-                        <td valign="top" align="center">\(judge.level.description)</td>
+                        <td class="large" valign="top" align="center">\(judge.level.description)</td>
                       </tr>
                     </table>
                   </td>
                   <td>
-                    <table width="100%" height="100">
+                    <table class="large" width="100%" height="100">
                       <tr>
                         <td width="30">&nbsp;</td>
                         <td>
@@ -197,14 +200,17 @@ class JudgePDFCreator : PDFCreator{
                     </table>
                   </td>
                   <td valign="top" width="400">
-                    <br>
-                    <strong>Notes:</strong><br>
-                    \(judge.getNotes())
+                    <table class="large" cellpadding="10">
+                        <tr><td>
+                            <strong>Notes:</strong><br>
+                            \(judge.getNotes())
+                        </td></tr>
+                    </table>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                    <table cellspacing="5">
+                    <table class="large" cellspacing="5">
                       <tr>
                         <th width="150" align="left">Meet Name:</th>
                         <td>\(meet.name)</td>
@@ -221,6 +227,10 @@ class JudgePDFCreator : PDFCreator{
                         <th align="left">Meet Description:</th>
                         <td>\(meet.meetDescription)</td>
                       </tr>
+                        <tr>
+                          <th align="left">Mileage Rate:</th>
+                          <td>\(meet.getMileageRate())</td>
+                        </tr>
                     </table>
                   </td>
                 </tr>
@@ -229,7 +239,7 @@ class JudgePDFCreator : PDFCreator{
                 </tr>
                 <tr>
                   <td valign="top" colspan="3">
-                    <table width="100%" cellspacing="0">
+                    <table class="large" width="100%" cellspacing="0">
                       <tr>
                         <th align="left" width="50px">Date</th>
                         <th align="left">Hours @ Level</th>
@@ -284,7 +294,7 @@ class JudgePDFCreator : PDFCreator{
                 </tr>
                 <tr valign="top">
                   <td colspan="3">
-                    <table width="100%" cellspacing="0">
+                    <table class="large" width="100%" cellspacing="0">
                     <tr>
                       <th align="left">Date</th>
                       <th align="left">Expense Type</th>
@@ -331,11 +341,16 @@ class JudgePDFCreator : PDFCreator{
                       </tr>
                       <tr valign="bottom" height="100%">
                         <td colspan="3" align="left">
-                          <table cellpadding="0" width="100%" height="300" border="0">
+                          <table class="large" cellpadding="0" width="100%" border="0">
                             <tr height="75%" valign="bottom">
                               <td colspan="3">&nbsp;</td>
                             </tr>
-                            <tr valign="bttom" >
+                            <tr valign="bottom">
+                              <td align="left">&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td align="left">&nbsp;</td>
+                            </tr>
+                            <tr valign="bottom" >
                               <td align="left" width="55%">
                                 <hr>
                               </td>
