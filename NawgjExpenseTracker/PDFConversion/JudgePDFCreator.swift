@@ -61,6 +61,18 @@ class JudgePDFCreator : PDFCreator{
         let paidCheckedString = judge.isPaid() ? "checked" : ""
         let w9CheckedString = judge.isW9Received() ? "checked" : ""
         let receiptsCheckedString = judge.isReceiptsReceived() ? "checked" : ""
+        let feeList = judge.fees.sorted(by: {$0.date < $1.date})
+        
+        var datesString = ""
+        for index in 0...feeList.count - 1{
+            datesString.append(dateFormatter.string(from: feeList[index].date))
+            if index < (feeList.count - 1){
+                datesString.append("<br>")
+            }
+            //else if index > 0 && index == (feeList.count - 2){
+            //    datesString.append(" and ")
+            //}
+        }
         
         var html = """
             <html>
@@ -69,6 +81,72 @@ class JudgePDFCreator : PDFCreator{
                 @media print {
                 .pagebreak-before:first-child { display: block; page-break-before: avoid; }
                 .pagebreak-before { display: block; page-break-before: always; }
+                }
+            .container {
+                  display: block;
+                  position: relative;
+                  padding-left: 35px;
+                  margin-bottom: 12px;
+                  cursor: pointer;
+                  font-size: 19px;
+                  -webkit-user-select: none;
+                  -moz-user-select: none;
+                  -ms-user-select: none;
+                  user-select: none;
+                }
+
+                /* Hide the browser's default checkbox */
+                .container input {
+                  position: absolute;
+                  opacity: 0;
+                  cursor: pointer;
+                  height: 0;
+                  width: 0;
+                }
+
+                /* Create a custom checkbox */
+                .checkmark {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  height: 25px;
+                  width: 25px;
+                  background-color: #eee;
+                }
+
+                /* On mouse-over, add a grey background color */
+                .container:hover input ~ .checkmark {
+                  background-color: #ccc;
+                }
+
+                /* When the checkbox is checked, add a blue background */
+                .container input:checked ~ .checkmark {
+                  background-color: rgb(77, 86, 94);
+                }
+
+                /* Create the checkmark/indicator (hidden when not checked) */
+                .checkmark:after {
+                  content: "";
+                  position: absolute;
+                  display: none;
+                }
+
+                /* Show the checkmark when checked */
+                .container input:checked ~ .checkmark:after {
+                  display: block;
+                }
+
+                /* Style the checkmark/indicator */
+                .container .checkmark:after {
+                  left: 9px;
+                  top: 5px;
+                  width: 5px;
+                  height: 10px;
+                  border: solid white;
+                  border-width: 0 3px 3px 0;
+                  -webkit-transform: rotate(45deg);
+                  -ms-transform: rotate(45deg);
+                  transform: rotate(45deg);
                 }
               </style>
             </head>
@@ -90,28 +168,36 @@ class JudgePDFCreator : PDFCreator{
                   <td>
                     <table width="100%" height="100">
                       <tr>
+                        <td width="30">&nbsp;</td>
                         <td>
-                          Paid
+                            <label class="container">Paid
+                                <input type="checkbox" \(paidCheckedString) disabled>
+                                <span class="checkmark"></span>
+                              </label>
                         </td>
-                        <td><input type="checkbox" value="Paid" \(paidCheckedString) disabled></td>
                       </tr>
                       <tr>
+                        <td>&nbsp;</td>
                         <td>
-                          W9 Received
+                            <label class="container">W9 Received
+                                <input type="checkbox" \(w9CheckedString) disabled>
+                                <span class="checkmark"></span>
+                              </label>
                         </td>
-                        <td><input type="checkbox" value="W9" \(w9CheckedString) disabled></td>
                       </tr>
                       <tr>
+                        <td>&nbsp;</td>
                         <td>
-                          Receipts Received
-                        </td>
-                        <td>
-                          <input type="checkbox" value="Receipts" \(receiptsCheckedString) disabled>
+                            <label class="container">Receipts Received
+                                <input type="checkbox" \(receiptsCheckedString) disabled>
+                                <span class="checkmark"></span>
+                              </label>
                         </td>
                       </tr>
                     </table>
                   </td>
-                  <td valign="middle" width="400">
+                  <td valign="top" width="400">
+                    <br>
                     <strong>Notes:</strong><br>
                     \(judge.getNotes())
                   </td>
@@ -123,9 +209,9 @@ class JudgePDFCreator : PDFCreator{
                         <th width="150" align="left">Meet Name:</th>
                         <td>\(meet.name)</td>
                       </tr>
-                      <tr>
+                      <tr valign="top">
                         <th align="left">Meet Dates:</th>
-                        <td>12/23/2019 (Thursday), 12/24/2019 (Friday), 12/25/2019 (Saturday) and 12/26/2019 (Sunday)</td>
+                        <td>\(datesString)</td>
                       </tr>
                       <tr>
                         <th align="left">Meet Location:</th>
@@ -150,7 +236,6 @@ class JudgePDFCreator : PDFCreator{
                         <th align="right">Amount</th>
                       </tr>
         """
-        let feeList = judge.fees.sorted(by: {$0.date < $1.date})
         var totalHours : Float = 0
         var totalFees : Float = 0
         for fee in feeList{
@@ -200,31 +285,32 @@ class JudgePDFCreator : PDFCreator{
                 <tr valign="top">
                   <td colspan="3">
                     <table width="100%" cellspacing="0">
-                      <tr>
-                        <th align="left" width="50px">Date</th>
-                        <th align="left">Expense Type</th>
-                        <th align="right">Amount</th>
-                      </tr>
-                      <tr>
-                        <td align="left">12/23/2019</td>
-                        <td align="left">Mileage 120 miles @ $0.58/mile</td>
-                        <td align="right">$71.30</td>
-                      </tr>
-                      <tr>
-                        <td align="left">12/23/2019</td>
-                        <td align="left">Tolls</td>
-                        <td align="right">$10.00</td>
-                      </tr>
-                      <tr>
-                        <td align="left">12/23/2019</td>
-                        <td align="left">Transportation</td>
-                        <td align="right">$20.00</td>
-                      </tr>
-                      <tr>
-                        <td align="left">12/23/2019</td>
-                        <td align="left">Other</td>
-                        <td align="right">$0.00</td>
-                      </tr>
+                    <tr>
+                      <th align="left">Date</th>
+                      <th align="left">Expense Type</th>
+                      <th align="right">Amount</th>
+                    </tr>
+        
+        """
+        
+        for expense in judge.expenses{
+            if expense.amount > 0{
+                var expenseTypeString = expense.type.description
+                if expense.type == .Mileage{
+                    expenseTypeString += "(\(expense.amount) miles @ \(numberFormatter.string(from: NSNumber(value: meet.getMileageRate())) ?? "$0.00")/mile)"
+                }
+                
+                html += """
+                    <tr>
+                        <td align="left">\(dateFormatterShort.string(from: expense.date!))</th>
+                        <td align="left">\(expenseTypeString)</th>
+                        <td align="right">\(numberFormatter.string(from: NSNumber(value: expense.getExpenseTotal())) ?? "$0.00")</th>
+                    </tr>
+                    """
+            }
+        }
+        
+        html += """
                       <tr>
                         <td colspan="3">
                           <hr>
@@ -232,7 +318,7 @@ class JudgePDFCreator : PDFCreator{
                       </tr>
                       <tr bgcolor="lightgray">
                         <td colspan="2" align="left"><strong>Total Expenses</strong></td>
-                        <td align="right"><strong>$101.03</strong></td>
+                        <td align="right"><strong>\(numberFormatter.string(from: NSNumber(value: judge.totalExpenses())) ?? "$0.00")</strong></td>
                       </tr>
                       <tr>
                         <td colspan="3" align="left">
@@ -241,7 +327,7 @@ class JudgePDFCreator : PDFCreator{
                       </tr>
                       <tr bgcolor="lightgray">
                         <td colspan="2" align="left"><strong>Total Due</strong></td>
-                        <td align="right"><strong>$959.03</strong></td>
+                        <td align="right"><strong>\(numberFormatter.string(from: NSNumber(value: judge.totalCost())) ?? "$0.00")</strong></td>
                       </tr>
                       <tr valign="bottom" height="100%">
                         <td colspan="3" align="left">
