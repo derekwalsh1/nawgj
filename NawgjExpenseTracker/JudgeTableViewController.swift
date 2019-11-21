@@ -89,22 +89,8 @@ class JudgeTableViewController: UITableViewController {
         
         super.prepare(for: segue, sender: sender)
         
-        switch(segue.identifier ?? "") {
-        case "AddItem":
-            let newJudge = Judge(name: "New Judge", level: .FourToEight, fees: Array<Fee>())!
-            let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
-            MeetListManager.GetInstance().addJudge(judge: newJudge)
-            MeetListManager.GetInstance().selectJudgeAt(index: newIndexPath.row)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-        case "ShowDetail":
-            guard let selectedJudgeCell = sender as? JudgeTableViewCell, let indexPath = tableView.indexPath(for: selectedJudgeCell) else {
-                fatalError("The selected cell is not being displayed by the table")
-            }
+        if let selectedJudgeCell = sender as? JudgeTableViewCell, let indexPath = tableView.indexPath(for: selectedJudgeCell){
             MeetListManager.GetInstance().selectJudgeAt(index: indexPath.row)
-            
-        default:
-            break
         }
     }
     
