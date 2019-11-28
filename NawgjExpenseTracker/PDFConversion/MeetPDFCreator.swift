@@ -97,7 +97,7 @@ class MeetPDFCreator : PDFCreator{
         let sortedDays = meet.days.sorted(by: { $0.meetDate < $1.meetDate })
         var datesString = ""
         for (index, day) in sortedDays.enumerated(){
-            datesString += "\(index == 0 ? "" : "<br>")\(dateFormatter.string(from: day.meetDate)) - \(String(format: "%0.2f hrs", day.totalTimeInHours())) (\(String(format: "%d", day.breaks)) break\(day.breaks != 0 ? "s" : ""))"
+            datesString += "\(index == 0 ? "" : "<br>")\(dateFormatter.string(from: day.meetDate)) - \(String(format: "%0.2f hrs", day.totalTimeInHours())) (\(String(format: "%d", day.breaks)) break\(day.breaks == 1 ? "" : "s"))"
         }
         
         let sortedJudges = meet.judges.sorted(by: { $0.name < $1.name })

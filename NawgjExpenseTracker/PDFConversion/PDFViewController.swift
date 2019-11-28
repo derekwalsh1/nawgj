@@ -34,6 +34,11 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, 
         if pdfURL != nil{
             let items = [self]
             let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            if let popOver = ac.popoverPresentationController {
+              popOver.sourceView = self.view
+              //popOver.sourceRect =
+              //popOver.barButtonItem
+            }
             present(ac, animated: true)
         }
     }

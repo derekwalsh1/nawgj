@@ -34,7 +34,15 @@ class JudgePDFViewController: UIViewController, UIActivityItemSource {
         if pdfURL != nil{
             let items = [self]
             let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
-            present(ac, animated: true)
+            
+            if let popOver = ac.popoverPresentationController {
+              popOver.sourceView = self.view
+              //popOver.sourceRect =
+              //popOver.barButtonItem
+            }
+            
+            present(ac, animated: true, completion: nil)
+            
         }
     }
     
