@@ -35,9 +35,10 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, 
             let items = [self]
             let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
             if let popOver = ac.popoverPresentationController {
-              popOver.sourceView = self.view
-              //popOver.sourceRect =
-              //popOver.barButtonItem
+                popOver.sourceView = self.view
+                popOver.sourceRect = sender.bounds
+                popOver.permittedArrowDirections = []
+                popOver.canOverlapSourceViewRect = true
             }
             present(ac, animated: true)
         }

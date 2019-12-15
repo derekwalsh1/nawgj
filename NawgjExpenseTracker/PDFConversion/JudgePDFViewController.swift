@@ -36,7 +36,11 @@ class JudgePDFViewController: UIViewController, UIActivityItemSource {
             let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
             
             if let popOver = ac.popoverPresentationController {
-              popOver.sourceView = self.view
+                popOver.sourceView = self.view
+                popOver.sourceRect = sender.bounds
+                popOver.permittedArrowDirections = []
+                popOver.canOverlapSourceViewRect = true
+                //popOver.sourceRect = CGRect(x: -sender.frame.width, y: -sender.frame.height, width:sender.frame.width, height: sender.frame.height)
               //popOver.sourceRect =
               //popOver.barButtonItem
             }
