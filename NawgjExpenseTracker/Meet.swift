@@ -11,7 +11,7 @@ import os.log
 
 class Meet: Codable {
     
-    static let FED_MILEAGE_RATES : [Int: Float] = [2016 : 0.54, 2017 : 0.535, 2018 : 0.545, 2019 : 0.58]
+    static let FED_MILEAGE_RATES : [Int: Float] = [2016 : 0.54, 2017 : 0.535, 2018 : 0.545, 2019 : 0.58, 2020 : 0.57]
     
     //MARK: Properties
     var name: String            // Identifies the name of the meet
