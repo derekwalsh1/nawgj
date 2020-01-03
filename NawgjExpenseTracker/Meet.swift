@@ -50,7 +50,14 @@ class Meet: Codable {
     }
     
     func getMileageRate() -> Float{
-        return Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: startDate)] ?? Meet.FED_MILEAGE_RATES[Meet.FED_MILEAGE_RATES.count - 1]!
+        let yearComponent = Calendar.current.component(.year, from: startDate)
+        
+        if let rate = Meet.FED_MILEAGE_RATES[yearComponent]{
+            return rate
+        }
+        else{
+            return Meet.FED_MILEAGE_RATES.sorted(by: {$0.key > $1.key}).first?.value ?? 0.57
+        }
     }
     
     //MARK: Meet management and interogation
