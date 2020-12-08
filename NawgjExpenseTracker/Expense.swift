@@ -39,15 +39,29 @@ class Expense: Codable {
     var type : ExpenseType
     var amount : Float
     var notes : String = ""
+    var mileageRate : Float?
     var date : Date?
     
     //MARK: Initialization
-    init(type: ExpenseType, amount: Float, notes: String, date: Date ) {
+    init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float ) {
         // Initialize stored properties.
         self.type = type
         self.amount = amount
         self.notes = notes
         self.date = date
+        self.mileageRate = mileageRate
+    }
+    
+    required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date ) {
+        // Initialize stored properties.
+        var mileageRate = 0.0 as Float
+        if Meet.FED_MILEAGE_RATES.keys.contains(Calendar.current.component(.year, from: date)){
+            mileageRate = Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: date)]!
+        }
+        else{
+            mileageRate = (Meet.FED_MILEAGE_RATES.reversed().first?.value)!
+        }
+        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate)
     }
     
     required convenience init?(type: ExpenseType, date: Date) {

@@ -22,6 +22,9 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     @IBOutlet weak var endTimePicker: UIDatePicker!
     @IBOutlet weak var breaksSegmentedControl: UISegmentedControl!
     @IBOutlet weak var numberOfBreaksLabel: UILabel!
+    @IBOutlet weak var breakTimeLabel: UILabel!
+    @IBOutlet weak var breakTimeValueLabel: UILabel!
+    @IBOutlet weak var breakTimeSlider: UISlider!
     
     @IBOutlet weak var totalTimeCell: UITableViewCell!
     @IBOutlet weak var billableTimeCell: UITableViewCell!
@@ -30,7 +33,6 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
     var showMeetDayDatePicker : Bool = false
     var showMeetDayStartTimePicker : Bool = false
     var showMeetDayEndTimePicker : Bool = false
-    
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)`
@@ -52,6 +54,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         meetDayStartTimeCell.textLabel?.textColor = self.view.tintColor
         meetDayEndTimeCell.textLabel?.textColor = self.view.tintColor
         numberOfBreaksLabel.textColor = self.view.tintColor
+        breakTimeLabel.textColor = self.view.tintColor
         
         totalTimeCell.textLabel?.textColor = self.view.tintColor
         billableTimeCell.textLabel?.textColor = self.view.tintColor
@@ -88,10 +91,11 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                 startTimePicker.date = meetDay.startTime
                 endTimePicker.date = meetDay.endTime
                 breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
+                breakTimeSlider.value = Float(meetDay.breakTimeInMins ?? MeetDay.DEFAULT_BREAK_TIME_MINS);
                 
                 endTimePicker.minimumDate = startTimePicker.date
+                updateUILabels(meetDay: meetDay)
             }
-            updateUILabels()
         }
         else{
             os_log("Presenting in Edit Meet Day mode", log: OSLog.default, type: .debug)
@@ -105,13 +109,14 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                 meetDayDatePicker.date = meetDay.meetDate
                 startTimePicker.date = meetDay.startTime
                 endTimePicker.date = meetDay.endTime
+                breakTimeSlider.value = Float(meetDay.breakTimeInMins ?? MeetDay.DEFAULT_BREAK_TIME_MINS);
                 
                 breaksSegmentedControl.selectedSegmentIndex = meetDay.breaks
                 
                 if let meet = MeetListManager.GetInstance().getSelectedMeet(){
                     meetDayDatePicker.minimumDate = meet.startDate
                 }
-                updateUILabels()
+                updateUILabels(meetDay: meetDay)
             }
         }
     }
@@ -127,22 +132,23 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         return true
     }
     
-    func updateUILabels()
+    func updateUILabels(meetDay : MeetDay)
     {
-        totalTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.totalTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date)) as String
-        billableTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.totalBillableTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date, breaks: breaksSegmentedControl.selectedSegmentIndex)) as String
-        breakTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", MeetDay.breakTimeInHours(breaks: breaksSegmentedControl.selectedSegmentIndex)) as String
+        totalTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", meetDay.totalTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date)) as String
+        billableTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", meetDay.totalBillableTimeInHours(startTime: startTimePicker.date, endTime: endTimePicker.date, breaks: breaksSegmentedControl.selectedSegmentIndex)) as String
+        breakTimeCell.detailTextLabel?.text = NSString(format: "%.2f hours", meetDay.breakTimeInHours()) as String
         
         meetDayDateCell.detailTextLabel?.text = dateFormatter.string(from: meetDayDatePicker.date)
         meetDayStartTimeCell.detailTextLabel?.text = timeFormatter.string(from: startTimePicker.date)
         meetDayEndTimeCell.detailTextLabel?.text = timeFormatter.string(from: endTimePicker.date)
+        breakTimeValueLabel.text = NSString(format: "%d mins", (meetDay.breakTimeInMins ?? MeetDay.DEFAULT_BREAK_TIME_MINS)) as String
         //navigationItem.title = dateFormatter.string(from: meetDayDatePicker.date)
     }
     
     @IBAction func numberOfBreaksChanged(_ sender: UISegmentedControl) {
         if let meetDay = meetDay{
             meetDay.breaks = sender.selectedSegmentIndex
-            updateUILabels()
+            updateUILabels(meetDay: meetDay)
         }
     }
     
@@ -151,11 +157,16 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         if sender.date >= endTimePicker.date{
             endTimePicker.setDate(sender.date + 15 * 60, animated: true)
         }
-        updateUILabels()
+        
+        if meetDay != nil{
+            updateUILabels(meetDay: meetDay!)
+        }
     }
     
     @IBAction func meetDayEndTimeChanged(_ sender: UIDatePicker) {
-        updateUILabels()
+        if meetDay != nil{
+            updateUILabels(meetDay: meetDay!)
+        }
     }
     
     @IBAction func meetDayDateChanged(_ sender: UIDatePicker) {
@@ -177,7 +188,9 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
             startTimePicker.setDate(Calendar.current.date(byAdding: components, to: startTimePicker.date)!, animated: false)
             endTimePicker.setDate(Calendar.current.date(byAdding: components, to: endTimePicker.date)!, animated: false)
             
-            updateUILabels()
+            if meetDay != nil{
+                updateUILabels(meetDay: meetDay!)
+            }
         }
         else{
             meetDayDatePicker.date = (meetDay?.meetDate)!
@@ -268,5 +281,12 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
         //   (2) A Start Time
         //   (3) An End TIme
         //   (4) Number of 30 minute breaks
+    }
+    
+    @IBAction func brakeTimeSliderValueChanged(_ sender: UISlider) {
+        if let meetDay = meetDay{
+            meetDay.breakTimeInMins = Int(sender.value)
+            updateUILabels(meetDay: meetDay)
+        }
     }
 }

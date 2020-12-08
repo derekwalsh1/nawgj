@@ -11,9 +11,10 @@ import os.log
 
 class MeetDay: Codable {
     
-    static let BREAK_TIME_HOURS : Float = 0.5
+    static let DEFAULT_BREAK_TIME_MINS : Int = 30
     static let MIN_BILLING_HOURS : Float = 2.0
     static let DATE_FORMAT : String = "MMMM dd yyyy"
+    static let MAX_BREAK_TIME_MINS : Int = 120
     
     // MARK: Properties
     var meetDate: Date
@@ -21,24 +22,30 @@ class MeetDay: Codable {
     var endTime : Date
     var breaks : Int
     var uuid : String?
+    var breakTimeInMins : Int? = MeetDay.DEFAULT_BREAK_TIME_MINS
     
     //MARK: Initialization
     required convenience init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int) {
-        self.init(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks, id: UUID.init().uuidString)
+        self.init(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks, breakTime: MeetDay.DEFAULT_BREAK_TIME_MINS, id: UUID.init().uuidString)
+    }
+    
+    required convenience init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int, breakTime: Int) {
+        self.init(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks, breakTime: breakTime, id: UUID.init().uuidString)
     }
     
     //MARK: Initialization
-    init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int, id: String) {
+    init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int, breakTime: Int?, id: String) {
         // Initialize stored properties.
         self.meetDate = meetDate
         self.startTime = startTime
         self.endTime = endTime
         self.breaks = breaks
         self.uuid = id
+        self.breakTimeInMins = breakTime ?? MeetDay.DEFAULT_BREAK_TIME_MINS
     }
     
     func totalTimeInHours() -> Float {
-        return MeetDay.totalTimeInHours(startTime: startTime, endTime: endTime)
+        return totalTimeInHours(startTime: startTime, endTime: endTime)
     }
     
     func getUUID() -> String{
@@ -49,7 +56,7 @@ class MeetDay: Codable {
         return self.uuid!
     }
     
-    static func totalTimeInHours(startTime : Date, endTime : Date) -> Float {
+    func totalTimeInHours(startTime : Date, endTime : Date) -> Float {
         let timeInterval = endTime.timeIntervalSince(startTime)
         let timeInHours = timeInterval / 3600
         var hours = floor(timeInHours)
@@ -66,18 +73,14 @@ class MeetDay: Codable {
     }
     
     func breakTimeInHours() -> Float {
-        return MeetDay.breakTimeInHours(breaks: breaks)
+        return Float(self.breaks * (breakTimeInMins ?? MeetDay.DEFAULT_BREAK_TIME_MINS))/60.0
     }
-    
-    static func breakTimeInHours(breaks : Int) -> Float {
-        return Float(breaks) * MeetDay.BREAK_TIME_HOURS
-    }
-    
+
     func totalBillableTimeInHours() -> Float {
-        return MeetDay.totalBillableTimeInHours(startTime: startTime, endTime: endTime, breaks: breaks)
+        return totalBillableTimeInHours(startTime: startTime, endTime: endTime, breaks: breaks)
     }
     
-    static func totalBillableTimeInHours(startTime : Date, endTime : Date, breaks : Int) -> Float {
-        return max(MeetDay.MIN_BILLING_HOURS, totalTimeInHours(startTime: startTime, endTime: endTime) - breakTimeInHours(breaks: breaks))
+    func totalBillableTimeInHours(startTime : Date, endTime : Date, breaks : Int) -> Float {
+        return max(MeetDay.MIN_BILLING_HOURS, totalTimeInHours(startTime: startTime, endTime: endTime) - min(breakTimeInHours(), 2.0))
     }
 }
