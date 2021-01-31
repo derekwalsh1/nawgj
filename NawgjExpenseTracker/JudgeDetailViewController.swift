@@ -188,7 +188,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     //MARK: Actions
     @IBAction func unwindToJudgeDetails(sender: UIStoryboardSegue){
         
-        if let selectedJudgeInfo = JudgeListManager.GetInstance().selectedJudge{
+        if let selectedJudgeInfo = MeetListManager.GetInstance().getSelectedJudge(){
             judgeNameCell.detailTextLabel!.text = selectedJudgeInfo.name
             levelCell.detailTextLabel!.text! = selectedJudgeInfo.level.fullDescription
         }
