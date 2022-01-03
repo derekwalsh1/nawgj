@@ -30,7 +30,6 @@
 		65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC967217D5B320029C6AA /* AppDelegate.swift */; };
 		65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */; };
 		65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC96B217D5B320029C6AA /* Main.storyboard */; };
-		65DBC972217D5B320029C6AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC970217D5B320029C6AA /* LaunchScreen.storyboard */; };
 		65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC987217EBB7F0029C6AA /* Meet.swift */; };
 		65DBC98C217EC5D40029C6AA /* MeetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */; };
 		65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC99E219347F20029C6AA /* MeetDay.swift */; };
@@ -82,7 +81,6 @@
 		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDetailViewController.swift; sourceTree = "<group>"; };
 		65DBC96C217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		65DBC971217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65DBC973217D5B320029C6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65DBC978217D5B320029C6AA /* NawgjExpenseTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawgjExpenseTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DBC987217EBB7F0029C6AA /* Meet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meet.swift; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 				65DBC99D218D7A450029C6AA /* DataTypes */,
 				65DBC967217D5B320029C6AA /* AppDelegate.swift */,
 				65DBC96B217D5B320029C6AA /* Main.storyboard */,
-				65DBC970217D5B320029C6AA /* LaunchScreen.storyboard */,
 				65DBC973217D5B320029C6AA /* Info.plist */,
 				65EE305B219FE01D0011B2B8 /* Meet */,
 				65EE306121A0C1900011B2B8 /* MeetDay */,
@@ -343,7 +340,6 @@
 			files = (
 				65C386CA21B5AE350070D76B /* Images.xcassets in Resources */,
 				652236F621E70AA60024F1E6 /* meetreport.html in Resources */,
-				65DBC972217D5B320029C6AA /* LaunchScreen.storyboard in Resources */,
 				65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,14 +419,6 @@
 				65DBC96C217D5B320029C6AA /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		65DBC970217D5B320029C6AA /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				65DBC971217D5B320029C6AA /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -554,7 +542,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -573,7 +561,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
