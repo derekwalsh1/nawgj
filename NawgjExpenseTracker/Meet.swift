@@ -11,7 +11,18 @@ import os.log
 
 class Meet: Codable {
     
-    static let FED_MILEAGE_RATES : [Int: Float] = [2016 : 0.54, 2017 : 0.535, 2018 : 0.545, 2019 : 0.58, 2020 : 0.575, 2021 : 0.56, 2022 : 0.585]
+    static let FED_MILEAGE_RATES : [Int: Float] = [2016 : 0.54, 2017 : 0.535, 2018 : 0.545, 2019 : 0.58, 2020 : 0.575, 2021 : 0.56, 2022 : 0.625]
+    
+    static func getMileageRate(forDate: Date) -> Float {
+        let yearComponent = Calendar.current.component(.year, from: forDate)
+        
+        if let rate = Meet.FED_MILEAGE_RATES[yearComponent]{
+            return rate
+        }
+        else{
+            return Meet.FED_MILEAGE_RATES.sorted(by: {$0.key > $1.key}).first?.value ?? 0.57
+        }
+    }
     
     //MARK: Properties
     var name: String            // Identifies the name of the meet
@@ -50,14 +61,7 @@ class Meet: Codable {
     }
     
     func getMileageRate() -> Float{
-        let yearComponent = Calendar.current.component(.year, from: startDate)
-        
-        if let rate = Meet.FED_MILEAGE_RATES[yearComponent]{
-            return rate
-        }
-        else{
-            return Meet.FED_MILEAGE_RATES.sorted(by: {$0.key > $1.key}).first?.value ?? 0.57
-        }
+        return Meet.getMileageRate(forDate: startDate)
     }
     
     //MARK: Meet management and interogation

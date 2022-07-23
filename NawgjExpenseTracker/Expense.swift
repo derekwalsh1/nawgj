@@ -39,17 +39,19 @@ class Expense: Codable {
     var type : ExpenseType
     var amount : Float
     var notes : String = ""
-    var mileageRate : Float?
+    var mileageRate : Float
+    var isCustomMileageRate : Bool = false
     var date : Date?
     
     //MARK: Initialization
-    init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float ) {
+    init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float, isCustomMileageRate : Bool ) {
         // Initialize stored properties.
         self.type = type
         self.amount = amount
         self.notes = notes
         self.date = date
         self.mileageRate = mileageRate
+        self.isCustomMileageRate = isCustomMileageRate
     }
     
     required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date ) {
@@ -61,7 +63,7 @@ class Expense: Codable {
         else{
             mileageRate = (Meet.FED_MILEAGE_RATES.reversed().first?.value)!
         }
-        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate)
+        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate, isCustomMileageRate:false)
     }
     
     required convenience init?(type: ExpenseType, date: Date) {
@@ -69,18 +71,9 @@ class Expense: Codable {
     }
     
     func getExpenseTotal() -> Float{
-        if date == nil{
-            date = Date()
-        }
-        
         switch type{
         case .Mileage:
-            if Meet.FED_MILEAGE_RATES.keys.contains(Calendar.current.component(.year, from: date!)){
-                return amount * Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: date!)]!
-            }
-            else{
-                return amount * (Meet.FED_MILEAGE_RATES.reversed().first?.value)!
-            }
+            return amount * mileageRate
         default:
             return amount
         }

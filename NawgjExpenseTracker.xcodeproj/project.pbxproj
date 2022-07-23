@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		650BC474237D078400A6951E /* JudgePDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650BC473237D078400A6951E /* JudgePDFViewController.swift */; };
 		650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */; };
+		651C2D15278378CA000D802F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 651C2D14278378CA000D802F /* Launch Screen.storyboard */; };
 		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
 		652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */; };
 		652236F621E70AA60024F1E6 /* meetreport.html in Resources */ = {isa = PBXBuildFile; fileRef = 652236F521E70AA60024F1E6 /* meetreport.html */; };
@@ -59,6 +60,7 @@
 /* Begin PBXFileReference section */
 		650BC473237D078400A6951E /* JudgePDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgePDFViewController.swift; sourceTree = "<group>"; };
 		650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetPDFCreator.swift; sourceTree = "<group>"; };
+		651C2D14278378CA000D802F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
 		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		652236F521E70AA60024F1E6 /* meetreport.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = meetreport.html; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 		65DBC966217D5B320029C6AA /* NawgjExpenseTracker */ = {
 			isa = PBXGroup;
 			children = (
+				651C2D14278378CA000D802F /* Launch Screen.storyboard */,
 				656EA4C921F6938E00DE4029 /* JudgeList */,
 				652236FB21F029620024F1E6 /* Persistence */,
 				650F7B8321D94C4C00D5A632 /* PDFConversion */,
@@ -340,6 +343,7 @@
 			files = (
 				65C386CA21B5AE350070D76B /* Images.xcassets in Resources */,
 				652236F621E70AA60024F1E6 /* meetreport.html in Resources */,
+				651C2D15278378CA000D802F /* Launch Screen.storyboard in Resources */,
 				65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

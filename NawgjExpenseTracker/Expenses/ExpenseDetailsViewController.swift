@@ -18,8 +18,8 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     var isMileageExpense : Bool = false
     var numberFormatter : NumberFormatter = NumberFormatter()
     var dateFormatter : DateFormatter = DateFormatter()
-    
     var showDatePicker : Bool = false
+    var showManualMileageRate : Bool = false
     
     //MARK: Outlets
     @IBOutlet weak var amountTextField: UITextField!
@@ -29,6 +29,11 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     @IBOutlet weak var expenseDatePicker: UIDatePicker!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var manualMileageRateSetCell: UITableViewCell!
+    @IBOutlet weak var enableManualMileageRateEditSwitch: UISwitch!
+    
+    @IBOutlet weak var mileageRateValueCell: UITableViewCell!
+    @IBOutlet weak var mileageRateTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,13 +56,31 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
             notesTextView.text = expense.notes
             expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: (expense.date) ?? Date())
             expenseDatePicker.date = (expense.date) ?? Date()
-            titleLabel.text = expense.type == .Mileage ? "Miles" : "Amount($)"
             amountTextField.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
             notesTextView.delegate = self
             amountTextField.delegate = self
             
+            // Enable the mileage rate cell if this is a mileage rate expense and populate the cell with the appropriate initial value
+            isMileageExpense = expense.type == .Mileage
+            
+            titleLabel.text = isMileageExpense ? "Miles" : "Amount($)"
+            mileageRateValueCell.isHidden =  !isMileageExpense
+            manualMileageRateSetCell.isHidden = !isMileageExpense
+            enableManualMileageRateEditSwitch.isEnabled = isMileageExpense
+            mileageRateTextField.isEnabled = isMileageExpense
+        
             if expense.amount == 0{
                 amountTextField.becomeFirstResponder()
+            }
+            
+            if isMileageExpense{
+                enableManualMileageRateEditSwitch.isOn = expense.isCustomMileageRate
+                
+                if expense.mileageRate == 0{
+                    expense.mileageRate = Meet.getMileageRate(forDate: expenseDatePicker.date)
+                }
+                mileageRateTextField.text = numberFormatter.string(from: NSNumber(value: expense.mileageRate as Float))
+                mileageRateTextField.isEnabled = expense.isCustomMileageRate
             }
         }
         else{
@@ -100,8 +123,6 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
             case .Other:
                 imageView.image = UIImage(named: "other")
             }
-            
-            
         }
     }
     
@@ -129,10 +150,27 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         
         // If the date entry field is in use, the showDatePicker variable will be true
         // and the height of the row should be determined by the table view. Otherwise
-        // it is hiddent by setting the row height to 0.
-        if indexPath.section == 1 && indexPath.row == 2 && !showDatePicker {
-            return 0
+        // it is hidden by setting the row height to 0.
+        if indexPath.section == 1 {
+            if indexPath.row == 1 && !isMileageExpense {
+                return 0;
+            }
+            else if indexPath.row == 2 && !isMileageExpense{
+                return 0
+            }
+            else if indexPath.row == 4 && !showDatePicker {
+                return 0
+            }
         }
+        
+        // The expense details table rows are configured as follows:
+        //
+        // Row 0 = Amount (or Miles for mileage) Cell
+        // Row 1 = Manual Set Mileage Rate Cell (Hidden if expense type is not mileage)
+        // Row 2 = Mileage Rate Cell (Hidden if not mileage expense)
+        // Row 3 = Date Value Cell
+        // Row 4 = Date Picker
+        
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
@@ -140,15 +178,11 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         
         // If the user clicks on the date field, then expand or collapse the field and
         // refresh the table to update the view
-        if indexPath.section == 1 && indexPath.row == 1 {
+        if indexPath.section == 1 && indexPath.row == 3 {
             showDatePicker = !showDatePicker
             tableView.beginUpdates()
             tableView.endUpdates()
         }
-        
-        // Since the date summary row is not selectable (we don't ever want to change the
-        // background), deselect the row when done, regardless of whether we are selecting
-        // or deselecting the row.
         tableView.deselectRow(at: indexPath, animated: true)
         notesTextView.resignFirstResponder()
     }
@@ -168,8 +202,24 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         }
     }
     
+    @IBAction func onManualRateChanged(_ sender: UISwitch) {
+        mileageRateTextField.isEnabled = sender.isOn;
+        
+        if !sender.isOn{
+            mileageRateTextField.text = numberFormatter.string(from: NSNumber(value: Meet.getMileageRate(forDate: expenseDatePicker.date ) as Float))
+        }
+    }
+    
+    
+    
     @IBAction func expenseDateChanged(_ sender: UIDatePicker) {
         expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: sender.date)
+        
+        if isMileageExpense{
+            if !enableManualMileageRateEditSwitch.isOn{
+                mileageRateTextField.text = numberFormatter.string(from: NSNumber(value: Meet.getMileageRate(forDate: expenseDatePicker.date ) as Float))
+            }
+        }
     }
     
     func checkAndEnableDoneButton(){
@@ -194,6 +244,16 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
             }
             expense.notes = notesTextView.text ?? " "
             expense.date = expenseDatePicker.date
+            
+            if isMileageExpense{
+                expense.isCustomMileageRate = enableManualMileageRateEditSwitch.isOn
+                if let mileageText = mileageRateTextField.text{
+                    if let amount = numberFormatter.number(from: mileageText){
+                        expense.mileageRate = amount.floatValue
+                    }
+                }
+            }
+            
             MeetListManager.GetInstance().updateSelectedExpenseWith(expense: expense)
         }
     }
