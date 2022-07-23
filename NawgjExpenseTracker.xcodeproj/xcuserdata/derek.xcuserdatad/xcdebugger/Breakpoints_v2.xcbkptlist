@@ -30,8 +30,8 @@
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,9 +62,9 @@
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "checkAndEnableDoneButton()"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "saveExpense()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

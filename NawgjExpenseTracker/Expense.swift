@@ -40,7 +40,7 @@ class Expense: Codable {
     var amount : Float
     var notes : String = ""
     var mileageRate : Float
-    var isCustomMileageRate : Bool = false
+    var isCustomMileageRate : Bool? = false
     var date : Date?
     
     //MARK: Initialization
@@ -52,6 +52,16 @@ class Expense: Codable {
         self.date = date
         self.mileageRate = mileageRate
         self.isCustomMileageRate = isCustomMileageRate
+    }
+    
+    init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float) {
+        // Initialize stored properties.
+        self.type = type
+        self.amount = amount
+        self.notes = notes
+        self.date = date
+        self.mileageRate = mileageRate
+        self.isCustomMileageRate = false
     }
     
     required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date ) {

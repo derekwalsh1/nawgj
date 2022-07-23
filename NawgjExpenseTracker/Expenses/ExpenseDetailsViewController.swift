@@ -74,13 +74,20 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
             }
             
             if isMileageExpense{
-                enableManualMileageRateEditSwitch.isOn = expense.isCustomMileageRate
+                if let isCustomMileage = expense.isCustomMileageRate{
+                    enableManualMileageRateEditSwitch.isOn = isCustomMileage
+                }
+                else{
+                    expense.isCustomMileageRate = false
+                    enableManualMileageRateEditSwitch.isOn = false
+                }
                 
                 if expense.mileageRate == 0{
                     expense.mileageRate = Meet.getMileageRate(forDate: expenseDatePicker.date)
                 }
+                
                 mileageRateTextField.text = numberFormatter.string(from: NSNumber(value: expense.mileageRate as Float))
-                mileageRateTextField.isEnabled = expense.isCustomMileageRate
+                mileageRateTextField.isEnabled = enableManualMileageRateEditSwitch.isOn
             }
         }
         else{
