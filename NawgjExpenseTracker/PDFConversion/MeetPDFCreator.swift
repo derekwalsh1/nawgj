@@ -263,103 +263,103 @@ class MeetPDFCreator : PDFCreator{
             judge.fees = judge.fees.sorted(by: {$0.date < $1.date})
             let filteredExpenses = judge.expenses.filter { $0.amount > 0.0 }
             let totalRows = max(filteredExpenses.count, judge.fees.count)
-            /*if judge.isMeetRef(){
-                totalRows += 1
-            }*/
-            
-            for rowNumber in 0...totalRows - 1{
-                htmlString += """
-                    <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-                    <style type="text/css">
-                    @media print {
-                    .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-                    .pagebreak-before { display: block; page-break-before: always; }
-                    }
-                    </style>
-                """
-                
-                if rowNumber == 0{ // We are on the first row that prints
-                    let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
-                    let hours = judge.fees[rowNumber].getHours()
-                    let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)!
-                    
-                    var expenseName = ""
-                    var expenseTotal = ""
-                    if let expense = filteredExpenses.count > 0  ? filteredExpenses[0] : nil {
-                        expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
-                        expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
-                    }
-                    
-                    let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
-                    let expensesRowSpan = filteredExpenses.count - 1 <= rowNumber ? totalRows - rowNumber : 0
-                    
+
+            if totalRows > 0 {
+                for rowNumber in 0...totalRows - 1{
                     htmlString += """
-                    <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.name)</td>
-                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.level.fullDescription)</td>
-                        <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
-                        <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
-                        <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
+                        <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
+                        <style type="text/css">
+                        @media print {
+                        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
+                        .pagebreak-before { display: block; page-break-before: always; }
+                        }
+                        </style>
                     """
-                    if filteredExpenses.count == 0 {
-                        htmlString += """
-                        <td colspan="2" rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
-                        """
-                    }
-                    else {
-                        htmlString += """
-                        <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
-                        <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
-                        """
-                        
-                    }
-                    htmlString += """
-                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
-                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
-                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
-                    </tr>
-                    """
-                }/*
-                else if rowNumber == totalRows - 1 && judge.isMeetRef(){ // We are adding in the judge ref fee (which is taxable)
-                    let totalRefFee = judge.getMeetRefereeFee()
-                    htmlString += """
-                        <td colspan="2" valign="top">Meet Referee Fee</td>
-                        <td valign="top" align="right">\(totalRefFee)</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    """
-                }*/
-                else{ // We are in the middle rows
-                    if rowNumber < judge.fees.count{
-                        let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                    
+                    if rowNumber == 0{ // We are on the first row that prints
                         let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
                         let hours = judge.fees[rowNumber].getHours()
-                        let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)!
+                        let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)
+                        
+                        var expenseName = ""
+                        var expenseTotal = ""
+                        if let expense = filteredExpenses.count > 0  ? filteredExpenses[0] : nil {
+                            expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
+                            expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                        }
+                        
+                        let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                        let expensesRowSpan = filteredExpenses.count - 1 <= rowNumber ? totalRows - rowNumber : 0
+                        
                         htmlString += """
+                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.name)</td>
+                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.level.fullDescription)</td>
                             <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
                             <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
-                            <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
+                            <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee ?? "0.0")</td>
                         """
-                    }
-                    
-                    if rowNumber < filteredExpenses.count{
-                        let expensesRowSpan = filteredExpenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
-                        
-                        let expense = filteredExpenses[rowNumber]
-                        let expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
-                        let expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
-                        htmlString += """
+                        if filteredExpenses.count == 0 {
+                            htmlString += """
+                            <td colspan="2" rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
+                            """
+                        }
+                        else {
+                            htmlString += """
                             <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
                             <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
-                        """
-                    }
-                    
-                    if rowNumber < filteredExpenses.count || rowNumber < judge.fees.count{
+                            """
+                            
+                        }
                         htmlString += """
-                            </tr>
+                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
+                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
+                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
+                        </tr>
                         """
+                    }/*
+                    else if rowNumber == totalRows - 1 && judge.isMeetRef(){ // We are adding in the judge ref fee (which is taxable)
+                        let totalRefFee = judge.getMeetRefereeFee()
+                        htmlString += """
+                            <td colspan="2" valign="top">Meet Referee Fee</td>
+                            <td valign="top" align="right">\(totalRefFee)</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        """
+                    }*/
+                    else{ // We are in the middle rows
+                        if rowNumber < judge.fees.count{
+                            let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                            let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
+                            let hours = judge.fees[rowNumber].getHours()
+                            let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)!
+                            htmlString += """
+                                <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
+                                <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
+                                <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
+                            """
+                        }
+                        
+                        if rowNumber < filteredExpenses.count{
+                            let expensesRowSpan = filteredExpenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                            
+                            let expense = filteredExpenses[rowNumber]
+                            let expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
+                            let expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                            htmlString += """
+                                <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
+                                <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
+                            """
+                        }
+                        
+                        if rowNumber < filteredExpenses.count || rowNumber < judge.fees.count{
+                            htmlString += """
+                                </tr>
+                            """
+                        }
                     }
                 }
             }
+            
             
             // Add a row for judge ref fees if the judge is a meet referee
             if judge.isMeetRef(){

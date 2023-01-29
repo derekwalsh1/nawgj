@@ -115,32 +115,37 @@ class JudgeListTableViewController: UITableViewController {
         let newURL = JudgeListManager.DocumentsDirectory.appendingPathComponent("Judges.json")
         let fileManager = FileManager.default
         
-        if fileManager.fileExists(atPath: newURL.absoluteString){
-            try! fileManager.removeItem(at: newURL)
-        }
+        do{
+            if fileManager.fileExists(atPath: newURL.absoluteString){
+                try fileManager.removeItem(at: newURL)
+            }
+            
+            if fileManager.isReadableFile(atPath: newURL.absoluteString){
+                try fileManager.removeItem(at: newURL)
+            }
         
-        if fileManager.isReadableFile(atPath: newURL.absoluteString){
-            try! fileManager.removeItem(at: newURL)
+            try fileManager.copyItem(at: fileURL, to: newURL)
+            
+            // Create the Array which includes the files you want to share
+            var filesToShare = [Any]()
+
+            // Add the path of the file to the Array
+            filesToShare.append(newURL)
+
+            // Make the activityViewContoller which shows the share-view
+            let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
+            
+            if let popOver = activityViewController.popoverPresentationController {
+                popOver.sourceView = self.view
+                popOver.sourceRect = sender.bounds
+                popOver.permittedArrowDirections = []
+                popOver.canOverlapSourceViewRect = true
+            }
+            // Show the share-view
+            self.present(activityViewController, animated: true, completion: nil)
         }
-        
-        try! fileManager.copyItem(at: fileURL, to: newURL)
-
-        // Create the Array which includes the files you want to share
-        var filesToShare = [Any]()
-
-        // Add the path of the file to the Array
-        filesToShare.append(newURL)
-
-        // Make the activityViewContoller which shows the share-view
-        let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
-        
-        if let popOver = activityViewController.popoverPresentationController {
-            popOver.sourceView = self.view
-            popOver.sourceRect = sender.bounds
-            popOver.permittedArrowDirections = []
-            popOver.canOverlapSourceViewRect = true
+        catch {
+            os_log("Failed to share judges", log: OSLog.default, type: .error)
         }
-        // Show the share-view
-        self.present(activityViewController, animated: true, completion: nil)
     }
 }

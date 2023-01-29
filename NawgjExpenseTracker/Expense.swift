@@ -54,14 +54,8 @@ class Expense: Codable {
         self.isCustomMileageRate = isCustomMileageRate
     }
     
-    init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float) {
-        // Initialize stored properties.
-        self.type = type
-        self.amount = amount
-        self.notes = notes
-        self.date = date
-        self.mileageRate = mileageRate
-        self.isCustomMileageRate = false
+    required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float) {
+        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate, isCustomMileageRate:false)
     }
     
     required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date ) {

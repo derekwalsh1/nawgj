@@ -11,7 +11,7 @@ import os.log
 
 class Meet: Codable {
     
-    static let FED_MILEAGE_RATES : [Int: Float] = [2016 : 0.54, 2017 : 0.535, 2018 : 0.545, 2019 : 0.58, 2020 : 0.575, 2021 : 0.56, 2022 : 0.625]
+    static let FED_MILEAGE_RATES : [Int: Float] = [2016 : 0.54, 2017 : 0.535, 2018 : 0.545, 2019 : 0.58, 2020 : 0.575, 2021 : 0.56, 2022 : 0.625, 2023 : 0.655]
     
     static func getMileageRate(forDate: Date) -> Float {
         let yearComponent = Calendar.current.component(.year, from: forDate)

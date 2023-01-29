@@ -37,7 +37,7 @@ class MeetListManager{
         do{
             let data:Data = try Data(contentsOf: MeetListManager.ArchiveURL)
             let jsonDecoder = JSONDecoder()
-            meets = try! jsonDecoder.decode([Meet].self, from: data) as [Meet]
+            meets = try jsonDecoder.decode([Meet].self, from: data) as [Meet]
         } catch{
             os_log("Failed to load meets...", log: OSLog.default, type: .error)
             meets = Array<Meet>()

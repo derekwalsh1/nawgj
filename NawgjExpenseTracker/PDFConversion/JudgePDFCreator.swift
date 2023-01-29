@@ -64,14 +64,14 @@ class JudgePDFCreator : PDFCreator{
         let feeList = judge.fees.sorted(by: {$0.date < $1.date})
         
         var datesString = ""
-        for index in 0...feeList.count - 1{
-            datesString.append(dateFormatter.string(from: feeList[index].date))
-            if index < (feeList.count - 1){
-                datesString.append("<br>")
+        
+        if feeList.count > 0{
+            for index in 0...feeList.count - 1{
+                datesString.append(dateFormatter.string(from: feeList[index].date))
+                if index < (feeList.count - 1){
+                    datesString.append("<br>")
+                }
             }
-            //else if index > 0 && index == (feeList.count - 2){
-            //    datesString.append(" and ")
-            //}
         }
         
         var html = """
