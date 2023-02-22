@@ -14,8 +14,8 @@
             filePath = "NawgjExpenseTracker/Expense.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "description"
             landmarkType = "24">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,10 +62,57 @@
             filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
             landmarkName = "saveExpense()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7F8B6BE7-1C85-4440-A541-DF0333F5023E - 2d42a10dd3f0be68"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.ExpenseDetailsViewController.saveExpense() -&gt; ()"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "273"
+                  endingLineNumber = "273"
+                  offsetFromSymbolStart = "178">
+               </Location>
+               <Location
+                  uuid = "7F8B6BE7-1C85-4440-A541-DF0333F5023E - 2d42a10dd3f0be68"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.ExpenseDetailsViewController.saveExpense() -&gt; ()"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "273"
+                  endingLineNumber = "273"
+                  offsetFromSymbolStart = "402">
+               </Location>
+               <Location
+                  uuid = "7F8B6BE7-1C85-4440-A541-DF0333F5023E - 2d42a10dd3f0be68"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.ExpenseDetailsViewController.saveExpense() -&gt; ()"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "273"
+                  endingLineNumber = "273"
+                  offsetFromSymbolStart = "679">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -78,8 +125,8 @@
             filePath = "NawgjExpenseTracker/Meet.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "init?(name:days:judges:startDate:meetDescription:location:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +157,8 @@
             filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "generateInvoiceTable(meet:)"
             landmarkType = "7">
             <Locations>
@@ -158,10 +205,250 @@
             filePath = "NawgjExpenseTracker/PDFConversion/MeetPDFCreator.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
             landmarkName = "generateInvoiceTable(meet:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4074A480-63BC-4193-961E-92BB20A7DD25"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "306"
+            endingLineNumber = "306"
+            landmarkName = "saveExpense()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2FCF74B1-DA69-4734-AAEE-75CF844538F5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9D3F32DC-F6F8-4076-A05D-00EFA41AA72F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/Expenses/ExpenseDetailsViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "36FBD5AE-1B67-4F87-AEB5-1E07C4C150E8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/Expenses/ExpensesTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "prepare(for:sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2CE827F0-0BF7-49C3-A3A4-12A4487EC73E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/Judge.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "init(name:level:expenses:fees:notes:paid:meetRef:w9Received:meetRefereeFee:receiptsReceived:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "30719834-B1C6-40E4-98BA-511120C0A811"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/JudgeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "JudgeDetailViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "04ACA60D-880D-4ECD-9447-AED21996B619"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/JudgeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
+            landmarkName = "saveJudge()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "04ACA60D-880D-4ECD-9447-AED21996B619 - ee9950cb3597240c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.JudgeDetailViewController.saveJudge() -&gt; ()"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/JudgeDetailViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "53">
+               </Location>
+               <Location
+                  uuid = "04ACA60D-880D-4ECD-9447-AED21996B619 - ee9950cb3597240c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.JudgeDetailViewController.saveJudge() -&gt; ()"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/JudgeDetailViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "93">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EFF97DE1-16C6-4B06-895F-A7E0FEB67865"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/JudgeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "textFieldShouldReturn(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C9D4DBCD-BBDC-4C91-80CF-489DE30D830F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/JudgeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "handleJudgeDetailsChanged()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D8DA9D8D-A914-4490-9137-B8BD2F33B1A4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/JudgeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "handleJudgeDetailsChanged()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "283363B5-042A-483A-8AD5-30476995FB87"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/JudgeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
+            landmarkName = "meetRefFeeValueChanged(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "283363B5-042A-483A-8AD5-30476995FB87 - 6c66af386131ac34"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.JudgeDetailViewController.meetRefFeeValueChanged(__C.UITextField) -&gt; ()"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/JudgeDetailViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "250"
+                  endingLineNumber = "250"
+                  offsetFromSymbolStart = "81">
+               </Location>
+               <Location
+                  uuid = "283363B5-042A-483A-8AD5-30476995FB87 - 6c66af386131ac34"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.JudgeDetailViewController.meetRefFeeValueChanged(__C.UITextField) -&gt; ()"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/JudgeDetailViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "250"
+                  endingLineNumber = "250"
+                  offsetFromSymbolStart = "655">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

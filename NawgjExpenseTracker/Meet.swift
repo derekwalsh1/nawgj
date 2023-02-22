@@ -11,7 +11,23 @@ import os.log
 
 class Meet: Codable {
     
-    static let FED_MILEAGE_RATES : [Int: Float] = [2016 : 0.54, 2017 : 0.535, 2018 : 0.545, 2019 : 0.58, 2020 : 0.575, 2021 : 0.56, 2022 : 0.625, 2023 : 0.655]
+    static let FED_MILEAGE_RATES : [Int: Float] = [
+        2016 : 0.54,
+        2017 : 0.535,
+        2018 : 0.545,
+        2019 : 0.58,
+        2020 : 0.575,
+        2021 : 0.56,
+        2022 : 0.625,
+        2023 : 0.655]
+    
+    // Because of COVID and general health concerns, Judges can request a non-shared (private) room for meets where
+    // they require lodging. When a room is shared, the meet orgainization will expense the rate at 100% for each
+    // judge. A $150/night rate can be expenses at $75/night by 2 judges. If a judge requests a private room, the
+    // first $98 is expensible and the remainder is expected to be covered by the meet organiization. If a room is $98
+    // or less, the meet organizaer will cover the cost of the room up to the room rate and not beyond the $98/night
+    // max.
+    static let SINGLE_ROOM_REQUEST_MAX_DAILY_EXPENSE_DOLLARS = 98.0;
     
     static func getMileageRate(forDate: Date) -> Float {
         let yearComponent = Calendar.current.component(.year, from: forDate)

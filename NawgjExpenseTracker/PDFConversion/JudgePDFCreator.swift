@@ -310,6 +310,14 @@ class JudgePDFCreator : PDFCreator{
                     expenseTypeString += "(\(expense.amount) miles @ \(numberFormatter.string(from: NSNumber(value: meet.getMileageRate())) ?? "$0.00")/mile)"
                 }
                 
+                if expense.type == .Lodging{
+                    expenseTypeString += "(\(expense.totalNights ?? 0) nights @ \(numberFormatter.string(from: NSNumber(value: expense.amountPerNight ?? 0.0)) ?? "$0.00")/night)"
+                    if(expense.isPrivateLodgingRequested ?? false)
+                    {
+                        expenseTypeString += " -- Private Room Requested"
+                    }
+                }
+                
                 html += """
                     <tr>
                         <td align="left">\(dateFormatterShort.string(from: expense.date!))</th>

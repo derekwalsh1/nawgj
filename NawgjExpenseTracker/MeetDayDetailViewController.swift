@@ -72,7 +72,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                     // starting point for the new meet day. Just increment the start date
                     // by 1 day
                     let lastMeetDayAlreadyAdded = meet.days[meet.days.count - 1]
-                    meetDay = MeetDay(meetDate: lastMeetDayAlreadyAdded.meetDate.addingTimeInterval(24*60*60), startTime: lastMeetDayAlreadyAdded.startTime, endTime: lastMeetDayAlreadyAdded.endTime, breaks: lastMeetDayAlreadyAdded.breaks)
+                    meetDay = MeetDay(meetDate: lastMeetDayAlreadyAdded.meetDate.addingTimeInterval(24*60*60), startTime: lastMeetDayAlreadyAdded.startTime, endTime: lastMeetDayAlreadyAdded.endTime, breaks: 0)
                 }
                 else{
                     let units: Set<Calendar.Component> = [.year, .month, .day, .hour]
@@ -82,7 +82,7 @@ class MeetDayDetailViewController: UITableViewController, UINavigationController
                     components.hour = 17
                     let endTime = Calendar.current.date(from: components)
                     
-                    meetDay = MeetDay(meetDate: meet.startDate, startTime: startTime!, endTime: endTime!, breaks: 2)
+                    meetDay = MeetDay(meetDate: meet.startDate, startTime: startTime!, endTime: endTime!, breaks: 0)
                 }
             }
             

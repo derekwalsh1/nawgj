@@ -16,8 +16,8 @@ class ExpensesTableViewController: UITableViewController {
     @IBOutlet weak var airfareCell: UITableViewCell!
     @IBOutlet weak var transportationCell: UITableViewCell!
     @IBOutlet weak var parkingCell: UITableViewCell!
+    @IBOutlet weak var lodgingCell: UITableViewCell!
     @IBOutlet weak var otherCell: UITableViewCell!
-    
     @IBOutlet weak var backButton: UIBarButtonItem!
     
     //MARK: Properties
@@ -58,6 +58,9 @@ class ExpensesTableViewController: UITableViewController {
                 break
             case .Mileage:
                 mileageCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                break
+            case .Lodging:
+                lodgingCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                 break
             case .Parking:
                 parkingCell.detailTextLabel?.text = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
@@ -105,6 +108,13 @@ class ExpensesTableViewController: UITableViewController {
             break
         case "ShowMileageExpenseDetails":
             selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Mileage})
+            break
+        case "ShowLodgingExpenseDetails":
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Lodging})
+            if(selectedExpenseIndex == nil){
+                judge?.expenses.append(Expense(type: .Lodging, date: meet?.startDate ?? Date())!)
+                selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Lodging})
+            }
             break
         default:
             break

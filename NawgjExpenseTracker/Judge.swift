@@ -19,6 +19,11 @@ class Judge: Codable {
         case Ten = 4
         case National = 5
         case Brevet = 6
+        case NGA_Local = 7
+        case NGA_State = 8
+        case NGA_Regional = 9
+        case NGA_National = 10
+        case NGA_Elite = 11
         
         var description: String {
             switch self {
@@ -29,6 +34,11 @@ class Judge: Codable {
                 case .Ten : return "Level 10"
                 case .National : return "National"
                 case .Brevet : return "Brevet"
+                case .NGA_Local : return "Local(NGA)"
+                case .NGA_State : return "State(NGA)"
+                case .NGA_Regional : return "Regional(NGA)"
+                case .NGA_National : return "National(NGA)"
+                case .NGA_Elite : return "Elite(NGA)"
             }
         }
         
@@ -41,6 +51,11 @@ class Judge: Codable {
             case .Ten : return "Level 10 (" + String(format: "$%0.1f/hr)", rate)
             case .National : return "National (" + String(format: "$%0.1f/hr)", rate)
             case .Brevet : return "Brevet (" + String(format: "$%0.1f/hr)", rate)
+            case .NGA_Local : return "Local(NGA)(" + String(format: "$%0.1f/hr)", rate)
+            case .NGA_State : return "State(NGA)(" + String(format: "$%0.1f/hr)", rate)
+            case .NGA_Regional : return "Regional(NGA)(" + String(format: "$%0.1f/hr)", rate)
+            case .NGA_National : return "National(NGA)(" + String(format: "$%0.1f/hr)", rate)
+            case .NGA_Elite : return "Elite(NGA)(" + String(format: "$%0.1f/hr)", rate)
             }
         }
         
@@ -53,6 +68,11 @@ class Judge: Codable {
                 case .Ten : return 30.0
                 case .National : return 33.0
                 case .Brevet : return 36.0
+                case .NGA_Local : return 23.0
+                case .NGA_State : return 27.0
+                case .NGA_Regional : return 31.0
+                case .NGA_National : return 34.0
+                case .NGA_Elite : return 37.0
             }
         }
         
@@ -65,6 +85,12 @@ class Judge: Codable {
             case Level.Ten.description : return .Ten
             case Level.National.description : return .National
             case Level.Brevet.description : return .Brevet
+            case Level.NGA_Local.description : return .NGA_Local
+            case Level.NGA_State.description : return .NGA_State
+            case Level.NGA_Regional.description : return .NGA_Regional
+            case Level.NGA_National.description : return .NGA_National
+            case Level.NGA_Elite.description : return .NGA_Elite
+            
             case Level.FourToFive.fullDescription : return .FourToFive
             case Level.SixToEight.fullDescription : return .SixToEight
             case Level.FourToEight.fullDescription : return .FourToEight
@@ -72,11 +98,16 @@ class Judge: Codable {
             case Level.Ten.fullDescription : return .Ten
             case Level.National.fullDescription : return .National
             case Level.Brevet.fullDescription : return .Brevet
+            case Level.NGA_Local.fullDescription : return .NGA_Local
+            case Level.NGA_State.fullDescription : return .NGA_State
+            case Level.NGA_Regional.fullDescription : return .NGA_Regional
+            case Level.NGA_National.fullDescription : return .NGA_National
+            case Level.NGA_Elite.fullDescription : return .NGA_Elite
             default : return nil
             }
         }
         
-        static var count: Int { return Level.Brevet.rawValue + 1}
+        static var count: Int { return Level.NGA_Elite.rawValue + 1}
     }
     
     // MARK: Properties
@@ -122,6 +153,7 @@ class Judge: Codable {
             Expense(type: .Transportation, date: expenseDate),
             Expense(type: .Airfare, date: expenseDate),
             Expense(type: .Meals, date: expenseDate),
+            Expense(type: .Lodging, date: expenseDate),
             Expense(type: .Other, date: expenseDate)
         ]
         

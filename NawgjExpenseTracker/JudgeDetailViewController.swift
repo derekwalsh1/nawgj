@@ -20,7 +20,8 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     @IBOutlet weak var paidLabel: UILabel!
     @IBOutlet weak var meetRefLabel: UILabel!
     @IBOutlet weak var notesLabel: UILabel!
-    @IBOutlet weak var judgeNameCell: UITableViewCell!
+    @IBOutlet weak var judgeNameTextField: UITextField!
+    @IBOutlet weak var judgeNameLabel: UILabel!
     @IBOutlet weak var meetRefSwitch: UISwitch!
     @IBOutlet weak var w9ReceivedSwitch: UISwitch!
     @IBOutlet weak var w9ReceivedLabel: UILabel!
@@ -46,6 +47,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         numberFormatter.numberStyle = .currency
         numberFormatterDecimal.numberStyle = .decimal
         notesTextField.delegate = self
+        judgeNameTextField.delegate = self
         
         judge = MeetListManager.GetInstance().getSelectedJudge()
         meet = MeetListManager.GetInstance().getSelectedMeet()
@@ -55,9 +57,8 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         judgeSummaryTable.dataSource = judgeSummaryDelegate
         
         navigationItem.title = judge!.name
-        judgeNameCell.detailTextLabel?.text = judge!.name
+        judgeNameTextField.text = judge!.name
         
-        judgeNameCell.textLabel?.textColor = self.view.tintColor
         levelCell.textLabel?.textColor = self.view.tintColor
         notesLabel.textColor = self.view.tintColor
         paidLabel.textColor = self.view.tintColor
@@ -65,7 +66,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         w9ReceivedLabel.textColor = self.view.tintColor
         meetRefFeeLabel.textColor = self.view.tintColor
         receiptsReceivedLabel.textColor = self.view.tintColor
-        
+        judgeNameLabel.textColor = self.view.tintColor
         levelCell.detailTextLabel?.text = judge!.level.fullDescription
         levelPicker.delegate = self
         levelPicker.dataSource = self
@@ -79,7 +80,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     func handleJudgeDetailsChanged(){
         if let judge = judge{
             navigationItem.title = judge.name
-            judgeNameCell.detailTextLabel?.text = judge.name
+            judgeNameTextField.text = judge.name
             manageFeesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge.totalFees() as NSNumber)!)
             manageExpensesCell.detailTextLabel?.text = String(format: "Total: %@", numberFormatter.string(from: judge.totalExpenses() as NSNumber)!)
             notesTextField.text = judge.getNotes()
@@ -92,6 +93,11 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
             
             judgeSummaryTable.reloadData()
         }
+    }
+    
+    @IBAction func judgeNameChanged(_ sender: UITextField) {
+        navigationItem.title = sender.text
+        judge?.name = sender.text ?? "Unknown Judge"
     }
     
     override func didReceiveMemoryWarning() {
@@ -173,7 +179,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
 
     func saveJudge(){
         if let judge = judge{
-            judge.name = judgeNameCell.detailTextLabel!.text ?? "Unknown Judge"
+            judge.name = judgeNameTextField.text ?? "Unknown Judge"
             judge.setNotes(notesTextField.text ?? "")
             judge.setPaid(paidSwitch.isOn)
             judge.setMeetRef(meetRefSwitch.isOn)
@@ -189,7 +195,7 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     @IBAction func unwindToJudgeDetails(sender: UIStoryboardSegue){
         
         if let selectedJudgeInfo = MeetListManager.GetInstance().getSelectedJudge(){
-            judgeNameCell.detailTextLabel!.text = selectedJudgeInfo.name
+            judgeNameTextField.text = selectedJudgeInfo.name
             levelCell.detailTextLabel!.text! = selectedJudgeInfo.level.fullDescription
         }
         

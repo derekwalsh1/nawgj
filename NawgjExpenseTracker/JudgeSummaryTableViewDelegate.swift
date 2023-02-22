@@ -50,8 +50,12 @@ class JudgeSummaryTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
                 cell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
             default:
                 let fee = judge.fees[indexPath.row]
+                cell.textLabel?.textColor = UIColor.label
                 cell.textLabel?.text = dateFormatter.string(from: fee.date)
+                cell.textLabel?.font = UIFont.systemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
                 cell.detailTextLabel?.text = String(format: "%@", numberFormatter.string(from: fee.getFeeTotal() as NSNumber)!)
+                cell.detailTextLabel?.textColor = UIColor.label
+                cell.detailTextLabel?.font = UIFont.systemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
             }
             
         default:
@@ -70,8 +74,12 @@ class JudgeSummaryTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
                 cell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
             default:
                 let expense = judge.expenses[indexPath.row]
+                cell.textLabel?.textColor = UIColor.label
                 cell.textLabel?.text = expense.type.description
+                cell.textLabel?.font = UIFont.systemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
                 cell.detailTextLabel?.text = String(format: "%@", numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!)
+                cell.detailTextLabel?.textColor = UIColor.label
+                cell.detailTextLabel?.font = UIFont.systemFont(ofSize: (cell.detailTextLabel?.font.pointSize)!)
             }
             
         }

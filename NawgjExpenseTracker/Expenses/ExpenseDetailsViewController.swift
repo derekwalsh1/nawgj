@@ -16,6 +16,7 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     var judge : Judge?
     
     var isMileageExpense : Bool = false
+    var isLodgingExpense : Bool = false
     var numberFormatter : NumberFormatter = NumberFormatter()
     var dateFormatter : DateFormatter = DateFormatter()
     var showDatePicker : Bool = false
@@ -29,11 +30,18 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     @IBOutlet weak var expenseDatePicker: UIDatePicker!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    
+    // Outlets for mileage related components
     @IBOutlet weak var manualMileageRateSetCell: UITableViewCell!
     @IBOutlet weak var enableManualMileageRateEditSwitch: UISwitch!
-    
     @IBOutlet weak var mileageRateValueCell: UITableViewCell!
     @IBOutlet weak var mileageRateTextField: UITextField!
+    
+    // Outlets for lodging UI components
+    @IBOutlet weak var numberOfNightsStepper: UIStepper!
+    @IBOutlet weak var privateRoomRequestedSwitch: UISwitch!
+    @IBOutlet weak var nightlyRateTextField: UITextField!
+    @IBOutlet weak var numberOfNightsLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +71,11 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
             // Enable the mileage rate cell if this is a mileage rate expense and populate the cell with the appropriate initial value
             isMileageExpense = expense.type == .Mileage
             
+            // Enable the lodging related cells if this is a lodging expense
+            isLodgingExpense = expense.type == .Lodging
+            
             titleLabel.text = isMileageExpense ? "Miles" : "Amount($)"
+            
             mileageRateValueCell.isHidden =  !isMileageExpense
             manualMileageRateSetCell.isHidden = !isMileageExpense
             enableManualMileageRateEditSwitch.isEnabled = isMileageExpense
@@ -88,6 +100,16 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
                 
                 mileageRateTextField.text = numberFormatter.string(from: NSNumber(value: expense.mileageRate as Float))
                 mileageRateTextField.isEnabled = enableManualMileageRateEditSwitch.isOn
+            }
+            
+            if isLodgingExpense{
+                privateRoomRequestedSwitch.isOn = expense.isPrivateLodgingRequested ?? false
+                nightlyRateTextField.text = numberFormatter.string(from: NSNumber(value: Float(expense.amountPerNight ?? 0.0)))
+                numberOfNightsLabel.text = numberFormatter.string(from: NSNumber(value: Int(expense.totalNights ?? 0)))
+                numberOfNightsStepper.value = Double(expense.totalNights ?? 0)
+                amountTextField.text = String(Float(expense.getExpenseTotal()))
+                amountTextField.isEnabled = false
+                nightlyRateTextField.isEnabled = !privateRoomRequestedSwitch.isOn
             }
         }
         else{
@@ -127,6 +149,8 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
                 imageView.image = UIImage(named: "parking")
             case .Airfare:
                 imageView.image = UIImage(named: "airfare")
+            case .Lodging:
+                imageView.image = UIImage(named: "lodging")
             case .Other:
                 imageView.image = UIImage(named: "other")
             }
@@ -159,13 +183,13 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         // and the height of the row should be determined by the table view. Otherwise
         // it is hidden by setting the row height to 0.
         if indexPath.section == 1 {
-            if indexPath.row == 1 && !isMileageExpense {
+            if (indexPath.row == 1 || indexPath.row == 2) && !isMileageExpense {
                 return 0;
             }
-            else if indexPath.row == 2 && !isMileageExpense{
+            else if (indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 5) && !isLodgingExpense {
                 return 0
             }
-            else if indexPath.row == 4 && !showDatePicker {
+            else if indexPath.row == 7 && !showDatePicker {
                 return 0
             }
         }
@@ -175,8 +199,11 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         // Row 0 = Amount (or Miles for mileage) Cell
         // Row 1 = Manual Set Mileage Rate Cell (Hidden if expense type is not mileage)
         // Row 2 = Mileage Rate Cell (Hidden if not mileage expense)
-        // Row 3 = Date Value Cell
-        // Row 4 = Date Picker
+        // Row 3 = Lodging => Number of nights
+        // Row 4 = Lodging => Nightly rate
+        // Row 5 = Lodging => Single Room Requested
+        // Row 6 = Date Value Cell
+        // Row 7 = Date Picker
         
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
@@ -185,7 +212,7 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         
         // If the user clicks on the date field, then expand or collapse the field and
         // refresh the table to update the view
-        if indexPath.section == 1 && indexPath.row == 3 {
+        if indexPath.section == 1 && indexPath.row == 6 {
             showDatePicker = !showDatePicker
             tableView.beginUpdates()
             tableView.endUpdates()
@@ -212,6 +239,7 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     @IBAction func onManualRateChanged(_ sender: UISwitch) {
         mileageRateTextField.isEnabled = sender.isOn;
         
+        // If the mileage rate changed to auto, then update the mileage rate text field to the auto rate
         if !sender.isOn{
             mileageRateTextField.text = numberFormatter.string(from: NSNumber(value: Meet.getMileageRate(forDate: expenseDatePicker.date ) as Float))
         }
@@ -222,11 +250,37 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
     @IBAction func expenseDateChanged(_ sender: UIDatePicker) {
         expenseDateCell.detailTextLabel?.text = dateFormatter.string(from: sender.date)
         
+        // Whenever the expense date is changed the mileage rate for that date needs to be determined
+        // if the selected expense is a mileage expense and a custom/manual mileage rate has not been
+        // selected.
         if isMileageExpense{
             if !enableManualMileageRateEditSwitch.isOn{
                 mileageRateTextField.text = numberFormatter.string(from: NSNumber(value: Meet.getMileageRate(forDate: expenseDatePicker.date ) as Float))
             }
         }
+    }
+    
+    @IBAction func privateRoomSwitchChanged(_ sender: UISwitch) {
+        nightlyRateTextField.isEnabled = !sender.isOn
+        
+        if(sender.isOn)
+        {
+            expense?.amountPerNight = Float(Meet.SINGLE_ROOM_REQUEST_MAX_DAILY_EXPENSE_DOLLARS)
+            nightlyRateTextField.text = String(Float(expense?.amountPerNight ?? 0.0))
+        }
+        
+        amountTextField.text = String(Float(expense?.getExpenseTotal() ?? 0.0))
+    }
+    
+    @IBAction func totalNightsStepperValueChanged(_ sender: UIStepper) {
+        numberOfNightsLabel.text = String(Int(sender.value))
+        expense?.totalNights = Int(sender.value)
+        amountTextField.text = String(Float(expense?.getExpenseTotal() ?? 0.0))
+    }
+    
+    @IBAction func amountPerNightEdited(_ sender: UITextField) {
+        expense?.amountPerNight = Float(sender.text ?? "0.0")
+        amountTextField.text = String(Float(expense?.getExpenseTotal() ?? 0.0))
     }
     
     func checkAndEnableDoneButton(){
@@ -259,6 +313,17 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
                         expense.mileageRate = amount.floatValue
                     }
                 }
+            }
+            
+            if isLodgingExpense{
+                expense.isPrivateLodgingRequested = privateRoomRequestedSwitch.isOn
+                if expense.isPrivateLodgingRequested ?? false {
+                    expense.amountPerNight = 98.0
+                }
+                else{
+                    expense.amountPerNight = numberFormatter.number(from: nightlyRateTextField.text ?? "0.0") as? Float
+                }
+                expense.totalNights = Int(numberOfNightsStepper.value)
             }
             
             MeetListManager.GetInstance().updateSelectedExpenseWith(expense: expense)

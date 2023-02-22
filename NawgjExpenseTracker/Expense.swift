@@ -18,6 +18,7 @@ class Expense: Codable {
         case Airfare
         case Transportation
         case Parking
+        case Lodging
         case Other
         
         var description: String {
@@ -28,6 +29,7 @@ class Expense: Codable {
             case .Airfare : return "Airfare"
             case .Transportation : return "Transportation"
             case .Parking : return "Parking"
+            case .Lodging : return "Lodging"
             case .Other : return "Other Expenses"
             }
         }
@@ -39,23 +41,33 @@ class Expense: Codable {
     var type : ExpenseType
     var amount : Float
     var notes : String = ""
-    var mileageRate : Float
-    var isCustomMileageRate : Bool? = false
     var date : Date?
     
+    // Mileage related expenses
+    var mileageRate : Float
+    var isCustomMileageRate : Bool? = false
+    
+    // For lodging only
+    var isPrivateLodgingRequested : Bool? = false
+    var totalNights : Int? = 1
+    var amountPerNight : Float? = 0
+    
     //MARK: Initialization
-    init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float, isCustomMileageRate : Bool ) {
-        // Initialize stored properties.
+    init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float, isCustomMileageRate : Bool, isPrivateLodgingRequested : Bool, totalNights : Int, amountPerNight : Float) {
+        
         self.type = type
         self.amount = amount
         self.notes = notes
         self.date = date
         self.mileageRate = mileageRate
         self.isCustomMileageRate = isCustomMileageRate
+        self.isPrivateLodgingRequested = isPrivateLodgingRequested
+        self.totalNights = totalNights
+        self.amountPerNight = amountPerNight
     }
     
     required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date, mileageRate: Float) {
-        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate, isCustomMileageRate:false)
+        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate, isCustomMileageRate:false, isPrivateLodgingRequested: false, totalNights: 0, amountPerNight: 0)
     }
     
     required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date ) {
@@ -67,7 +79,7 @@ class Expense: Codable {
         else{
             mileageRate = (Meet.FED_MILEAGE_RATES.reversed().first?.value)!
         }
-        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate, isCustomMileageRate:false)
+        self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate, isCustomMileageRate:false, isPrivateLodgingRequested: false, totalNights: 0, amountPerNight: 0)
     }
     
     required convenience init?(type: ExpenseType, date: Date) {
@@ -78,6 +90,8 @@ class Expense: Codable {
         switch type{
         case .Mileage:
             return amount * mileageRate
+        case .Lodging:
+            return (amountPerNight ?? 0) * Float(totalNights ?? 0)
         default:
             return amount
         }

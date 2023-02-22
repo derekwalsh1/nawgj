@@ -21,8 +21,8 @@ class MeetPDFCreator : PDFCreator{
         numberFormatter.numberStyle = .currency
         
         var html = generateHTMLHeader()
-        html += generateMeetSummaryTable(meet: meet)
         html += generateInvoiceTable(meet: meet)
+        html += generateMeetSummaryTable(meet: meet)
         html += generateCheckList(meet: meet)
         html += generateFeeTable(meet: meet)
         html += generateMeetDayDetailsTable(meet: meet)
@@ -80,6 +80,7 @@ class MeetPDFCreator : PDFCreator{
                 @page {
                 size: landscape;
                 }
+        
                 </style>
             </head>
         <body>
@@ -386,6 +387,8 @@ class MeetPDFCreator : PDFCreator{
             .pagebreak-before:first-child { display: block; page-break-before: avoid; }
             .pagebreak-before { display: block; page-break-before: always; }
             }
+            #one {
+              border: 3px solid black;
             </style>
             """
             let totalFees = numberFormatter.string(from: judge.totalFees() as NSNumber)!
@@ -399,11 +402,12 @@ class MeetPDFCreator : PDFCreator{
             <td>&nbsp;</td>
             <td align="right"><b>\(totalExpenses)</b></td>
             <td align="right"><b>\(totalFees)</b></td>
-            <td align="right"><b>\(totalDue)</b></td>
+            <td id="one" align="right"><b><u>\(totalDue)</u></b></td>
             <td align="center"><b>\(judge.isPaid() ? "Paid" : "Not Paid")</b></td>
             </tr>
             """
         }
+        
         
         htmlString += """
         <tr align="left" height="26" bgcolor="#BBBBBB" : "")>
@@ -412,6 +416,8 @@ class MeetPDFCreator : PDFCreator{
         .pagebreak-before:first-child { display: block; page-break-before: avoid; }
         .pagebreak-before { display: block; page-break-before: always; }
         }
+        #one {
+          border: 3px solid black;
         </style>
             <td colspan="3" align="left"><b>Grand Total for all Judges:</b></td>
             <td><b>\(meet.totalBillableJudgeHours()) hrs</b></td>
@@ -419,7 +425,7 @@ class MeetPDFCreator : PDFCreator{
             <td>&nbsp;</td>
             <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFeesAndExpenses() - meet.totalJudgeFees() as NSNumber)!)</b></td>
             <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</b></td>
-            <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFeesAndExpenses() as NSNumber)!)</b></td>
+            <td id="one" align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFeesAndExpenses() as NSNumber)!)</b></td>
             <td>&nbsp;</td>
         </tr>
         """
