@@ -5,7 +5,7 @@
 //  Created by Derek on 12/20/18.
 //  Copyright © 2018 Derek Walsh. All rights reserved.
 //
-
+import os.log
 import UIKit
 
 class MeetTableViewCell: UITableViewCell {
@@ -20,6 +20,8 @@ class MeetTableViewCell: UITableViewCell {
     var meet : Meet?
     var numberFormatter : NumberFormatter = NumberFormatter()
     var dateFormatter : DateFormatter = DateFormatter()
+    var parentViewController : UINavigationController?
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

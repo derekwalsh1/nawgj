@@ -27,23 +27,44 @@ class MeetTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return MeetListManager.GetInstance().meets!.count
+        if section == 0{
+            return 1
+        }
+        else{
+            return MeetListManager.GetInstance().meets!.count
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0{
+            return 55
+        }
+        else{
+            return 175
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // Configure the cell...
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableViewCell", for: indexPath) as! MeetTableViewCell
-        
-        // Fetches the appropriate meet for the data source layout.
-        let meet = MeetListManager.GetInstance().meets![indexPath.row]
-        cell.meet = meet
-        cell.setupCellContent()
-        return cell
+        if indexPath.section == 1{
+            // Configure the cell...
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableViewCell", for: indexPath) as! MeetTableViewCell
+            
+            // Fetches the appropriate meet for the data source layout.
+            let meet = MeetListManager.GetInstance().meets![indexPath.row]
+            cell.meet = meet
+            cell.setupCellContent()
+            cell.parentViewController = self.navigationController
+            return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MeetTableImportExportCell", for: indexPath) as! MeetTableImportExportCell
+            cell.parentViewController = self
+            return cell
+        }
     }
     
     // Override to support conditional editing of the table view.
@@ -54,12 +75,14 @@ class MeetTableViewController: UITableViewController {
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            MeetListManager.GetInstance().removeMeetAt(index: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            updateEditButton(false)
-        } 
+        if indexPath.section == 1{
+            if editingStyle == .delete {
+                // Delete the row from the data source
+                MeetListManager.GetInstance().removeMeetAt(index: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                updateEditButton(false)
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -78,7 +101,7 @@ class MeetTableViewController: UITableViewController {
         case "AddItem":
             os_log("Adding a new meet.", log: OSLog.default, type: .debug)
             let meet = Meet(name: "New Meet", startDate: Date())
-            let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
+            let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 1), section: 1)
             MeetListManager.GetInstance().addMeet(meet: meet!)
             MeetListManager.GetInstance().selectMeetAt(index: newIndexPath.row)
             MeetListManager.GetInstance().saveMeets()

@@ -30,7 +30,6 @@ class JudgePDFViewController: UIViewController, UIActivityItemSource {
     var pdfView : PDFView?
     
     @objc func share(sender: UIView){
-        //let docsurl = try! fileManager.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         if pdfURL != nil{
             let items = [self]
             let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)

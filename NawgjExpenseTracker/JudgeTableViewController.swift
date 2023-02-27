@@ -17,6 +17,8 @@ class JudgeTableViewController: UITableViewController {
     @IBOutlet weak var doneButton: UIBarButtonItem!
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         numberFormatter = NumberFormatter()

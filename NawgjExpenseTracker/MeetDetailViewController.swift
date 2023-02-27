@@ -24,6 +24,8 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate{
     @IBOutlet weak var locationLabel: UILabel!
     
     @IBOutlet weak var summaryTableView: UITableView!
+    @IBOutlet weak var exportMeetButton: UIButton!
+    @IBOutlet weak var generateReportButton: UIButton!
     
     /*
      This value is either passed by `MeetTableViewController` in `prepare(for:sender:)` or constructed as part of adding a new meal.
@@ -139,7 +141,7 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate{
             let headerHeight = summaryTableView!.estimatedSectionHeaderHeight
             let footerHeight = summaryTableView!.estimatedSectionFooterHeight
             
-            return (numberOfSections * (headerHeight + footerHeight)) + ((numberOfCells * numberOfSections) * rowHeight)
+            return (numberOfSections * (headerHeight + footerHeight)) + ((numberOfCells * numberOfSections) * rowHeight) + 200
         }
         else {
             return super.tableView(tableView, heightForRowAt: indexPath)
@@ -206,6 +208,55 @@ class MeetDetailViewController: UITableViewController, UITextFieldDelegate{
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func dataToFile(fileName: String) -> URL? {
+        do{
+            let newURL = JudgeListManager.DocumentsDirectory.appendingPathComponent(fileName)
+            var encodedData = try JSONEncoder().encode(meet)
+            let meetFromData = try JSONDecoder().decode(Meet.self, from: encodedData) as Meet
+            encodedData = try JSONEncoder().encode(meetFromData)
+            try encodedData.write(to: newURL)
+            
+            return newURL
+        } catch{
+            os_log("Failed to convert meet to JSON format", log: OSLog.default, type: .error)
+            return nil
+        }
+    }
+    
+    func meetDataToJSONString() -> Data? {
+        do{
+            let encodedData = try JSONEncoder().encode(meet)
+            return encodedData
+        } catch{
+            os_log("Failed to convert meet to JSON format", log: OSLog.default, type: .error)
+            return nil
+        }
+    }
+    
+    @IBAction func exportMeetButtonClicked(_ sender: UIButton) {
+        //let jsonData = meetDataToJSONString()
+        let file = dataToFile(fileName: "ExportedMeet.JSON")
+        
+        // Create the Array which includes the files you want to share
+        var dataToShare = [Any]()
+
+        // Add the path of the file to the Array
+        dataToShare.append(file!)
+
+        // Make the activityViewContoller which shows the share-view
+        let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
+        activityViewController.isModalInPresentation = true
+        if let popOver = activityViewController.popoverPresentationController {
+            popOver.sourceView = exportMeetButton
+            popOver.sourceRect = sender.bounds
+            popOver.permittedArrowDirections = []
+            popOver.canOverlapSourceViewRect = true
+        }
+        
+        // Show the share-view
+        self.present(activityViewController, animated: true, completion: nil)
     }
 }
 

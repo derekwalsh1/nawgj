@@ -89,7 +89,7 @@ class ExpensesTableViewController: UITableViewController {
         
         switch(segue.identifier){
         case "ShowTollsExpenseDetails":
-            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == Expense.ExpenseType.Toll})
+            selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Toll})
             break
         case "ShowTransportationExpenseDetails":
             selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Transportation})
@@ -102,6 +102,10 @@ class ExpensesTableViewController: UITableViewController {
             break
         case "ShowOtherExpenseDetails":
             selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Other})
+            if(selectedExpenseIndex == nil){
+                judge?.expenses.append(Expense(type: .Other, date: meet?.startDate ?? Date())!)
+                selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Other})
+            }
             break
         case "ShowMealsExpenseDetails":
             selectedExpenseIndex = judge?.expenses.firstIndex(where:{$0.type == .Meals})

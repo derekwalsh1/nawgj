@@ -261,4 +261,19 @@ class MeetListManager{
         meets?.insert(meet!, at: toIndex)
         saveMeets()
     }
+    
+    func importMeet(fromFile: URL?){
+        if let jsonFile = fromFile{
+            do{
+                let data:Data = try Data(contentsOf: jsonFile)
+                let jsonDecoder = JSONDecoder()
+                let importedMeet = try jsonDecoder.decode(Meet.self, from: data) as Meet
+                
+                addMeet(meet: importedMeet)
+            }
+            catch{
+                os_log("Failed to import meet...", log: OSLog.default, type: .error)
+            }
+        }
+    }
 }

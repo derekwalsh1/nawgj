@@ -35,11 +35,42 @@ class JudgeListManager{
         }
     }
     
+    func importJudges(fromFile: URL?){
+        if let jsonFile = fromFile{
+            guard jsonFile.startAccessingSecurityScopedResource() else {
+                os_log("Failed permission to access judge data...", log: OSLog.default, type: .error)
+                return
+            }
+            defer { jsonFile.stopAccessingSecurityScopedResource() }
+            do {
+                let data:Data = try Data(contentsOf: jsonFile)
+                let jsonDecoder = JSONDecoder()
+                let importedJudges = try jsonDecoder.decode([JudgeInfo].self, from: data) as [JudgeInfo]
+                
+                for judge in importedJudges{
+                    _ = judge.getUUID() // Touch each Judge's uuid to make sure one has been created
+                    let judgeInfo = JudgeInfo(name: judge.name, level: judge.level)
+                    if JudgeListManager.GetInstance().addJudge(judgeInfo){
+                        os_log("Added Judge %@", log: OSLog.default, type: .debug, judgeInfo.name)
+                    } else{
+                        os_log("Judge %@ not added because they already exist in the Judge List", log: OSLog.default, type: .debug, judgeInfo.name)
+                    }
+                }
+                
+                saveJudges()
+                loadAndSortJudges()
+            }
+            catch {
+                os_log("Failed to import judges...", log: OSLog.default, type: .error)
+            }
+        }
+    }
+    
     func loadJudges(){
         do{
             let data:Data = try Data(contentsOf: JudgeListManager.ArchiveURL)
             let jsonDecoder = JSONDecoder()
-            judges = try! jsonDecoder.decode([JudgeInfo].self, from: data) as [JudgeInfo]
+            judges = try jsonDecoder.decode([JudgeInfo].self, from: data) as [JudgeInfo]
             
             if let judgeList = judges{
                 for judge in judgeList{

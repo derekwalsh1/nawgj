@@ -30,7 +30,6 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, 
     var pdfView : PDFView?
     
     @objc func share(sender: UIView){
-        //let docsurl = try! fileManager.url(for:.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         if pdfURL != nil{
             let items = [self]
             let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
@@ -70,43 +69,4 @@ class PDFViewController: UIViewController, MFMailComposeViewControllerDelegate, 
     @IBAction func shareMeetReport(_ sender: UIBarButtonItem) {
         self.share(sender: self.view)
     }
-    
-    /*
-    func emailPDF(){
-        if let path = pdfURL{
-            let email = ""
-            
-            if( MFMailComposeViewController.canSendMail()){
-                let mailComposer = MFMailComposeViewController()
-                mailComposer.mailComposeDelegate = self
-                
-                mailComposer.setToRecipients([email])
-                mailComposer.setSubject("Meet Details for \(MeetListManager.GetInstance().getSelectedMeet()!.name)")
-                mailComposer.setMessageBody("Meet details attached", isHTML: false)
-                
-                try! mailComposer.addAttachmentData(NSData(contentsOf: path) as Data, mimeType: "application/pdf", fileName: "MeetReport.pdf")
-                self.navigationController?.present(mailComposer, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func print(sender: UIBarButtonItem) {
-        if let url = pdfURL{
-            if UIPrintInteractionController.canPrint(url) {
-                let printInfo = UIPrintInfo(dictionary: nil)
-                printInfo.jobName = url.lastPathComponent
-                printInfo.outputType = .grayscale
-                
-                let printController = UIPrintInteractionController.shared
-                printController.printInfo = printInfo
-                printController.showsNumberOfCopies = false
-                printController.printingItem = url
-                printController.present(animated: true, completionHandler: nil)
-            }
-        }
-    }*/
 }

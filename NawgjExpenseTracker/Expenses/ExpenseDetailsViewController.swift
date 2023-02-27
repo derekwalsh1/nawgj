@@ -138,21 +138,21 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
         if let type = expense?.type{
             switch type{
             case .Meals:
-                imageView.image = UIImage(named: "meals")
+                imageView.image = UIImage(named: "meals-83.5.png")
             case .Transportation:
-                imageView.image = UIImage(named: "transportation")
+                imageView.image = UIImage(named: "transportation-83.5.png")
             case .Toll:
-                imageView.image = UIImage(named: "tolls")
+                imageView.image = UIImage(named: "bridge-83.5.png")
             case .Mileage:
-                imageView.image = UIImage(named: "mileage")
+                imageView.image = UIImage(named: "gas-83.5.png")
             case .Parking:
-                imageView.image = UIImage(named: "parking")
+                imageView.image = UIImage(named: "parking-83.5.png")
             case .Airfare:
-                imageView.image = UIImage(named: "airfare")
+                imageView.image = UIImage(named: "airport-83.5.png")
             case .Lodging:
-                imageView.image = UIImage(named: "lodging")
+                imageView.image = UIImage(named: "lodging-83.5.png")
             case .Other:
-                imageView.image = UIImage(named: "other")
+                imageView.image = UIImage(named: "splat-83.5.png")
             }
         }
     }
@@ -346,14 +346,20 @@ extension String {
         var amountWithPrefix = self
         
         // remove from String: "$", ".", ","
-        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
-        amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "")
-        
-        let double = (amountWithPrefix as NSString).doubleValue
-        number = NSNumber(value: (double / 100))
-        
-        // if first number is 0 or all numbers were deleted
-        guard number != 0 as NSNumber else {
+        do{
+            let regex = try NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
+            amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "")
+            
+            let double = (amountWithPrefix as NSString).doubleValue
+            number = NSNumber(value: (double / 100))
+            
+            // if first number is 0 or all numbers were deleted
+            guard number != 0 as NSNumber else {
+                return ""
+            }
+        }
+        catch{
+            os_log("Failed to format currency string ", log: OSLog.default, type: .error)
             return ""
         }
         
@@ -371,14 +377,20 @@ extension String {
         var amountWithPrefix = self
         
         // remove from String: "$", ".", ","
-        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
-        amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "")
-        
-        let double = (amountWithPrefix as NSString).doubleValue
-        number = NSNumber(value: (double / 100))
-        
-        // if first number is 0 or all numbers were deleted
-        guard number != 0 as NSNumber else {
+        do{
+            let regex = try NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
+            amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "")
+            
+            let double = (amountWithPrefix as NSString).doubleValue
+            number = NSNumber(value: (double / 100))
+            
+            // if first number is 0 or all numbers were deleted
+            guard number != 0 as NSNumber else {
+                return ""
+            }
+        }
+        catch{
+            os_log("Failed to format currency string ", log: OSLog.default, type: .error)
             return ""
         }
         

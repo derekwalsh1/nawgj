@@ -6,8 +6,10 @@
 //  Copyright © 2019 Derek Walsh. All rights reserved.
 //
 
-import UIKit
 import os.log
+import UIKit
+import MobileCoreServices
+import UniformTypeIdentifiers
 
 /**
  This class is responsible for presenting the list of Judges.
@@ -19,7 +21,7 @@ import os.log
  
  
  */
-class JudgeListTableViewController: UITableViewController {
+class JudgeListTableViewController: UITableViewController, UIDocumentPickerDelegate {
     
     /*
      * Load the list of Judges from a persistent storage so that the table can be populated
@@ -42,25 +44,34 @@ class JudgeListTableViewController: UITableViewController {
      * We just have one section for the list of Judges in this table
      */
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return JudgeListManager.GetInstance().judges!.count
+        if section == 0{
+            return 1
+        }
+        else{
+            return JudgeListManager.GetInstance().judges!.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // Configure the cell...
-        let cell = tableView.dequeueReusableCell(withIdentifier: "JudgeInfoCell", for: indexPath)
-        
-        // Fetches the appropriate meet for the data source layout.
-        let judgeInfo = JudgeListManager.GetInstance().judges![indexPath.row]
-        cell.textLabel?.textColor = self.view.tintColor
-        cell.textLabel?.text = judgeInfo.name
-        cell.detailTextLabel?.text = judgeInfo.level.fullDescription
+        if indexPath.section == 1{
+            // Configure the cell...
+            let cell = tableView.dequeueReusableCell(withIdentifier: "JudgeInfoCell", for: indexPath)
+            
+            // Fetches the appropriate meet for the data source layout.
+            let judgeInfo = JudgeListManager.GetInstance().judges![indexPath.row]
+            cell.textLabel?.textColor = self.view.tintColor
+            cell.textLabel?.text = judgeInfo.name
+            cell.detailTextLabel?.text = judgeInfo.level.fullDescription
 
-        return cell
+            return cell
+        }
+        else{
+            return tableView.dequeueReusableCell(withIdentifier: "JudgeManagementCell", for: indexPath)
+        }
     }
     
     // Override to support conditional editing of the table view.
@@ -104,48 +115,83 @@ class JudgeListTableViewController: UITableViewController {
         self.performSegue(withIdentifier: "ShowDetail", sender: self)
     }
     
-    @IBAction func shareJudgeList(_ sender: UIBarButtonItem) {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0{
+            return 50
+        }
+        
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    
+    @IBAction func shareJudgeList(_ sender: UIButton) {
         self.share(sender: self.view)
     }
     
+    @IBAction func importJudges(_ sender: UIButton) {
+        var documentPicker: UIDocumentPickerViewController
+        if #available(iOS 14.0, *) {
+            let supportedTypes: [UTType] = [UTType.json]
+            documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes)
+        } else {
+            documentPicker = UIDocumentPickerViewController(documentTypes: ["public.json"], in: UIDocumentPickerMode.import)
+        }
+        documentPicker.delegate = self
+        self.present(documentPicker, animated: true, completion: nil)
+    }
+    
+    
+    @available(iOS 11.0, *)
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]){
+        JudgeListManager.GetInstance().importJudges(fromFile: urls.first)
+        self.tableView.reloadData()
+    }
+
+    
+    // called if the user dismisses the document picker without selecting a document (using the Cancel button)
+    @available(iOS 8.0, *)
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController){
+        
+    }
+
+    
+    @available(iOS, introduced: 8.0, deprecated: 11.0)
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
+    {
+        JudgeListManager.GetInstance().importJudges(fromFile: url)
+    }
+    
+    func dataToFile(fileName: String) -> URL? {
+        do{
+            let newURL = JudgeListManager.DocumentsDirectory.appendingPathComponent(fileName)
+            var encodedData = try JSONEncoder().encode(JudgeListManager.GetInstance().judges)
+            try encodedData.write(to: newURL)
+            
+            return newURL
+        } catch{
+            os_log("Failed to convert judges list to JSON format", log: OSLog.default, type: .error)
+            return nil
+        }
+    }
     
     @objc func share(sender: UIView){
-        
-        let fileURL = JudgeListManager.ArchiveURL
-        let newURL = JudgeListManager.DocumentsDirectory.appendingPathComponent("Judges.json")
-        let fileManager = FileManager.default
-        
-        do{
-            if fileManager.fileExists(atPath: newURL.absoluteString){
-                try fileManager.removeItem(at: newURL)
-            }
+        if let file = dataToFile(fileName: "JudgeList.JSON")
+        {
+            var dataToShare = [file]
             
-            if fileManager.isReadableFile(atPath: newURL.absoluteString){
-                try fileManager.removeItem(at: newURL)
-            }
-        
-            try fileManager.copyItem(at: fileURL, to: newURL)
-            
-            // Create the Array which includes the files you want to share
-            var filesToShare = [Any]()
-
-            // Add the path of the file to the Array
-            filesToShare.append(newURL)
-
-            // Make the activityViewContoller which shows the share-view
-            let activityViewController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
-            
+            let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
+            activityViewController.isModalInPresentation = true
             if let popOver = activityViewController.popoverPresentationController {
                 popOver.sourceView = self.view
                 popOver.sourceRect = sender.bounds
                 popOver.permittedArrowDirections = []
                 popOver.canOverlapSourceViewRect = true
             }
-            // Show the share-view
+            
             self.present(activityViewController, animated: true, completion: nil)
         }
-        catch {
-            os_log("Failed to share judges", log: OSLog.default, type: .error)
+        else{
+            os_log("No file returned from 'dataToFile' invocation", log: OSLog.default, type: .error)
         }
+        
     }
 }
