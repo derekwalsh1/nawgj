@@ -96,6 +96,7 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)!.fullDescription
+        updateSaveButtonState()
         pickerView.becomeFirstResponder()
     }
     
@@ -149,7 +150,7 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
     
     func updateSaveButtonState(){
         // Make sure that the judge name is valid and is not a duplicate of an existing judge
-        // Enabled the add new judge button if:
+        // Enable the add new judge button if:
         //  1. The Name is not empty and
         //  2. The judge does not already exist
         if let judgeNameText = nameTextField.text{

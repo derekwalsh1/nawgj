@@ -138,9 +138,12 @@ class JudgeListManager{
         }
     }
     
+    /// Return the index of the judge that matches the judge info criteria provide.
+    /// Case insensitive and level must match
+    ///
     func indexOfJudge(_ judgeInfo : JudgeInfo) -> Int{
         if let judgeList = judges{
-            return judgeList.firstIndex(where: {$0.name == judgeInfo.name}) ?? -1
+            return judgeList.firstIndex(where: {$0.name.lowercased() == judgeInfo.name.lowercased() && $0.level == judgeInfo.level}) ?? -1
         } else{
             return -1
         }

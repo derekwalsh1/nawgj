@@ -61,18 +61,18 @@ class Judge: Codable {
         
         var rate: Float {
             switch self {
-                case .FourToFive : return 18.0
-                case .SixToEight : return 20.0
-                case .FourToEight : return 22.0
-                case .Nine : return 26.0
-                case .Ten : return 30.0
-                case .National : return 33.0
-                case .Brevet : return 36.0
-                case .NGA_Local : return 23.0
-                case .NGA_State : return 27.0
-                case .NGA_Regional : return 31.0
-                case .NGA_National : return 34.0
-                case .NGA_Elite : return 37.0
+                case .FourToFive : return 19.0
+                case .SixToEight : return 21.0
+                case .FourToEight : return 23.0
+                case .Nine : return 27.0
+                case .Ten : return 31.0
+                case .National : return 34.0
+                case .Brevet : return 37.0
+                case .NGA_Local : return 24.0
+                case .NGA_State : return 28.0
+                case .NGA_Regional : return 32.0
+                case .NGA_National : return 35.0
+                case .NGA_Elite : return 38.0
             }
         }
         

@@ -3,4 +3,54 @@
    uuid = "70DE0E47-D728-4A10-87BD-7E6B665DBFE1"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E16B5F61-0108-4D4E-9DA0-9D040E2A9038"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NawgjExpenseTracker/JudgeListManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "indexOfJudge(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E16B5F61-0108-4D4E-9DA0-9D040E2A9038 - e3a437ad50eaf244"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Expenses.JudgeListManager.indexOfJudge(Expenses.JudgeInfo) -&gt; Swift.Int"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/JudgeListManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "109">
+               </Location>
+               <Location
+                  uuid = "E16B5F61-0108-4D4E-9DA0-9D040E2A9038 - 12c932a889cd6777"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Expenses.JudgeInfo) -&gt; Swift.Bool in Expenses.JudgeListManager.indexOfJudge(Expenses.JudgeInfo) -&gt; Swift.Int"
+                  moduleName = "Expenses"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/derek/Workspace/nawgj/NawgjExpenseTracker/JudgeListManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "146"
+                  endingLineNumber = "146"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
