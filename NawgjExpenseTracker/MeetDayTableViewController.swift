@@ -181,13 +181,15 @@ class MeetDayTableViewController: UITableViewController {
                 
                 if days.count > 1{
                     for i in 1...days.count - 1 {
-                        let day1 = Calendar.current.dateComponents([.day], from: days[i-1].meetDate)
-                        let day2 = Calendar.current.dateComponents([.day], from: days[i].meetDate)
+                        //let day1 = Calendar.current.dateComponents([.day], from: days[i-1].meetDate)
+                        let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: days[i-1].meetDate)
+                        //let day2 = Calendar.current.dateComponents([.day], from: days[i].meetDate)
+                        areNonSequentialDaysDetected = nextDay != days[i].meetDate
                         
-                        if let day2 = day2.day, let day1 = day1.day, day2 - day1 != 1{
-                            areNonSequentialDaysDetected = true
-                            break
-                        }
+//                        if let day2 = day2.day, let day1 = day1.day, day2 - day1 != 1{
+//                            areNonSequentialDaysDetected = true
+//                            break
+//                        }
                     }
                 }
             }

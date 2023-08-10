@@ -77,7 +77,7 @@ class JudgeListTableViewController: UITableViewController, UIDocumentPickerDeleg
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
-        return true
+        return indexPath.section == 1
     }
     
     // Override to support editing the table view.
@@ -111,8 +111,10 @@ class JudgeListTableViewController: UITableViewController, UIDocumentPickerDeleg
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        JudgeListManager.GetInstance().selectJudgeInfoAt(indexPath.row)
-        self.performSegue(withIdentifier: "ShowDetail", sender: self)
+        if indexPath.section == 1{
+            JudgeListManager.GetInstance().selectJudgeInfoAt(indexPath.row)
+            self.performSegue(withIdentifier: "ShowDetail", sender: self)
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
