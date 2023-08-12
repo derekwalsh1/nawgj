@@ -165,7 +165,7 @@ class JudgeListTableViewController: UITableViewController, UIDocumentPickerDeleg
     func dataToFile(fileName: String) -> URL? {
         do{
             let newURL = JudgeListManager.DocumentsDirectory.appendingPathComponent(fileName)
-            var encodedData = try JSONEncoder().encode(JudgeListManager.GetInstance().judges)
+            let encodedData = try JSONEncoder().encode(JudgeListManager.GetInstance().judges)
             try encodedData.write(to: newURL)
             
             return newURL
@@ -178,7 +178,7 @@ class JudgeListTableViewController: UITableViewController, UIDocumentPickerDeleg
     @objc func share(sender: UIView){
         if let file = dataToFile(fileName: "JudgeList.JSON")
         {
-            var dataToShare = [file]
+            let dataToShare = [file]
             
             let activityViewController = UIActivityViewController(activityItems: dataToShare, applicationActivities: nil)
             activityViewController.isModalInPresentation = true

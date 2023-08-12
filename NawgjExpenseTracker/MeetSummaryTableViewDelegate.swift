@@ -28,6 +28,9 @@ class MeetSummaryTableViewDelegate: NSObject, UITableViewDataSource, UITableView
         return meet.days.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 45
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "JudgeFeeSummaryCell")!

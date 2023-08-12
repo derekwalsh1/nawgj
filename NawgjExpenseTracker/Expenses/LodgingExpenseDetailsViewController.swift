@@ -139,8 +139,13 @@ class LodgingExpenseDetailsViewController: UITableViewController, UITextFieldDel
     func UpdateUIComponents(){
         if let expense = expense{
             doneButton.isEnabled = false
-            if let text = lodgingTotalTextField.text, !text.isEmpty, let number = numberFormatter.number(from: text), numberOfNightsStepper.value > 0{
-                expense.amountPerNight = number.floatValue / Float(numberOfNightsStepper.value)
+            if let text = lodgingTotalTextField.text, !text.isEmpty, let number = numberFormatter.number(from: text){
+                if numberOfNightsStepper.value > 0{
+                    expense.amountPerNight = number.floatValue / Float(numberOfNightsStepper.value)
+                }
+                else{
+                    expense.amountPerNight = 0
+                }
                 doneButton.isEnabled = true
             }
         }

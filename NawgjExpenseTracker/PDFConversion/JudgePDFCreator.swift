@@ -311,7 +311,7 @@ class JudgePDFCreator : PDFCreator{
                 }
                 
                 if expense.type == .Lodging{
-                    expenseTypeString += "(\(expense.totalNights ?? 0) nights @ \(numberFormatter.string(from: NSNumber(value: expense.amountPerNight ?? 0.0)) ?? "$0.00")/night)"
+                    expenseTypeString += "(\(expense.totalNights ?? 0) night(s) @ \(numberFormatter.string(from: NSNumber(value: expense.amountPerNight ?? 0.0)) ?? "$0.00")/night)"
                 }
                 
                 html += """
