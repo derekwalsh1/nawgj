@@ -304,7 +304,7 @@ class JudgePDFCreator : PDFCreator{
         """
         
         for expense in judge.expenses{
-            if expense.amount > 0{
+            if expense.getExpenseTotal() != 0{
                 var expenseTypeString = expense.type.description
                 if expense.type == .Mileage{
                     expenseTypeString += "(\(expense.amount) miles @ \(numberFormatter.string(from: NSNumber(value: meet.getMileageRate())) ?? "$0.00")/mile)"
@@ -312,10 +312,6 @@ class JudgePDFCreator : PDFCreator{
                 
                 if expense.type == .Lodging{
                     expenseTypeString += "(\(expense.totalNights ?? 0) nights @ \(numberFormatter.string(from: NSNumber(value: expense.amountPerNight ?? 0.0)) ?? "$0.00")/night)"
-                    if(expense.isPrivateLodgingRequested ?? false)
-                    {
-                        expenseTypeString += " -- Private Room Requested"
-                    }
                 }
                 
                 html += """

@@ -210,6 +210,7 @@
 		65C086F329AD5EE200B1069D /* JudgeManagementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C086F229AD5EE200B1069D /* JudgeManagementCell.swift */; };
 		65C386CC21BB77F70070D76B /* Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C386CB21BB77F70070D76B /* Fee.swift */; };
 		65CEB3A829A5DCDE0007604F /* MeetTableImportExportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CEB3A729A5DCDE0007604F /* MeetTableImportExportCell.swift */; };
+		65D60EEE2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */; };
 		65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC967217D5B320029C6AA /* AppDelegate.swift */; };
 		65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */; };
 		65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC96B217D5B320029C6AA /* Main.storyboard */; };
@@ -443,6 +444,7 @@
 		65C086F229AD5EE200B1069D /* JudgeManagementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeManagementCell.swift; sourceTree = "<group>"; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
 		65CEB3A729A5DCDE0007604F /* MeetTableImportExportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableImportExportCell.swift; sourceTree = "<group>"; };
+		65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodgingExpenseDetailsViewController.swift; sourceTree = "<group>"; };
 		65DBC964217D5B320029C6AA /* Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDetailViewController.swift; sourceTree = "<group>"; };
@@ -1070,6 +1072,7 @@
 			children = (
 				65DDA61421BDBA28004B4DD2 /* ExpensesTableViewController.swift */,
 				65DDA61621BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift */,
+				65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -1427,6 +1430,7 @@
 				65DDA61521BDBA28004B4DD2 /* ExpensesTableViewController.swift in Sources */,
 				650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */,
 				65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */,
+				65D60EEE2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift in Sources */,
 				65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */,
 				65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */,
 				655150D82372804A00BED00A /* AddJudgesToMeetViewController.swift in Sources */,
