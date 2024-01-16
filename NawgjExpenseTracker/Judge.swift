@@ -68,11 +68,11 @@ class Judge: Codable {
                 case .Ten : return 31.0
                 case .National : return 34.0
                 case .Brevet : return 37.0
-                case .NGA_Local : return 24.0
-                case .NGA_State : return 28.0
-                case .NGA_Regional : return 32.0
-                case .NGA_National : return 35.0
-                case .NGA_Elite : return 38.0
+                case .NGA_Local : return 23.0
+                case .NGA_State : return 27.0
+                case .NGA_Regional : return 31.0
+                case .NGA_National : return 34.0
+                case .NGA_Elite : return 37.0
             }
         }
         

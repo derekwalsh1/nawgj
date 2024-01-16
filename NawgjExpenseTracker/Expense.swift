@@ -91,7 +91,7 @@ class Expense: Codable {
         case .Mileage:
             return amount * mileageRate
         case .Lodging:
-            return (98.0 - (amountPerNight ?? 0)) * Float(totalNights ?? 0)
+            return (Meet.SINGLE_ROOM_REQUEST_MAX_DAILY_EXPENSE_DOLLARS - (amountPerNight ?? 0)) * Float(totalNights ?? 0)
         default:
             return amount
         }

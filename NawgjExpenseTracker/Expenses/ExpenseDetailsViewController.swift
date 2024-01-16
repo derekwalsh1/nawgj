@@ -318,7 +318,7 @@ class ExpenseDetailsViewController: UITableViewController, UITextFieldDelegate, 
             if isLodgingExpense{
                 expense.isPrivateLodgingRequested = privateRoomRequestedSwitch.isOn
                 if expense.isPrivateLodgingRequested ?? false {
-                    expense.amountPerNight = 98.0
+                    expense.amountPerNight = Meet.SINGLE_ROOM_REQUEST_MAX_DAILY_EXPENSE_DOLLARS
                 }
                 else{
                     expense.amountPerNight = numberFormatter.number(from: nightlyRateTextField.text ?? "0.0") as? Float

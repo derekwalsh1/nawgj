@@ -95,7 +95,7 @@ class MeetDayTableViewController: UITableViewController {
                 cell.detailTextLabel?.text = "Meet start date doesn't match earliest meet day"
             }
             else if indexPath.row == 1 && areNonSequentialDaysDetected{
-                cell.textLabel?.text = "Non-Consequetive Days"
+                cell.textLabel?.text = "Non-Consecutive Days"
                 cell.detailTextLabel?.text = "A gap was detected between one or more meet days"
             }
             else{
