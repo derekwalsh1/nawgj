@@ -283,27 +283,29 @@ class MeetPDFCreator : PDFCreator{
                     
                     // We are on the first row that prints. Each row has 10 columns.
                     if rowNumber == 0 {
-                        let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
-                        let hours = judge.fees[rowNumber].getHours()
-                        let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)
-                        
-                        var expenseName = ""
-                        var expenseTotal = ""
-                        
-                        // If there's an expense, update the expense name and total variables
-                        if let expense = filteredExpenses.count > 0  ? filteredExpenses[rowNumber] : nil {
-                            expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
-                            expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
-                        }
-                        
-                        // Columns 1 through 5, judge name, level, fees for the first day (date, hours, amount)
+                       
                         htmlString += """
                             <td rowspan="\(totalRows)" valign="top">\(judge.name)</td>
                             <td rowspan="\(totalRows)" valign="top">\(judge.level.fullDescription)</td>
-                            <td valign="top">\(date)</td>
-                            <td valign="top">\(hours) hrs</td>
-                            <td valign="top" align="right">\(dayFee ?? "0.0")</td>
                         """
+                        
+                        if judge.fees.count > 0 {
+                            let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
+                            let hours = judge.fees[rowNumber].getHours()
+                            let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)
+                            
+                            htmlString += """
+                                <td valign="top">\(date)</td>
+                                <td valign="top">\(hours) hrs</td>
+                                <td valign="top" align="right">\(dayFee ?? "0.0")</td>
+                            """
+                        }
+                        else {
+                            htmlString += """
+                                <td colspan="2">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            """
+                        }
                         
                         // Add a blank entry if there are no expenses. 2 more columns
                         if filteredExpenses.count == 0 {
@@ -313,6 +315,14 @@ class MeetPDFCreator : PDFCreator{
                             """
                         }
                         else {
+                            var expenseName = ""
+                            var expenseTotal = ""
+                            
+                            // If there's an expense, update the expense name and total variables
+                            if let expense = filteredExpenses.count > 0  ? filteredExpenses[rowNumber] : nil {
+                                expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
+                                expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
+                            }
                             htmlString += """
                             <td valign="top">\(expenseName)</td>
                             <td valign="top" align="right">\(expenseTotal)</td>
@@ -352,8 +362,7 @@ class MeetPDFCreator : PDFCreator{
                             }
                             else{
                                 htmlString += """
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
+                                    <td colspan="2">&nbsp;</td>
                                     <td>&nbsp;</td>
                                 """
                             }
