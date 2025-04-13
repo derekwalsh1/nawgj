@@ -307,7 +307,7 @@ class JudgePDFCreator : PDFCreator{
             if expense.getExpenseTotal() != 0{
                 var expenseTypeString = expense.type.description
                 if expense.type == .Mileage{
-                    expenseTypeString += "(\(expense.amount) miles @ \(numberFormatter.string(from: NSNumber(value: meet.getMileageRate())) ?? "$0.00")/mile)"
+                    expenseTypeString += "(\(expense.amount) miles @ \(numberFormatter.string(from: NSNumber(value: expense.mileageRate )) ?? "$0.00")/mile)"
                 }
                 
                 if expense.type == .Lodging{

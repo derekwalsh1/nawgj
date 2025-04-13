@@ -415,7 +415,7 @@
                                                             <rect key="frame" x="203" y="0.0" width="195" height="40"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2" maxY="0.0"/>
                                                             <state key="normal" title="Generate Report">
-                                                                <imageReference key="image" image="doc.text" catalog="system" symbolScale="medium"/>
+                                                                <imageReference key="image" image="text.document" catalog="system" symbolScale="medium"/>
                                                             </state>
                                                             <connections>
                                                                 <segue destination="hUD-qq-wz8" kind="show" id="Lmg-kP-qav"/>
@@ -3182,7 +3182,7 @@
         <image name="bridge-40.png" width="40" height="40"/>
         <image name="calendar-83.5.png" width="83.5" height="83.5"/>
         <image name="creditcard-83.5.png" width="83.5" height="83.5"/>
-        <image name="doc.text" catalog="system" width="115" height="128"/>
+        <image name="text.document" catalog="system" width="115" height="128"/>
         <image name="gas-40.png" width="40" height="40"/>
         <image name="image" width="128" height="128"/>
         <image name="lodging-40.png" width="40" height="40"/>

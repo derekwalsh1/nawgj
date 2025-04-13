@@ -20,7 +20,8 @@ class Meet: Codable {
         2021 : 0.56,
         2022 : 0.625,
         2023 : 0.655,
-        2024 : 0.67
+        2024 : 0.67,
+        2025 : 0.7
     ]
     
     // Because of COVID and general health concerns, Judges can request a non-shared (private) room for meets where

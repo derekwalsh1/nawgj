@@ -167,25 +167,57 @@ class MeetDayTableViewController: UITableViewController {
         self.loadViewIfNeeded()
     }
     
-    func checkForMeetDayWarnings(){
-        // 1. Make sure that the earliest meet day is the same as the meet start date
-        // 2. Make sure all the meet days are in consequetive order
+    /// Checks for potential warnings in the meet day data, including:
+    /// - Ensuring the first meet day matches the meet's start date.
+    /// - Validating that all meet days are in consecutive order without gaps.
+    /// - Updates the following flags based on the checks:
+    ///   - `isIncorrectFirstDayDetected`: Set to `true` if the first meet day does not match the start date.
+    ///   - `areNonSequentialDaysDetected`: Set to `true` if any non-consecutive days are found.
+    /// - This method assumes the `meet.days` property is an array of `MeetDay` objects with a `meetDate` property.
+    func checkForMeetDayWarnings() {
+        // Reset warning flags to their default values before performing checks.
         isIncorrectFirstDayDetected = false
         areNonSequentialDaysDetected = false
         
-        if let meet =  MeetListManager.GetInstance().getSelectedMeet(){
-            if meet.days.count > 0 {
-                let startDate = meet.startDate
-                let days = meet.days.sorted(by: { $0.meetDate < $1.meetDate })
-                isIncorrectFirstDayDetected = !Calendar.current.isDate(startDate, inSameDayAs: days[0].meetDate)
-                
-                if days.count > 1{
-                    for i in 1...days.count - 1 {
-                        let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: days[i-1].meetDate)
-                        areNonSequentialDaysDetected = nextDay != days[i].meetDate
+        // Retrieve the selected meet from the MeetListManager singleton.
+        if let meet = MeetListManager.GetInstance().getSelectedMeet() {
+            // Guard statement ensures that the method exits early if there are no meet days.
+            // If `meet.days` is empty, no checks are necessary.
+            guard !meet.days.isEmpty else { return }
+            
+            // Sort the meet days by their `meetDate` property in ascending order.
+            // Sorting ensures that the days are in chronological order for validation.
+            let days = meet.days.sorted(by: { $0.meetDate < $1.meetDate })
+            
+            // Validate that the first meet day matches the meet's start date.
+            if !days.isEmpty {
+                // Compare the first day in the sorted array with the meet's start date.
+                // The flag `isIncorrectFirstDayDetected` is set to `true` if the dates do not match.
+                isIncorrectFirstDayDetected = !Calendar.current.isDate(meet.startDate, inSameDayAs: days[0].meetDate)
+            }
+            
+            // Validate that all meet days are in consecutive order without gaps.
+            if days.count > 1 {
+                // Loop through the sorted meet days starting from the second day.
+                for i in 1..<days.count {
+                    // Get the start of the day for the previous day's date.
+                    let previousDay = Calendar.current.startOfDay(for: days[i - 1].meetDate)
+                    
+                    // Calculate the expected next day's date by adding one day to the previous day's date.
+                    let expectedNextDay = Calendar.current.date(byAdding: .day, value: 1, to: previousDay)
+                    
+                    // Get the start of the day for the current day's date.
+                    let currentDay = Calendar.current.startOfDay(for: days[i].meetDate)
+                    
+                    // Check if the current day's date matches the expected next day's date.
+                    // If the dates do not match, set `areNonSequentialDaysDetected` to `true` and exit the loop.
+                    if expectedNextDay != currentDay {
+                        areNonSequentialDaysDetected = true
+                        break // Exit loop as a gap has been detected.
                     }
                 }
             }
         }
     }
+
 }
