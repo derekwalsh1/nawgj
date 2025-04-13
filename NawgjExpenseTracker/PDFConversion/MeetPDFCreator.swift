@@ -48,6 +48,8 @@ class MeetPDFCreator : PDFCreator{
         let pdfData = NSMutableData()
         UIGraphicsBeginPDFContextToData(pdfData, CGRect(x: 0, y: 0, width: 750, height: 1060), nil)
         
+        render.prepare(forDrawingPages: NSMakeRange(0, 1))
+
         for i in 0..<render.numberOfPages{
             UIGraphicsBeginPDFPage();
             render.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
@@ -81,6 +83,12 @@ class MeetPDFCreator : PDFCreator{
                 size: landscape;
                 }
         
+                table.lightgray-border, 
+                table.lightgray-border th, 
+                table.lightgray-border td {
+                  border: 1px solid lightgray;
+                  border-collapse: collapse;
+                }
                 </style>
             </head>
         <body>
@@ -244,8 +252,9 @@ class MeetPDFCreator : PDFCreator{
             </td>
         </tr>
         </table>
-        <table border="1" cellpadding="1" cellspacing="0" width="100%">
-        <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
+        
+        <table class="lightgray-border" border="1" cellpadding="1" cellspacing="0" width="100%">
+        <tr class="lightgray-border" align="left" height="26" "bgcolor=\"#BBBBBB\"">
             <th>Name</th>
             <th>Rate</th>
             <th colspan="3">Fees</th>
@@ -260,95 +269,111 @@ class MeetPDFCreator : PDFCreator{
             
             // Determine how many rows are needed for this judge; it will be the greater of the
             // number of days worked and the number of expense types with an additional row for
-            // the judge totals
+            // the judge totals. If the judge is a meet ref, add an additional expense item.
             judge.fees = judge.fees.sorted(by: {$0.date < $1.date})
-            let filteredExpenses = judge.expenses.filter { $0.amount > 0.0 }
-            let totalRows = max(filteredExpenses.count, judge.fees.count)
-
+            let filteredExpenses = judge.expenses.filter { $0.getExpenseTotal() != 0.0}
+            let totalRows = max(filteredExpenses.count, judge.fees.count + (judge.isMeetRef() ? 1 : 0))
+           
+            // Handle the case where there are no expenses and no fees (no days added and no expenses reported)
             if totalRows > 0 {
                 for rowNumber in 0...totalRows - 1{
                     htmlString += """
-                        <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-                        <style type="text/css">
-                        @media print {
-                        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-                        .pagebreak-before { display: block; page-break-before: always; }
-                        }
-                        </style>
+                        <tr class="lightgray-border" align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
                     """
                     
-                    if rowNumber == 0{ // We are on the first row that prints
+                    // We are on the first row that prints. Each row has 10 columns.
+                    if rowNumber == 0 {
                         let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
                         let hours = judge.fees[rowNumber].getHours()
                         let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)
                         
                         var expenseName = ""
                         var expenseTotal = ""
-                        if let expense = filteredExpenses.count > 0  ? filteredExpenses[0] : nil {
+                        
+                        // If there's an expense, update the expense name and total variables
+                        if let expense = filteredExpenses.count > 0  ? filteredExpenses[rowNumber] : nil {
                             expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
                             expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                         }
                         
-                        let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
-                        let expensesRowSpan = filteredExpenses.count - 1 <= rowNumber ? totalRows - rowNumber : 0
-                        
+                        // Columns 1 through 5, judge name, level, fees for the first day (date, hours, amount)
                         htmlString += """
-                        <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.name)</td>
-                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))" valign="top">\(judge.level.fullDescription)</td>
-                            <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
-                            <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
-                            <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee ?? "0.0")</td>
+                            <td rowspan="\(totalRows)" valign="top">\(judge.name)</td>
+                            <td rowspan="\(totalRows)" valign="top">\(judge.level.fullDescription)</td>
+                            <td valign="top">\(date)</td>
+                            <td valign="top">\(hours) hrs</td>
+                            <td valign="top" align="right">\(dayFee ?? "0.0")</td>
                         """
+                        
+                        // Add a blank entry if there are no expenses. 2 more columns
                         if filteredExpenses.count == 0 {
                             htmlString += """
-                            <td colspan="2" rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             """
                         }
                         else {
                             htmlString += """
-                            <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
-                            <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
+                            <td valign="top">\(expenseName)</td>
+                            <td valign="top" align="right">\(expenseTotal)</td>
                             """
-                            
                         }
+                        
+                        // Add entries for the taxable fees, total due, and paid columns.
                         htmlString += """
-                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
-                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
-                            <td rowspan="\(totalRows + (judge.isMeetRef() ? 1 : 0))">&nbsp;</td>
+                            <td rowspan="\(totalRows)">&nbsp;</td>
+                            <td rowspan="\(totalRows)">&nbsp;</td>
+                            <td rowspan="\(totalRows)">&nbsp;</td>
                         </tr>
                         """
-                    }/*
-                    else if rowNumber == totalRows - 1 && judge.isMeetRef(){ // We are adding in the judge ref fee (which is taxable)
-                        let totalRefFee = judge.getMeetRefereeFee()
-                        htmlString += """
-                            <td colspan="2" valign="top">Meet Referee Fee</td>
-                            <td valign="top" align="right">\(totalRefFee)</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        """
-                    }*/
-                    else{ // We are in the middle rows
+                    }
+                    
+                    // Now we are adding the middle rows
+                    else{
+                        // Add the fee items
                         if rowNumber < judge.fees.count{
-                            let feesRowSpan = judge.fees.count - 1 == rowNumber ? totalRows - rowNumber : 0
                             let date = dateFormatterShort.string(from: judge.fees[rowNumber].date)
                             let hours = judge.fees[rowNumber].getHours()
                             let dayFee = numberFormatter.string(from: judge.fees[rowNumber].getFeeTotal() as NSNumber)!
                             htmlString += """
-                                <td rowspan="\(feesRowSpan)" valign="top">\(date)</td>
-                                <td rowspan="\(feesRowSpan)" valign="top">\(hours) hrs</td>
-                                <td rowspan="\(feesRowSpan)" valign="top" align="right">\(dayFee)</td>
+                                <td valign="top">\(date)</td>
+                                <td valign="top">\(hours) hrs</td>
+                                <td valign="top" align="right">\(dayFee)</td>
                             """
+                        }
+                        else{
+                            // If the judge is a meet referee, add this as the last fee if we've added all the rest of the fees.
+                            if judge.isMeetRef() && rowNumber < judge.fees.count + 1{
+                                let meetRefFee = numberFormatter.string(from: judge.getMeetRefereeFee() as NSNumber)!
+                                htmlString += """
+                                    <td colspan="2">Meet Referee Fee</td>
+                                    <td align="right">\(meetRefFee)</td>
+                                """
+                            }
+                            else{
+                                htmlString += """
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                """
+                            }
                         }
                         
                         if rowNumber < filteredExpenses.count{
-                            let expensesRowSpan = filteredExpenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
+                            //let expensesRowSpan = filteredExpenses.count - 1 == rowNumber ? totalRows - rowNumber : 0
                             
                             let expense = filteredExpenses[rowNumber]
                             let expenseName = expense.type == Expense.ExpenseType.Mileage ? String(format: "%0.2f Miles", expense.amount) : expense.type.description
                             let expenseTotal = numberFormatter.string(from: expense.getExpenseTotal() as NSNumber)!
                             htmlString += """
-                                <td rowspan="\(expensesRowSpan)" valign="top">\(expenseName)</td>
-                                <td rowspan="\(expensesRowSpan)" valign="top" align="right">\(expenseTotal)</td>
+                                <td valign="top">\(expenseName)</td>
+                                <td valign="top" align="right">\(expenseTotal)</td>
+                            """
+                        }
+                        else{
+                            htmlString += """
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
                             """
                         }
                         
@@ -361,36 +386,10 @@ class MeetPDFCreator : PDFCreator{
                 }
             }
             
-            
-            // Add a row for judge ref fees if the judge is a meet referee
-            if judge.isMeetRef(){
-                htmlString += """
-                <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-                <style type="text/css">
-                @media print {
-                .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-                .pagebreak-before { display: block; page-break-before: always; }
-                }
-                </style>
-                <td colspan="2" align="right">Meet Referee Fee</td>
-                <td align="right">\(judge.getMeetRefereeFee())</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                </tr>
-                """
-            }
-            
             htmlString += """
-            <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-            <style type="text/css">
-            @media print {
-            .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-            .pagebreak-before { display: block; page-break-before: always; }
-            }
-            #one {
-              border: 3px solid black;
-            </style>
+            <tr class="lightgray-border" align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
             """
+            
             let totalFees = numberFormatter.string(from: judge.totalFees() as NSNumber)!
             let totalExpenses = numberFormatter.string(from: judge.totalExpenses() as NSNumber)!
             let totalHours = String(format: "%0.1f hrs", judge.totalBillableHours())
@@ -402,23 +401,15 @@ class MeetPDFCreator : PDFCreator{
             <td>&nbsp;</td>
             <td align="right"><b>\(totalExpenses)</b></td>
             <td align="right"><b>\(totalFees)</b></td>
-            <td id="one" align="right"><b><u>\(totalDue)</u></b></td>
-            <td align="center"><b>\(judge.isPaid() ? "Paid" : "Not Paid")</b></td>
+            <td align="right"><b><u>\(totalDue)</u></b></td>
+            <td align="center"><b>\(judge.isPaid() ? "Yes" : "No")</b></td>
             </tr>
             """
         }
         
         
         htmlString += """
-        <tr align="left" height="26" bgcolor="#BBBBBB" : "")>
-        <style type="text/css">
-        @media print {
-        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-        .pagebreak-before { display: block; page-break-before: always; }
-        }
-        #one {
-          border: 3px solid black;
-        </style>
+        <tr class="lightgray-border" align="left" height="26" bgcolor="#BBBBBB" : "")>
             <td colspan="3" align="left"><b>Grand Total for all Judges:</b></td>
             <td><b>\(meet.totalBillableJudgeHours()) hrs</b></td>
             <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</b></td>
