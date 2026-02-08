@@ -509,6 +509,22 @@ class MeetPDFCreator : PDFCreator{
         return htmlString
     }
     
+    /// Generates HTML for the meet day details table.
+    ///
+    /// Creates a horizontal table showing details for each meet day:
+    /// - Date (column header)
+    /// - Start time
+    /// - End time
+    /// - Total time
+    /// - Number of breaks
+    /// - Break time duration
+    /// - Billable time (after breaks)
+    /// - Judges working that day
+    ///
+    /// Returns empty string if the meet has no days.
+    ///
+    /// - Parameter meet: The meet to generate day details for
+    /// - Returns: HTML string containing the day details table, or empty string if no days
     static func generateMeetDayDetailsTable(meet: Meet) -> String{
         
         let numberOfDays = meet.days.count

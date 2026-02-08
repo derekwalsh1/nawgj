@@ -241,7 +241,7 @@ class JudgePDFCreator : PDFCreator{
                   <td valign="top" colspan="3">
                     <table class="large" width="100%" cellspacing="0">
                       <tr>
-                        <th align="left" width="50px">Date</th>
+                        <th align="left">Date</th>
                         <th align="left">Hours @ Level</th>
                         <th align="right">Amount</th>
                       </tr>
