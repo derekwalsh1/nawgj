@@ -13,7 +13,6 @@
 		651E4E9829AD05910078B346 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 651E4E9529AC90300078B346 /* images.xcassets */; };
 		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
 		652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */; };
-		652236F621E70AA60024F1E6 /* meetreport.html in Resources */ = {isa = PBXBuildFile; fileRef = 652236F521E70AA60024F1E6 /* meetreport.html */; };
 		652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F721EFDD4C0024F1E6 /* PDFViewController.swift */; };
 		652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */; };
 		652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236FC21F029950024F1E6 /* MeetListManager.swift */; };
@@ -247,7 +246,6 @@
 		651E4E9529AC90300078B346 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = NawgjExpenseTracker/images.xcassets; sourceTree = SOURCE_ROOT; };
 		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
-		652236F521E70AA60024F1E6 /* meetreport.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = meetreport.html; sourceTree = "<group>"; };
 		652236F721EFDD4C0024F1E6 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetUIPrintPageRender.swift; sourceTree = "<group>"; };
 		652236FC21F029950024F1E6 /* MeetListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListManager.swift; sourceTree = "<group>"; };
@@ -1008,7 +1006,6 @@
 		65DBC95B217D5B320029C6AA = {
 			isa = PBXGroup;
 			children = (
-				652236F521E70AA60024F1E6 /* meetreport.html */,
 				65DBC966217D5B320029C6AA /* NawgjExpenseTracker */,
 				65DBC965217D5B320029C6AA /* Products */,
 			);
@@ -1232,7 +1229,6 @@
 				65C0864729AD0D5500B1069D /* briefcase-60@2x.png in Resources */,
 				65C086B329AD0D5500B1069D /* creditcard-83.5@2x.png in Resources */,
 				65C0856129AD0C0200B1069D /* airport-83.5@2x.png in Resources */,
-				652236F621E70AA60024F1E6 /* meetreport.html in Resources */,
 				65C0866529AD0D5500B1069D /* gas-20@3x.png in Resources */,
 				65C0865329AD0D5500B1069D /* lodging-76.png in Resources */,
 				65C0866229AD0D5500B1069D /* gas-83.5@2x.png in Resources */,

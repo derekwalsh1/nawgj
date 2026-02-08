@@ -33,20 +33,25 @@ class MeetPDFCreator : PDFCreator{
         // 2. Assign print formatter to UIPrintPageRenderer
         let render = MeetUIPrintPageRender(date: Date(), meetName: meet.name)
         render.addPrintFormatter(fmt, startingAtPageAt: 0)
-        render.footerHeight = 10
+        render.footerHeight = 30
         render.headerHeight = 10
         
         // 3. Assign paperRect and printableRect
-        //let page = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
-        //let printable = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
-        let page = CGRect(x: 20, y: 20, width: 680, height: 960) // A4, 72 dpi
-        let printable = CGRect(x: 20, y: 20, width: 680, height: 960) // A4, 72 dpi
+        // Use standard US Letter landscape dimensions (11" x 8.5" at 72 DPI)
+        // 11" x 72 = 792 points wide, 8.5" x 72 = 612 points tall
+        let pageWidth: CGFloat = 792
+        let pageHeight: CGFloat = 612
+        let margin: CGFloat = 36 // 0.5 inch margins
+        
+        let page = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
+        let printable = CGRect(x: margin, y: margin, width: pageWidth - (margin * 2), height: pageHeight - (margin * 2))
+        
         render.setValue(page, forKey: "paperRect")
         render.setValue(printable, forKey: "printableRect")
         
         // 4. Create PDF context and draw
         let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, CGRect(x: 0, y: 0, width: 750, height: 1060), nil)
+        UIGraphicsBeginPDFContextToData(pdfData, page, nil)
         
         render.prepare(forDrawingPages: NSMakeRange(0, 1))
 
@@ -66,28 +71,57 @@ class MeetPDFCreator : PDFCreator{
         return """
         <html>
             <head>
+                <meta charset="UTF-8">
                 <style type="text/css">
         
                 @media print {
                     .pagebreak-before:first-child { display: block; page-break-before: avoid; }
                     .pagebreak-before { display: block; page-break-before: always; }
                     table, tr, td, th {
-                    page-break-inside: avoid;
+                        page-break-inside: avoid;
                     }
                     tr {
-                    page-break-before: auto;
+                        page-break-before: auto;
                     }
                 }
         
                 @page {
-                size: landscape;
+                    size: landscape;
+                    margin: 0;
+                }
+                
+                body {
+                    font-family: -apple-system, Helvetica, Arial, sans-serif;
+                    font-size: 9pt;
+                    margin: 0;
+                    padding: 0;
+                }
+                
+                h1 {
+                    font-size: 14pt;
+                    margin: 10px 0;
+                }
+                
+                table {
+                    width: 100%;
+                    font-size: 8pt;
+                }
+                
+                td, th {
+                    padding: 2px 4px;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
+                
+                th {
+                    font-weight: bold;
                 }
         
                 table.lightgray-border, 
                 table.lightgray-border th, 
                 table.lightgray-border td {
-                  border: 1px solid lightgray;
-                  border-collapse: collapse;
+                    border: 1px solid lightgray;
+                    border-collapse: collapse;
                 }
                 </style>
             </head>
@@ -247,21 +281,24 @@ class MeetPDFCreator : PDFCreator{
         <hr>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
-            <td>
+            <td style="font-size: 9pt;">
                 <b>Meet:</b>\(meet.name) | <b>Date:</b> \(dateFormatter.string(from: meet.startDate)) | <b>Description/Levels</b>: \(meet.meetDescription)
             </td>
         </tr>
         </table>
         
-        <table class="lightgray-border" border="1" cellpadding="1" cellspacing="0" width="100%">
-        <tr class="lightgray-border" align="left" height="26" "bgcolor=\"#BBBBBB\"">
-            <th>Name</th>
-            <th>Rate</th>
-            <th colspan="3">Fees</th>
-            <th colspan="2">Expenses</th>
-            <th>Taxable Fee</th>
-            <th>Total Due</th>
-            <th>Paid</th>
+        <table class="lightgray-border" border="1" cellpadding="2" cellspacing="0" width="100%" style="table-layout: fixed;">
+        <tr class="lightgray-border" align="left" height="20" bgcolor="#BBBBBB">
+            <th width="12%">Name</th>
+            <th width="11%">Rate</th>
+            <th width="7%">Date</th>
+            <th width="7%">Hours</th>
+            <th width="9%">Fees</th>
+            <th width="11%">Expense</th>
+            <th width="9%">Amount</th>
+            <th width="9%">Taxable Fee</th>
+            <th width="10%">Total Due</th>
+            <th width="6%">Paid</th>
         </tr>
         """
         

@@ -31,20 +31,25 @@ class JudgePDFCreator : PDFCreator{
         // 2. Assign print formatter to UIPrintPageRenderer
         let render = JudgeUIPrintPageRender(date: Date(), judge: judge, name: meet.name)
         render.addPrintFormatter(fmt, startingAtPageAt: 0)
-        render.footerHeight = 10
+        render.footerHeight = 30
         render.headerHeight = 10
                 
         // 3. Assign paperRect and printableRect
-        //let page = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
-        //let printable = CGRect(x: 20, y: 20, width: 595.2, height: 841.2) // A4, 72 dpi
-        let page = CGRect(x: 20, y: 20, width: 892, height: 1261) // A4, 72 dpi
-        let printable = CGRect(x: 20, y: 20, width: 892, height: 1261) // A4, 72 dpi
+        // Use standard US Letter portrait dimensions (8.5" x 11" at 72 DPI)
+        // 8.5" x 72 = 612 points wide, 11" x 72 = 792 points tall
+        let pageWidth: CGFloat = 612
+        let pageHeight: CGFloat = 792
+        let margin: CGFloat = 36 // 0.5 inch margins
+        
+        let page = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
+        let printable = CGRect(x: margin, y: margin, width: pageWidth - (margin * 2), height: pageHeight - (margin * 2))
+        
         render.setValue(page, forKey: "paperRect")
         render.setValue(printable, forKey: "printableRect")
         
         // 4. Create PDF context and draw
         let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, CGRect(x: 0, y: 0, width: 942, height: 1311), nil)
+        UIGraphicsBeginPDFContextToData(pdfData, page, nil)
         
         for i in 0..<render.numberOfPages{
             UIGraphicsBeginPDFPage();
