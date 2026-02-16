@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 import json
-from datetime import datetime
+from datetime import datetime, timezone
+
+# Helper to convert datetime to Unix timestamp (Double)
+def to_timestamp(dt):
+    return dt.timestamp()
 
 # Judge data with varying levels and patterns
 # Level enum mapping:
@@ -34,6 +38,21 @@ judges_data = [
     {"name": "Catherine Scott", "level": 1, "meetRef": False, "days": [1,2,3], "fromCity": "Parker", "miles": 92, "lodging": 2, "airfare": 0},
 ]
 
+# Date/time setup - using timezone-aware datetimes
+day1_date = datetime(2026, 3, 20, 10, 0, 0, tzinfo=timezone.utc)
+day1_start = datetime(2026, 3, 20, 8, 0, 0, tzinfo=timezone.utc)
+day1_end = datetime(2026, 3, 20, 18, 30, 0, tzinfo=timezone.utc)
+
+day2_date = datetime(2026, 3, 21, 10, 0, 0, tzinfo=timezone.utc)
+day2_start = datetime(2026, 3, 21, 8, 0, 0, tzinfo=timezone.utc)
+day2_end = datetime(2026, 3, 21, 19, 0, 0, tzinfo=timezone.utc)
+
+day3_date = datetime(2026, 3, 22, 10, 0, 0, tzinfo=timezone.utc)
+day3_start = datetime(2026, 3, 22, 9, 0, 0, tzinfo=timezone.utc)
+day3_end = datetime(2026, 3, 22, 17, 0, 0, tzinfo=timezone.utc)
+
+day_before = datetime(2026, 3, 19, 10, 0, 0, tzinfo=timezone.utc)
+
 # Rate mapping (now using actual enum rates from Judge.swift)
 rates = {
     5: 34.0,  # National
@@ -45,6 +64,7 @@ rates = {
 
 # Day hours
 day_hours = {1: 9.5, 2: 10.0, 3: 7.25}
+day_dates = {1: day1_date, 2: day2_date, 3: day3_date}
 
 judges = []
 for idx, jdata in enumerate(judges_data, 1):
@@ -67,10 +87,9 @@ for idx, jdata in enumerate(judges_data, 1):
     # Add fees for each day
     rate = rates[jdata["level"]]
     for day in jdata["days"]:
-        date_str = f"2026-03-{19+day}T10:00:00Z"
         day_id = f"day{day}-uuid-2026-03-{19+day}"
         judge["fees"].append({
-            "date": date_str,
+            "date": to_timestamp(day_dates[day]),
             "hours": day_hours[day],
             "rate": rate,
             "rateOverridden": False,
@@ -81,7 +100,7 @@ for idx, jdata in enumerate(judges_data, 1):
         })
     
     # Add expenses
-    first_day_date = f"2026-03-{19+jdata['days'][0]}T10:00:00Z"
+    first_day_ts = to_timestamp(day_dates[jdata['days'][0]])
     
     if jdata["miles"] > 0:
         judge["expenses"].append({
@@ -89,7 +108,7 @@ for idx, jdata in enumerate(judges_data, 1):
             "amount": float(jdata["miles"]),
             "mileageRate": 0.70,
             "isCustomMileageRate": False,
-            "date": first_day_date,
+            "date": first_day_ts,
             "notes": f"Round trip from {jdata['fromCity']}",
             "isPrivateLodgingRequested": False,
             "totalNights": 0,
@@ -102,7 +121,7 @@ for idx, jdata in enumerate(judges_data, 1):
             "amount": float(jdata["airfare"]),
             "mileageRate": 0.0,
             "isCustomMileageRate": False,
-            "date": "2026-03-19T10:00:00Z",
+            "date": to_timestamp(day_before),
             "notes": f"Round trip from {jdata['fromCity']}",
             "isPrivateLodgingRequested": False,
             "totalNights": 0,
@@ -113,7 +132,7 @@ for idx, jdata in enumerate(judges_data, 1):
             "amount": 55.0 + (idx * 2.5),
             "mileageRate": 0.0,
             "isCustomMileageRate": False,
-            "date": first_day_date,
+            "date": first_day_ts,
             "notes": "Airport shuttle and local transport",
             "isPrivateLodgingRequested": False,
             "totalNights": 0,
@@ -129,7 +148,7 @@ for idx, jdata in enumerate(judges_data, 1):
             "isCustomMileageRate": False,
             "totalNights": jdata["lodging"],
             "amountPerNight": room_rate,
-            "date": first_day_date,
+            "date": first_day_ts,
             "notes": "Hotel accommodation",
             "isPrivateLodgingRequested": False
         })
@@ -141,7 +160,7 @@ for idx, jdata in enumerate(judges_data, 1):
         "amount": 22.0 * meal_days + (idx * 1.2),
         "mileageRate": 0.0,
         "isCustomMileageRate": False,
-        "date": first_day_date,
+        "date": first_day_ts,
         "notes": f"{meal_days} day(s) meals",
         "isPrivateLodgingRequested": False,
         "totalNights": 0,
@@ -155,7 +174,7 @@ for idx, jdata in enumerate(judges_data, 1):
             "amount": 15.0 * len(jdata["days"]),
             "mileageRate": 0.0,
             "isCustomMileageRate": False,
-            "date": first_day_date,
+            "date": first_day_ts,
             "notes": f"{len(jdata['days'])} day(s) parking",
             "isPrivateLodgingRequested": False,
             "totalNights": 0,
@@ -167,32 +186,32 @@ for idx, jdata in enumerate(judges_data, 1):
 # Create complete meet structure
 meet = {
     "name": "Spring Classic Championship 2026",
-    "startDate": "2026-03-20T10:00:00Z",
+    "startDate": to_timestamp(day1_date),
     "location": "Denver Convention Center, Denver, CO",
     "meetDescription": "Level 6-10, Xcel Gold-Platinum - Regional Championship",
     "mileageRate": 0.70,
     "days": [
         {
             "id": "day1-uuid-2026-03-20",
-            "meetDate": "2026-03-20T10:00:00Z",
-            "startTime": "2026-03-20T08:00:00Z",
-            "endTime": "2026-03-20T18:30:00Z",
+            "meetDate": to_timestamp(day1_date),
+            "startTime": to_timestamp(day1_start),
+            "endTime": to_timestamp(day1_end),
             "breaks": 2,
             "breakTimeInMins": 60
         },
         {
             "id": "day2-uuid-2026-03-21",
-            "meetDate": "2026-03-21T10:00:00Z",
-            "startTime": "2026-03-21T08:00:00Z",
-            "endTime": "2026-03-21T19:00:00Z",
+            "meetDate": to_timestamp(day2_date),
+            "startTime": to_timestamp(day2_start),
+            "endTime": to_timestamp(day2_end),
             "breaks": 2,
             "breakTimeInMins": 60
         },
         {
             "id": "day3-uuid-2026-03-22",
-            "meetDate": "2026-03-22T10:00:00Z",
-            "startTime": "2026-03-22T09:00:00Z",
-            "endTime": "2026-03-22T17:00:00Z",
+            "meetDate": to_timestamp(day3_date),
+            "startTime": to_timestamp(day3_start),
+            "endTime": to_timestamp(day3_end),
             "breaks": 1,
             "breakTimeInMins": 45
         }
@@ -210,3 +229,4 @@ print(f"Total Brevet judges (level 6): {sum(1 for j in judges if j['level'] == 6
 print(f"Total Level 9 judges (level 3): {sum(1 for j in judges if j['level'] == 3)}")
 print(f"Total Levels 6-8 judges (level 1): {sum(1 for j in judges if j['level'] == 1)}")
 print(f"Total Level 10 judges (level 4): {sum(1 for j in judges if j['level'] == 4)}")
+print(f"\n✓ All dates converted to Unix timestamps (Double)")
