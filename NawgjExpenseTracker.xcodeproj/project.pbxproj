@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -464,6 +464,10 @@
 		65EE306221A112CE0011B2B8 /* MeetDayTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDayTableViewController.swift; sourceTree = "<group>"; };
 		65EE306621A1148B0011B2B8 /* MeetDayDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDayDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		65C63A922F43D7C300443EB9 /* TestData */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestData; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		65DBC961217D5B320029C6AA /* Frameworks */ = {
@@ -1023,6 +1027,7 @@
 		65DBC966217D5B320029C6AA /* NawgjExpenseTracker */ = {
 			isa = PBXGroup;
 			children = (
+				65C63A922F43D7C300443EB9 /* TestData */,
 				65C0857029AD0D2700B1069D /* images */,
 				651E4E9529AC90300078B346 /* images.xcassets */,
 				651C2D14278378CA000D802F /* Launch Screen.storyboard */,
@@ -1122,6 +1127,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				65C63A922F43D7C300443EB9 /* TestData */,
 			);
 			name = NawgjExpenseTracker;
 			productName = NawgjExpenceTracker;

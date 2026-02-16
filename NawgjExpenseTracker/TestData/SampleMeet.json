@@ -1,0 +1,1355 @@
+{
+  "name": "Spring Classic Championship 2026",
+  "startDate": "2026-03-20T10:00:00Z",
+  "location": "Denver Convention Center, Denver, CO",
+  "meetDescription": "Level 6-10, Xcel Gold-Platinum - Regional Championship",
+  "mileageRate": 0.7,
+  "days": [
+    {
+      "id": "day1-uuid-2026-03-20",
+      "meetDate": "2026-03-20T10:00:00Z",
+      "startTime": "2026-03-20T08:00:00Z",
+      "endTime": "2026-03-20T18:30:00Z",
+      "breaks": 2,
+      "breakTime": 60
+    },
+    {
+      "id": "day2-uuid-2026-03-21",
+      "meetDate": "2026-03-21T10:00:00Z",
+      "startTime": "2026-03-21T08:00:00Z",
+      "endTime": "2026-03-21T19:00:00Z",
+      "breaks": 2,
+      "breakTime": 60
+    },
+    {
+      "id": "day3-uuid-2026-03-22",
+      "meetDate": "2026-03-22T10:00:00Z",
+      "startTime": "2026-03-22T09:00:00Z",
+      "endTime": "2026-03-22T17:00:00Z",
+      "breaks": 1,
+      "breakTime": 45
+    }
+  ],
+  "judges": [
+    {
+      "id": "judge-001",
+      "name": "Sarah Mitchell",
+      "level": "National",
+      "meetReferee": true,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Boulder",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 245.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Boulder"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 116.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 67.2,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 45.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) parking"
+        }
+      ],
+      "meetRefereeFee": 200.0
+    },
+    {
+      "id": "judge-002",
+      "name": "Michael Chen",
+      "level": "National",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Fort Collins",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 185.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Fort Collins"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 118.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 68.4,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 45.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-003",
+      "name": "Jennifer Rodriguez",
+      "level": "Brevet",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Phoenix",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Airfare",
+          "amount": 425.0,
+          "date": "2026-03-19T10:00:00Z",
+          "notes": "Round trip from Phoenix"
+        },
+        {
+          "type": "Transportation",
+          "amount": 62.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Airport shuttle and local transport"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 3,
+          "amountPerNight": 119.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 69.6,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-004",
+      "name": "David Thompson",
+      "level": "Brevet",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Colorado Springs",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 120.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Colorado Springs"
+        },
+        {
+          "type": "Meals",
+          "amount": 48.8,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-005",
+      "name": "Amanda Williams",
+      "level": "Rating 9",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": false,
+      "notes": "Specialty judge - Littleton",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 95.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Littleton"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 122.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 72.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 45.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-006",
+      "name": "Robert Martinez",
+      "level": "Rating 9",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Pueblo",
+      "fees": [
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 156.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Round trip from Pueblo"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 1,
+          "amountPerNight": 124.0,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 51.2,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 30.0,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-007",
+      "name": "Lisa Anderson",
+      "level": "Rating 8",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Aurora",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 68.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Aurora"
+        },
+        {
+          "type": "Meals",
+          "amount": 74.4,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-008",
+      "name": "Christopher Lee",
+      "level": "Rating 8",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Cheyenne",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 210.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Cheyenne"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 1,
+          "amountPerNight": 127.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 53.6,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 30.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-009",
+      "name": "Emily Jackson",
+      "level": "Rating 7",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Westminster",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 42.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Westminster"
+        },
+        {
+          "type": "Meals",
+          "amount": 76.8,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-010",
+      "name": "Daniel White",
+      "level": "Rating 7",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": false,
+      "notes": "Specialty judge - Greeley",
+      "fees": [
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 138.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Round trip from Greeley"
+        },
+        {
+          "type": "Meals",
+          "amount": 56.0,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-011",
+      "name": "Michelle Davis",
+      "level": "Brevet",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Salt Lake City",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Airfare",
+          "amount": 385.0,
+          "date": "2026-03-19T10:00:00Z",
+          "notes": "Round trip from Salt Lake City"
+        },
+        {
+          "type": "Transportation",
+          "amount": 82.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Airport shuttle and local transport"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 3,
+          "amountPerNight": 131.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 79.2,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-012",
+      "name": "Kevin Brown",
+      "level": "Rating 9",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Lakewood",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 88.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Lakewood"
+        },
+        {
+          "type": "Meals",
+          "amount": 58.4,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-013",
+      "name": "Nicole Taylor",
+      "level": "Rating 8",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Arvada",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 124.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Arvada"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 134.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 81.6,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 45.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-014",
+      "name": "Brian Wilson",
+      "level": "National",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Seattle",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Airfare",
+          "amount": 495.0,
+          "date": "2026-03-19T10:00:00Z",
+          "notes": "Round trip from Seattle"
+        },
+        {
+          "type": "Transportation",
+          "amount": 90.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Airport shuttle and local transport"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 3,
+          "amountPerNight": 136.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 82.8,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-015",
+      "name": "Patricia Moore",
+      "level": "Rating 7",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": true,
+      "receiptsReceived": false,
+      "notes": "Specialty judge - Thornton",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 54.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Thornton"
+        },
+        {
+          "type": "Meals",
+          "amount": 62.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-016",
+      "name": "Steven Garcia",
+      "level": "Rating 9",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Grand Junction",
+      "fees": [
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 168.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Round trip from Grand Junction"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 1,
+          "amountPerNight": 139.0,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 63.2,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 30.0,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-017",
+      "name": "Karen Miller",
+      "level": "Brevet",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Vail",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 196.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Vail"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 140.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 86.4,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 45.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-018",
+      "name": "Jason Harris",
+      "level": "Rating 8",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Brighton",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 76.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Brighton"
+        },
+        {
+          "type": "Meals",
+          "amount": 65.6,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-019",
+      "name": "Rebecca Clark",
+      "level": "Rating 7",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Longmont",
+      "fees": [
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 102.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Round trip from Longmont"
+        },
+        {
+          "type": "Meals",
+          "amount": 66.8,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-020",
+      "name": "Thomas Lewis",
+      "level": "National",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": false,
+      "receiptsReceived": false,
+      "notes": "Specialty judge - Chicago",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 60.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Airfare",
+          "amount": 545.0,
+          "date": "2026-03-19T10:00:00Z",
+          "notes": "Round trip from Chicago"
+        },
+        {
+          "type": "Transportation",
+          "amount": 105.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Airport shuttle and local transport"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 3,
+          "amountPerNight": 145.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 90.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-021",
+      "name": "Angela Robinson",
+      "level": "Rating 9",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Centennial",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 40.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 112.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Centennial"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 146.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 91.2,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 45.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-022",
+      "name": "Gregory Walker",
+      "level": "Rating 8",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Loveland",
+      "fees": [
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 144.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Round trip from Loveland"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 1,
+          "amountPerNight": 148.0,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 70.4,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 30.0,
+          "date": "2026-03-21T10:00:00Z",
+          "notes": "2 day(s) parking"
+        }
+      ]
+    },
+    {
+      "id": "judge-023",
+      "name": "Sandra Young",
+      "level": "Brevet",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Albuquerque",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 50.0,
+          "exclude": false,
+          "notes": "Day 2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Airfare",
+          "amount": 365.0,
+          "date": "2026-03-19T10:00:00Z",
+          "notes": "Round trip from Albuquerque"
+        },
+        {
+          "type": "Transportation",
+          "amount": 112.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Airport shuttle and local transport"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 149.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 71.6,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-024",
+      "name": "Mark King",
+      "level": "Rating 7",
+      "meetReferee": false,
+      "paid": false,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "notes": "Specialty judge - Englewood",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 30.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 58.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Englewood"
+        },
+        {
+          "type": "Meals",
+          "amount": 72.8,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "2 day(s) meals"
+        }
+      ]
+    },
+    {
+      "id": "judge-025",
+      "name": "Catherine Scott",
+      "level": "Rating 8",
+      "meetReferee": false,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": false,
+      "notes": "Specialty judge - Parker",
+      "fees": [
+        {
+          "date": "2026-03-20T10:00:00Z",
+          "hours": 9.5,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 1"
+        },
+        {
+          "date": "2026-03-21T10:00:00Z",
+          "hours": 10.0,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 2"
+        },
+        {
+          "date": "2026-03-22T10:00:00Z",
+          "hours": 7.25,
+          "rate": 35.0,
+          "exclude": false,
+          "notes": "Day 3"
+        }
+      ],
+      "expenses": [
+        {
+          "type": "Mileage",
+          "amount": 92.0,
+          "mileageRate": 0.7,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Round trip from Parker"
+        },
+        {
+          "type": "Lodging",
+          "totalNights": 2,
+          "amountPerNight": 152.5,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "Hotel accommodation"
+        },
+        {
+          "type": "Meals",
+          "amount": 96.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) meals"
+        },
+        {
+          "type": "Parking",
+          "amount": 45.0,
+          "date": "2026-03-20T10:00:00Z",
+          "notes": "3 day(s) parking"
+        }
+      ]
+    }
+  ]
+}

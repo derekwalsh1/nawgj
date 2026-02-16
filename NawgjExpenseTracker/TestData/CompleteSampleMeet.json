@@ -1,0 +1,57 @@
+{
+  "name": "Spring Classic Championship 2026",
+  "startDate": "2026-03-20T10:00:00Z",
+  "location": "Denver Convention Center, Denver, CO",
+  "meetDescription": "Level 6-10, Xcel Gold-Platinum - Regional Championship",
+  "mileageRate": 0.70,
+  "days": [
+    {
+      "id": "day1-uuid-2026-03-20",
+      "meetDate": "2026-03-20T10:00:00Z",
+      "startTime": "2026-03-20T08:00:00Z",
+      "endTime": "2026-03-20T18:30:00Z",
+      "breaks": 2,
+      "breakTime": 60
+    },
+    {
+      "id": "day2-uuid-2026-03-21",
+      "meetDate": "2026-03-21T10:00:00Z",
+      "startTime": "2026-03-21T08:00:00Z",
+      "endTime": "2026-03-21T19:00:00Z",
+      "breaks": 2,
+      "breakTime": 60
+    },
+    {
+      "id": "day3-uuid-2026-03-22",
+      "meetDate": "2026-03-22T10:00:00Z",
+      "startTime": "2026-03-22T09:00:00Z",
+      "endTime": "2026-03-22T17:00:00Z",
+      "breaks": 1,
+      "breakTime": 45
+    }
+  ],
+  "judges": [
+    {
+      "id": "judge-001",
+      "name": "Sarah Mitchell",
+      "level": "National",
+      "meetReferee": true,
+      "meetRefereeFee": 200.00,
+      "paid": true,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "notes": "Meet Referee - Vault and Floor specialist",
+      "fees": [
+        {"date": "2026-03-20T10:00:00Z", "hours": 9.5, "rate": 60.0, "exclude": false, "notes": "Day 1"},
+        {"date": "2026-03-21T10:00:00Z", "hours": 10.0, "rate": 60.0, "exclude": false, "notes": "Day 2"},
+        {"date": "2026-03-22T10:00:00Z", "hours": 7.25, "rate": 60.0, "exclude": false, "notes": "Day 3"}
+      ],
+      "expenses": [
+        {"type": "Mileage", "amount": 245.0, "mileageRate": 0.70, "date": "2026-03-20T10:00:00Z"},
+        {"type": "Lodging", "totalNights": 2, "amountPerNight": 135.00, "date": "2026-03-20T10:00:00Z"},
+        {"type": "Meals", "amount": 85.00, "date": "2026-03-20T10:00:00Z"},
+        {"type": "Parking", "amount": 45.00, "date": "2026-03-20T10:00:00Z"}
+      ]
+    }
+  ]
+}
