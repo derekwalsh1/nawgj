@@ -11,7 +11,7 @@
       "startTime": "2026-03-20T08:00:00Z",
       "endTime": "2026-03-20T18:30:00Z",
       "breaks": 2,
-      "breakTime": 60
+      "breakTimeInMins": 60
     },
     {
       "id": "day2-uuid-2026-03-21",
@@ -19,7 +19,7 @@
       "startTime": "2026-03-21T08:00:00Z",
       "endTime": "2026-03-21T19:00:00Z",
       "breaks": 2,
-      "breakTime": 60
+      "breakTimeInMins": 60
     },
     {
       "id": "day3-uuid-2026-03-22",
@@ -27,7 +27,7 @@
       "startTime": "2026-03-22T09:00:00Z",
       "endTime": "2026-03-22T17:00:00Z",
       "breaks": 1,
-      "breakTime": 45
+      "breakTimeInMins": 45
     }
   ],
   "judges": [
