@@ -107,9 +107,19 @@ The sample includes a realistic mix of:
 
 ### To Import:
 1. Open the app
-2. Navigate to Meet List
-3. Tap "Import Meets"
-4. Select `SampleMeet.json`
+2. Navigate to Meet List or Judge List
+3. Tap "Import"
+4. Select `SampleMeet.json` (for complete meet) or `SampleJudges.json` (for judges only)
+
+**Import Judges:**
+- File: `SampleJudges.json`
+- Contains: 25 judges with names and levels only
+- Use this to pre-populate your judge roster before creating meets
+
+**Import Meet:**
+- File: `SampleMeet.json`  
+- Contains: Complete 3-day meet with 25 judges, all fees, and expenses
+- Perfect for testing the full meet workflow
 
 ### For Testing:
 This sample provides excellent coverage for:
@@ -142,8 +152,10 @@ The variety ensures you can capture:
 
 ## Files
 
-- `SampleMeet.json` - The complete sample meet data
-- `generate_sample.py` - Python script used to generate the data
+- `SampleMeet.json` - The complete sample meet data with 25 judges and full expenses
+- `SampleJudges.json` - Just the 25 judges (for importing into judge list)
+- `generate_sample.py` - Python script used to generate the meet data
+- `generate_judges.py` - Python script used to generate the judges list
 - `README.md` - This file
 
 ## Regenerating
@@ -151,11 +163,17 @@ The variety ensures you can capture:
 To regenerate with different data:
 ```bash
 cd NawgjExpenseTracker/TestData
+
+# Generate the complete meet with judges, days, fees, and expenses
 python3 generate_sample.py
+
+# Generate just the judges list
+python3 generate_judges.py
 ```
 
-Edit `generate_sample.py` to modify:
+Edit the scripts to modify:
 - Judge names and levels
 - Expense amounts
 - Cities and distances
 - Day patterns
+- Meet details
