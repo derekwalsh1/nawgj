@@ -34,7 +34,7 @@
     {
       "id": "judge-001",
       "name": "Sarah Mitchell",
-      "level": "National",
+      "level": 5,
       "meetReferee": true,
       "paid": true,
       "w9Received": true,
@@ -44,51 +44,78 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 245.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Boulder"
+          "notes": "Round trip from Boulder",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 233.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 116.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 67.2,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 45.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) parking"
+          "notes": "3 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ],
       "meetRefereeFee": 200.0
@@ -96,7 +123,7 @@
     {
       "id": "judge-002",
       "name": "Michael Chen",
-      "level": "National",
+      "level": 5,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -106,58 +133,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 185.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Fort Collins"
+          "notes": "Round trip from Fort Collins",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 236.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 118.0,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 68.4,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 45.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) parking"
+          "notes": "3 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-003",
       "name": "Jennifer Rodriguez",
-      "level": "Brevet",
+      "level": 6,
       "meetReferee": false,
       "paid": false,
       "w9Received": true,
@@ -167,57 +221,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Airfare",
+          "type": 3,
           "amount": 425.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-19T10:00:00Z",
-          "notes": "Round trip from Phoenix"
+          "notes": "Round trip from Phoenix",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Transportation",
+          "type": 4,
           "amount": 62.5,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Airport shuttle and local transport"
+          "notes": "Airport shuttle and local transport",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 358.5,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 3,
           "amountPerNight": 119.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 69.6,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-004",
       "name": "David Thompson",
-      "level": "Brevet",
+      "level": 6,
       "meetReferee": false,
       "paid": true,
       "w9Received": false,
@@ -227,38 +309,53 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 120.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Colorado Springs"
+          "notes": "Round trip from Colorado Springs",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 48.8,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-005",
       "name": "Amanda Williams",
-      "level": "Rating 9",
+      "level": 3,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -268,58 +365,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 95.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Littleton"
+          "notes": "Round trip from Littleton",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 245.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 122.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 72.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 45.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) parking"
+          "notes": "3 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-006",
       "name": "Robert Martinez",
-      "level": "Rating 9",
+      "level": 3,
       "meetReferee": false,
       "paid": false,
       "w9Received": true,
@@ -329,51 +453,75 @@
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 156.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Round trip from Pueblo"
+          "notes": "Round trip from Pueblo",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 124.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 1,
           "amountPerNight": 124.0,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 51.2,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 30.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) parking"
+          "notes": "2 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-007",
       "name": "Lisa Anderson",
-      "level": "Rating 8",
+      "level": 1,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -383,45 +531,63 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 68.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Aurora"
+          "notes": "Round trip from Aurora",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 74.4,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-008",
       "name": "Christopher Lee",
-      "level": "Rating 8",
+      "level": 1,
       "meetReferee": false,
       "paid": true,
       "w9Received": false,
@@ -431,51 +597,75 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 210.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Cheyenne"
+          "notes": "Round trip from Cheyenne",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 127.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 1,
           "amountPerNight": 127.0,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 53.6,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 30.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) parking"
+          "notes": "2 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-009",
       "name": "Emily Jackson",
-      "level": "Rating 7",
+      "level": 1,
       "meetReferee": false,
       "paid": false,
       "w9Received": true,
@@ -485,45 +675,63 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 42.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Westminster"
+          "notes": "Round trip from Westminster",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 76.8,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-010",
       "name": "Daniel White",
-      "level": "Rating 7",
+      "level": 1,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -533,38 +741,53 @@
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 138.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Round trip from Greeley"
+          "notes": "Round trip from Greeley",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 56.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-011",
       "name": "Michelle Davis",
-      "level": "Brevet",
+      "level": 6,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -574,57 +797,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Airfare",
+          "type": 3,
           "amount": 385.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-19T10:00:00Z",
-          "notes": "Round trip from Salt Lake City"
+          "notes": "Round trip from Salt Lake City",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Transportation",
+          "type": 4,
           "amount": 82.5,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Airport shuttle and local transport"
+          "notes": "Airport shuttle and local transport",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 394.5,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 3,
           "amountPerNight": 131.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 79.2,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-012",
       "name": "Kevin Brown",
-      "level": "Rating 9",
+      "level": 3,
       "meetReferee": false,
       "paid": false,
       "w9Received": false,
@@ -634,38 +885,53 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 88.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Lakewood"
+          "notes": "Round trip from Lakewood",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 58.4,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-013",
       "name": "Nicole Taylor",
-      "level": "Rating 8",
+      "level": 1,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -675,58 +941,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 124.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Arvada"
+          "notes": "Round trip from Arvada",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 269.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 134.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 81.6,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 45.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) parking"
+          "notes": "3 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-014",
       "name": "Brian Wilson",
-      "level": "National",
+      "level": 5,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -736,57 +1029,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Airfare",
+          "type": 3,
           "amount": 495.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-19T10:00:00Z",
-          "notes": "Round trip from Seattle"
+          "notes": "Round trip from Seattle",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Transportation",
+          "type": 4,
           "amount": 90.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Airport shuttle and local transport"
+          "notes": "Airport shuttle and local transport",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 408.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 3,
           "amountPerNight": 136.0,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 82.8,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-015",
       "name": "Patricia Moore",
-      "level": "Rating 7",
+      "level": 1,
       "meetReferee": false,
       "paid": false,
       "w9Received": true,
@@ -796,38 +1117,53 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 54.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Thornton"
+          "notes": "Round trip from Thornton",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 62.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-016",
       "name": "Steven Garcia",
-      "level": "Rating 9",
+      "level": 3,
       "meetReferee": false,
       "paid": true,
       "w9Received": false,
@@ -837,51 +1173,75 @@
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 168.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Round trip from Grand Junction"
+          "notes": "Round trip from Grand Junction",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 139.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 1,
           "amountPerNight": 139.0,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 63.2,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 30.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) parking"
+          "notes": "2 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-017",
       "name": "Karen Miller",
-      "level": "Brevet",
+      "level": 6,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -891,58 +1251,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 196.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Vail"
+          "notes": "Round trip from Vail",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 281.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 140.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 86.4,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 45.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) parking"
+          "notes": "3 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-018",
       "name": "Jason Harris",
-      "level": "Rating 8",
+      "level": 1,
       "meetReferee": false,
       "paid": false,
       "w9Received": true,
@@ -952,38 +1339,53 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 76.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Brighton"
+          "notes": "Round trip from Brighton",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 65.6,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-019",
       "name": "Rebecca Clark",
-      "level": "Rating 7",
+      "level": 1,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -993,38 +1395,53 @@
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 102.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Round trip from Longmont"
+          "notes": "Round trip from Longmont",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 66.8,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-020",
       "name": "Thomas Lewis",
-      "level": "National",
+      "level": 5,
       "meetReferee": false,
       "paid": true,
       "w9Received": false,
@@ -1034,57 +1451,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 60.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Airfare",
+          "type": 3,
           "amount": 545.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-19T10:00:00Z",
-          "notes": "Round trip from Chicago"
+          "notes": "Round trip from Chicago",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Transportation",
+          "type": 4,
           "amount": 105.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Airport shuttle and local transport"
+          "notes": "Airport shuttle and local transport",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 435.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 3,
           "amountPerNight": 145.0,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 90.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-021",
       "name": "Angela Robinson",
-      "level": "Rating 9",
+      "level": 3,
       "meetReferee": false,
       "paid": false,
       "w9Received": true,
@@ -1094,58 +1539,85 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 40.0,
+          "rate": 27.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 112.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Centennial"
+          "notes": "Round trip from Centennial",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 293.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 146.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 91.2,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 45.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) parking"
+          "notes": "3 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-022",
       "name": "Gregory Walker",
-      "level": "Rating 8",
+      "level": 1,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -1155,51 +1627,75 @@
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 144.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Round trip from Loveland"
+          "notes": "Round trip from Loveland",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 148.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 1,
           "amountPerNight": 148.0,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 70.4,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 30.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-21T10:00:00Z",
-          "notes": "2 day(s) parking"
+          "notes": "2 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-023",
       "name": "Sandra Young",
-      "level": "Brevet",
+      "level": 6,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -1209,50 +1705,75 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 50.0,
+          "rate": 37.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         }
       ],
       "expenses": [
         {
-          "type": "Airfare",
+          "type": 3,
           "amount": 365.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-19T10:00:00Z",
-          "notes": "Round trip from Albuquerque"
+          "notes": "Round trip from Albuquerque",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Transportation",
+          "type": 4,
           "amount": 112.5,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Airport shuttle and local transport"
+          "notes": "Airport shuttle and local transport",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 299.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 149.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 71.6,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-024",
       "name": "Mark King",
-      "level": "Rating 7",
+      "level": 1,
       "meetReferee": false,
       "paid": false,
       "w9Received": false,
@@ -1262,38 +1783,53 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 30.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 58.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Englewood"
+          "notes": "Round trip from Englewood",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 72.8,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "2 day(s) meals"
+          "notes": "2 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     },
     {
       "id": "judge-025",
       "name": "Catherine Scott",
-      "level": "Rating 8",
+      "level": 1,
       "meetReferee": false,
       "paid": true,
       "w9Received": true,
@@ -1303,51 +1839,78 @@
         {
           "date": "2026-03-20T10:00:00Z",
           "hours": 9.5,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 1"
+          "notes": "Day 1",
+          "meetDayUUID": "day1-uuid-2026-03-20"
         },
         {
           "date": "2026-03-21T10:00:00Z",
           "hours": 10.0,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 2"
+          "notes": "Day 2",
+          "meetDayUUID": "day2-uuid-2026-03-21"
         },
         {
           "date": "2026-03-22T10:00:00Z",
           "hours": 7.25,
-          "rate": 35.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
           "exclude": false,
-          "notes": "Day 3"
+          "notes": "Day 3",
+          "meetDayUUID": "day3-uuid-2026-03-22"
         }
       ],
       "expenses": [
         {
-          "type": "Mileage",
+          "type": 0,
           "amount": 92.0,
           "mileageRate": 0.7,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Round trip from Parker"
+          "notes": "Round trip from Parker",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Lodging",
+          "type": 6,
+          "amount": 305.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "totalNights": 2,
           "amountPerNight": 152.5,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "Hotel accommodation"
+          "notes": "Hotel accommodation",
+          "isPrivateLodgingRequested": false
         },
         {
-          "type": "Meals",
+          "type": 1,
           "amount": 96.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) meals"
+          "notes": "3 day(s) meals",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         },
         {
-          "type": "Parking",
+          "type": 5,
           "amount": 45.0,
+          "mileageRate": 0.0,
+          "isCustomMileageRate": false,
           "date": "2026-03-20T10:00:00Z",
-          "notes": "3 day(s) parking"
+          "notes": "3 day(s) parking",
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
         }
       ]
     }

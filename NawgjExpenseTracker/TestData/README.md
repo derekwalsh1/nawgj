@@ -38,40 +38,38 @@ This directory contains a comprehensive sample meet for testing and generating s
 ## Judge Distribution (25 Total)
 
 ### By Level:
-- **National (4 judges)** - $60/hour
+- **National (4 judges)** - $34/hour - enum value: 5
   - Sarah Mitchell (Meet Referee)
   - Michael Chen
   - Brian Wilson
   - Thomas Lewis
 
-- **Brevet (5 judges)** - $50/hour
+- **Brevet (5 judges)** - $37/hour - enum value: 6
   - Jennifer Rodriguez
   - David Thompson
   - Michelle Davis
   - Karen Miller
   - Sandra Young
 
-- **Rating 9 (5 judges)** - $40/hour
+- **Level 9 (5 judges)** - $27/hour - enum value: 3
   - Amanda Williams
   - Robert Martinez
   - Kevin Brown
   - Steven Garcia
   - Angela Robinson
 
-- **Rating 8 (6 judges)** - $35/hour
+- **Levels 6, 7, 8 (11 judges)** - $21/hour - enum value: 1
   - Lisa Anderson
   - Christopher Lee
-  - Nicole Taylor
-  - Jason Harris
-  - Gregory Walker
-  - Catherine Scott
-
-- **Rating 7 (5 judges)** - $30/hour
   - Emily Jackson
   - Daniel White
+  - Nicole Taylor
   - Patricia Moore
+  - Jason Harris
   - Rebecca Clark
+  - Gregory Walker
   - Mark King
+  - Catherine Scott
 
 ### By Work Pattern:
 - **All 3 days:** 17 judges

@@ -60,9 +60,22 @@ class MeetTableImportExportCell: UITableViewCell, UIDocumentPickerDelegate {
                 let importedMeet = try jsonDecoder.decode(Meet.self, from: data) as Meet
                 
                 MeetListManager.GetInstance().addMeet(meet: importedMeet)
+                os_log("Successfully imported meet: %{public}@", log: OSLog.default, type: .info, importedMeet.name)
+            }
+            catch let DecodingError.dataCorrupted(context) {
+                os_log("Data corrupted: %{public}@", log: OSLog.default, type: .error, context.debugDescription)
+            }
+            catch let DecodingError.keyNotFound(key, context) {
+                os_log("Key '%{public}@' not found: %{public}@", log: OSLog.default, type: .error, key.stringValue, context.debugDescription)
+            }
+            catch let DecodingError.valueNotFound(value, context) {
+                os_log("Value '%{public}@' not found: %{public}@", log: OSLog.default, type: .error, String(describing: value), context.debugDescription)
+            }
+            catch let DecodingError.typeMismatch(type, context) {
+                os_log("Type '%{public}@' mismatch: %{public}@", log: OSLog.default, type: .error, String(describing: type), context.debugDescription)
             }
             catch {
-                os_log("Failed to import meet...", log: OSLog.default, type: .error)
+                os_log("Failed to import meet: %{public}@", log: OSLog.default, type: .error, error.localizedDescription)
             }
         }
         self.parentViewController?.tableView.reloadData()
