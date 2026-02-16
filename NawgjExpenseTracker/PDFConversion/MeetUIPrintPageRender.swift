@@ -25,13 +25,32 @@ class MeetUIPrintPageRender : UIPrintPageRenderer{
     
     override func drawFooterForPage(at pageIndex: Int, in footerRect: CGRect){
         let footerText = "\(meetName) | Report Date: \(dateFormatter.string(from: date)) | Page \(pageIndex + 1) of \(self.numberOfPages)"
+
         let font = UIFont.preferredFont(forTextStyle: .footnote)
-        let size = (footerText as NSString?)!.size(withAttributes: [NSAttributedString.Key.font: font])
-        
-        let drawX = footerRect.maxX / 2 - size.width/2
-        let drawY = footerRect.maxY - size.height - 20
-        
-        let drawPoint = CGPoint(x: drawX, y: drawY)
-        (footerText as NSString?)?.draw(at: drawPoint, withAttributes: [NSAttributedString.Key.font: font])
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: UIColor.darkGray,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        let nsFooter = NSString(string: footerText)
+        let horizontalPadding: CGFloat = 8.0
+        let maxWidth = max(0, footerRect.width - horizontalPadding * 2)
+
+        let bounding = nsFooter.boundingRect(with: CGSize(width: maxWidth, height: footerRect.height), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: attributes, context: nil)
+
+        let drawWidth = min(ceil(bounding.width), maxWidth)
+        let drawHeight = ceil(bounding.height)
+
+        let drawX = footerRect.midX - drawWidth / 2.0
+        let drawY = footerRect.midY - drawHeight / 2.0
+
+        let drawRect = CGRect(x: drawX, y: drawY, width: drawWidth, height: drawHeight)
+        nsFooter.draw(in: drawRect, withAttributes: attributes)
     }
 }

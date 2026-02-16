@@ -12,60 +12,154 @@ import UIKit
 class MeetPDFCreator : PDFCreator{
     
     static func createPDFFrom(meet: Meet, atLocation: URL){
-        
+        // Prepare formatters/date/number styles used in HTML
         dateFormatter.dateStyle = .full
         dateFormatterShort.dateStyle = .short
         dateFormatterMedium.dateStyle = .medium
         timeFormatter.timeStyle = .medium
-        
         numberFormatter.numberStyle = .currency
-        
-        var html = generateHTMLHeader()
-        html += generateInvoiceTable(meet: meet)
-        html += generateMeetSummaryTable(meet: meet)
-        html += generateCheckList(meet: meet)
-        html += generateFeeTable(meet: meet)
-        html += generateMeetDayDetailsTable(meet: meet)
-        html += generateHTMLFooter()
-        
-        let fmt = UIMarkupTextPrintFormatter(markupText: html)
-        
-        // 2. Assign print formatter to UIPrintPageRenderer
-        let render = MeetUIPrintPageRender(date: Date(), meetName: meet.name)
-        render.addPrintFormatter(fmt, startingAtPageAt: 0)
-        render.footerHeight = 30
-        render.headerHeight = 10
-        
-        // 3. Assign paperRect and printableRect
-        // Use standard US Letter landscape dimensions (11" x 8.5" at 72 DPI)
-        // 11" x 72 = 792 points wide, 8.5" x 72 = 612 points tall
-        let pageWidth: CGFloat = 792
-        let pageHeight: CGFloat = 612
-        let margin: CGFloat = 36 // 0.5 inch margins
-        
-        let page = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
-        let printable = CGRect(x: margin, y: margin, width: pageWidth - (margin * 2), height: pageHeight - (margin * 2))
-        
-        render.setValue(page, forKey: "paperRect")
-        render.setValue(printable, forKey: "printableRect")
-        
-        // 4. Create PDF context and draw
-        let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, page, nil)
-        
-        render.prepare(forDrawingPages: NSMakeRange(0, 1))
 
-        for i in 0..<render.numberOfPages{
-            UIGraphicsBeginPDFPage();
-            render.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
-            render.drawFooterForPage(at: i, in: UIGraphicsGetPDFContextBounds())
+        // Page size: US Letter portrait
+        let pageWidth: CGFloat = 612
+        let pageHeight: CGFloat = 792
+        let page = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
+        
+        // Standard margins - NO header/footer during individual section renders
+        let margin: CGFloat = 36
+        
+        let printable = CGRect(x: margin,
+                               y: margin,
+                               width: pageWidth - (margin * 2),
+                               height: pageHeight - (margin * 2))
+        
+        // Helper function to render a single section to PDF data WITHOUT headers/footers
+        func renderSectionToPDF(_ htmlContent: String) -> Data {
+            let html = generateHTMLSection(content: htmlContent)
+            let fmt = UIMarkupTextPrintFormatter(markupText: html)
+            let renderer = UIPrintPageRenderer()
+            renderer.headerHeight = 0  // No header
+            renderer.footerHeight = 0  // No footer
+            renderer.setValue(page, forKey: "paperRect")
+            renderer.setValue(printable, forKey: "printableRect")
+            renderer.addPrintFormatter(fmt, startingAtPageAt: 0)
+            renderer.prepare(forDrawingPages: NSMakeRange(0, 0))
+            
+            let pageCount = renderer.numberOfPages
+            let pdfData = NSMutableData()
+            UIGraphicsBeginPDFContextToData(pdfData, page, nil)
+            for i in 0..<pageCount {
+                UIGraphicsBeginPDFPage()
+                renderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
+            }
+            UIGraphicsEndPDFContext()
+            
+            return pdfData as Data
         }
         
-        UIGraphicsEndPDFContext()
-   
-        pdfData.write(to: atLocation, atomically: true)
+        // Render each section as a separate PDF
+        let sectionPDFs = [
+            renderSectionToPDF(generateMeetSummaryTable(meet: meet)),
+            renderSectionToPDF(generateInvoiceTable(meet: meet)),
+            renderSectionToPDF(generateCheckList(meet: meet)),
+            renderSectionToPDF(generateFeeTable(meet: meet)),
+            renderSectionToPDF(generateMeetDayDetailsTable(meet: meet))
+        ]
         
+        // Merge all section PDFs into one final PDF
+        let finalPDF = PDFDocument()
+        var pageIndex = 0
+        
+        for sectionData in sectionPDFs {
+            if let sectionPDF = PDFDocument(data: sectionData) {
+                for i in 0..<sectionPDF.pageCount {
+                    if let page = sectionPDF.page(at: i) {
+                        finalPDF.insert(page, at: pageIndex)
+                        pageIndex += 1
+                    }
+                }
+            }
+        }
+        
+        // Write the merged PDF to the output location
+        if let finalData = finalPDF.dataRepresentation() {
+            try? finalData.write(to: atLocation)
+        }
     }
+    
+    /// Wrap a section of HTML content in a complete HTML document
+    static func generateHTMLSection(content: String) -> String {
+        return """
+<html>
+<head>
+<meta charset="UTF-8">
+<style type="text/css">
+@media print {
+    thead { display: table-header-group; }
+    tfoot { display: table-footer-group; }
+    tbody { display: table-row-group; }
+}
+@page { size: 8.5in 11in; margin: 0; }
+body { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size: 8pt; margin: 0; padding: 0; }
+h1 { font-size: 12pt; margin: 6px 0 4px 0; }
+table { width: 100%; font-size: 7.5pt; table-layout: fixed; border-collapse: collapse; }
+td, th { padding: 1px 3px; word-wrap: break-word; overflow-wrap: break-word; }
+th { font-weight: bold; }
+tr.light { background-color: #EEEEEE }
+tbody.details-table { page-break-inside: auto; }
+table.lightgray-border, table.lightgray-border th, table.lightgray-border td {
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+}
+</style>
+</head>
+<body>
+\(content)
+</body>
+</html>
+"""
+    }
+
+    /// Compose the full meet HTML (header + various sections + footer). If `scale` != 1.0, inject compacting CSS.
+    static func generateMeetHTML(meet: Meet, scale: CGFloat = 1.0) -> String {
+        let scaleCSS = scale != 1.0 ? "body { transform: scale(\(scale)); transform-origin: top left; width: \(100.0/scale)% }" : ""
+        // Build header with scale CSS injected
+        let header = """
+<html>
+<head>
+<meta charset="UTF-8">
+<style type="text/css">
+@media print {
+    thead { display: table-header-group; }
+    tfoot { display: table-footer-group; }
+    tbody { display: table-row-group; }
+    /* Use h1 elements for page breaks - more reliable in UIMarkupTextPrintFormatter */
+    h1 { page-break-before: always; }
+    h1:first-of-type { page-break-before: avoid; }
+}
+@page { size: 8.5in 11in; margin: 0; }
+body { font-family: -apple-system, Helvetica, Arial, sans-serif; font-size: 8pt; margin: 0; padding: 0; }
+h1 { font-size: 12pt; margin: 6px 0 4px 0; }
+table { width: 100%; font-size: 7.5pt; table-layout: fixed; border-collapse: collapse; }
+td, th { padding: 1px 3px; word-wrap: break-word; overflow-wrap: break-word; }
+th { font-weight: bold; }
+tr.light { background-color: #EEEEEE }
+tbody.details-table { page-break-inside: auto; }
+\(scaleCSS)
+</style>
+</head>
+<body>
+"""
+
+         var html = header
+         html += generateMeetSummaryTable(meet: meet)
+         html += generateInvoiceTable(meet: meet)
+         html += generateCheckList(meet: meet)
+         html += generateFeeTable(meet: meet)
+         html += generateMeetDayDetailsTable(meet: meet)
+         html += generateHTMLFooter()
+ 
+         return html
+     }
     
     static func generateHTMLHeader() -> String{
         return """
@@ -75,40 +169,43 @@ class MeetPDFCreator : PDFCreator{
                 <style type="text/css">
         
                 @media print {
-                    .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-                    .pagebreak-before { display: block; page-break-before: always; }
-                    table, tr, td, th {
-                        page-break-inside: avoid;
-                    }
-                    tr {
-                        page-break-before: auto;
-                    }
+                    thead { display: table-header-group; }
+                    tfoot { display: table-footer-group; }
+                    tbody { display: table-row-group; }
+                    /* Force page breaks before all major section headings except the very first one */
+                    h1.pagebreak-before:first-of-type { page-break-before: avoid; }
+                    h1.pagebreak-before { page-break-before: always; }
+                    /* Allow row breaks for pagination */
+                    tr { page-break-inside: auto; page-break-after: auto; }
+                    tbody.details-table { page-break-inside: auto; }
                 }
         
                 @page {
-                    size: landscape;
+                    size: 8.5in 11in;
                     margin: 0;
                 }
                 
                 body {
                     font-family: -apple-system, Helvetica, Arial, sans-serif;
-                    font-size: 9pt;
+                    font-size: 8pt;
                     margin: 0;
                     padding: 0;
                 }
                 
                 h1 {
-                    font-size: 14pt;
-                    margin: 10px 0;
+                    font-size: 12pt;
+                    margin: 6px 0;
                 }
                 
                 table {
                     width: 100%;
-                    font-size: 8pt;
+                    font-size: 7.5pt;
+                    table-layout: fixed;
+                    border-collapse: collapse;
                 }
                 
                 td, th {
-                    padding: 2px 4px;
+                    padding: 1px 3px;
                     word-wrap: break-word;
                     overflow-wrap: break-word;
                 }
@@ -153,12 +250,12 @@ class MeetPDFCreator : PDFCreator{
         let totalHoursString = String(format: "%0.2f Hours", meet.totalMeetHours())
         
         return """
-        <h1 class="pagebreak-before">Meet Summary: \(meet.name)</h1>
+        <h1>Meet Summary: \(meet.name)</h1>
         <hr>
-        <table cellpadding="5" cellspacing="0" border="0">
+        <table cellpadding="5" cellspacing="0" border="0" style="width:100%;">
             <tr align="left">
-                <th width="10">Meet Name</th>
-                <td width="300">\(meet.name)</td>
+                <th style="width:35%;">Meet Name</th>
+                <td style="width:65%;">\(meet.name)</td>
             </tr>
             <tr align="left">
                 <th>Date</th>
@@ -205,7 +302,7 @@ class MeetPDFCreator : PDFCreator{
         
         var htmlString : String = """
         
-        <h1 class="pagebreak-before">Checklist Report:</h1>
+        <h1>Checklist Report:</h1>
         <hr>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
@@ -215,7 +312,8 @@ class MeetPDFCreator : PDFCreator{
         </tr>
         </table>
         <table border="1" cellpadding="0" cellspacing="0" width="100%">
-        <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
+        <thead>
+        <tr align="left" height="26" bgcolor="#BBBBBB">
         <th>Name</th>
         <th>Rate</th>
         <th>Miles</th>
@@ -224,6 +322,8 @@ class MeetPDFCreator : PDFCreator{
         <th>Paid</th>
         <th width="30%">Notes</th>
         </tr>
+        </thead>
+        <tbody class="details-table">
         """
         
         let sortedJudges = meet.judges.sorted(by: { $0.name < $1.name })
@@ -232,12 +332,6 @@ class MeetPDFCreator : PDFCreator{
             let mileage = String(format: "%0.2f", mileageExpense?.amount ?? 0)
             htmlString += """
             <tr align="left" height="26" \(judgeIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-            <style type="text/css">
-            @media print {
-            .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-            .pagebreak-before { display: block; page-break-before: always; }
-            }
-            </style>
             <td>\(judge.name)</td>
             <td>\(judge.level.fullDescription)</td>
             <td>\(mileage)</td>
@@ -249,58 +343,27 @@ class MeetPDFCreator : PDFCreator{
             """
         }
         htmlString += """
+        </tbody>
         </table>
         """
-        /*
-        htmlString += """
-        <tr align="left" height="26" "bgcolor=\"#BBBBBB\"">
-        <style type="text/css">
-        @media print {
-        .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-        .pagebreak-before { display: block; page-break-before: always; }
-        }
-        </style>
-            <td>Totals:</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        </table>
-        """*/
-        return htmlString
-    }
+         
+         return htmlString
+     }
     
     static func generateInvoiceTable(meet: Meet) -> String{
-        var htmlString : String = """
-
-        <h1 class="pagebreak-before">Meet Invoice:</h1>
-        <hr>
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tr>
-            <td style="font-size: 9pt;">
-                <b>Meet:</b>\(meet.name) | <b>Date:</b> \(dateFormatter.string(from: meet.startDate)) | <b>Description/Levels</b>: \(meet.meetDescription)
-            </td>
-        </tr>
-        </table>
-        
-        <table class="lightgray-border" border="1" cellpadding="2" cellspacing="0" width="100%" style="table-layout: fixed;">
-        <tr class="lightgray-border" align="left" height="20" bgcolor="#BBBBBB">
-            <th width="12%">Name</th>
-            <th width="11%">Rate</th>
-            <th width="7%">Date</th>
-            <th width="7%">Hours</th>
-            <th width="9%">Fees</th>
-            <th width="11%">Expense</th>
-            <th width="9%">Amount</th>
-            <th width="9%">Taxable Fee</th>
-            <th width="10%">Total Due</th>
-            <th width="6%">Paid</th>
-        </tr>
-        """
+        var htmlString = ""
+        htmlString += "<h1>Meet Invoice:</h1>\n"
+        htmlString += "<hr>\n"
+        htmlString += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n"
+        htmlString += "<tr>\n<td style=\"font-size: 7pt;\">\n"
+        htmlString += "<b>Meet:</b>\(meet.name) | <b>Date:</b> \(dateFormatter.string(from: meet.startDate)) | <b>Description/Levels</b>: \(meet.meetDescription)\n"
+        htmlString += "</td>\n</tr>\n</table>\n\n"
+        htmlString += "<table class=\"lightgray-border\" border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" style=\"table-layout: fixed; font-size: 6pt;\">\n"
+        htmlString += "<thead>\n<tr class=\"lightgray-border\" align=\"left\" height=\"18\" bgcolor=\"#BBBBBB\">\n"
+        htmlString += "<th width=\"12%\">Name</th>\n<th width=\"11%\">Rate</th>\n<th width=\"7%\">Date</th>\n<th width=\"7%\">Hours</th>\n"
+        htmlString += "<th width=\"9%\">Fees</th>\n<th width=\"11%\">Expense</th>\n<th width=\"9%\">Amount</th>\n"
+        htmlString += "<th width=\"9%\">Taxable Fee</th>\n<th width=\"10%\">Total Due</th>\n<th width=\"6%\">Paid</th>\n"
+        htmlString += "</tr>\n</thead>\n<tbody class=\"details-table\" style=\"font-size: 6pt;\">\n"
         
         for (judgeIndex, judge) in meet.judges.sorted(by: { $0.name < $1.name }).enumerated(){
             
@@ -441,7 +504,7 @@ class MeetPDFCreator : PDFCreator{
             let totalHours = String(format: "%0.1f hrs", judge.totalBillableHours())
             let totalDue = numberFormatter.string(from: judge.totalCost() as NSNumber)!
             htmlString += """
-            <td colspan="3" align="left"><b>Totals for \(judge.name):</b></td>
+            <td colspan="3" align="left"><b>Totals for \(judge.name)</b></td>
             <td><b>\(totalHours)</b></td>
             <td align="right"><b>\(totalFees)</b></td>
             <td>&nbsp;</td>
@@ -455,7 +518,7 @@ class MeetPDFCreator : PDFCreator{
         
         
         htmlString += """
-        <tr class="lightgray-border" align="left" height="26" bgcolor="#BBBBBB" : "")>
+        <tr class="lightgray-border" align="left" height="26" bgcolor="#BBBBBB">
             <td colspan="3" align="left"><b>Grand Total for all Judges:</b></td>
             <td><b>\(meet.totalBillableJudgeHours()) hrs</b></td>
             <td align="right"><b>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</b></td>
@@ -468,6 +531,7 @@ class MeetPDFCreator : PDFCreator{
         """
         
         htmlString += """
+        </tbody>
         </table>
         """
         
@@ -475,20 +539,13 @@ class MeetPDFCreator : PDFCreator{
     }
     
     static func generateFeeTable(meet: Meet) -> String{
-        var htmlString : String = """
-
-        <h1 class="pagebreak-before">Daily Judging Fees:</h1>
-        <hr>
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tr align="left" height="26">
-            <th>Date</th>
-            <th>Judge Name</th>
-            <th>Rate</th>
-            <th>Rate Code</th>
-            <th>Hours</th>
-            <th>Fee</th>
-        </tr>
-        """
+        var htmlString = ""
+        htmlString += "<h1>Daily Judging Fees:</h1>\n"
+        htmlString += "<hr>\n"
+        htmlString += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n"
+        htmlString += "<thead>\n<tr align=\"left\" height=\"26\">\n"
+        htmlString += "<th>Date</th>\n<th>Judge Name</th>\n<th>Rate</th>\n<th>Rate Code</th>\n<th>Hours</th>\n<th>Fee</th>\n"
+        htmlString += "</tr>\n</thead>\n<tbody class=\"details-table\">\n"
         
         for (dayIndex, day) in meet.days.sorted(by: { $0.meetDate < $1.meetDate }).enumerated(){
             for (judgeIndex, judge) in meet.judges.sorted(by: { $0.name < $1.name }).enumerated(){
@@ -496,12 +553,6 @@ class MeetPDFCreator : PDFCreator{
                     
                     htmlString += """
                     <tr align="left" height="26" \(dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-                    <style type="text/css">
-                    @media print {
-                    .pagebreak-before:first-child { display: block; page-break-before: avoid; }
-                    .pagebreak-before { display: block; page-break-before: always; }
-                    }
-                    </style>
                     """
                     
                     if( judgeIndex == 0){
@@ -535,145 +586,87 @@ class MeetPDFCreator : PDFCreator{
         }
         
         htmlString += """
-            <tr align="left" height="26" bgcolor="lightgray">
+            <tr align="left" height="26" bgcolor="#BBBBBB">
             <th colspan="4"></th>
             <th align="left">Total Meet Fees</th>
             <th>\(numberFormatter.string(from: meet.totalJudgeFees() as NSNumber)!)</th>
             </tr>
+        </tbody>
         </table>
         """
         
         return htmlString
     }
     
-    /// Generates HTML for the meet day details table.
-    ///
-    /// Creates a horizontal table showing details for each meet day:
-    /// - Date (column header)
-    /// - Start time
-    /// - End time
-    /// - Total time
-    /// - Number of breaks
-    /// - Break time duration
-    /// - Billable time (after breaks)
-    /// - Judges working that day
-    ///
-    /// Returns empty string if the meet has no days.
-    ///
-    /// - Parameter meet: The meet to generate day details for
-    /// - Returns: HTML string containing the day details table, or empty string if no days
-    static func generateMeetDayDetailsTable(meet: Meet) -> String{
-        
+    static func generateMeetDayDetailsTable(meet: Meet) -> String {
         let numberOfDays = meet.days.count
-        
-        if numberOfDays > 0 {
-            var htmlString : String = """
+        if numberOfDays == 0 { return "" }
 
-            <h1 class="pagebreak-before">Meet Day Details</h1>
-            <hr>
-            <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr bgcolor=\"EEEEEE">
-                    <th align="left">Date</th>
-            """
-            // The header row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                    <th align="left">\(dateFormatterShort.string(from: meet.days[index].meetDate))</th>
-                """
-            }
-            htmlString += """
-                </tr>
-                <tr>
-                    <th align="left">Start Time</th>
-            """
-            // The start time row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                    <td>\(timeFormatter.string(from: meet.days[index].startTime))</td>
-                """
-            }
-            htmlString += """
-            </tr>
-            <tr>
-            <th align="left">End Time</th>
-            """
-            // The end time row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                <td>\(timeFormatter.string(from: meet.days[index].endTime))</td>
-                """
-            }
-            htmlString += """
-            </tr>
-            <tr>
-            <th align="left">Total Time</th>
-            """
-            // The end time row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                <td>\(String(format: "%0.2f hrs", meet.days[index].totalTimeInHours()))</td>
-                """
-            }
-            htmlString += """
-            </tr>
-            <tr>
-            <th align="left">Breaks</th>
-            """
-            // The end time row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                <td>\(String(format: "%d", meet.days[index].breaks))</td>
-                """
-            }
-            htmlString += """
-            </tr>
-            <tr>
-            <th align="left">Break Time</th>
-            """
-            // The end time row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                <td>\(String(format: "%0.2f hrs", meet.days[index].breakTimeInHours()))</td>
-                """
-            }
-            htmlString += """
-            </tr>
-            <tr>
-            <th align="left">Billed Time</th>
-            """
-            // The end time row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                <td>\(String(format: "%0.2f hrs", meet.days[index].totalBillableTimeInHours()))</td>
-                """
-            }
-            htmlString += """
-            </tr>
-            <tr>
-            <th align="left" valign="top">Judges</th>
-            """
-            // The end time row
-            for index in 0...numberOfDays - 1{
-                htmlString += """
-                <td valign="top">
-                """
-                let judges = meet.judges.filter({$0.getFeesFor(date: meet.days[index].meetDate) > 0})
-                for (index, judge) in judges.enumerated(){
-                    htmlString += "\(index == 0 ? "" : "<br>")\(judge.name)"
-                }
-                htmlString += """
-                </td>
-                """
-            }
-            
-            htmlString += """
-            </tr>
-            </table>
-            """
-            
-            return htmlString
+        var html = ""
+        html += "<h1>Meet Day Details</h1>\n"
+        html += "<hr>\n"
+        html += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n"
+
+        // Header row: dates
+        html += "<tr>\n<th align=\"left\">&nbsp;</th>\n"
+        for i in 0..<numberOfDays {
+            html += "<th align=\"left\">\(dateFormatterShort.string(from: meet.days[i].meetDate))</th>\n"
         }
-        
-        return ""
+        html += "</tr>\n"
+
+        // Start Time
+        html += "<tr>\n<th align=\"left\">Start Time</th>\n"
+        for i in 0..<numberOfDays { html += "<td>\(timeFormatter.string(from: meet.days[i].startTime))</td>\n" }
+        html += "</tr>\n"
+
+        // End Time
+        html += "<tr>\n<th align=\"left\">End Time</th>\n"
+        for i in 0..<numberOfDays { html += "<td>\(timeFormatter.string(from: meet.days[i].endTime))</td>\n" }
+        html += "</tr>\n"
+
+        // Total Time
+        html += "<tr>\n<th align=\"left\">Total Time</th>\n"
+        for i in 0..<numberOfDays {
+            let v = String(format: "%0.2f hrs", meet.days[i].totalTimeInHours())
+            html += "<td>\(v)</td>\n"
+        }
+        html += "</tr>\n"
+
+        // Breaks and Break Time
+        html += "<tr>\n<th align=\"left\">Breaks</th>\n"
+        for i in 0..<numberOfDays { html += "<td>\(meet.days[i].breaks)</td>\n" }
+        html += "</tr>\n"
+
+        html += "<tr>\n<th align=\"left\">Break Time</th>\n"
+        for i in 0..<numberOfDays {
+            let v = String(format: "%0.2f hrs", meet.days[i].breakTimeInHours())
+            html += "<td>\(v)</td>\n"
+        }
+        html += "</tr>\n"
+
+        // Billed Time
+        html += "<tr>\n<th align=\"left\">Billed Time</th>\n"
+        for i in 0..<numberOfDays {
+            let v = String(format: "%0.2f hrs", meet.days[i].totalBillableTimeInHours())
+            html += "<td>\(v)</td>\n"
+        }
+        html += "</tr>\n"
+
+        // Judges working that day
+        html += "<tr>\n<th align=\"left\">Judges</th>\n"
+        for i in 0..<numberOfDays {
+            let judges = meet.judges.filter({ $0.getFeesFor(date: meet.days[i].meetDate) > 0 })
+            var names = ""
+            for (j, judge) in judges.enumerated() {
+                names += (j == 0 ? "" : "<br>") + judge.name
+            }
+            html += "<td valign=\"top\">\(names)</td>\n"
+        }
+        html += "</tr>\n"
+
+        html += "</table>\n"
+
+        return html
     }
+
 }
