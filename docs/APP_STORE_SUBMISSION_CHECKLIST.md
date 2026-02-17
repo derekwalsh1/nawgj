@@ -4,17 +4,17 @@
 
 ### Support URL
 ```
-https://github.com/derekwalsh1/nawgj
+https://derekwalsh1.github.io/nawgj/
 ```
 
 ### Marketing URL (Optional but Recommended)
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
+https://derekwalsh1.github.io/nawgj/
 ```
 
 ### Privacy Policy URL (Required)
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
+https://derekwalsh1.github.io/nawgj/privacy.html
 ```
 
 ### Terms of Service URL (Optional)
@@ -338,17 +338,17 @@ Copy these directly into App Store Connect:
 
 **Support URL:**
 ```
-https://github.com/derekwalsh1/nawgj
+https://derekwalsh1.github.io/nawgj/
 ```
 
 **Privacy Policy URL:**
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
+https://derekwalsh1.github.io/nawgj/privacy.html
 ```
 
 **Marketing URL:**
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
+https://derekwalsh1.github.io/nawgj/
 ```
 
 ---

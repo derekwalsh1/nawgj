@@ -58,17 +58,17 @@ Copy and paste these directly:
 
 ### Support URL
 ```
-https://github.com/derekwalsh1/nawgj
+https://derekwalsh1.github.io/nawgj/
 ```
 
 ### Privacy Policy URL
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
+https://derekwalsh1.github.io/nawgj/privacy.html
 ```
 
 ### Marketing URL
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
+https://derekwalsh1.github.io/nawgj/
 ```
 
 ---

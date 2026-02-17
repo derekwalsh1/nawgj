@@ -10,17 +10,17 @@ All your App Store submission materials have been created and are in your GitHub
 
 ### Support URL
 ```
-https://github.com/derekwalsh1/nawgj
+https://derekwalsh1.github.io/nawgj/
 ```
 
 ### Privacy Policy URL
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
+https://derekwalsh1.github.io/nawgj/privacy.html
 ```
 
 ### Marketing URL (Optional)
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
+https://derekwalsh1.github.io/nawgj/
 ```
 
 ---

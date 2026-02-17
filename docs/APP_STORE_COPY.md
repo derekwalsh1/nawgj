@@ -152,19 +152,19 @@ This app does not collect any user data. All information is stored locally on yo
 
 ## Support URL
 
-https://github.com/derekwalsh1/nawgj
+https://derekwalsh1.github.io/nawgj/
 
 ---
 
 ## Marketing URL
 
-https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
+https://derekwalsh1.github.io/nawgj/
 
 ---
 
 ## Privacy Policy URL
 
-https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
+https://derekwalsh1.github.io/nawgj/privacy.html
 
 ---
 

@@ -1,0 +1,13 @@
+# GitHub Pages Configuration
+theme: jekyll-theme-minimal
+title: NAWGJ Expense Tracker
+description: Gymnastics judge meet and expense management for iOS
+baseurl: "/nawgj"
+url: "https://derekwalsh1.github.io"
+
+# Folders
+include:
+  - docs
+
+# Use docs folder for GitHub Pages
+source: docs
