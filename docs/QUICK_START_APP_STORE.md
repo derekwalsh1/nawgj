@@ -15,12 +15,12 @@ https://github.com/derekwalsh1/nawgj
 
 ### Privacy Policy URL
 ```
-https://github.com/derekwalsh1/nawgj/blob/master/PRIVACY.md
+https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
 ```
 
 ### Marketing URL (Optional)
 ```
-https://github.com/derekwalsh1/nawgj
+https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
 ```
 
 ---

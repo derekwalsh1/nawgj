@@ -4,6 +4,24 @@ NAWGJ Expense Tracker is a comprehensive iOS application designed for gymnastics
 
 ---
 
+## 📱 App Store Submission
+
+Complete documentation for App Store submission is available in the [`/docs`](docs/) folder:
+
+- **[Quick Start Guide](docs/QUICK_START_APP_STORE.md)** - 5-step submission process (~2 hours)
+- **[App Store Copy](docs/APP_STORE_COPY.md)** - All descriptions, keywords, and promotional text
+- **[Submission Checklist](docs/APP_STORE_SUBMISSION_CHECKLIST.md)** - Complete requirements checklist
+- **[Marketing Materials](docs/APP_STORE_MARKETING.md)** - Social media templates and press release
+- **[Privacy Policy](docs/PRIVACY.md)** - Published privacy policy (required by Apple)
+
+### Required URLs for App Store Connect
+
+- **Support URL:** https://github.com/derekwalsh1/nawgj
+- **Privacy Policy URL:** https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
+- **Marketing URL:** https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
+
+---
+
 ## Features
 
 ### Meet Management

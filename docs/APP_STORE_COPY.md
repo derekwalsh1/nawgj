@@ -158,13 +158,13 @@ https://github.com/derekwalsh1/nawgj
 
 ## Marketing URL
 
-https://github.com/derekwalsh1/nawgj
+https://github.com/derekwalsh1/nawgj/blob/master/docs/APP_STORE_MARKETING.md
 
 ---
 
 ## Privacy Policy URL
 
-https://github.com/derekwalsh1/nawgj/blob/master/PRIVACY.md
+https://github.com/derekwalsh1/nawgj/blob/master/docs/PRIVACY.md
 
 ---
 
