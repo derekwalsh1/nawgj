@@ -12,6 +12,11 @@ import os.log
 class Judge: Codable {
     
     enum Level : Int, Codable {
+        // MARK: Legacy levels (retained for backward compatibility only)
+        // These raw values and rates must never change - existing judges and meets
+        // already saved with these levels rely on them decoding to the same rate.
+        // They are intentionally excluded from `selectableCases` so they can no
+        // longer be chosen when adding or editing a judge.
         case FourToFive = 0
         case SixToEight = 1
         case FourToEight = 2
@@ -19,11 +24,24 @@ class Judge: Codable {
         case Ten = 4
         case National = 5
         case Brevet = 6
+
+        // MARK: NGA levels (unchanged)
         case NGA_Local = 7
         case NGA_State = 8
         case NGA_Regional = 9
         case NGA_National = 10
         case NGA_Elite = 11
+
+        // MARK: Current (selectable) non-NGA levels
+        case FourFiveX1R = 12
+        case SixSeven = 13
+        case EightXR = 14
+        case LevelNine = 15
+        case LevelTen = 16
+        case N4 = 17
+        case N3 = 18
+        case B2N2 = 19
+        case B1N1 = 20
         
         var description: String {
             switch self {
@@ -39,6 +57,15 @@ class Judge: Codable {
                 case .NGA_Regional : return "Regional(NGA)"
                 case .NGA_National : return "National(NGA)"
                 case .NGA_Elite : return "Elite(NGA)"
+                case .FourFiveX1R : return "Levels 4, 5 and X1R"
+                case .SixSeven : return "Levels 6 and 7"
+                case .EightXR : return "Level 8 and XR"
+                case .LevelNine : return "Level 9"
+                case .LevelTen : return "Level 10"
+                case .N4 : return "N4"
+                case .N3 : return "N3"
+                case .B2N2 : return "B2/N2"
+                case .B1N1 : return "B1/N1"
             }
         }
         
@@ -56,6 +83,15 @@ class Judge: Codable {
             case .NGA_Regional : return "Regional(NGA)(" + String(format: "$%0.1f/hr)", rate)
             case .NGA_National : return "National(NGA)(" + String(format: "$%0.1f/hr)", rate)
             case .NGA_Elite : return "Elite(NGA)(" + String(format: "$%0.1f/hr)", rate)
+            case .FourFiveX1R : return "Levels 4, 5 and X1R (" + String(format: "$%0.1f/hr)", rate)
+            case .SixSeven : return "Levels 6 and 7 (" + String(format: "$%0.1f/hr)", rate)
+            case .EightXR : return "Level 8 and XR (" + String(format: "$%0.1f/hr)", rate)
+            case .LevelNine : return "Level 9 (" + String(format: "$%0.1f/hr)", rate)
+            case .LevelTen : return "Level 10 (" + String(format: "$%0.1f/hr)", rate)
+            case .N4 : return "N4 (" + String(format: "$%0.1f/hr)", rate)
+            case .N3 : return "N3 (" + String(format: "$%0.1f/hr)", rate)
+            case .B2N2 : return "B2/N2 (" + String(format: "$%0.1f/hr)", rate)
+            case .B1N1 : return "B1/N1 (" + String(format: "$%0.1f/hr)", rate)
             }
         }
         
@@ -73,6 +109,15 @@ class Judge: Codable {
                 case .NGA_Regional : return 31.0
                 case .NGA_National : return 34.0
                 case .NGA_Elite : return 37.0
+                case .FourFiveX1R : return 20.0
+                case .SixSeven : return 21.0
+                case .EightXR : return 24.0
+                case .LevelNine : return 28.0
+                case .LevelTen : return 32.0
+                case .N4 : return 34.0
+                case .N3 : return 36.0
+                case .B2N2 : return 38.0
+                case .B1N1 : return 40.0
             }
         }
         
@@ -90,6 +135,15 @@ class Judge: Codable {
             case Level.NGA_Regional.description : return .NGA_Regional
             case Level.NGA_National.description : return .NGA_National
             case Level.NGA_Elite.description : return .NGA_Elite
+            case Level.FourFiveX1R.description : return .FourFiveX1R
+            case Level.SixSeven.description : return .SixSeven
+            case Level.EightXR.description : return .EightXR
+            case Level.LevelNine.description : return .LevelNine
+            case Level.LevelTen.description : return .LevelTen
+            case Level.N4.description : return .N4
+            case Level.N3.description : return .N3
+            case Level.B2N2.description : return .B2N2
+            case Level.B1N1.description : return .B1N1
             
             case Level.FourToFive.fullDescription : return .FourToFive
             case Level.SixToEight.fullDescription : return .SixToEight
@@ -103,11 +157,29 @@ class Judge: Codable {
             case Level.NGA_Regional.fullDescription : return .NGA_Regional
             case Level.NGA_National.fullDescription : return .NGA_National
             case Level.NGA_Elite.fullDescription : return .NGA_Elite
+            case Level.FourFiveX1R.fullDescription : return .FourFiveX1R
+            case Level.SixSeven.fullDescription : return .SixSeven
+            case Level.EightXR.fullDescription : return .EightXR
+            case Level.LevelNine.fullDescription : return .LevelNine
+            case Level.LevelTen.fullDescription : return .LevelTen
+            case Level.N4.fullDescription : return .N4
+            case Level.N3.fullDescription : return .N3
+            case Level.B2N2.fullDescription : return .B2N2
+            case Level.B1N1.fullDescription : return .B1N1
             default : return nil
             }
         }
         
-        static var count: Int { return Level.NGA_Elite.rawValue + 1}
+        static var count: Int { return Level.B1N1.rawValue + 1}
+        
+        /// The levels that can be chosen when adding or editing a judge.
+        /// Legacy levels are intentionally omitted here (but remain valid,
+        /// decodable `Level` values) so existing judges/meets keep displaying
+        /// and billing at their original rate until explicitly changed.
+        static let selectableCases: [Level] = [
+            .FourFiveX1R, .SixSeven, .EightXR, .LevelNine, .LevelTen, .N4, .N3, .B2N2, .B1N1,
+            .NGA_Local, .NGA_State, .NGA_Regional, .NGA_National, .NGA_Elite
+        ]
     }
     
     // MARK: Properties

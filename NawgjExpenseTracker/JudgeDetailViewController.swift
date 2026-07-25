@@ -70,8 +70,8 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
         levelCell.detailTextLabel?.text = judge!.level.fullDescription
         levelPicker.delegate = self
         levelPicker.dataSource = self
-        if let judge = judge{
-            levelPicker.selectRow(judge.level.rawValue, inComponent: 0, animated: false)
+        if let judge = judge, let selectableIndex = Judge.Level.selectableCases.firstIndex(of: judge.level){
+            levelPicker.selectRow(selectableIndex, inComponent: 0, animated: false)
         }
         
         handleJudgeDetailsChanged()
@@ -111,24 +111,22 @@ class JudgeDetailViewController: UITableViewController, UITextFieldDelegate, UIN
     }
         
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Judge.Level.count
+        return Judge.Level.selectableCases.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let level = Judge.Level(rawValue: row)!
-        return level.description;
+        return Judge.Level.selectableCases[row].description
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         // update the level text, then save the judge and reload the tables.
         if let judge = judge{
-            if let level = Judge.Level(rawValue: pickerView.selectedRow(inComponent: 0)){
-                judge.changeLevel(level: level)
-                handleJudgeDetailsChanged()
-                //tableView.reloadData()
-                //judgeSummaryTable.reloadData()
-            }
+            let level = Judge.Level.selectableCases[pickerView.selectedRow(inComponent: 0)]
+            judge.changeLevel(level: level)
+            handleJudgeDetailsChanged()
+            //tableView.reloadData()
+            //judgeSummaryTable.reloadData()
         }
     }
     

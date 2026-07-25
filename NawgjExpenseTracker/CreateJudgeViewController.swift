@@ -21,7 +21,8 @@ class CreateJudgeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         judgeLevelPicker.delegate = self
         
         updateDoneButtonState()
-        judgeLevelPicker.selectRow(Judge.Level.count - 2, inComponent: 0, animated: false)
+        let defaultIndex = Judge.Level.selectableCases.count > 1 ? Judge.Level.selectableCases.count - 2 : 0
+        judgeLevelPicker.selectRow(defaultIndex, inComponent: 0, animated: false)
         
         judgeNameTextField.becomeFirstResponder()
     }
@@ -38,9 +39,8 @@ class CreateJudgeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         if let judgeNameText = judgeNameTextField.text{
             if !judgeNameText.isEmpty{
-                if let level = Judge.Level.init(rawValue: judgeLevelPicker.selectedRow(inComponent: 0)){
-                    _ = JudgeListManager.GetInstance().addJudge(JudgeInfo(name: judgeNameText, level:level))
-                }
+                let level = Judge.Level.selectableCases[judgeLevelPicker.selectedRow(inComponent: 0)]
+                _ = JudgeListManager.GetInstance().addJudge(JudgeInfo(name: judgeNameText, level:level))
             }
         }
         
@@ -48,12 +48,11 @@ class CreateJudgeViewController: UIViewController, UIPickerViewDelegate, UIPicke
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Judge.Level.count
+        return Judge.Level.selectableCases.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let level = Judge.Level(rawValue: row)!
-        return level.description;
+        return Judge.Level.selectableCases[row].description
     }
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -66,11 +65,10 @@ class CreateJudgeViewController: UIViewController, UIPickerViewDelegate, UIPicke
         //  2. The judge does not already exist
         if let judgeNameText = judgeNameTextField.text{
             if !judgeNameText.isEmpty{
-                if let level = Judge.Level.init(rawValue: judgeLevelPicker.selectedRow(inComponent: 0)){
-                    let info = JudgeInfo(name: judgeNameText, level:level)
-                    doneButton.isEnabled = JudgeListManager.GetInstance().indexOfJudge(info) == -1
-                    return
-                }
+                let level = Judge.Level.selectableCases[judgeLevelPicker.selectedRow(inComponent: 0)]
+                let info = JudgeInfo(name: judgeNameText, level:level)
+                doneButton.isEnabled = JudgeListManager.GetInstance().indexOfJudge(info) == -1
+                return
             }
         }
         doneButton.isEnabled = false

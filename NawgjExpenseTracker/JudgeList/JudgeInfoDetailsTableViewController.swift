@@ -43,16 +43,18 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
         if addingNewJudge{
             // Well we have no information so let's populate the UI with some default
             nameTextField.text = nil
-            let defaultLevel = Judge.Level.count > 1 ? Judge.Level.count - 2 : 0
-            levelPicker.selectRow(defaultLevel, inComponent: 0, animated: false)
-            levelCell.detailTextLabel?.text = Judge.Level(rawValue: defaultLevel)?.description
+            let defaultIndex = Judge.Level.selectableCases.count > 1 ? Judge.Level.selectableCases.count - 2 : 0
+            levelPicker.selectRow(defaultIndex, inComponent: 0, animated: false)
+            levelCell.detailTextLabel?.text = Judge.Level.selectableCases[defaultIndex].description
             self.navigationItem.title = "Adding Judge Info"
         }
         else{
             if let judgeInfo = JudgeListManager.GetInstance().selectedJudge{
                 nameTextField.text = judgeInfo.name
                 levelCell.detailTextLabel!.text = judgeInfo.level.fullDescription
-                levelPicker.selectRow(judgeInfo.level.rawValue, inComponent: 0, animated: false)
+                if let selectableIndex = Judge.Level.selectableCases.firstIndex(of: judgeInfo.level){
+                    levelPicker.selectRow(selectableIndex, inComponent: 0, animated: false)
+                }
                 
                 saveButton.isEnabled = true
                 self.navigationItem.title = judgeInfo.name
@@ -106,18 +108,17 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
     
     /// Number of levels shown in the picker.
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Judge.Level.count
+        return Judge.Level.selectableCases.count
     }
     
     /// Displays the level description for each picker row.
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let level = Judge.Level(rawValue: row)!
-        return level.description;
+        return Judge.Level.selectableCases[row].description
     }
     
     /// Updates the level display when a new row is selected.
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        levelCell.detailTextLabel?.text = Judge.Level(rawValue: row)!.fullDescription
+        levelCell.detailTextLabel?.text = Judge.Level.selectableCases[row].fullDescription
         updateSaveButtonState()
         pickerView.becomeFirstResponder()
     }
@@ -183,11 +184,10 @@ class JudgeInfoDetailsTableViewController: UITableViewController, UIPickerViewDe
         //  2. The judge does not already exist
         if let judgeNameText = nameTextField.text{
             if !judgeNameText.isEmpty{
-                if let level = Judge.Level.init(rawValue: levelPicker.selectedRow(inComponent: 0)){
-                    let info = JudgeInfo(name: judgeNameText, level:level)
-                    saveButton.isEnabled = (addingNewJudge && JudgeListManager.GetInstance().indexOfJudge(info) == -1) || (!addingNewJudge && !judgeNameText.isEmpty)
-                    return
-                }
+                let level = Judge.Level.selectableCases[levelPicker.selectedRow(inComponent: 0)]
+                let info = JudgeInfo(name: judgeNameText, level:level)
+                saveButton.isEnabled = (addingNewJudge && JudgeListManager.GetInstance().indexOfJudge(info) == -1) || (!addingNewJudge && !judgeNameText.isEmpty)
+                return
             }
         }
         saveButton.isEnabled = false
