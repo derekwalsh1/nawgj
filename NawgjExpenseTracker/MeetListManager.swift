@@ -32,81 +32,131 @@ class MeetListManager{
     var selectedJudgeIndex : Int?
     var selectedExpenseIndex : Int?
     var selectedFeeIndex : Int?
+
+    /// Chains successive `saveMeets()` calls so their underlying async disk
+    /// writes complete in the same order they were requested, even though
+    /// each call returns immediately without blocking the caller.
+    private var pendingSaveTask: Task<Void, Never>?
     
     func loadMeets(){
         do{
             let data:Data = try Data(contentsOf: MeetListManager.ArchiveURL)
-            let jsonDecoder = JSONDecoder()
-            meets = try jsonDecoder.decode([Meet].self, from: data) as [Meet]
+            meets = try MeetListManager.decodeAndNormalizeMeets(from: data)
         } catch{
             os_log("Failed to load meets...", log: OSLog.default, type: .error)
             meets = Array<Meet>()
         }
         
-        
-        if let meets = meets{
-            for meet in meets{
-                // Make sure all meet days have uuid strings associated with them
-                // Touch the UUID attribute to ensure that one is created
-                for meetDay in meet.days{
-                    _ = meetDay.getUUID()
+        saveMeets()
+    }
+
+    /// Async equivalent of `loadMeets()`. Does not mutate `meets` directly -
+    /// callers decide when/whether to assign the result.
+    func loadMeetsAsync() async -> [Meet] {
+        let loadedMeets: [Meet]
+        do {
+            let data = try Data(contentsOf: MeetListManager.ArchiveURL)
+            loadedMeets = try MeetListManager.decodeAndNormalizeMeets(from: data)
+        } catch {
+            os_log("Failed to load meets...", log: OSLog.default, type: .error)
+            loadedMeets = []
+        }
+        await saveMeetsAsync(loadedMeets)
+        return loadedMeets
+    }
+
+    /// Decodes the meets archive and runs the same meet-day/fee
+    /// synchronization performed by `loadMeets()` (ensures every meet day
+    /// and judge fee has a UUID, and that judges have a fee entry for every
+    /// meet day). Shared by both the sync and async load paths.
+    private static func decodeAndNormalizeMeets(from data: Data) throws -> [Meet] {
+        let decodedMeets = try JSONDecoder().decode([Meet].self, from: data)
+
+        for meet in decodedMeets{
+            // Make sure all meet days have uuid strings associated with them
+            // Touch the UUID attribute to ensure that one is created
+            for meetDay in meet.days{
+                _ = meetDay.getUUID()
+            }
+            
+            // Make sure all the judge fees have a meet day UUID associated with them
+            // by adding a meet day uuid to fees that don't have them. The matchup uses
+            // the date. If a fee uuid already exists then skip that fee
+            for judge in meet.judges{
+                var feesToDelete = Array<String>()
+                for fee in judge.fees{
+                    if fee.getMeetDayUUID() == nil{
+                        // Find the meet day matching this fee (if none found, remove this fee)
+                        if let meetDay = meet.days.first(where: {$0.meetDate == fee.date}){
+                            fee.setMeetDayUUID(uuid: meetDay.getUUID())
+                        }
+                        else{
+                            let uuidString = UUID.init().uuidString
+                            feesToDelete.append(uuidString)
+                            fee.setMeetDayUUID(uuid: uuidString)
+                        }
+                    }
                 }
                 
-                // Make sure all the judge fees have a meet day UUID associated with them
-                // by adding a meet day uuid to fees that don't have them. The matchup uses
-                // the date. If a fee uuid already exists then skip that fee
-                for judge in meet.judges{
-                    var feesToDelete = Array<String>()
-                    for fee in judge.fees{
-                        if fee.getMeetDayUUID() == nil{
-                            // Find the meet day matching this fee (if none found, remove this fee)
-                            if let meetDay = meet.days.first(where: {$0.meetDate == fee.date}){
-                                fee.setMeetDayUUID(uuid: meetDay.getUUID())
-                            }
-                            else{
-                                let uuidString = UUID.init().uuidString
-                                feesToDelete.append(uuidString)
-                                fee.setMeetDayUUID(uuid: uuidString)
-                            }
+                // Remove any fees that don't have a corresponding date
+                if feesToDelete.count > 0{
+                    for feeToDelete in feesToDelete{
+                        if let index = judge.fees.firstIndex(where: {$0.getMeetDayUUID() == feeToDelete}){
+                            judge.fees.remove(at: index)
                         }
                     }
-                    
-                    // Remove any fees that don't have a corresponding date
-                    if feesToDelete.count > 0{
-                        for feeToDelete in feesToDelete{
-                            if let index = judge.fees.firstIndex(where: {$0.getMeetDayUUID() == feeToDelete}){
-                                judge.fees.remove(at: index)
-                            }
-                        }
-                    }
-                    
-                    // Run through the list and find any meet days without a corresponding fee for it in the judges
-                    // fee list and add a fee entry
-                    for meetDay in meet.days{
-                        if !judge.fees.contains(where: {$0.getMeetDayUUID() == meetDay.getUUID()}){
-                            // Add a new fee to the judges fees list corresponding to this day
-                            if let fee = Fee(date: meetDay.meetDate, hours: meetDay.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID()){
-                                judge.fees.append(fee)
-                            }
+                }
+                
+                // Run through the list and find any meet days without a corresponding fee for it in the judges
+                // fee list and add a fee entry
+                for meetDay in meet.days{
+                    if !judge.fees.contains(where: {$0.getMeetDayUUID() == meetDay.getUUID()}){
+                        // Add a new fee to the judges fees list corresponding to this day
+                        if let fee = Fee(date: meetDay.meetDate, hours: meetDay.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID()){
+                            judge.fees.append(fee)
                         }
                     }
                 }
             }
         }
-        
-        saveMeets()
+
+        return decodedMeets
     }
     
+    /// Fire-and-forget save used by existing (synchronous) call sites. The
+    /// actual encode + disk write happens off the calling thread via
+    /// `saveMeetsAsync(_:)`, chained after any already-pending save so
+    /// writes are never applied out of order.
     func saveMeets(){
-        if meets != nil{
-            do{
-                let encodedData = try JSONEncoder().encode(meets)
-                try encodedData.write(to: MeetListManager.ArchiveURL)
-            } catch{
-                os_log("Failed to save meets...", log: OSLog.default, type: .error)
-            }
-        }else{
+        guard let meets = meets else {
             os_log("Couldn't save meets - No meets are loaded", log: OSLog.default, type: .error)
+            return
+        }
+        let previousTask = pendingSaveTask
+        pendingSaveTask = Task {
+            _ = await previousTask?.value
+            await MeetListManager.writeMeets(meets)
+        }
+    }
+
+    /// Async equivalent of `saveMeets()` for callers that want to `await`
+    /// completion of the disk write (e.g. before dismissing a screen).
+    @discardableResult
+    func saveMeetsAsync(_ meetsToSave: [Meet]? = nil) async -> Bool {
+        guard let meets = meetsToSave ?? meets else {
+            os_log("Couldn't save meets - No meets are loaded", log: OSLog.default, type: .error)
+            return false
+        }
+        await MeetListManager.writeMeets(meets)
+        return true
+    }
+
+    private static func writeMeets(_ meets: [Meet]) async {
+        do{
+            let encodedData = try JSONEncoder().encode(meets)
+            try encodedData.write(to: MeetListManager.ArchiveURL, options: .atomic)
+        } catch{
+            os_log("Failed to save meets...", log: OSLog.default, type: .error)
         }
     }
     

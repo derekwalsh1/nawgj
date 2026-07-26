@@ -8,6 +8,7 @@
 
 import UIKit
 import os.log
+import SwiftUI
 
 class AddJudgesToMeetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -29,14 +30,24 @@ class AddJudgesToMeetViewController: UIViewController, UITableViewDelegate, UITa
         judgeTableView.dataSource = self
         judgeTableView.allowsMultipleSelection = true
         judgeTableView.allowsSelectionDuringEditing = true
+
+        addNewJudgeButton.addTarget(self, action: #selector(createNewJudgeButtonTapped), for: .touchUpInside)
     }
-    
-    @IBAction func unwindToSelectJudges(segue: UIStoryboardSegue) {
-        // Need to reload the table view. Technically we would only need
-        // to do this only when the user actually added a judge, however
-        // for simplicity, we just update/refresh the table every time
-        loadJudgeList()
-        judgeTableView.reloadData()
+
+    /// Presents the SwiftUI `CreateJudgeView` in place of the old
+    /// storyboard-driven "Create Judge" screen/segue.
+    @objc func createNewJudgeButtonTapped() {
+        let createJudgeView = CreateJudgeView(mode: .create) { [weak self] in
+            guard let self = self else { return }
+            self.navigationController?.popViewController(animated: true)
+            // Reload the table view. Technically we would only need to do
+            // this when the user actually added a judge, however for
+            // simplicity, we just update/refresh the table every time,
+            // mirroring the old unwindToSelectJudges behavior.
+            self.loadJudgeList()
+            self.judgeTableView.reloadData()
+        }
+        pushSwiftUIView(createJudgeView)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

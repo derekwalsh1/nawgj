@@ -50,12 +50,12 @@ class Meet: Codable {
 
         // Pick the largest year <= requested year
         let candidates = Meet.FED_MILEAGE_RATES.filter { $0.key <= yearComponent }
-        if let best = candidates.max(by: { $0.key > $1.key }) {
+        if let best = candidates.max(by: { $0.key < $1.key }) {
             return best.value
         }
 
         // If none are <= requested year, fall back to the earliest available rate
-        return Meet.FED_MILEAGE_RATES.min(by: { $0.key > $1.key })?.value ?? 0.725
+        return Meet.FED_MILEAGE_RATES.min(by: { $0.key < $1.key })?.value ?? 0.725
     }
     
     // MARK: Properties

@@ -12,20 +12,18 @@
 		651C2D15278378CA000D802F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 651C2D14278378CA000D802F /* Launch Screen.storyboard */; };
 		651E4E9829AD05910078B346 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 651E4E9529AC90300078B346 /* images.xcassets */; };
 		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
-		652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */; };
+		65D8C4F02E2D1B7600B057B3 /* MeetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */; };
 		652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F721EFDD4C0024F1E6 /* PDFViewController.swift */; };
 		652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */; };
 		652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236FC21F029950024F1E6 /* MeetListManager.swift */; };
 		655150D82372804A00BED00A /* AddJudgesToMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */; };
-		655150DA23729ADA00BED00A /* CreateJudgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D923729ADA00BED00A /* CreateJudgeViewController.swift */; };
+		65D8C4F22E2D1B7600B057B3 /* JudgeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */; };
+		800DCE21EFB0483A9FBAD7AE /* CreateJudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D923729ADA00BED00A /* CreateJudgeView.swift */; };
 		656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C521F686CC00DE4029 /* JudgeListManager.swift */; };
 		656EA4C821F68A1200DE4029 /* JudgeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C721F68A1200DE4029 /* JudgeInfo.swift */; };
-		656EA4CB21F693AE00DE4029 /* JudgeListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4CA21F693AE00DE4029 /* JudgeListTableViewController.swift */; };
-		656EA4CD21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4CC21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift */; };
 		65830E40237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65830E3F237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift */; };
 		65A02951220FDBE90088681D /* JudgePDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A02950220FDBE90088681D /* JudgePDFCreator.swift */; };
 		65A02953220FDC1C0088681D /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A02952220FDC1C0088681D /* PDFCreator.swift */; };
-		65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */; };
 		65C0856029AD0C0200B1069D /* airport-20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0855029AD0C0200B1069D /* airport-20@2x.png */; };
 		65C0856129AD0C0200B1069D /* airport-83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0855129AD0C0200B1069D /* airport-83.5@2x.png */; };
 		65C0856229AD0C0200B1069D /* airport-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0855229AD0C0200B1069D /* airport-76.png */; };
@@ -206,15 +204,14 @@
 		65C086EF29AD0D5600B1069D /* splat-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0863F29AD0D5500B1069D /* splat-1024.png */; };
 		65C086F029AD0D5600B1069D /* splat-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0864029AD0D5500B1069D /* splat-29.png */; };
 		65C086F129AD0D5600B1069D /* splat-20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0864129AD0D5500B1069D /* splat-20@2x.png */; };
-		65C086F329AD5EE200B1069D /* JudgeManagementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C086F229AD5EE200B1069D /* JudgeManagementCell.swift */; };
 		65C386CC21BB77F70070D76B /* Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C386CB21BB77F70070D76B /* Fee.swift */; };
-		65CEB3A829A5DCDE0007604F /* MeetTableImportExportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CEB3A729A5DCDE0007604F /* MeetTableImportExportCell.swift */; };
 		65D60EEE2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */; };
 		65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC967217D5B320029C6AA /* AppDelegate.swift */; };
-		65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */; };
+		65D8C4E12E2D1B7600B057B3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4E02E2D1B7600B057B3 /* SceneDelegate.swift */; };
+		65D8C4E32E2D1B7600B057B3 /* SwiftUIHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4E22E2D1B7600B057B3 /* SwiftUIHosting.swift */; };
+		65DBC96A217D5B320029C6AA /* MeetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC969217D5B320029C6AA /* MeetDetailView.swift */; };
 		65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC96B217D5B320029C6AA /* Main.storyboard */; };
 		65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC987217EBB7F0029C6AA /* Meet.swift */; };
-		65DBC98C217EC5D40029C6AA /* MeetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */; };
 		65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC99E219347F20029C6AA /* MeetDay.swift */; };
 		65DBC9A52193A1820029C6AA /* Judge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A42193A1820029C6AA /* Judge.swift */; };
 		65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A62193A1BB0029C6AA /* Expense.swift */; };
@@ -227,6 +224,11 @@
 		65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */; };
 		65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE306221A112CE0011B2B8 /* MeetDayTableViewController.swift */; };
 		65EE306721A1148B0011B2B8 /* MeetDayDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE306621A1148B0011B2B8 /* MeetDayDetailViewController.swift */; };
+		D130C41A050E45FD8DF596E1 /* NawgjExpenseTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */; };
+		E5E7BD5C944B47A3B32A76ED /* FeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E743A6EE9C08482C84440467 /* FeeTests.swift */; };
+		305C410144594FF38C7E01FB /* ExpenseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */; };
+		FC02D7FEAF6A4BD9ACFD174F /* MeetDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */; };
+		269A08BE9F57478283B4AF54 /* MeetMileageRateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -245,20 +247,18 @@
 		651C2D14278378CA000D802F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
 		651E4E9529AC90300078B346 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = NawgjExpenseTracker/images.xcassets; sourceTree = SOURCE_ROOT; };
 		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
-		652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
+		65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListView.swift; sourceTree = "<group>"; };
 		652236F721EFDD4C0024F1E6 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetUIPrintPageRender.swift; sourceTree = "<group>"; };
 		652236FC21F029950024F1E6 /* MeetListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListManager.swift; sourceTree = "<group>"; };
 		655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJudgesToMeetViewController.swift; sourceTree = "<group>"; };
-		655150D923729ADA00BED00A /* CreateJudgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateJudgeViewController.swift; sourceTree = "<group>"; };
+		65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListView.swift; sourceTree = "<group>"; };
+		655150D923729ADA00BED00A /* CreateJudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateJudgeView.swift; sourceTree = "<group>"; };
 		656EA4C521F686CC00DE4029 /* JudgeListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListManager.swift; sourceTree = "<group>"; };
 		656EA4C721F68A1200DE4029 /* JudgeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInfo.swift; sourceTree = "<group>"; };
-		656EA4CA21F693AE00DE4029 /* JudgeListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListTableViewController.swift; sourceTree = "<group>"; };
-		656EA4CC21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInfoDetailsTableViewController.swift; sourceTree = "<group>"; };
 		65830E3F237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeUIPrintPageRenderer.swift; sourceTree = "<group>"; };
 		65A02950220FDBE90088681D /* JudgePDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgePDFCreator.swift; sourceTree = "<group>"; };
 		65A02952220FDC1C0088681D /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
-		65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableViewCell.swift; sourceTree = "<group>"; };
 		65C0855029AD0C0200B1069D /* airport-20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airport-20@2x.png"; sourceTree = "<group>"; };
 		65C0855129AD0C0200B1069D /* airport-83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airport-83.5@2x.png"; sourceTree = "<group>"; };
 		65C0855229AD0C0200B1069D /* airport-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airport-76.png"; sourceTree = "<group>"; };
@@ -439,18 +439,17 @@
 		65C0863F29AD0D5500B1069D /* splat-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splat-1024.png"; sourceTree = "<group>"; };
 		65C0864029AD0D5500B1069D /* splat-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splat-29.png"; sourceTree = "<group>"; };
 		65C0864129AD0D5500B1069D /* splat-20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splat-20@2x.png"; sourceTree = "<group>"; };
-		65C086F229AD5EE200B1069D /* JudgeManagementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeManagementCell.swift; sourceTree = "<group>"; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
-		65CEB3A729A5DCDE0007604F /* MeetTableImportExportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTableImportExportCell.swift; sourceTree = "<group>"; };
 		65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodgingExpenseDetailsViewController.swift; sourceTree = "<group>"; };
 		65DBC964217D5B320029C6AA /* Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDetailViewController.swift; sourceTree = "<group>"; };
+		65D8C4E02E2D1B7600B057B3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		65D8C4E22E2D1B7600B057B3 /* SwiftUIHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIHosting.swift; sourceTree = "<group>"; };
+		65DBC969217D5B320029C6AA /* MeetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDetailView.swift; sourceTree = "<group>"; };
 		65DBC96C217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		65DBC973217D5B320029C6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65DBC978217D5B320029C6AA /* NawgjExpenseTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NawgjExpenseTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DBC987217EBB7F0029C6AA /* Meet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meet.swift; sourceTree = "<group>"; };
-		65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetTableViewController.swift; sourceTree = "<group>"; };
 		65DBC99E219347F20029C6AA /* MeetDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDay.swift; sourceTree = "<group>"; };
 		65DBC9A42193A1820029C6AA /* Judge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Judge.swift; sourceTree = "<group>"; };
 		65DBC9A62193A1BB0029C6AA /* Expense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
@@ -463,6 +462,11 @@
 		65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeDetailViewController.swift; sourceTree = "<group>"; };
 		65EE306221A112CE0011B2B8 /* MeetDayTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDayTableViewController.swift; sourceTree = "<group>"; };
 		65EE306621A1148B0011B2B8 /* MeetDayDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDayDetailViewController.swift; sourceTree = "<group>"; };
+		B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NawgjExpenseTrackerTests.swift; sourceTree = "<group>"; };
+		E743A6EE9C08482C84440467 /* FeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeTests.swift; sourceTree = "<group>"; };
+		9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTests.swift; sourceTree = "<group>"; };
+		FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayTests.swift; sourceTree = "<group>"; };
+		9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetMileageRateTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -513,9 +517,8 @@
 		656EA4C921F6938E00DE4029 /* JudgeList */ = {
 			isa = PBXGroup;
 			children = (
-				656EA4CA21F693AE00DE4029 /* JudgeListTableViewController.swift */,
-				656EA4CC21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift */,
-				65C086F229AD5EE200B1069D /* JudgeManagementCell.swift */,
+				65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */,
+				655150D923729ADA00BED00A /* CreateJudgeView.swift */,
 			);
 			path = JudgeList;
 			sourceTree = "<group>";
@@ -1011,8 +1014,21 @@
 			isa = PBXGroup;
 			children = (
 				65DBC966217D5B320029C6AA /* NawgjExpenseTracker */,
+				408B6B2754E94A9A92404FEA /* NawgjExpenseTrackerTests */,
 				65DBC965217D5B320029C6AA /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		408B6B2754E94A9A92404FEA /* NawgjExpenseTrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */,
+				E743A6EE9C08482C84440467 /* FeeTests.swift */,
+				9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */,
+				FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */,
+				9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */,
+			);
+			path = NawgjExpenseTrackerTests;
 			sourceTree = "<group>";
 		};
 		65DBC965217D5B320029C6AA /* Products */ = {
@@ -1038,6 +1054,8 @@
 				65DDA60E21BDB99E004B4DD2 /* Fees */,
 				65DBC99D218D7A450029C6AA /* DataTypes */,
 				65DBC967217D5B320029C6AA /* AppDelegate.swift */,
+				65D8C4E02E2D1B7600B057B3 /* SceneDelegate.swift */,
+				65D8C4E22E2D1B7600B057B3 /* SwiftUIHosting.swift */,
 				65DBC96B217D5B320029C6AA /* Main.storyboard */,
 				65DBC973217D5B320029C6AA /* Info.plist */,
 				65EE305B219FE01D0011B2B8 /* Meet */,
@@ -1082,11 +1100,8 @@
 		65EE305B219FE01D0011B2B8 /* Meet */ = {
 			isa = PBXGroup;
 			children = (
-				65DBC98B217EC5D40029C6AA /* MeetTableViewController.swift */,
-				65DBC969217D5B320029C6AA /* MeetDetailViewController.swift */,
-				65C05B0D21CBFFD9000AA13E /* MeetTableViewCell.swift */,
-				652236F121E464600024F1E6 /* MeetSummaryTableViewDelegate.swift */,
-				65CEB3A729A5DCDE0007604F /* MeetTableImportExportCell.swift */,
+				65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */,
+				65DBC969217D5B320029C6AA /* MeetDetailView.swift */,
 			);
 			name = Meet;
 			sourceTree = "<group>";
@@ -1099,7 +1114,6 @@
 				65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */,
 				65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */,
 				652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */,
-				655150D923729ADA00BED00A /* CreateJudgeViewController.swift */,
 			);
 			name = Judge;
 			sourceTree = "<group>";
@@ -1403,37 +1417,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65C086F329AD5EE200B1069D /* JudgeManagementCell.swift in Sources */,
 				652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */,
 				65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */,
 				65EE305A219FDDF90011B2B8 /* JudgeTableViewController.swift in Sources */,
 				65EE306721A1148B0011B2B8 /* MeetDayDetailViewController.swift in Sources */,
-				655150DA23729ADA00BED00A /* CreateJudgeViewController.swift in Sources */,
-				65DBC98C217EC5D40029C6AA /* MeetTableViewController.swift in Sources */,
+				65D8C4F22E2D1B7600B057B3 /* JudgeListView.swift in Sources */,
+				800DCE21EFB0483A9FBAD7AE /* CreateJudgeView.swift in Sources */,
+				65D8C4F02E2D1B7600B057B3 /* MeetListView.swift in Sources */,
 				65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */,
 				652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */,
 				650BC474237D078400A6951E /* JudgePDFViewController.swift in Sources */,
 				65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */,
 				65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */,
-				65CEB3A829A5DCDE0007604F /* MeetTableImportExportCell.swift in Sources */,
 				65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift in Sources */,
 				652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */,
-				656EA4CB21F693AE00DE4029 /* JudgeListTableViewController.swift in Sources */,
 				656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */,
 				65A02951220FDBE90088681D /* JudgePDFCreator.swift in Sources */,
-				652236F221E464600024F1E6 /* MeetSummaryTableViewDelegate.swift in Sources */,
 				65830E40237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift in Sources */,
 				65C386CC21BB77F70070D76B /* Fee.swift in Sources */,
-				65DBC96A217D5B320029C6AA /* MeetDetailViewController.swift in Sources */,
+				65DBC96A217D5B320029C6AA /* MeetDetailView.swift in Sources */,
 				65A02953220FDC1C0088681D /* PDFCreator.swift in Sources */,
 				652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */,
-				656EA4CD21F92A5400DE4029 /* JudgeInfoDetailsTableViewController.swift in Sources */,
 				65DDA61021BDB9D2004B4DD2 /* FeeTableViewController.swift in Sources */,
 				65DBC9A52193A1820029C6AA /* Judge.swift in Sources */,
 				65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */,
+				65D8C4E12E2D1B7600B057B3 /* SceneDelegate.swift in Sources */,
+				65D8C4E32E2D1B7600B057B3 /* SwiftUIHosting.swift in Sources */,
 				65DDA61521BDBA28004B4DD2 /* ExpensesTableViewController.swift in Sources */,
 				650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */,
-				65C05B0E21CBFFD9000AA13E /* MeetTableViewCell.swift in Sources */,
 				65D60EEE2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift in Sources */,
 				65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */,
 				65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */,
@@ -1447,6 +1458,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D130C41A050E45FD8DF596E1 /* NawgjExpenseTrackerTests.swift in Sources */,
+				E5E7BD5C944B47A3B32A76ED /* FeeTests.swift in Sources */,
+				305C410144594FF38C7E01FB /* ExpenseTests.swift in Sources */,
+				FC02D7FEAF6A4BD9ACFD174F /* MeetDayTests.swift in Sources */,
+				269A08BE9F57478283B4AF54 /* MeetMileageRateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1596,7 +1612,7 @@
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1618,7 +1634,7 @@
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1637,6 +1653,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTrackerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1646,7 +1663,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NawgjExpenseTracker.app/NawgjExpenseTracker";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Expenses.app/Expenses";
 			};
 			name = Debug;
 		};
@@ -1657,6 +1674,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 788FSZBKWN;
 				INFOPLIST_FILE = NawgjExpenseTrackerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1666,7 +1684,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NawgjExpenseTracker.app/NawgjExpenseTracker";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Expenses.app/Expenses";
 			};
 			name = Release;
 		};

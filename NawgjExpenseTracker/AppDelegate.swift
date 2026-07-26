@@ -26,8 +26,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Called after the app has launched. Override point for customization after launch.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        configureAppearance()
         return true
+    }
+
+    /// Applies the NAWGJ brand color scheme (navy + gold, sampled from
+    /// nawgj.org) to the navigation bar used throughout the app, both the
+    /// remaining storyboard/UIKit screens and the SwiftUI screens hosted in
+    /// a `UINavigationController`. The app-wide tint (buttons, links, etc.)
+    /// comes from the "AccentColor" asset automatically.
+    private func configureAppearance() {
+        guard let navy = UIColor(named: "NAWGJNavy") else { return }
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = navy
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().tintColor = .white
+    }
+
+    // MARK: UISceneSession Lifecycle
+
+    /// Called when a new scene session is being created. Hands off UI setup to `SceneDelegate`.
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    /// Called when the user discards a scene session. Not used since this app doesn't support multiple scenes.
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
     }
 
     /// Called when the app is about to move from active to inactive state.
