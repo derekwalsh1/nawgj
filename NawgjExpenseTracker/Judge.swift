@@ -273,7 +273,12 @@ class Judge: Codable {
     func changeLevel(level: Level){
         self.level = level
         for fee in self.fees{
-            fee.rate = self.level.rate
+            // Fees with a manually-overridden rate keep that rate across
+            // level changes - only non-overridden fees track the judge's
+            // level rate.
+            if !fee.rateOverridden {
+                fee.rate = self.level.rate
+            }
         }
     }
     

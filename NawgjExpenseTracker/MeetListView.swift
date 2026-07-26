@@ -276,7 +276,7 @@ struct MeetListView: View {
         if let index = MeetListManager.GetInstance().meets?.firstIndex(where: { $0 === meet }) {
             MeetListManager.GetInstance().selectMeetAt(index: index)
         }
-        let detailView = MeetDetailView(meet: meet, pushViewController: pushViewController, onFinish: {
+        let detailView = MeetDetailView(meet: meet, pushViewController: pushViewController, popViewController: popViewController, onFinish: {
             popViewController()
             refreshMeets()
         })

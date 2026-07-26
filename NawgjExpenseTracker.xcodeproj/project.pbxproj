@@ -7,16 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		650BC474237D078400A6951E /* JudgePDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650BC473237D078400A6951E /* JudgePDFViewController.swift */; };
+		65EE000D2F001B7600B057B3 /* JudgeInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000E2F001B7600B057B3 /* JudgeInvoiceView.swift */; };
 		650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */; };
 		651C2D15278378CA000D802F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 651C2D14278378CA000D802F /* Launch Screen.storyboard */; };
 		651E4E9829AD05910078B346 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 651E4E9529AC90300078B346 /* images.xcassets */; };
-		652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */; };
 		65D8C4F02E2D1B7600B057B3 /* MeetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */; };
 		652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F721EFDD4C0024F1E6 /* PDFViewController.swift */; };
 		652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */; };
 		652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236FC21F029950024F1E6 /* MeetListManager.swift */; };
-		655150D82372804A00BED00A /* AddJudgesToMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */; };
+		65EE000B2F001B7600B057B3 /* AddJudgesToMeetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */; };
 		65D8C4F22E2D1B7600B057B3 /* JudgeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */; };
 		800DCE21EFB0483A9FBAD7AE /* CreateJudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D923729ADA00BED00A /* CreateJudgeView.swift */; };
 		656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C521F686CC00DE4029 /* JudgeListManager.swift */; };
@@ -205,7 +204,7 @@
 		65C086F029AD0D5600B1069D /* splat-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0864029AD0D5500B1069D /* splat-29.png */; };
 		65C086F129AD0D5600B1069D /* splat-20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0864129AD0D5500B1069D /* splat-20@2x.png */; };
 		65C386CC21BB77F70070D76B /* Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C386CB21BB77F70070D76B /* Fee.swift */; };
-		65D60EEE2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */; };
+		65EE00052F001B7600B057B3 /* LodgingExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00062F001B7600B057B3 /* LodgingExpenseDetailView.swift */; };
 		65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC967217D5B320029C6AA /* AppDelegate.swift */; };
 		65D8C4E12E2D1B7600B057B3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4E02E2D1B7600B057B3 /* SceneDelegate.swift */; };
 		65D8C4E32E2D1B7600B057B3 /* SwiftUIHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4E22E2D1B7600B057B3 /* SwiftUIHosting.swift */; };
@@ -215,15 +214,14 @@
 		65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC99E219347F20029C6AA /* MeetDay.swift */; };
 		65DBC9A52193A1820029C6AA /* Judge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A42193A1820029C6AA /* Judge.swift */; };
 		65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A62193A1BB0029C6AA /* Expense.swift */; };
-		65DDA61021BDB9D2004B4DD2 /* FeeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA60F21BDB9D2004B4DD2 /* FeeTableViewController.swift */; };
-		65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA61121BDBA0B004B4DD2 /* FeeDetailsViewController.swift */; };
-		65DDA61521BDBA28004B4DD2 /* ExpensesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA61421BDBA28004B4DD2 /* ExpensesTableViewController.swift */; };
-		65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDA61621BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift */; };
-		65EE305A219FDDF90011B2B8 /* JudgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE3059219FDDF90011B2B8 /* JudgeTableViewController.swift */; };
-		65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */; };
-		65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */; };
-		65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE306221A112CE0011B2B8 /* MeetDayTableViewController.swift */; };
-		65EE306721A1148B0011B2B8 /* MeetDayDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE306621A1148B0011B2B8 /* MeetDayDetailViewController.swift */; };
+		65EE00072F001B7600B057B3 /* FeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00082F001B7600B057B3 /* FeeListView.swift */; };
+		65EE00092F001B7600B057B3 /* FeeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000A2F001B7600B057B3 /* FeeDetailView.swift */; };
+		65EE00022F001B7600B057B3 /* ExpensesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00012F001B7600B057B3 /* ExpensesListView.swift */; };
+		65EE00032F001B7600B057B3 /* ExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00042F001B7600B057B3 /* ExpenseDetailView.swift */; };
+		65D8C5082E2D1B7600B057B3 /* MeetJudgeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */; };
+		65D8C5092E2D1B7600B057B3 /* MeetJudgeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */; };
+		65D8C5022E2D1B7600B057B3 /* MeetDayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5012E2D1B7600B057B3 /* MeetDayListView.swift */; };
+		65D8C5042E2D1B7600B057B3 /* MeetDayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */; };
 		D130C41A050E45FD8DF596E1 /* NawgjExpenseTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */; };
 		E5E7BD5C944B47A3B32A76ED /* FeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E743A6EE9C08482C84440467 /* FeeTests.swift */; };
 		305C410144594FF38C7E01FB /* ExpenseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */; };
@@ -242,16 +240,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		650BC473237D078400A6951E /* JudgePDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgePDFViewController.swift; sourceTree = "<group>"; };
+		65EE000E2F001B7600B057B3 /* JudgeInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInvoiceView.swift; sourceTree = "<group>"; };
 		650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetPDFCreator.swift; sourceTree = "<group>"; };
 		651C2D14278378CA000D802F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
 		651E4E9529AC90300078B346 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = NawgjExpenseTracker/images.xcassets; sourceTree = SOURCE_ROOT; };
-		652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeSummaryTableViewDelegate.swift; sourceTree = "<group>"; };
 		65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListView.swift; sourceTree = "<group>"; };
 		652236F721EFDD4C0024F1E6 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetUIPrintPageRender.swift; sourceTree = "<group>"; };
 		652236FC21F029950024F1E6 /* MeetListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListManager.swift; sourceTree = "<group>"; };
-		655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJudgesToMeetViewController.swift; sourceTree = "<group>"; };
+		65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJudgesToMeetView.swift; sourceTree = "<group>"; };
 		65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListView.swift; sourceTree = "<group>"; };
 		655150D923729ADA00BED00A /* CreateJudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateJudgeView.swift; sourceTree = "<group>"; };
 		656EA4C521F686CC00DE4029 /* JudgeListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListManager.swift; sourceTree = "<group>"; };
@@ -440,7 +437,7 @@
 		65C0864029AD0D5500B1069D /* splat-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splat-29.png"; sourceTree = "<group>"; };
 		65C0864129AD0D5500B1069D /* splat-20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splat-20@2x.png"; sourceTree = "<group>"; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
-		65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodgingExpenseDetailsViewController.swift; sourceTree = "<group>"; };
+		65EE00062F001B7600B057B3 /* LodgingExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodgingExpenseDetailView.swift; sourceTree = "<group>"; };
 		65DBC964217D5B320029C6AA /* Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D8C4E02E2D1B7600B057B3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -453,15 +450,14 @@
 		65DBC99E219347F20029C6AA /* MeetDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDay.swift; sourceTree = "<group>"; };
 		65DBC9A42193A1820029C6AA /* Judge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Judge.swift; sourceTree = "<group>"; };
 		65DBC9A62193A1BB0029C6AA /* Expense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
-		65DDA60F21BDB9D2004B4DD2 /* FeeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeTableViewController.swift; sourceTree = "<group>"; };
-		65DDA61121BDBA0B004B4DD2 /* FeeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeDetailsViewController.swift; sourceTree = "<group>"; };
-		65DDA61421BDBA28004B4DD2 /* ExpensesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesTableViewController.swift; sourceTree = "<group>"; };
-		65DDA61621BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailsViewController.swift; sourceTree = "<group>"; };
-		65EE3059219FDDF90011B2B8 /* JudgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeTableViewController.swift; sourceTree = "<group>"; };
-		65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeTableViewCell.swift; sourceTree = "<group>"; };
-		65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeDetailViewController.swift; sourceTree = "<group>"; };
-		65EE306221A112CE0011B2B8 /* MeetDayTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDayTableViewController.swift; sourceTree = "<group>"; };
-		65EE306621A1148B0011B2B8 /* MeetDayDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDayDetailViewController.swift; sourceTree = "<group>"; };
+		65EE00082F001B7600B057B3 /* FeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeListView.swift; sourceTree = "<group>"; };
+		65EE000A2F001B7600B057B3 /* FeeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeDetailView.swift; sourceTree = "<group>"; };
+		65EE00012F001B7600B057B3 /* ExpensesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesListView.swift; sourceTree = "<group>"; };
+		65EE00042F001B7600B057B3 /* ExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailView.swift; sourceTree = "<group>"; };
+		65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetJudgeListView.swift; sourceTree = "<group>"; };
+		65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetJudgeDetailView.swift; sourceTree = "<group>"; };
+		65D8C5012E2D1B7600B057B3 /* MeetDayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayListView.swift; sourceTree = "<group>"; };
+		65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayDetailView.swift; sourceTree = "<group>"; };
 		B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NawgjExpenseTrackerTests.swift; sourceTree = "<group>"; };
 		E743A6EE9C08482C84440467 /* FeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeTests.swift; sourceTree = "<group>"; };
 		9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTests.swift; sourceTree = "<group>"; };
@@ -499,7 +495,7 @@
 				652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */,
 				65A02950220FDBE90088681D /* JudgePDFCreator.swift */,
 				65A02952220FDC1C0088681D /* PDFCreator.swift */,
-				650BC473237D078400A6951E /* JudgePDFViewController.swift */,
+				65EE000E2F001B7600B057B3 /* JudgeInvoiceView.swift */,
 				65830E3F237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift */,
 			);
 			path = PDFConversion;
@@ -1059,8 +1055,8 @@
 				65DBC96B217D5B320029C6AA /* Main.storyboard */,
 				65DBC973217D5B320029C6AA /* Info.plist */,
 				65EE305B219FE01D0011B2B8 /* Meet */,
-				65EE306121A0C1900011B2B8 /* MeetDay */,
-				65EE305C219FE02A0011B2B8 /* Judge */,
+				65EE306121A0C1900011B2B8 /* MeetDays */,
+				65D8C5052E2D1B7600B057B3 /* MeetJudges */,
 			);
 			path = NawgjExpenseTracker;
 			sourceTree = "<group>";
@@ -1081,8 +1077,8 @@
 		65DDA60E21BDB99E004B4DD2 /* Fees */ = {
 			isa = PBXGroup;
 			children = (
-				65DDA60F21BDB9D2004B4DD2 /* FeeTableViewController.swift */,
-				65DDA61121BDBA0B004B4DD2 /* FeeDetailsViewController.swift */,
+				65EE00082F001B7600B057B3 /* FeeListView.swift */,
+				65EE000A2F001B7600B057B3 /* FeeDetailView.swift */,
 			);
 			path = Fees;
 			sourceTree = "<group>";
@@ -1090,9 +1086,9 @@
 		65DDA61321BDBA11004B4DD2 /* Expenses */ = {
 			isa = PBXGroup;
 			children = (
-				65DDA61421BDBA28004B4DD2 /* ExpensesTableViewController.swift */,
-				65DDA61621BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift */,
-				65D60EED2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift */,
+				65EE00012F001B7600B057B3 /* ExpensesListView.swift */,
+				65EE00042F001B7600B057B3 /* ExpenseDetailView.swift */,
+				65EE00062F001B7600B057B3 /* LodgingExpenseDetailView.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -1106,25 +1102,23 @@
 			name = Meet;
 			sourceTree = "<group>";
 		};
-		65EE305C219FE02A0011B2B8 /* Judge */ = {
+		65EE306121A0C1900011B2B8 /* MeetDays */ = {
 			isa = PBXGroup;
 			children = (
-				655150D72372804A00BED00A /* AddJudgesToMeetViewController.swift */,
-				65EE3059219FDDF90011B2B8 /* JudgeTableViewController.swift */,
-				65EE305D21A0035F0011B2B8 /* JudgeTableViewCell.swift */,
-				65EE305F21A003A10011B2B8 /* JudgeDetailViewController.swift */,
-				652236EB21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift */,
+				65D8C5012E2D1B7600B057B3 /* MeetDayListView.swift */,
+				65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */,
 			);
-			name = Judge;
+			path = MeetDays;
 			sourceTree = "<group>";
 		};
-		65EE306121A0C1900011B2B8 /* MeetDay */ = {
+		65D8C5052E2D1B7600B057B3 /* MeetJudges */ = {
 			isa = PBXGroup;
 			children = (
-				65EE306221A112CE0011B2B8 /* MeetDayTableViewController.swift */,
-				65EE306621A1148B0011B2B8 /* MeetDayDetailViewController.swift */,
+				65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */,
+				65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */,
+				65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */,
 			);
-			name = MeetDay;
+			path = MeetJudges;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1419,17 +1413,18 @@
 			files = (
 				652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */,
 				65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */,
-				65EE305A219FDDF90011B2B8 /* JudgeTableViewController.swift in Sources */,
-				65EE306721A1148B0011B2B8 /* MeetDayDetailViewController.swift in Sources */,
+				65D8C5082E2D1B7600B057B3 /* MeetJudgeListView.swift in Sources */,
+				65D8C5092E2D1B7600B057B3 /* MeetJudgeDetailView.swift in Sources */,
+				65D8C5042E2D1B7600B057B3 /* MeetDayDetailView.swift in Sources */,
 				65D8C4F22E2D1B7600B057B3 /* JudgeListView.swift in Sources */,
 				800DCE21EFB0483A9FBAD7AE /* CreateJudgeView.swift in Sources */,
 				65D8C4F02E2D1B7600B057B3 /* MeetListView.swift in Sources */,
 				65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */,
 				652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */,
-				650BC474237D078400A6951E /* JudgePDFViewController.swift in Sources */,
+				65EE000D2F001B7600B057B3 /* JudgeInvoiceView.swift in Sources */,
 				65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */,
-				65EE306321A112CE0011B2B8 /* MeetDayTableViewController.swift in Sources */,
-				65DDA61721BDBA4F004B4DD2 /* ExpenseDetailsViewController.swift in Sources */,
+				65D8C5022E2D1B7600B057B3 /* MeetDayListView.swift in Sources */,
+				65EE00032F001B7600B057B3 /* ExpenseDetailView.swift in Sources */,
 				652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */,
 				656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */,
 				65A02951220FDBE90088681D /* JudgePDFCreator.swift in Sources */,
@@ -1437,20 +1432,17 @@
 				65C386CC21BB77F70070D76B /* Fee.swift in Sources */,
 				65DBC96A217D5B320029C6AA /* MeetDetailView.swift in Sources */,
 				65A02953220FDC1C0088681D /* PDFCreator.swift in Sources */,
-				652236EC21DF19BF0024F1E6 /* JudgeSummaryTableViewDelegate.swift in Sources */,
-				65DDA61021BDB9D2004B4DD2 /* FeeTableViewController.swift in Sources */,
+				65EE00072F001B7600B057B3 /* FeeListView.swift in Sources */,
 				65DBC9A52193A1820029C6AA /* Judge.swift in Sources */,
 				65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */,
 				65D8C4E12E2D1B7600B057B3 /* SceneDelegate.swift in Sources */,
 				65D8C4E32E2D1B7600B057B3 /* SwiftUIHosting.swift in Sources */,
-				65DDA61521BDBA28004B4DD2 /* ExpensesTableViewController.swift in Sources */,
+				65EE00022F001B7600B057B3 /* ExpensesListView.swift in Sources */,
 				650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */,
-				65D60EEE2A88006300D3F013 /* LodgingExpenseDetailsViewController.swift in Sources */,
-				65EE305E21A0035F0011B2B8 /* JudgeTableViewCell.swift in Sources */,
-				65DDA61221BDBA0B004B4DD2 /* FeeDetailsViewController.swift in Sources */,
-				655150D82372804A00BED00A /* AddJudgesToMeetViewController.swift in Sources */,
+				65EE00052F001B7600B057B3 /* LodgingExpenseDetailView.swift in Sources */,
+				65EE00092F001B7600B057B3 /* FeeDetailView.swift in Sources */,
+				65EE000B2F001B7600B057B3 /* AddJudgesToMeetView.swift in Sources */,
 				656EA4C821F68A1200DE4029 /* JudgeInfo.swift in Sources */,
-				65EE306021A003A10011B2B8 /* JudgeDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

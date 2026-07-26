@@ -8,10 +8,10 @@
 //  for both the "AddItem" and "ShowDetail" flows. Hosted via
 //  UIHostingController (see SwiftUIHosting.swift).
 //
-//  Navigation to the still-UIKit "Meet Days" (MeetDayTableViewController),
-//  "Judges" (JudgeTableViewController), and "Meet Report" (JudgePDFViewController)
-//  screens is done by instantiating them from the storyboard (they were given
-//  `storyboardIdentifier`s for this purpose) and pushing them via the
+//  Navigation to "Meet Days" (MeetDayListView) and "Judges"
+//  (MeetJudgeListView) pushes SwiftUI screens directly. "Meet Report" still
+//  instantiates the storyboard-driven `PDFViewController` (it was given a
+//  `storyboardIdentifier` for this purpose) and pushes it via the
 //  `pushViewController` closure, since a SwiftUI view has no navigation
 //  controller of its own to push onto.
 //
@@ -36,6 +36,10 @@ struct MeetDetailView: View {
     /// responsible for popping the screen and refreshing the meet list
     /// (mirrors the old `unwindToMeetListWithSender:` unwind action).
     let onFinish: () -> Void
+
+    /// Pops the top view controller off the shared navigation stack. Used
+    /// when pushing SwiftUI child screens (e.g. "Meet Days") that need to
+    /// pop themselves back on completion.
 
     @State private var name: String
     @State private var startDate: Date
@@ -74,9 +78,12 @@ struct MeetDetailView: View {
     @State private var shareItems: [Any] = []
     @State private var isShareSheetPresented = false
 
-    init(meet: Meet, pushViewController: @escaping (UIViewController) -> Void, onFinish: @escaping () -> Void) {
+    let popViewController: () -> Void
+
+    init(meet: Meet, pushViewController: @escaping (UIViewController) -> Void, popViewController: @escaping () -> Void, onFinish: @escaping () -> Void) {
         self.meet = meet
         self.pushViewController = pushViewController
+        self.popViewController = popViewController
         self.onFinish = onFinish
 
         // Mirrors the old screen's behavior of blanking the name field for a
@@ -271,19 +278,13 @@ struct MeetDetailView: View {
     // MARK: Actions
 
     private func showMeetDays() {
-        guard let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MeetDayTable") as? MeetDayTableViewController else {
-            os_log("Failed to instantiate MeetDayTableViewController", log: OSLog.default, type: .error)
-            return
-        }
-        pushViewController(controller)
+        let meetDayListView = MeetDayListView(meet: meet, pushViewController: pushViewController, popViewController: popViewController)
+        pushViewController(UIHostingController(rootView: meetDayListView))
     }
 
     private func showJudges() {
-        guard let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MeetJudgeTable") as? JudgeTableViewController else {
-            os_log("Failed to instantiate JudgeTableViewController", log: OSLog.default, type: .error)
-            return
-        }
-        pushViewController(controller)
+        let judgeListView = MeetJudgeListView(meet: meet, pushViewController: pushViewController, popViewController: popViewController)
+        pushViewController(UIHostingController(rootView: judgeListView))
     }
 
     private func generateReport() {

@@ -256,11 +256,16 @@ class JudgePDFCreator : PDFCreator{
 
         var totalHours: Float = 0
         var totalFees: Float = 0
+        var anyRateOverridden = false
         for fee in feeList {
+            let rateDescription = fee.rateOverridden
+                ? "\(judge.level.description) (" + String(format: "$%0.1f/hr, Rate Adjusted", fee.rate) + ")"
+                : judge.level.fullDescription
+            if fee.rateOverridden { anyRateOverridden = true }
             html += """
     <tr>
       <td>\(dateFormatterShort.string(from: fee.date))</td>
-      <td>\(fee.getHours()) Hours @ \(judge.level.fullDescription)</td>
+      <td>\(fee.getHours()) Hours @ \(rateDescription)</td>
       <td align="right">\(numberFormatter.string(from: NSNumber(value: fee.getFeeTotal())) ?? "$0.00")</td>
     </tr>
 """
@@ -279,13 +284,14 @@ class JudgePDFCreator : PDFCreator{
 """
         }
 
+        let totalRateDescription = anyRateOverridden ? "\(judge.level.description) (Rate Adjusted)" : judge.level.fullDescription
         html += """
     <tr>
       <td colspan="3"><hr></td>
     </tr>
     <tr style="background-color:#EEEEEE">
       <td><strong>Total Fees</strong></td>
-      <td><strong>\(totalHours) Hours @ \(judge.level.fullDescription)</strong></td>
+      <td><strong>\(totalHours) Hours @ \(totalRateDescription)</strong></td>
       <td align="right"><strong>\(numberFormatter.string(from: NSNumber(value: totalFees)) ?? "$0.00")</strong></td>
     </tr>
   </table>
