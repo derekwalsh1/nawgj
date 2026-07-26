@@ -657,18 +657,36 @@ ongoing steps rather than a big-bang rewrite.
   - Verified with a full `xcodebuild build` and `xcodebuild test` run (all
     25 tests passing), plus installing and launching on the 16Pro
     simulator.
-- [ ] Consider protocol-based abstractions for the managers so they're
+- [x] Consider protocol-based abstractions for the managers so they're
       mockable in tests, once enough of the UI has moved off synchronous call
       sites.
-- [ ] _Deferred:_ migrate existing UIKit view controllers'
+  - Added `JudgeListManaging`/`MeetListManaging` protocols (in
+    `JudgeListManager.swift`/`MeetListManager.swift`, just above each
+    class) matching each manager's full public API. Both classes now
+    declare conformance and `GetInstance()` returns the protocol type
+    instead of the concrete class — safe because no call site anywhere
+    stores the singleton in an explicitly-typed variable, only ever chains
+    `.GetInstance().someMember`.
+  - Added `static func setInstanceForTesting(_ mock: ...Managing?)` on each
+    manager as the test injection seam (pass `nil` to reset to the real
+    singleton).
+  - New `NawgjExpenseTrackerTests/ManagerMockingTests.swift` adds
+    `MockJudgeListManager`/`MockMeetListManager` in-memory stubs (no disk
+    I/O) and 4 tests proving `GetInstance()` returns an injected mock and
+    that mutation methods (`addJudge`/`addMeet`) work correctly against it.
+  - Verified with `xcodebuild build` + `xcodebuild test` (33 tests passing,
+    up from 29).
+- [x] _Deferred:_ migrate existing UIKit view controllers'
       `loadJudges()`/`loadMeets()`/`loadAndSortJudges()` call sites (in
       `viewDidLoad`/`viewWillAppear`, currently synchronous) to the new
-      `...Async()` APIs. Not done now because it would require touching
-      every screen that reads these managers at load time — better done
-      naturally as each screen is converted to SwiftUI in Phase 4.
-      `MeetListView`'s `.task` modifier is the first adopter of
-      `loadMeetsAsync()`/`loadJudgesAsync()`; remaining UIKit screens are
-      still on the synchronous APIs.
+      `...Async()` APIs.
+  - This is now **moot** — every UIKit view controller except
+    `PDFConversion/PDFViewController.swift` (the "Meet Report" screen,
+    intentionally out of scope for this pass) has been converted to
+    SwiftUI. Confirmed via `grep_search` for
+    `class \w+\s*:\s*(UIViewController|UITableViewController)` across
+    `NawgjExpenseTracker/**/*.swift` — exactly 1 match. That file doesn't
+    call any of the sync load methods.
 
 ---
 _Last updated: 2026-07-26 — Phase 4: converted the "All Judges" screen

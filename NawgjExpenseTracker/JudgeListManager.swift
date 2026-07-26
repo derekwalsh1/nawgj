@@ -9,16 +9,49 @@
 import os.log
 import UIKit
 
-class JudgeListManager{
+/// Protocol abstraction over `JudgeListManager`'s public API so consumers
+/// (views, view controllers) can depend on an interface rather than the
+/// concrete singleton, and so tests can inject a mock implementation via
+/// `JudgeListManager.setInstanceForTesting(_:)`.
+protocol JudgeListManaging: AnyObject {
+    var judges: [JudgeInfo]? { get set }
+    var selectedJudge: JudgeInfo? { get set }
+    var selectedJudgeIndex: Int? { get set }
+
+    func loadAndSortJudges()
+    func loadAndSortJudgesAsync() async -> [JudgeInfo]
+    func importJudges(fromFile: URL?)
+    func loadJudges()
+    func loadJudgesAsync() async -> [JudgeInfo]
+    func saveJudges()
+    @discardableResult
+    func saveJudgesAsync(_ judgesToSave: [JudgeInfo]?) async -> Bool
+    func addJudge(_ judgeInfo: JudgeInfo) -> Bool
+    func removeJudgeAt(_ index: Int)
+    func selectJudgeInfoAt(_ index: Int)
+    func judgeInfo(forJudgeID: String) -> String?
+    func updateSelectedJudgeWith(_ judgeInfo: JudgeInfo)
+    func indexOfJudge(_ judgeInfo: JudgeInfo) -> Int
+}
+
+class JudgeListManager: JudgeListManaging {
     
-    private static var instance : JudgeListManager?
+    private static var instance : JudgeListManaging?
     
-    static func GetInstance() -> JudgeListManager{
+    static func GetInstance() -> JudgeListManaging{
         if instance == nil{
             instance = JudgeListManager()
         }
         
         return instance!
+    }
+
+    /// Test-only seam: inject a mock/stub conforming to `JudgeListManaging`
+    /// so tests can exercise consumers without touching real disk state.
+    /// Pass `nil` to reset back to the default concrete `JudgeListManager`
+    /// on the next `GetInstance()` call.
+    static func setInstanceForTesting(_ mock: JudgeListManaging?) {
+        instance = mock
     }
     
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!

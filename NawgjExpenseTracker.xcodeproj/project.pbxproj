@@ -227,6 +227,7 @@
 		305C410144594FF38C7E01FB /* ExpenseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */; };
 		FC02D7FEAF6A4BD9ACFD174F /* MeetDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */; };
 		269A08BE9F57478283B4AF54 /* MeetMileageRateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */; };
+		65EE000F2F001B7600B057B3 /* ManagerMockingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00102F001B7600B057B3 /* ManagerMockingTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -463,6 +464,7 @@
 		9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTests.swift; sourceTree = "<group>"; };
 		FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayTests.swift; sourceTree = "<group>"; };
 		9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetMileageRateTests.swift; sourceTree = "<group>"; };
+		65EE00102F001B7600B057B3 /* ManagerMockingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerMockingTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1023,6 +1025,7 @@
 				9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */,
 				FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */,
 				9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */,
+				65EE00102F001B7600B057B3 /* ManagerMockingTests.swift */,
 			);
 			path = NawgjExpenseTrackerTests;
 			sourceTree = "<group>";
@@ -1455,6 +1458,7 @@
 				305C410144594FF38C7E01FB /* ExpenseTests.swift in Sources */,
 				FC02D7FEAF6A4BD9ACFD174F /* MeetDayTests.swift in Sources */,
 				269A08BE9F57478283B4AF54 /* MeetMileageRateTests.swift in Sources */,
+				65EE000F2F001B7600B057B3 /* ManagerMockingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

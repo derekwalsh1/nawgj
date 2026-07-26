@@ -86,6 +86,9 @@ struct MeetListView: View {
             }
         }
         .listStyle(.plain)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            logoBanner
+        }
         .overlay {
             if meets.isEmpty {
                 emptyState
@@ -97,13 +100,6 @@ struct MeetListView: View {
         .navigationTitle("NAWGJ Meet Manager")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Image("NAWGJLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 32)
-                    .accessibilityLabel("NAWGJ Meet Manager")
-            }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
                     showJudgeList()
@@ -142,6 +138,23 @@ struct MeetListView: View {
         .task {
             await loadInitialData()
         }
+    }
+
+    // MARK: Banner
+
+    /// A larger, more visible banner showing the NAWGJ logo, placed below
+    /// the navigation bar (title + toolbar buttons) rather than crammed
+    /// into it at a tiny size. The logo artwork is white, so it needs the
+    /// brand navy background to stay visible.
+    private var logoBanner: some View {
+        Image("NAWGJLogo")
+            .resizable()
+            .scaledToFit()
+            .frame(height: 60)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(Color("NAWGJNavy"))
+            .accessibilityLabel("NAWGJ Meet Manager")
     }
 
     // MARK: Row

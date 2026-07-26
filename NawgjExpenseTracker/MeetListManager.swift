@@ -9,16 +9,67 @@
 import os.log
 import UIKit
 
-class MeetListManager{
+/// Protocol abstraction over `MeetListManager`'s public API so consumers
+/// (views, view controllers) can depend on an interface rather than the
+/// concrete singleton, and so tests can inject a mock implementation via
+/// `MeetListManager.setInstanceForTesting(_:)`.
+protocol MeetListManaging: AnyObject {
+    var meets: [Meet]? { get set }
+    var selectedMeetIndex: Int? { get set }
+    var selectedMeetDayIndex: Int? { get set }
+    var selectedJudgeIndex: Int? { get set }
+    var selectedExpenseIndex: Int? { get set }
+    var selectedFeeIndex: Int? { get set }
+
+    func loadMeets()
+    func loadMeetsAsync() async -> [Meet]
+    func saveMeets()
+    @discardableResult
+    func saveMeetsAsync(_ meetsToSave: [Meet]?) async -> Bool
+    func addMeet(meet: Meet)
+    func addJudge(judge: Judge)
+    func addMeetDay(meetDay: MeetDay)
+    func updateSelectedMeetWith(meet: Meet)
+    func updateSelectedMeetDayWith(meetDay: MeetDay)
+    func updateSelectedJudgeWith(judge: Judge)
+    func updateSelectedFeeWith(fee: Fee)
+    func updateSelectedExpenseWith(expense: Expense)
+    func removeMeetAt(index: Int)
+    func removeMeetDayAt(index: Int)
+    func removeJudgeAt(index: Int)
+    func selectMeetAt(index: Int)
+    func selectJudgeAt(index: Int)
+    func selectExpenseAt(index: Int)
+    func selectFeeAt(index: Int)
+    func selectMeetDayAt(index: Int)
+    func selectMeetDayForFee(fee: Fee)
+    func getSelectedMeet() -> Meet?
+    func getSelectedJudge() -> Judge?
+    func getSelectedMeetDay() -> MeetDay?
+    func getSelectedExpense() -> Expense?
+    func getSelectedFee() -> Fee?
+    func moveMeet(fromIndex: Int, toIndex: Int)
+    func importMeet(fromFile: URL?)
+}
+
+class MeetListManager: MeetListManaging {
     
-    private static var instance : MeetListManager?
+    private static var instance : MeetListManaging?
     
-    static func GetInstance() -> MeetListManager{
+    static func GetInstance() -> MeetListManaging{
         if instance == nil{
             instance = MeetListManager()
         }
         
         return instance!
+    }
+
+    /// Test-only seam: inject a mock/stub conforming to `MeetListManaging`
+    /// so tests can exercise consumers without touching real disk state.
+    /// Pass `nil` to reset back to the default concrete `MeetListManager`
+    /// on the next `GetInstance()` call.
+    static func setInstanceForTesting(_ mock: MeetListManaging?) {
+        instance = mock
     }
     
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
