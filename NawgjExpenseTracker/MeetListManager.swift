@@ -29,6 +29,13 @@ protocol MeetListManaging: AnyObject {
     func addMeet(meet: Meet)
     func addJudge(judge: Judge)
     func addMeetDay(meetDay: MeetDay)
+    func addSession(session: Session, to day: MeetDay)
+    @discardableResult
+    func removeSession(_ session: Session, from day: MeetDay) -> Bool
+    @discardableResult
+    func assignJudge(_ judge: Judge, to session: Session, in day: MeetDay) -> Result<Void, Meet.SessionAssignmentError>
+    func unassignJudge(_ judge: Judge, from session: Session)
+    func sessionChanged(_ session: Session, in day: MeetDay)
     func updateSelectedMeetWith(meet: Meet)
     func updateSelectedMeetDayWith(meetDay: MeetDay)
     func updateSelectedJudgeWith(judge: Judge)
@@ -116,18 +123,24 @@ class MeetListManager: MeetListManaging {
         return loadedMeets
     }
 
-    /// Decodes the meets archive and runs the same meet-day/fee
-    /// synchronization performed by `loadMeets()` (ensures every meet day
-    /// and judge fee has a UUID, and that judges have a fee entry for every
-    /// meet day). Shared by both the sync and async load paths.
+    /// Decodes the meets archive and runs the same meet-day/session/fee
+    /// synchronization performed by `loadMeets()` (ensures every meet day,
+    /// session, and judge fee has a UUID, and that judges have a fee entry
+    /// for every session of every meet day). Shared by both the sync and
+    /// async load paths.
     private static func decodeAndNormalizeMeets(from data: Data) throws -> [Meet] {
         let decodedMeets = try JSONDecoder().decode([Meet].self, from: data)
 
         for meet in decodedMeets{
-            // Make sure all meet days have uuid strings associated with them
-            // Touch the UUID attribute to ensure that one is created
+            // Make sure all meet days (and their sessions - synthesized
+            // automatically from legacy start/end/breaks fields for old
+            // data, see MeetDay.init(from:)) have uuid strings associated
+            // with them. Touch the UUID attributes to ensure ones are created.
             for meetDay in meet.days{
                 _ = meetDay.getUUID()
+                for session in meetDay.sessions{
+                    _ = session.getUUID()
+                }
             }
             
             // Make sure all the judge fees have a meet day UUID associated with them
@@ -147,6 +160,18 @@ class MeetListManager: MeetListManaging {
                             fee.setMeetDayUUID(uuid: uuidString)
                         }
                     }
+                    
+                    // Make sure every fee also has a session UUID. Fees saved
+                    // before Sessions existed only ever had one possible
+                    // session per day (the migrated day has exactly one), so
+                    // this mapping is unambiguous; fall back to the day's
+                    // first session in the (currently unreachable) case
+                    // where it isn't.
+                    if fee.getSessionUUID() == nil,
+                       let meetDay = meet.days.first(where: {$0.getUUID() == fee.getMeetDayUUID()}),
+                       let session = meetDay.sessions.first {
+                        fee.setSessionUUID(uuid: session.getUUID())
+                    }
                 }
                 
                 // Remove any fees that don't have a corresponding date
@@ -158,13 +183,16 @@ class MeetListManager: MeetListManaging {
                     }
                 }
                 
-                // Run through the list and find any meet days without a corresponding fee for it in the judges
-                // fee list and add a fee entry
+                // Run through the list and find any (day, session) pair
+                // without a corresponding fee for it in the judge's fee list
+                // and add a fee entry.
                 for meetDay in meet.days{
-                    if !judge.fees.contains(where: {$0.getMeetDayUUID() == meetDay.getUUID()}){
-                        // Add a new fee to the judges fees list corresponding to this day
-                        if let fee = Fee(date: meetDay.meetDate, hours: meetDay.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID()){
-                            judge.fees.append(fee)
+                    for session in meetDay.sessions{
+                        if !judge.fees.contains(where: {$0.getSessionUUID() == session.getUUID()}){
+                            // Add a new fee to the judges fees list corresponding to this session
+                            if let fee = Fee(date: meetDay.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID(), sessionUUID: session.getUUID()){
+                                judge.fees.append(fee)
+                            }
                         }
                     }
                 }
@@ -229,6 +257,47 @@ class MeetListManager: MeetListManaging {
         if let meet = getSelectedMeet(){
             meet.addMeetDay(day: meetDay)
             meet.days = meet.days.sorted(by: {$0.meetDate < $1.meetDate})
+            saveMeets()
+        }
+    }
+    
+    func addSession(session: Session, to day: MeetDay){
+        if let meet = getSelectedMeet(){
+            meet.addSession(session, to: day)
+            saveMeets()
+        }
+    }
+    
+    @discardableResult
+    func removeSession(_ session: Session, from day: MeetDay) -> Bool{
+        guard let meet = getSelectedMeet() else { return false }
+        let removed = meet.removeSession(session, from: day)
+        if removed {
+            saveMeets()
+        }
+        return removed
+    }
+    
+    @discardableResult
+    func assignJudge(_ judge: Judge, to session: Session, in day: MeetDay) -> Result<Void, Meet.SessionAssignmentError>{
+        guard let meet = getSelectedMeet() else { return .success(()) }
+        let result = meet.assignJudge(judge, to: session, in: day)
+        if case .success = result {
+            saveMeets()
+        }
+        return result
+    }
+    
+    func unassignJudge(_ judge: Judge, from session: Session){
+        if let meet = getSelectedMeet(){
+            meet.unassignJudge(judge, from: session)
+            saveMeets()
+        }
+    }
+    
+    func sessionChanged(_ session: Session, in day: MeetDay){
+        if let meet = getSelectedMeet(){
+            meet.sessionChanged(session, in: day)
             saveMeets()
         }
     }

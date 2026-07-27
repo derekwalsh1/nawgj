@@ -16,11 +16,13 @@ import UIKit
 
 struct FeeListView: View {
 
+    let meet: Meet
     let judge: Judge
     let pushViewController: (UIViewController) -> Void
     let popViewController: () -> Void
 
-    init(judge: Judge, pushViewController: @escaping (UIViewController) -> Void, popViewController: @escaping () -> Void) {
+    init(meet: Meet, judge: Judge, pushViewController: @escaping (UIViewController) -> Void, popViewController: @escaping () -> Void) {
+        self.meet = meet
         self.judge = judge
         self.pushViewController = pushViewController
         self.popViewController = popViewController
@@ -73,7 +75,7 @@ struct FeeListView: View {
     private func row(for fee: Fee) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(Self.dateFormatter.string(from: fee.date))
+                Text(dateLabel(for: fee))
                     .foregroundColor(.primary)
                 Text(String(format: "Hours: %0.2f - Total Fees: %@", fee.getHours(), Self.numberFormatter.string(from: fee.getFeeTotal() as NSNumber) ?? ""))
                     .font(.footnote)
@@ -86,6 +88,19 @@ struct FeeListView: View {
         }
         .padding(.vertical, 4)
         .contentShape(Rectangle())
+    }
+
+    /// The date, plus the session name appended when the owning day has
+    /// more than one session (so multi-session days aren't ambiguous in
+    /// the list - e.g. "July 4, 2026 - Vault/Bars").
+    private func dateLabel(for fee: Fee) -> String {
+        let dateText = Self.dateFormatter.string(from: fee.date)
+        guard let day = meet.days.first(where: { $0.getUUID() == fee.getMeetDayUUID() }),
+              day.sessions.count > 1,
+              let session = day.sessions.first(where: { $0.getUUID() == fee.getSessionUUID() }) else {
+            return dateText
+        }
+        return "\(dateText) - \(session.name)"
     }
 
     // MARK: Navigation

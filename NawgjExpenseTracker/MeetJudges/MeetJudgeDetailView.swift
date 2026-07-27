@@ -243,7 +243,7 @@ struct MeetJudgeDetailView: View {
 
     private func showFees() {
         persistChanges()
-        let view = FeeListView(judge: judge, pushViewController: pushViewController, popViewController: popViewController)
+        let view = FeeListView(meet: meet, judge: judge, pushViewController: pushViewController, popViewController: popViewController)
         pushViewController(UIHostingController(rootView: view))
     }
 

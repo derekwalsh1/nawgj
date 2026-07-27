@@ -48,6 +48,14 @@ struct MeetDetailView: View {
 
     @FocusState private var focusedField: Field?
 
+    /// Bumped every time this view reappears (e.g. returning from "Meet
+    /// Days"). `meet` is a plain reference, not `@ObservedObject`, so
+    /// mutations made in pushed child screens (adding/editing a session,
+    /// etc.) don't otherwise cause this view's body to re-render on their
+    /// own - forcing a `@State` change here is what makes the "Day
+    /// Summaries" grid and summary rows below pick up the latest data.
+    @State private var refreshToken = UUID()
+
     private enum Field {
         case name, location, description
     }
@@ -166,6 +174,10 @@ struct MeetDetailView: View {
         }
         .onAppear {
             focusInitialField()
+            // Force a redraw so the "Day Summaries" cards and summary rows
+            // (which read straight from `meet`, a plain reference) reflect
+            // any changes made in the pushed "Meet Days"/session screens.
+            refreshToken = UUID()
         }
     }
 

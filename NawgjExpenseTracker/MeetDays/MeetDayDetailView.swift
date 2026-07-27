@@ -2,11 +2,14 @@
 //  MeetDayDetailView.swift
 //  NawgjExpenceTracker
 //
-//  SwiftUI replacement for the old storyboard-driven "Meet Day Details" /
-//  "Add Meet Day" screen (formerly MeetDayDetailViewController), pushed
-//  from MeetDayListView. Uses a Mode enum (add/edit) following the same
-//  convention as CreateJudgeView, and plain native SwiftUI DatePicker/
-//  Picker/Slider controls instead of the old expand/collapse-row pickers.
+//  SwiftUI screen for a single Meet Day: the day's date, plus (in edit
+//  mode) an always-visible list of that day's Sessions - the concurrent
+//  judging areas that can run on the same calendar day (see
+//  .github/SESSIONS_FEATURE_PLAN.md). Pushed from MeetDayListView.
+//
+//  Formerly hosted the day's own start/end/breaks editor directly; that
+//  editing now lives in `SessionDetailView`, pushed from this screen's
+//  sessions list, since a day's billable time is the sum of its sessions.
 //
 //  Phase 4 of the incremental SwiftUI migration - see
 //  .github/MODERNIZATION_BACKLOG.md.
@@ -18,10 +21,9 @@ struct MeetDayDetailView: View {
 
     enum Mode {
         /// Adding a new day to `Meet`. Defaults mirror the old screen's
-        /// add-mode construction (see MODERNIZATION_BACKLOG.md research
-        /// notes): reuse the last existing day's date+1/start/end time if
-        /// there is one, otherwise build a 7am-5pm day from the meet's
-        /// start date.
+        /// add-mode construction: reuse the last existing day's date+1 and
+        /// its first session's start/end time if there is one, otherwise
+        /// build a 7am-5pm default session from the meet's start date.
         case add(Meet)
         /// Editing an existing meet day in place.
         case edit(MeetDay)
@@ -29,16 +31,26 @@ struct MeetDayDetailView: View {
 
     let mode: Mode
     let meet: Meet
+    let pushViewController: (UIViewController) -> Void
+    let popViewController: () -> Void
     let onFinish: () -> Void
 
     @State private var meetDate: Date
-    @State private var startTime: Date
-    @State private var endTime: Date
-    @State private var breaks: Int
-    @State private var breakTimeInMins: Int
+    @State private var defaultSessionStart: Date
+    @State private var defaultSessionEnd: Date
+    @State private var sessions: [Session] = []
 
     @State private var showDuplicateDateAlert = false
     @State private var duplicateDateMessage = ""
+    @State private var showLastSessionAlert = false
+
+    /// Bumped whenever session data changes (added/edited/deleted) or this
+    /// screen reappears, forcing the Sessions/Summary sections below - which
+    /// read directly from `day.sessions` rather than diffable `@State` - to
+    /// fully redraw. Plain array reassignment in `refreshSessions()` isn't
+    /// always enough since the underlying `Session` objects are mutated in
+    /// place (same references, same ids) by `SessionDetailView`.
+    @State private var refreshToken = UUID()
 
     private var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -46,17 +58,25 @@ struct MeetDayDetailView: View {
         return formatter
     }()
 
-    init(mode: Mode, meet: Meet, onFinish: @escaping () -> Void) {
+    private var timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter
+    }()
+
+    init(mode: Mode, meet: Meet, pushViewController: @escaping (UIViewController) -> Void, popViewController: @escaping () -> Void, onFinish: @escaping () -> Void) {
         self.mode = mode
         self.meet = meet
+        self.pushViewController = pushViewController
+        self.popViewController = popViewController
         self.onFinish = onFinish
 
         switch mode {
         case .add(let meet):
-            if let lastDay = meet.days.last {
+            if let lastDay = meet.days.last, let lastSession = lastDay.sessions.first {
                 _meetDate = State(initialValue: lastDay.meetDate.addingTimeInterval(24 * 60 * 60))
-                _startTime = State(initialValue: lastDay.startTime)
-                _endTime = State(initialValue: lastDay.endTime)
+                _defaultSessionStart = State(initialValue: lastSession.startTime)
+                _defaultSessionEnd = State(initialValue: lastSession.endTime)
             } else {
                 let units: Set<Calendar.Component> = [.year, .month, .day, .hour]
                 var components = Calendar.current.dateComponents(units, from: Date())
@@ -65,17 +85,13 @@ struct MeetDayDetailView: View {
                 components.hour = 17
                 let end = Calendar.current.date(from: components) ?? Date()
                 _meetDate = State(initialValue: meet.startDate)
-                _startTime = State(initialValue: start)
-                _endTime = State(initialValue: end)
+                _defaultSessionStart = State(initialValue: start)
+                _defaultSessionEnd = State(initialValue: end)
             }
-            _breaks = State(initialValue: 0)
-            _breakTimeInMins = State(initialValue: MeetDay.DEFAULT_BREAK_TIME_MINS)
         case .edit(let existingDay):
             _meetDate = State(initialValue: existingDay.meetDate)
-            _startTime = State(initialValue: existingDay.startTime)
-            _endTime = State(initialValue: existingDay.endTime)
-            _breaks = State(initialValue: existingDay.breaks)
-            _breakTimeInMins = State(initialValue: existingDay.breakTimeInMins ?? MeetDay.DEFAULT_BREAK_TIME_MINS)
+            _defaultSessionStart = State(initialValue: existingDay.meetDate)
+            _defaultSessionEnd = State(initialValue: existingDay.meetDate)
         }
     }
 
@@ -91,59 +107,52 @@ struct MeetDayDetailView: View {
                 DatePicker("Date", selection: $meetDate, in: meetDateRange, displayedComponents: .date)
             }
 
-            Section("Time") {
-                DatePicker("Start Time", selection: $startTime, displayedComponents: .hourAndMinute)
-                DatePicker("End Time", selection: $endTime, in: startTime..., displayedComponents: .hourAndMinute)
-            }
-
-            Section("Breaks") {
-                Picker("Number of Breaks", selection: $breaks) {
-                    ForEach(0..<6) { count in
-                        Text("\(count)").tag(count)
+            if case .edit = mode {
+                Section("Sessions") {
+                    ForEach(sessions) { session in
+                        Button {
+                            editSession(session)
+                        } label: {
+                            sessionRow(for: session)
+                        }
+                        .buttonStyle(.plain)
+                        .swipeActions {
+                            Button(role: .destructive) {
+                                deleteSession(session)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
                 }
-                .pickerStyle(.segmented)
 
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text("Break Time")
-                        Spacer()
-                        Text("\(breakTimeInMins) mins")
-                            .foregroundColor(.secondary)
-                    }
-                    Slider(
-                        value: Binding(
-                            get: { Double(breakTimeInMins) },
-                            set: { breakTimeInMins = Int($0) }
-                        ),
-                        in: 0...60,
-                        step: 1
-                    )
+                Section("Summary") {
+                    summaryRow(title: "Total Time", hours: dayTotalTime)
+                    summaryRow(title: "Billable Time", hours: dayBillableTime)
                 }
-            }
-
-            Section("Summary") {
-                summaryRow(title: "Total Time", hours: workingMeetDay.totalTimeInHours())
-                summaryRow(title: "Break Time", hours: workingMeetDay.breakTimeInHours())
-                summaryRow(title: "Billable Time", hours: workingMeetDay.totalBillableTimeInHours())
             }
         }
+        .id(refreshToken)
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
+            ToolbarItem(placement: .navigationBarLeading) {
                 Button("Cancel") { onFinish() }
             }
-            ToolbarItem(placement: .confirmationAction) {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if case .edit = mode {
+                    Button {
+                        addSession()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button(saveButtonTitle) {
                     save()
                     onFinish()
                 }
-            }
-        }
-        .onChange(of: startTime) { newValue in
-            if newValue >= endTime {
-                endTime = newValue.addingTimeInterval(15 * 60)
             }
         }
         .onChange(of: meetDate) { newValue in
@@ -152,6 +161,38 @@ struct MeetDayDetailView: View {
         .alert(duplicateDateMessage, isPresented: $showDuplicateDateAlert) {
             Button("OK", role: .cancel) {}
         }
+        .alert("A meet day must have at least one session.", isPresented: $showLastSessionAlert) {
+            Button("OK", role: .cancel) {}
+        }
+        .onAppear {
+            refreshSessions()
+            refreshToken = UUID()
+        }
+    }
+
+    // MARK: Rows
+
+    @ViewBuilder
+    private func sessionRow(for session: Session) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(session.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Text("\(timeFormatter.string(from: session.startTime)) – \(timeFormatter.string(from: session.endTime))")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Text(String(format: "%.2f Billable Hours", session.totalBillableTimeInHours()))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundColor(Color(.tertiaryLabel))
+        }
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
     }
 
     @ViewBuilder
@@ -185,7 +226,7 @@ struct MeetDayDetailView: View {
         case .add:
             return "You are adding a new day to the \"\(meet.name)\" meet"
         case .edit:
-            return "You are editing an existing meet day in the \"\(meet.name)\" meet"
+            return "Manage this day's sessions below - each is billed separately per judge assigned to it."
         }
     }
 
@@ -196,11 +237,14 @@ struct MeetDayDetailView: View {
         return Date.distantPast...
     }
 
-    /// A throwaway `MeetDay` built from the current in-progress field values,
-    /// used only to read the shared billing calculations (`MeetDay`'s
-    /// hours/break-time methods don't depend on anything but these fields).
-    private var workingMeetDay: MeetDay {
-        MeetDay(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks, breakTime: breakTimeInMins, id: "")
+    private var dayTotalTime: Float {
+        guard case .edit(let day) = mode else { return 0 }
+        return day.totalTimeInHours()
+    }
+
+    private var dayBillableTime: Float {
+        guard case .edit(let day) = mode else { return 0 }
+        return day.totalBillableTimeInHours()
     }
 
     // MARK: Validation
@@ -223,19 +267,52 @@ struct MeetDayDetailView: View {
         }
     }
 
+    // MARK: Data
+
+    private func refreshSessions() {
+        guard case .edit(let day) = mode else { return }
+        sessions = day.sessions
+        refreshToken = UUID()
+    }
+
+    // MARK: Actions
+
+    private func addSession() {
+        guard case .edit(let day) = mode else { return }
+        let detailView = SessionDetailView(mode: .add, meet: meet, day: day) {
+            popViewController()
+            refreshSessions()
+        }
+        pushViewController(UIHostingController(rootView: detailView))
+    }
+
+    private func editSession(_ session: Session) {
+        guard case .edit(let day) = mode else { return }
+        let detailView = SessionDetailView(mode: .edit(session), meet: meet, day: day) {
+            popViewController()
+            refreshSessions()
+        }
+        pushViewController(UIHostingController(rootView: detailView))
+    }
+
+    private func deleteSession(_ session: Session) {
+        guard case .edit(let day) = mode else { return }
+        if MeetListManager.GetInstance().removeSession(session, from: day) {
+            refreshSessions()
+        } else {
+            showLastSessionAlert = true
+        }
+    }
+
     // MARK: Save
 
     private func save() {
         switch mode {
         case .add:
-            let newDay = MeetDay(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks, breakTime: breakTimeInMins, id: UUID().uuidString)
+            let newDay = MeetDay(meetDate: meetDate, startTime: defaultSessionStart, endTime: defaultSessionEnd, breaks: 0, breakTime: MeetDay.DEFAULT_BREAK_TIME_MINS, id: UUID().uuidString)
             MeetListManager.GetInstance().addMeetDay(meetDay: newDay)
         case .edit(let existingDay):
             existingDay.meetDate = meetDate
-            existingDay.startTime = startTime
-            existingDay.endTime = endTime
-            existingDay.breaks = breaks
-            existingDay.breakTimeInMins = breakTimeInMins
             MeetListManager.GetInstance().updateSelectedMeetDayWith(meetDay: existingDay)
         }
     }

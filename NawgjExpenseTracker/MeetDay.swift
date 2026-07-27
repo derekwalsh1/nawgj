@@ -18,12 +18,30 @@ class MeetDay: Codable {
     
     // MARK: Properties
     var meetDate: Date
-    var startTime: Date
-    var endTime : Date
-    var breaks : Int
+    /// The concurrent judging areas ("Sessions") running on this day. Every
+    /// day has at least one Session; legacy days (saved before this concept
+    /// existed) are migrated to a single implicit Session on decode - see
+    /// `init(from:)` below.
+    var sessions: [Session]
     var uuid : String?
-    var breakTimeInMins : Int? = MeetDay.DEFAULT_BREAK_TIME_MINS
-    
+
+    // MARK: Legacy compatibility (display-only)
+    //
+    // These used to be this type's only time-range fields. They're kept as
+    // computed properties - derived from `sessions` - purely so existing
+    // day-level summary UI/reports that want "the" start/end/break count for
+    // a day keep working without change. They are NOT the source of truth
+    // for billing math any more; `sessions` is.
+    var startTime: Date {
+        sessions.map { $0.startTime }.min() ?? meetDate
+    }
+    var endTime: Date {
+        sessions.map { $0.endTime }.max() ?? meetDate
+    }
+    var breaks: Int {
+        sessions.reduce(0) { $0 + $1.breaks }
+    }
+
     //MARK: Initialization
     required convenience init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int) {
         self.init(meetDate: meetDate, startTime: startTime, endTime: endTime, breaks: breaks, breakTime: MeetDay.DEFAULT_BREAK_TIME_MINS, id: UUID.init().uuidString)
@@ -35,123 +53,96 @@ class MeetDay: Codable {
     
     // MARK: Initialization
     /// Initializes a `MeetDay` instance with the provided meet date, start time, end time,
-    /// number of breaks, optional break time, and a unique identifier.
+    /// number of breaks, optional break time, and a unique identifier. Creates a single
+    /// default Session spanning the given time range.
     /// - Parameters:
     ///   - meetDate: The date of the meet day.
-    ///   - startTime: The start time of the meet day.
-    ///   - endTime: The end time of the meet day.
-    ///   - breaks: The number of breaks taken during the meet day.
+    ///   - startTime: The start time of the meet day's (only) session.
+    ///   - endTime: The end time of the meet day's (only) session.
+    ///   - breaks: The number of breaks taken during that session.
     ///   - breakTime: The duration of each break in minutes (optional). If `nil`, the default break time is used.
     ///   - id: The unique identifier for the meet day.
     init(meetDate: Date, startTime: Date, endTime: Date, breaks: Int, breakTime: Int?, id: String) {
-        // Initialize the meet date
         self.meetDate = meetDate
-        // Initialize the start time of the meet
-        self.startTime = startTime
-        // Initialize the end time of the meet
-        self.endTime = endTime
-        // Initialize the number of breaks taken
-        self.breaks = breaks
-        // Assign the unique identifier to the instance
         self.uuid = id
-        // Set the break time in minutes, using the provided value or the default if nil
-        self.breakTimeInMins = breakTime ?? MeetDay.DEFAULT_BREAK_TIME_MINS
+        self.sessions = [Session(name: Session.DEFAULT_NAME, startTime: startTime, endTime: endTime, breaks: breaks, breakTimeInMins: breakTime)]
     }
 
-    
-    /// Computes the total time in hours for the meet day using the instance's start and end times.
-    /// This is a convenience method that utilizes the `totalTimeInHours(startTime:endTime:)` method.
-    /// - Returns: The total time in hours as a Float.
-    func totalTimeInHours() -> Float {
-        // Call the overloaded method with the instance's startTime and endTime properties.
-        return totalTimeInHours(startTime: startTime, endTime: endTime)
+    /// Initializes a `MeetDay` with an explicit list of sessions.
+    init(meetDate: Date, sessions: [Session], id: String) {
+        self.meetDate = meetDate
+        self.sessions = sessions
+        self.uuid = id
     }
 
-    
+    // MARK: Codable
+    //
+    // Custom implementation (rather than relying on synthesized Codable) so
+    // legacy JSON - saved before `sessions` existed - can be migrated
+    // automatically: if no `sessions` array is present, one is synthesized
+    // from the day's old start/end/breaks/breakTimeInMins fields.
+    private enum CodingKeys: String, CodingKey {
+        case meetDate, sessions, uuid
+        case startTime, endTime, breaks, breakTimeInMins
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        meetDate = try container.decode(Date.self, forKey: .meetDate)
+        uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+
+        if let decodedSessions = try container.decodeIfPresent([Session].self, forKey: .sessions), !decodedSessions.isEmpty {
+            sessions = decodedSessions
+        } else {
+            // Legacy migration: synthesize exactly one Session from this
+            // day's old single time-range fields.
+            let legacyStart = try container.decode(Date.self, forKey: .startTime)
+            let legacyEnd = try container.decode(Date.self, forKey: .endTime)
+            let legacyBreaks = try container.decode(Int.self, forKey: .breaks)
+            let legacyBreakTime = try container.decodeIfPresent(Int.self, forKey: .breakTimeInMins)
+            sessions = [Session(name: Session.DEFAULT_NAME, startTime: legacyStart, endTime: legacyEnd, breaks: legacyBreaks, breakTimeInMins: legacyBreakTime)]
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(meetDate, forKey: .meetDate)
+        try container.encode(sessions, forKey: .sessions)
+        try container.encode(uuid, forKey: .uuid)
+    }
+
     /// Retrieves the UUID for the current instance. If a UUID does not already exist,
     /// this method generates a new UUID and stores it.
     /// - Returns: A unique identifier (UUID) as a String.
     func getUUID() -> String {
-        // Check if the UUID is nil (not yet initialized)
         if uuid == nil {
-            // Generate a new UUID and assign it to the `uuid` property
             uuid = UUID().uuidString
         }
-        
-        // Return the UUID (it is guaranteed to be non-nil at this point)
         return self.uuid!
     }
-    
-    /// Computes the total time to be billed in hours with granularity to the nearest quarter-hour.
-    /// The method takes a start and end time, calculates the duration between them in hours, and
-    /// adjusts the result to the nearest quarter-hour.
-    /// - Parameters:
-    ///   - startTime: The starting time of the meet day.
-    ///   - endTime: The ending time of the meet day.
-    /// - Returns: The total time in hours, rounded to the nearest quarter-hour, as a Float.
-    func totalTimeInHours(startTime : Date, endTime : Date) -> Float {
-        // Calculate the time interval in seconds between the start and end time
-        let timeInterval = endTime.timeIntervalSince(startTime)
-        
-        // Convert the time interval from seconds to hours
-        let timeInHours = timeInterval / 3600
-        
-        // Truncate the fractional hours to whole hours
-        var hours = floor(timeInHours)
-        
-        // Extract the fractional part of the hours (remaining minutes as a fraction)
-        let remainingMinutes = timeInHours.truncatingRemainder(dividingBy: 1)
-        
-        // Adjust the total hours to the nearest quarter-hour:
-        // - Add 0.5 for fractions between 15 and 45 minutes.
-        // - Add 1 for fractions above 45 minutes.
-        if remainingMinutes > 0.25 && remainingMinutes <= 0.75 {
-            hours += 0.5
-        } else if remainingMinutes > 0.75 {
-            hours += 1
-        }
-        
-        // Return the total billed time as a Float
-        return Float(hours)
+
+    /// Total time in hours across all of this day's sessions.
+    func totalTimeInHours() -> Float {
+        sessions.reduce(0) { $0 + $1.totalTimeInHours() }
     }
 
-    
-    /// Calculates the total break time in hours for the meet day.
-    /// The total break time is derived by multiplying the number of breaks by the duration of each break
-    /// (in minutes) and converting the result to hours.
-    /// - Returns: The total break time in hours as a Float.
+    /// Total break time in hours across all of this day's sessions.
     func breakTimeInHours() -> Float {
-        // Multiply the number of breaks by the duration of each break in minutes.
-        // If `breakTimeInMins` is nil, use the default break time defined in `MeetDay.DEFAULT_BREAK_TIME_MINS`.
-        // Convert the result from minutes to hours by dividing by 60.
-        return Float(self.breaks * (breakTimeInMins ?? MeetDay.DEFAULT_BREAK_TIME_MINS)) / 60.0
+        sessions.reduce(0) { $0 + $1.breakTimeInHours() }
     }
 
-    /// Calculates the total billable time in hours for the meet day using the instance's start time,
-    /// end time, and number of breaks.
-    /// This method acts as a convenience wrapper around the `totalBillableTimeInHours(startTime:endTime:breaks:)` method.
-    /// - Returns: The total billable time in hours as a Float.
+    /// Total billable time in hours across all of this day's sessions (each
+    /// session is floored at `MIN_BILLING_HOURS` individually).
     func totalBillableTimeInHours() -> Float {
-        // Call the overloaded `totalBillableTimeInHours` method using the instance's `startTime`, `endTime`, and `breaks` properties.
-        return totalBillableTimeInHours(startTime: startTime, endTime: endTime, breaks: breaks)
+        sessions.reduce(0) { $0 + $1.totalBillableTimeInHours() }
     }
 
-    
-    /// Calculates the total billable time in hours for a meet day, taking breaks into account.
-    /// The method ensures that the billable time is at least the minimum billing hours defined.
-    /// - Parameters:
-    ///   - startTime: The starting time of the meet day.
-    ///   - endTime: The ending time of the meet day.
-    ///   - breaks: The number of breaks taken during the meet day.
-    /// - Returns: The total billable time in hours, as a Float.
-    func totalBillableTimeInHours(startTime: Date, endTime: Date, breaks: Int) -> Float {
-        // Calculate the total time in hours for the day, subtracting the lesser of:
-        // - The break time in hours.
-        // - A maximum of 2.0 hours.
-        // Ensure the result is at least the minimum billing hours defined in `MeetDay.MIN_BILLING_HOURS`.
-        return max(
-            MeetDay.MIN_BILLING_HOURS,
-            totalTimeInHours(startTime: startTime, endTime: endTime) - min(breakTimeInHours(), MeetDay.MAX_BREAK_TIME_HOURS)
-        )
+    /// Whether `candidate` overlaps any existing session on this day (other
+    /// than `excluding`, e.g. itself when editing in place).
+    func hasOverlap(_ candidate: Session, excluding: Session? = nil) -> Bool {
+        sessions.contains { session in
+            if let excluding, session === excluding { return false }
+            return session.overlaps(with: candidate)
+        }
     }
 }

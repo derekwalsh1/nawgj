@@ -124,6 +124,35 @@ final class MockMeetListManager: MeetListManaging {
         saveMeets()
     }
 
+    func addSession(session: Session, to day: MeetDay) {
+        getSelectedMeet()?.addSession(session, to: day)
+        saveMeets()
+    }
+
+    @discardableResult
+    func removeSession(_ session: Session, from day: MeetDay) -> Bool {
+        guard let removed = getSelectedMeet()?.removeSession(session, from: day) else { return false }
+        if removed { saveMeets() }
+        return removed
+    }
+
+    @discardableResult
+    func assignJudge(_ judge: Judge, to session: Session, in day: MeetDay) -> Result<Void, Meet.SessionAssignmentError> {
+        guard let result = getSelectedMeet()?.assignJudge(judge, to: session, in: day) else { return .success(()) }
+        if case .success = result { saveMeets() }
+        return result
+    }
+
+    func unassignJudge(_ judge: Judge, from session: Session) {
+        getSelectedMeet()?.unassignJudge(judge, from: session)
+        saveMeets()
+    }
+
+    func sessionChanged(_ session: Session, in day: MeetDay) {
+        getSelectedMeet()?.sessionChanged(session, in: day)
+        saveMeets()
+    }
+
     func updateSelectedMeetWith(meet: Meet) {
         if let index = selectedMeetIndex, meets != nil, index < meets!.count {
             meets![index] = meet

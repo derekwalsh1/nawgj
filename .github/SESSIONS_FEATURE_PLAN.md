@@ -183,21 +183,21 @@ Extend the existing per-meet normalization pass:
   `MeetDay`/`Fee` model changes must not break them).
 
 ## Suggested implementation order (checklist)
-- [ ] `Session` model + shared billing-time protocol/extension.
-- [ ] `MeetDay` sessions array + legacy-decode migration + day-level sums.
-- [ ] `Fee.sessionUUID` + accessors.
-- [ ] `MeetListManager` normalization: per-session fee sync (replaces
+- [x] `Session` model + shared billing-time protocol/extension.
+- [x] `MeetDay` sessions array + legacy-decode migration + day-level sums.
+- [x] `Fee.sessionUUID` + accessors.
+- [x] `MeetListManager` normalization: per-session fee sync (replaces
       per-day sync), with unit tests.
-- [ ] `Meet.swift` business logic: `addSession`, `assignJudge`/`unassignJudge`,
+- [x] `Meet.swift` business logic: `addSession`, `assignJudge`/`unassignJudge`,
       overlap validation, `sessionChanged`, fixed `judgesFeeForDay`/
       `getFeesFor`, updated `addMeetDay`/`addJudge`/`removeMeetDay`.
-- [ ] `SessionDetailView` (new) + judges checklist.
-- [ ] `MeetDayDetailView` refactor to host the sessions list.
-- [ ] `MeetDayListView` subtitle tweak (session count/hours).
-- [ ] `FeeListView` row label tweak (session name when >1 per day).
-- [ ] PDF report tweaks (`JudgePDFCreator`, `MeetPDFCreator`).
-- [ ] Tests (unit + full regression) + manual smoke test on simulator.
-- [ ] Update `MODERNIZATION_BACKLOG.md`/repo memory once shipped.
+- [x] `SessionDetailView` (new) + judges checklist.
+- [x] `MeetDayDetailView` refactor to host the sessions list.
+- [x] `MeetDayListView` subtitle tweak (session count/hours).
+- [x] `FeeListView` row label tweak (session name when >1 per day).
+- [x] PDF report tweaks (`JudgePDFCreator`, `MeetPDFCreator`).
+- [x] Tests (unit + full regression) + manual smoke test on simulator.
+- [x] Update `MODERNIZATION_BACKLOG.md`/repo memory once shipped.
 
 ## Open risks / things to double-check while implementing
 - `decodeAndNormalizeMeets` is `private static` in `MeetListManager` —

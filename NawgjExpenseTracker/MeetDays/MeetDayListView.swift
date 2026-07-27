@@ -28,6 +28,11 @@ struct MeetDayListView: View {
 
     @State private var days: [MeetDay] = []
 
+    /// Bumped whenever this screen reappears, forcing the day rows below -
+    /// which read hours directly from each `MeetDay`'s (mutable) sessions
+    /// rather than diffable `@State` - to fully redraw.
+    @State private var refreshToken = UUID()
+
     private var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = MeetDay.DATE_FORMAT
@@ -66,6 +71,7 @@ struct MeetDayListView: View {
             }
         }
         .listStyle(.plain)
+        .id(refreshToken)
         .overlay {
             if days.isEmpty {
                 emptyState
@@ -83,6 +89,7 @@ struct MeetDayListView: View {
         }
         .onAppear {
             refreshDays()
+            refreshToken = UUID()
         }
     }
 
@@ -95,7 +102,7 @@ struct MeetDayListView: View {
                 Text(dateFormatter.string(from: day.meetDate))
                     .font(.headline)
                     .foregroundColor(.primary)
-                Text(String(format: "%.2f Hours", day.totalBillableTimeInHours()))
+                Text(subtitle(for: day))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
@@ -106,6 +113,12 @@ struct MeetDayListView: View {
         }
         .padding(.vertical, 4)
         .contentShape(Rectangle())
+    }
+
+    private func subtitle(for day: MeetDay) -> String {
+        let hoursText = String(format: "%.2f Hours", day.totalBillableTimeInHours())
+        guard day.sessions.count > 1 else { return hoursText }
+        return "\(day.sessions.count) Sessions • \(hoursText)"
     }
 
     @ViewBuilder
@@ -171,7 +184,7 @@ struct MeetDayListView: View {
     // MARK: Actions
 
     private func addDay() {
-        let detailView = MeetDayDetailView(mode: .add(meet), meet: meet) {
+        let detailView = MeetDayDetailView(mode: .add(meet), meet: meet, pushViewController: pushViewController, popViewController: popViewController) {
             popViewController()
             refreshDays()
         }
@@ -181,7 +194,7 @@ struct MeetDayListView: View {
     private func editDay(_ day: MeetDay) {
         guard let index = meet.days.firstIndex(where: { $0 === day }) else { return }
         MeetListManager.GetInstance().selectMeetDayAt(index: index)
-        let detailView = MeetDayDetailView(mode: .edit(day), meet: meet) {
+        let detailView = MeetDayDetailView(mode: .edit(day), meet: meet, pushViewController: pushViewController, popViewController: popViewController) {
             popViewController()
             refreshDays()
         }

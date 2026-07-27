@@ -331,11 +331,9 @@ class Judge: Codable {
     }
     
     func getFeesFor(date: Date) -> Float{
-        if let fee = fees.first(where: {$0.date == date}){
-            return fee.getFeeTotal()
-        }
-        else{
-            return 0
-        }
+        // A day can now have multiple sessions (and therefore multiple fees
+        // sharing the same date), so sum every matching fee rather than
+        // taking just the first one.
+        return fees.filter { $0.date == date }.reduce(0) { $0 + $1.getFeeTotal() }
     }
 }

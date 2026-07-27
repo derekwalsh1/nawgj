@@ -133,45 +133,154 @@ class Meet: Codable {
         return totalHours
     }
     
-    /// Add a meet day and append corresponding fees to each judge. Fee
-    /// creation is failable; failures are logged and skipped rather than
-    /// force-unwrapping, avoiding runtime crashes.
+    /// Add a meet day and append corresponding fees to each judge, one per
+    /// session on that day. Fee creation is failable; failures are logged
+    /// and skipped rather than force-unwrapping, avoiding runtime crashes.
     func addMeetDay(day: MeetDay) {
         self.days.append(day)
-        // add fees to judges for this day
+        for session in day.sessions {
+            addFeesForNewSession(session, in: day)
+        }
+    }
+
+    /// Creates a fee for every existing meet judge for a newly-added
+    /// session. Used both by `addMeetDay` (a new day's default session) and
+    /// unconditionally by callers that don't need the overlap check (a
+    /// brand-new day/session can't yet have any conflicting assignments).
+    private func addFeesForNewSession(_ session: Session, in day: MeetDay) {
         for judge in self.judges {
-            if let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID()) {
+            if let fee = Fee(date: day.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
                 judge.fees.append(fee)
             } else {
                 os_log("Failed to create Fee for judge %{public}@ on date %{public}@", log: OSLog.default, type: .error, judge.name, String(describing: day.meetDate))
             }
         }
     }
+
+    /// Adds a new session to `day`. Every existing meet judge is
+    /// auto-assigned (a fee is created) *unless* they already have an
+    /// overlapping session on that day, in which case they're skipped and
+    /// returned to the caller so the UI can surface who wasn't included.
+    @discardableResult
+    func addSession(_ session: Session, to day: MeetDay) -> [Judge] {
+        day.sessions.append(session)
+        var skippedJudges: [Judge] = []
+        for judge in judges {
+            if case .failure = assignJudge(judge, to: session, in: day) {
+                skippedJudges.append(judge)
+            }
+        }
+        return skippedJudges
+    }
+
+    /// Removes a session from `day`, and any fees tied to it. Refuses to
+    /// remove a day's last remaining session (a day must always have >= 1
+    /// session) - returns `false` in that case.
+    @discardableResult
+    func removeSession(_ session: Session, from day: MeetDay) -> Bool {
+        guard day.sessions.count > 1, let index = day.sessions.firstIndex(where: { $0 === session }) else {
+            return false
+        }
+        let sessionUUID = session.getUUID()
+        for judge in judges {
+            judge.fees.removeAll(where: { $0.getSessionUUID() == sessionUUID })
+        }
+        day.sessions.remove(at: index)
+        return true
+    }
+
+    /// Reasons a judge can't be assigned to a session.
+    enum SessionAssignmentError: Error {
+        /// The judge already has a fee for `Session` that overlaps the
+        /// candidate session's time range (a judge can't work two
+        /// concurrent sessions).
+        case overlappingSession(Session)
+    }
+
+    /// Assigns `judge` to `session` (creates a fee), validating that they
+    /// don't already have an overlapping session assigned that day. A
+    /// no-op (returns `.success`) if the judge is already assigned.
+    @discardableResult
+    func assignJudge(_ judge: Judge, to session: Session, in day: MeetDay) -> Result<Void, SessionAssignmentError> {
+        if judge.fees.contains(where: { $0.getSessionUUID() == session.getUUID() }) {
+            return .success(())
+        }
+
+        if let conflict = conflictingSession(for: judge, in: day, candidate: session) {
+            return .failure(.overlappingSession(conflict))
+        }
+
+        if let fee = Fee(date: day.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
+            judge.fees.append(fee)
+        } else {
+            os_log("Failed to create Fee for judge %{public}@ for session %{public}@", log: OSLog.default, type: .error, judge.name, session.name)
+        }
+        return .success(())
+    }
+
+    /// Unassigns `judge` from `session` (removes their fee for it, if any).
+    func unassignJudge(_ judge: Judge, from session: Session) {
+        judge.fees.removeAll(where: { $0.getSessionUUID() == session.getUUID() })
+    }
+
+    /// Finds an existing session (other than `candidate`) on `day` that
+    /// `judge` is already assigned to and that overlaps `candidate`'s time
+    /// range, if any.
+    private func conflictingSession(for judge: Judge, in day: MeetDay, candidate: Session) -> Session? {
+        day.sessions.first { other in
+            other !== candidate
+                && other.overlaps(with: candidate)
+                && judge.fees.contains(where: { $0.getSessionUUID() == other.getUUID() })
+        }
+    }
     
-    /// Add a judge to the meet and append fees for existing meet days.
+    /// Add a judge to the meet and append fees for every session on every
+    /// existing meet day.
     func addJudge(judge: Judge){
         for day in self.days {
-            if let fee = Fee(date: day.meetDate, hours: day.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID()) {
-                judge.fees.append(fee)
-            } else {
-                os_log("Failed to create Fee for judge %{public}@ when adding to meet", log: OSLog.default, type: .error, judge.name)
+            for session in day.sessions {
+                if let fee = Fee(date: day.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
+                    judge.fees.append(fee)
+                } else {
+                    os_log("Failed to create Fee for judge %{public}@ when adding to meet", log: OSLog.default, type: .error, judge.name)
+                }
             }
         }
         self.judges.append(judge)
     }
     
-    /// Called when a meet day changed; updates any non-overridden fees to
-    /// match the meet day's billable hours and date. Index is guarded to
-    /// prevent out-of-bounds access.
+    /// Called when a meet day's own date changes (not any session's time
+    /// range); re-syncs the date of every fee tied to that day so
+    /// invoices/reports stay in sync. Hours are governed by each session's
+    /// own time range and are untouched by a pure date change. Index is
+    /// guarded to prevent out-of-bounds access.
     func meetDayChanged(atIndex: Int){
         guard days.indices.contains(atIndex) else { return }
         let meetDay = days[atIndex]
+        let dayUUID = meetDay.getUUID()
         for judge in judges {
-            if let fee = judge.fees.first(where: { $0.getMeetDayUUID() == meetDay.getUUID() }) {
+            for fee in judge.fees where fee.getMeetDayUUID() == dayUUID {
+                if !(fee.exclude ?? false) {
+                    fee.date = meetDay.meetDate
+                }
+            }
+        }
+    }
+
+    /// Called when a session's own time range/breaks changed; re-syncs the
+    /// hours (and date) of the one fee each judge has for that specific
+    /// session.
+    func sessionChanged(_ session: Session, in day: MeetDay){
+        guard days.contains(where: { $0 === day }) else { return }
+        let sessionUUID = session.getUUID()
+        for judge in judges {
+            if let fee = judge.fees.first(where: { $0.getSessionUUID() == sessionUUID }) {
                 let excluded = fee.exclude ?? false
                 if !excluded && !fee.hoursOverridden {
-                    fee.hours = meetDay.totalBillableTimeInHours()
-                    fee.date = meetDay.meetDate
+                    fee.hours = session.totalBillableTimeInHours()
+                }
+                if !excluded {
+                    fee.date = day.meetDate
                 }
             }
         }
@@ -211,16 +320,13 @@ class Meet: Codable {
         return total
     }
     
-    /// Returns the judge's fee total for the given day index if present. The
+    /// Returns the sum of the judge's fee(s) for the given day index (there
+    /// may be more than one now a day can have multiple sessions). The
     /// dayIndex is validated to prevent OOB access.
     func judgesFeeForDay(dayIndex: Int, judge: Judge) -> Float{
         guard days.indices.contains(dayIndex) else { return 0.0 }
-        let date = days[dayIndex].meetDate
-        if let fee = judge.fees.first(where: { $0.date == date }){
-            return fee.getFeeTotal()
-        } else {
-            return 0.0
-        }
+        let dayUUID = days[dayIndex].getUUID()
+        return judge.fees.filter { $0.getMeetDayUUID() == dayUUID }.reduce(0.0) { $0 + $1.getFeeTotal() }
     }
     
     func totalJudgesFeeForDay(dayIndex: Int) -> Float{
