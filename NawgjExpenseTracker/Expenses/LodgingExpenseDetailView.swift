@@ -9,12 +9,9 @@
 //
 //  Pushed from ExpensesListView after MeetListManager.selectExpenseAt(index:)
 //  has already been called, so `expense` is the live, already-selected
-//  model object. Edits are staged in local @State and only committed back
-//  to `expense` (and persisted via MeetListManager) when Done is tapped.
-//  Unlike the old imperative screen (which mutated `expense.amountPerNight`
-//  live on every keystroke, so Cancel didn't actually discard that one
-//  field), this SwiftUI version discards ALL edits on Cancel, since that's
-//  the behavior a Cancel button implies.
+//  model object. Edits save live as each field changes (see
+//  `saveIfValid()`) rather than only on a Done button - there's no
+//  Cancel/Done, just the standard back button.
 //
 //  Phase 4 of the incremental SwiftUI migration - see
 //  .github/MODERNIZATION_BACKLOG.md.
@@ -25,16 +22,16 @@ import SwiftUI
 struct LodgingExpenseDetailView: View {
 
     let expense: Expense
-    let popViewController: () -> Void
 
     @State private var totalText: String
     @State private var nights: Int
     @State private var date: Date
     @State private var notes: String
 
-    init(expense: Expense, popViewController: @escaping () -> Void) {
+    @FocusState private var isTotalFocused: Bool
+
+    init(expense: Expense) {
         self.expense = expense
-        self.popViewController = popViewController
 
         let nightsValue = expense.totalNights ?? 1
         _nights = State(initialValue: nightsValue)
@@ -49,10 +46,6 @@ struct LodgingExpenseDetailView: View {
         formatter.numberStyle = .decimal
         return formatter
     }()
-
-    private var isTotalValid: Bool {
-        Self.numberFormatter.number(from: totalText) != nil
-    }
 
     var body: some View {
         Form {
@@ -70,6 +63,7 @@ struct LodgingExpenseDetailView: View {
             Section("Total($)") {
                 TextField("Total($)", text: $totalText)
                     .keyboardType(.decimalPad)
+                    .focused($isTotalFocused)
             }
 
             Section {
@@ -87,25 +81,23 @@ struct LodgingExpenseDetailView: View {
         }
         .navigationTitle("Lodging")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    popViewController()
-                }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done") {
-                    saveExpense()
-                    popViewController()
-                }
-                .disabled(!isTotalValid)
+        .onChange(of: totalText) { _ in saveIfValid() }
+        .onChange(of: nights) { _ in saveIfValid() }
+        .onChange(of: date) { _ in saveIfValid() }
+        .onChange(of: notes) { _ in saveIfValid() }
+        .onChange(of: isTotalFocused) { focused in
+            // Wipe the field's contents as soon as it's tapped into, rather
+            // than leaving the existing value (e.g. "0") for new input to be
+            // appended to.
+            if focused {
+                totalText = ""
             }
         }
     }
 
-    private func saveExpense() {
-        if let total = Self.numberFormatter.number(from: totalText), nights > 0 {
+    private func saveIfValid() {
+        guard let total = Self.numberFormatter.number(from: totalText) else { return }
+        if nights > 0 {
             expense.amountPerNight = total.floatValue / Float(nights)
         } else {
             expense.amountPerNight = 0

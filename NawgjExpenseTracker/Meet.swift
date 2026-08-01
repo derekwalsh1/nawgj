@@ -28,7 +28,8 @@ class Meet: Codable {
         2023 : 0.655,
         2024 : 0.67,
         2025 : 0.70,
-        2026 : 0.725
+        2026 : 0.725,
+        2027 : 0.76
     ]
     
     /// Maximum daily expense considered expensible for a single-room request.

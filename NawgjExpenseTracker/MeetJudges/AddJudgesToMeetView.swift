@@ -116,7 +116,7 @@ struct AddJudgesToMeetView: View {
 
     private func addSelectedJudges() {
         for judgeInfo in judgeList where selectedNames.contains(judgeInfo.name) {
-            if let newJudge = Judge(name: judgeInfo.name, level: judgeInfo.level, fees: Array<Fee>()) {
+            if let newJudge = Judge(name: judgeInfo.name, level: judgeInfo.level, fees: Array<Fee>(), defaultExpenseDate: meet.startDate) {
                 MeetListManager.GetInstance().addJudge(judge: newJudge)
             }
         }

@@ -83,7 +83,7 @@ struct CreateJudgeView: View {
 
                 Section {
                     Picker("Level", selection: $selectedLevel) {
-                        ForEach(Judge.Level.selectableCases, id: \.self) { level in
+                        ForEach(levelPickerOptions, id: \.self) { level in
                             Text(level.description).tag(level)
                         }
                     }
@@ -165,6 +165,19 @@ struct CreateJudgeView: View {
         let cases = Judge.Level.selectableCases
         let defaultIndex = cases.count > 1 ? cases.count - 2 : 0
         return cases[defaultIndex]
+    }
+
+    /// The Level Picker's options. Normally just the current, selectable
+    /// levels - but if the judge being edited already has a legacy level
+    /// (e.g. imported from an older meet/judge list, before some levels
+    /// were retired from `selectableCases`), that level is prepended so the
+    /// Picker has a matching option for it instead of showing an invalid,
+    /// undefined selection. It stays selectable here only because it's
+    /// already the judge's current value; it still can't be picked fresh
+    /// once changed away from.
+    private var levelPickerOptions: [Judge.Level] {
+        let cases = Judge.Level.selectableCases
+        return cases.contains(selectedLevel) ? cases : [selectedLevel] + cases
     }
 }
 

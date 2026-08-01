@@ -5,7 +5,9 @@
 //  SwiftUI screen for a single Meet Day: the day's date, plus (in edit
 //  mode) an always-visible list of that day's Sessions - the concurrent
 //  judging areas that can run on the same calendar day (see
-//  .github/SESSIONS_FEATURE_PLAN.md). Pushed from MeetDayListView.
+//  .github/SESSIONS_FEATURE_PLAN.md). Pushed directly from the "Day
+//  Summaries" tiles on `MeetDetailView` (there's no separate "Meet Days"
+//  list screen).
 //
 //  Formerly hosted the day's own start/end/breaks editor directly; that
 //  editing now lives in `SessionDetailView`, pushed from this screen's
@@ -96,6 +98,27 @@ struct MeetDayDetailView: View {
     }
 
     var body: some View {
+        Group {
+            if case .add = mode {
+                formContent
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("Add") {
+                                save()
+                                onFinish()
+                            }
+                        }
+                    }
+            } else {
+                // Edit mode: changes save live as fields change (see
+                // checkForDateCollision), so there's no Cancel/Done - the
+                // standard back button is all that's needed.
+                formContent
+            }
+        }
+    }
+
+    private var formContent: some View {
         Form {
             Section {
                 Text(promptText)
@@ -124,6 +147,12 @@ struct MeetDayDetailView: View {
                             }
                         }
                     }
+
+                    Button {
+                        addSession()
+                    } label: {
+                        Label("Add Session", systemImage: "plus.circle.fill")
+                    }
                 }
 
                 Section("Summary") {
@@ -135,26 +164,6 @@ struct MeetDayDetailView: View {
         .id(refreshToken)
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel") { onFinish() }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if case .edit = mode {
-                    Button {
-                        addSession()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(saveButtonTitle) {
-                    save()
-                    onFinish()
-                }
-            }
-        }
         .onChange(of: meetDate) { newValue in
             checkForDateCollision(newValue)
         }
@@ -214,13 +223,6 @@ struct MeetDayDetailView: View {
         }
     }
 
-    private var saveButtonTitle: String {
-        switch mode {
-        case .add: return "Add"
-        case .edit: return "Done"
-        }
-    }
-
     private var promptText: String {
         switch mode {
         case .add:
@@ -251,7 +253,9 @@ struct MeetDayDetailView: View {
     //
     // Mirrors the old screen's date-change handler: reverts the date and
     // shows an alert if it collides with another existing day in the meet
-    // (same-day comparison, excluding the day being edited).
+    // (same-day comparison, excluding the day being edited). In edit mode,
+    // a non-colliding change is saved immediately (live editing - see the
+    // Cancel/Done removal note on `body`).
 
     private func checkForDateCollision(_ newDate: Date) {
         let editingDay: MeetDay? = { if case .edit(let day) = mode { return day }; return nil }()
@@ -264,6 +268,12 @@ struct MeetDayDetailView: View {
             duplicateDateMessage = "\(dateFormatter.string(from: newDate)) is already in use"
             showDuplicateDateAlert = true
             meetDate = editingDay?.meetDate ?? meet.startDate
+            return
+        }
+
+        if let editingDay {
+            editingDay.meetDate = newDate
+            MeetListManager.GetInstance().updateSelectedMeetDayWith(meetDay: editingDay)
         }
     }
 
@@ -305,15 +315,13 @@ struct MeetDayDetailView: View {
     }
 
     // MARK: Save
+    //
+    // Only reachable in `.add` mode - `.edit` mode saves live via
+    // `checkForDateCollision`/`SessionDetailView`.
 
     private func save() {
-        switch mode {
-        case .add:
-            let newDay = MeetDay(meetDate: meetDate, startTime: defaultSessionStart, endTime: defaultSessionEnd, breaks: 0, breakTime: MeetDay.DEFAULT_BREAK_TIME_MINS, id: UUID().uuidString)
-            MeetListManager.GetInstance().addMeetDay(meetDay: newDay)
-        case .edit(let existingDay):
-            existingDay.meetDate = meetDate
-            MeetListManager.GetInstance().updateSelectedMeetDayWith(meetDay: existingDay)
-        }
+        guard case .add = mode else { return }
+        let newDay = MeetDay(meetDate: meetDate, startTime: defaultSessionStart, endTime: defaultSessionEnd, breaks: 0, breakTime: MeetDay.DEFAULT_BREAK_TIME_MINS, id: UUID().uuidString)
+        MeetListManager.GetInstance().addMeetDay(meetDay: newDay)
     }
 }

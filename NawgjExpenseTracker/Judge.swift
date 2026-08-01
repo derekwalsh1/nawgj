@@ -215,8 +215,8 @@ class Judge: Codable {
         self.init(name: name, level: level, expenses: expenses, fees: fees, notes: "", paid: false, meetRef: false, w9Received: false, meetRefereeFee: 0.0, receiptsReceived: false)
     }
     
-    required convenience init?(name: String, level: Level, fees: Array<Fee>) {
-        let expenseDate = (fees.isEmpty ? Date() : fees.last?.date)!
+    required convenience init?(name: String, level: Level, fees: Array<Fee>, defaultExpenseDate: Date? = nil) {
+        let expenseDate = (fees.isEmpty ? (defaultExpenseDate ?? Date()) : fees.last?.date)!
         
         let expenses = [
             Expense(type: .Mileage, date: expenseDate),

@@ -130,76 +130,85 @@ class MeetListManager: MeetListManaging {
     /// async load paths.
     private static func decodeAndNormalizeMeets(from data: Data) throws -> [Meet] {
         let decodedMeets = try JSONDecoder().decode([Meet].self, from: data)
+        decodedMeets.forEach(normalizeMeet)
+        return decodedMeets
+    }
 
-        for meet in decodedMeets{
-            // Make sure all meet days (and their sessions - synthesized
-            // automatically from legacy start/end/breaks fields for old
-            // data, see MeetDay.init(from:)) have uuid strings associated
-            // with them. Touch the UUID attributes to ensure ones are created.
-            for meetDay in meet.days{
-                _ = meetDay.getUUID()
-                for session in meetDay.sessions{
-                    _ = session.getUUID()
+    /// Runs the meet-day/session/fee synchronization needed for a single
+    /// decoded `Meet` (ensures every meet day, session, and judge fee has a
+    /// UUID, and that judges have a fee entry for every session of every
+    /// meet day). This is what allows meets exported from older app
+    /// versions - before Sessions existed, or even before per-fee session
+    /// UUIDs existed - to import and load correctly. Used by both
+    /// `decodeAndNormalizeMeets(from:)` (app's own archive) and
+    /// `importMeet(fromFile:)` (user-picked JSON file), since either can
+    /// contain legacy data.
+    private static func normalizeMeet(_ meet: Meet) {
+        // Make sure all meet days (and their sessions - synthesized
+        // automatically from legacy start/end/breaks fields for old
+        // data, see MeetDay.init(from:)) have uuid strings associated
+        // with them. Touch the UUID attributes to ensure ones are created.
+        for meetDay in meet.days{
+            _ = meetDay.getUUID()
+            for session in meetDay.sessions{
+                _ = session.getUUID()
+            }
+        }
+
+        // Make sure all the judge fees have a meet day UUID associated with them
+        // by adding a meet day uuid to fees that don't have them. The matchup uses
+        // the date. If a fee uuid already exists then skip that fee
+        for judge in meet.judges{
+            var feesToDelete = Array<String>()
+            for fee in judge.fees{
+                if fee.getMeetDayUUID() == nil{
+                    // Find the meet day matching this fee (if none found, remove this fee)
+                    if let meetDay = meet.days.first(where: {$0.meetDate == fee.date}){
+                        fee.setMeetDayUUID(uuid: meetDay.getUUID())
+                    }
+                    else{
+                        let uuidString = UUID.init().uuidString
+                        feesToDelete.append(uuidString)
+                        fee.setMeetDayUUID(uuid: uuidString)
+                    }
+                }
+
+                // Make sure every fee also has a session UUID. Fees saved
+                // before Sessions existed only ever had one possible
+                // session per day (the migrated day has exactly one), so
+                // this mapping is unambiguous; fall back to the day's
+                // first session in the (currently unreachable) case
+                // where it isn't.
+                if fee.getSessionUUID() == nil,
+                   let meetDay = meet.days.first(where: {$0.getUUID() == fee.getMeetDayUUID()}),
+                   let session = meetDay.sessions.first {
+                    fee.setSessionUUID(uuid: session.getUUID())
                 }
             }
-            
-            // Make sure all the judge fees have a meet day UUID associated with them
-            // by adding a meet day uuid to fees that don't have them. The matchup uses
-            // the date. If a fee uuid already exists then skip that fee
-            for judge in meet.judges{
-                var feesToDelete = Array<String>()
-                for fee in judge.fees{
-                    if fee.getMeetDayUUID() == nil{
-                        // Find the meet day matching this fee (if none found, remove this fee)
-                        if let meetDay = meet.days.first(where: {$0.meetDate == fee.date}){
-                            fee.setMeetDayUUID(uuid: meetDay.getUUID())
-                        }
-                        else{
-                            let uuidString = UUID.init().uuidString
-                            feesToDelete.append(uuidString)
-                            fee.setMeetDayUUID(uuid: uuidString)
-                        }
-                    }
-                    
-                    // Make sure every fee also has a session UUID. Fees saved
-                    // before Sessions existed only ever had one possible
-                    // session per day (the migrated day has exactly one), so
-                    // this mapping is unambiguous; fall back to the day's
-                    // first session in the (currently unreachable) case
-                    // where it isn't.
-                    if fee.getSessionUUID() == nil,
-                       let meetDay = meet.days.first(where: {$0.getUUID() == fee.getMeetDayUUID()}),
-                       let session = meetDay.sessions.first {
-                        fee.setSessionUUID(uuid: session.getUUID())
+
+            // Remove any fees that don't have a corresponding date
+            if feesToDelete.count > 0{
+                for feeToDelete in feesToDelete{
+                    if let index = judge.fees.firstIndex(where: {$0.getMeetDayUUID() == feeToDelete}){
+                        judge.fees.remove(at: index)
                     }
                 }
-                
-                // Remove any fees that don't have a corresponding date
-                if feesToDelete.count > 0{
-                    for feeToDelete in feesToDelete{
-                        if let index = judge.fees.firstIndex(where: {$0.getMeetDayUUID() == feeToDelete}){
-                            judge.fees.remove(at: index)
-                        }
-                    }
-                }
-                
-                // Run through the list and find any (day, session) pair
-                // without a corresponding fee for it in the judge's fee list
-                // and add a fee entry.
-                for meetDay in meet.days{
-                    for session in meetDay.sessions{
-                        if !judge.fees.contains(where: {$0.getSessionUUID() == session.getUUID()}){
-                            // Add a new fee to the judges fees list corresponding to this session
-                            if let fee = Fee(date: meetDay.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID(), sessionUUID: session.getUUID()){
-                                judge.fees.append(fee)
-                            }
+            }
+
+            // Run through the list and find any (day, session) pair
+            // without a corresponding fee for it in the judge's fee list
+            // and add a fee entry.
+            for meetDay in meet.days{
+                for session in meetDay.sessions{
+                    if !judge.fees.contains(where: {$0.getSessionUUID() == session.getUUID()}){
+                        // Add a new fee to the judges fees list corresponding to this session
+                        if let fee = Fee(date: meetDay.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID(), sessionUUID: session.getUUID()){
+                            judge.fees.append(fee)
                         }
                     }
                 }
             }
         }
-
-        return decodedMeets
     }
     
     /// Fire-and-forget save used by existing (synchronous) call sites. The
@@ -438,7 +447,13 @@ class MeetListManager: MeetListManaging {
                 let data:Data = try Data(contentsOf: jsonFile)
                 let jsonDecoder = JSONDecoder()
                 let importedMeet = try jsonDecoder.decode(Meet.self, from: data) as Meet
-                
+                // Run the same day/session/fee migration used when loading
+                // the app's own archive, so meets exported from an older
+                // app version (before Sessions existed, or before per-fee
+                // session UUIDs existed) import correctly instead of ending
+                // up with fees that don't map to any session.
+                MeetListManager.normalizeMeet(importedMeet)
+
                 addMeet(meet: importedMeet)
             }
             catch{

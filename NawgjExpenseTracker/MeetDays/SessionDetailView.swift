@@ -83,6 +83,29 @@ struct SessionDetailView: View {
     }
 
     var body: some View {
+        Group {
+            if case .add = mode {
+                // Add mode: no Cancel - the standard back button discards
+                // without saving, and "Add" saves and goes back.
+                formContent
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Add") {
+                                save()
+                                onFinish()
+                            }
+                        }
+                    }
+            } else {
+                // Edit mode: changes save live as fields change (see
+                // saveLiveIfEditing()), so there's no Cancel/Done - the
+                // standard back button is all that's needed.
+                formContent
+            }
+        }
+    }
+
+    private var formContent: some View {
         Form {
             Section("Name") {
                 TextField("Session Name", text: $name)
@@ -170,22 +193,16 @@ struct SessionDetailView: View {
         }
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") { onFinish() }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button(saveButtonTitle) {
-                    save()
-                    onFinish()
-                }
-            }
-        }
+        .onChange(of: name) { _ in saveLiveIfEditing() }
         .onChange(of: startTime) { newValue in
             if newValue >= endTime {
                 endTime = newValue.addingTimeInterval(15 * 60)
             }
+            saveLiveIfEditing()
         }
+        .onChange(of: endTime) { _ in saveLiveIfEditing() }
+        .onChange(of: breaks) { _ in saveLiveIfEditing() }
+        .onChange(of: breakTimeInMins) { _ in saveLiveIfEditing() }
         .alert(overlapMessage, isPresented: $showOverlapAlert) {
             Button("OK", role: .cancel) {}
         }
@@ -207,13 +224,6 @@ struct SessionDetailView: View {
         switch mode {
         case .add: return "Add Session"
         case .edit: return "Session Details"
-        }
-    }
-
-    private var saveButtonTitle: String {
-        switch mode {
-        case .add: return "Add"
-        case .edit: return "Done"
         }
     }
 
@@ -258,22 +268,26 @@ struct SessionDetailView: View {
     // MARK: Save
 
     private func save() {
+        guard case .add = mode else { return }
         let sessionName = name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Session.DEFAULT_NAME : name
-
-        switch mode {
-        case .add:
-            let newSession = Session(name: sessionName, startTime: startTime, endTime: endTime, breaks: breaks, breakTimeInMins: breakTimeInMins)
-            MeetListManager.GetInstance().addSession(session: newSession, to: day)
-            for judge in meet.judges where excludedJudgeIDs.contains(ObjectIdentifier(judge)) {
-                MeetListManager.GetInstance().unassignJudge(judge, from: newSession)
-            }
-        case .edit(let session):
-            session.name = sessionName
-            session.startTime = startTime
-            session.endTime = endTime
-            session.breaks = breaks
-            session.breakTimeInMins = breakTimeInMins
-            MeetListManager.GetInstance().sessionChanged(session, in: day)
+        let newSession = Session(name: sessionName, startTime: startTime, endTime: endTime, breaks: breaks, breakTimeInMins: breakTimeInMins)
+        MeetListManager.GetInstance().addSession(session: newSession, to: day)
+        for judge in meet.judges where excludedJudgeIDs.contains(ObjectIdentifier(judge)) {
+            MeetListManager.GetInstance().unassignJudge(judge, from: newSession)
         }
+    }
+
+    /// Saves field edits immediately as they change (edit mode only) -
+    /// mirrors `MeetDayDetailView`'s `checkForDateCollision` live-save
+    /// pattern, since there's no Done button in edit mode anymore.
+    private func saveLiveIfEditing() {
+        guard case .edit(let session) = mode else { return }
+        let sessionName = name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Session.DEFAULT_NAME : name
+        session.name = sessionName
+        session.startTime = startTime
+        session.endTime = endTime
+        session.breaks = breaks
+        session.breakTimeInMins = breakTimeInMins
+        MeetListManager.GetInstance().sessionChanged(session, in: day)
     }
 }

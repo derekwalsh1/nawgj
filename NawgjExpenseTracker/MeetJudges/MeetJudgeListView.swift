@@ -124,11 +124,35 @@ struct MeetJudgeListView: View {
             }
             .font(.caption)
             .foregroundColor(.secondary)
+            statusBadges(for: judge)
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(judge.isPaid() ? Color.green.opacity(0.15) : Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    /// Small icon row surfacing the judge's meet referee / W9 / receipts
+    /// status at a glance, in addition to the existing "paid" badge shown
+    /// in the tile's top-right corner.
+    @ViewBuilder
+    private func statusBadges(for judge: Judge) -> some View {
+        let badges = [
+            judge.isMeetRef() ? ("flag.fill", "Meet Referee", Color.blue) : nil,
+            judge.isW9Received() ? ("doc.text.fill", "W9 Received", Color.orange) : nil,
+            judge.isReceiptsReceived() ? ("doc.on.doc.fill", "Receipts Received", Color.purple) : nil
+        ].compactMap { $0 }
+
+        if !badges.isEmpty {
+            HStack(spacing: 8) {
+                ForEach(badges, id: \.1) { icon, label, color in
+                    Image(systemName: icon)
+                        .foregroundColor(color)
+                        .accessibilityLabel(label)
+                }
+            }
+            .font(.caption)
+        }
     }
 
     private var emptyState: some View {

@@ -59,6 +59,11 @@ final class MockJudgeListManager: JudgeListManaging {
         saveJudges()
     }
 
+    func removeAllJudges() {
+        judges = []
+        saveJudges()
+    }
+
     func selectJudgeInfoAt(_ index: Int) {
         selectedJudgeIndex = index
         selectedJudge = judges?[index]

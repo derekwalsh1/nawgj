@@ -28,6 +28,7 @@ protocol JudgeListManaging: AnyObject {
     func saveJudgesAsync(_ judgesToSave: [JudgeInfo]?) async -> Bool
     func addJudge(_ judgeInfo: JudgeInfo) -> Bool
     func removeJudgeAt(_ index: Int)
+    func removeAllJudges()
     func selectJudgeInfoAt(_ index: Int)
     func judgeInfo(forJudgeID: String) -> String?
     func updateSelectedJudgeWith(_ judgeInfo: JudgeInfo)
@@ -105,8 +106,17 @@ class JudgeListManager: JudgeListManaging {
                     }
                 }
                 
+                // Sort the already up-to-date in-memory list rather than
+                // reloading from disk here: each `addJudge(_:)` call above
+                // queues its own async save via `saveJudges()`, so a
+                // synchronous re-read of the archive file at this point can
+                // race ahead of those pending writes and read back a stale/
+                // partial snapshot, which would then get saved again and
+                // clobber the judges that hadn't been flushed to disk yet.
+                if let originalJudgeList = judges{
+                    judges = originalJudgeList.sorted(by: {$0.name < $1.name})
+                }
                 saveJudges()
-                loadAndSortJudges()
             }
             catch {
                 os_log("Failed to import judges...", log: OSLog.default, type: .error)
@@ -196,6 +206,11 @@ class JudgeListManager: JudgeListManaging {
     
     func removeJudgeAt(_ index: Int){
         judges?.remove(at: index)
+        saveJudges()
+    }
+    
+    func removeAllJudges(){
+        judges = Array<JudgeInfo>()
         saveJudges()
     }
     

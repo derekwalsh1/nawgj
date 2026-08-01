@@ -34,8 +34,7 @@ struct JudgeListView: View {
 
     @State private var judges: [JudgeInfo] = []
     @State private var isImportingDocument = false
-    @State private var shareItems: [Any] = []
-    @State private var isShareSheetPresented = false
+    @State private var showRemoveAllConfirmation = false
 
     var body: some View {
         List {
@@ -80,6 +79,12 @@ struct JudgeListView: View {
                     } label: {
                         Label("Export Judges…", systemImage: "square.and.arrow.up")
                     }
+                    Button(role: .destructive) {
+                        showRemoveAllConfirmation = true
+                    } label: {
+                        Label("Remove All Judges…", systemImage: "trash")
+                    }
+                    .disabled(judges.isEmpty)
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -88,8 +93,15 @@ struct JudgeListView: View {
         .fileImporter(isPresented: $isImportingDocument, allowedContentTypes: [.json]) { result in
             handleImportResult(result)
         }
-        .sheet(isPresented: $isShareSheetPresented) {
-            ActivitySheet(items: shareItems)
+        .confirmationDialog(
+            "Remove all \(judges.count) judges? This cannot be undone.",
+            isPresented: $showRemoveAllConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Remove All", role: .destructive) {
+                removeAllJudges()
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .task {
             await loadJudges()
@@ -171,10 +183,14 @@ struct JudgeListView: View {
         judges = JudgeListManager.GetInstance().judges ?? []
     }
 
+    private func removeAllJudges() {
+        JudgeListManager.GetInstance().removeAllJudges()
+        judges = JudgeListManager.GetInstance().judges ?? []
+    }
+
     private func exportJudges() {
         guard let url = dataToFile(fileName: "JudgeList.JSON") else { return }
-        shareItems = [url]
-        isShareSheetPresented = true
+        presentShareSheet(items: [url])
     }
 
     private func dataToFile(fileName: String) -> URL? {

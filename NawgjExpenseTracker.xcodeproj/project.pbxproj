@@ -7,17 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		65EE000D2F001B7600B057B3 /* JudgeInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000E2F001B7600B057B3 /* JudgeInvoiceView.swift */; };
+		269A08BE9F57478283B4AF54 /* MeetMileageRateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */; };
+		305C410144594FF38C7E01FB /* ExpenseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */; };
+		40A5F424253D4145BD99BE0C /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F49B12EC4F46D1B61D709F /* SessionDetailView.swift */; };
+		4CAFE6C444D542399C881090 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0217E152498C49ED86E3A6BF /* Session.swift */; };
 		650F7B8521D94C7800D5A632 /* MeetPDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */; };
 		651C2D15278378CA000D802F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 651C2D14278378CA000D802F /* Launch Screen.storyboard */; };
 		651E4E9829AD05910078B346 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 651E4E9529AC90300078B346 /* images.xcassets */; };
-		65D8C4F02E2D1B7600B057B3 /* MeetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */; };
 		652236F821EFDD4C0024F1E6 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F721EFDD4C0024F1E6 /* PDFViewController.swift */; };
 		652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */; };
 		652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652236FC21F029950024F1E6 /* MeetListManager.swift */; };
-		65EE000B2F001B7600B057B3 /* AddJudgesToMeetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */; };
-		65D8C4F22E2D1B7600B057B3 /* JudgeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */; };
-		800DCE21EFB0483A9FBAD7AE /* CreateJudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D923729ADA00BED00A /* CreateJudgeView.swift */; };
 		656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C521F686CC00DE4029 /* JudgeListManager.swift */; };
 		656EA4C821F68A1200DE4029 /* JudgeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656EA4C721F68A1200DE4029 /* JudgeInfo.swift */; };
 		65830E40237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65830E3F237D2C5F00C15BE5 /* JudgeUIPrintPageRenderer.swift */; };
@@ -204,33 +203,33 @@
 		65C086F029AD0D5600B1069D /* splat-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0864029AD0D5500B1069D /* splat-29.png */; };
 		65C086F129AD0D5600B1069D /* splat-20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 65C0864129AD0D5500B1069D /* splat-20@2x.png */; };
 		65C386CC21BB77F70070D76B /* Fee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C386CB21BB77F70070D76B /* Fee.swift */; };
-		65EE00052F001B7600B057B3 /* LodgingExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00062F001B7600B057B3 /* LodgingExpenseDetailView.swift */; };
-		65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC967217D5B320029C6AA /* AppDelegate.swift */; };
 		65D8C4E12E2D1B7600B057B3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4E02E2D1B7600B057B3 /* SceneDelegate.swift */; };
 		65D8C4E32E2D1B7600B057B3 /* SwiftUIHosting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4E22E2D1B7600B057B3 /* SwiftUIHosting.swift */; };
+		65D8C4F02E2D1B7600B057B3 /* MeetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */; };
+		65D8C4F22E2D1B7600B057B3 /* JudgeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */; };
+		65D8C5042E2D1B7600B057B3 /* MeetDayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */; };
+		65D8C5082E2D1B7600B057B3 /* MeetJudgeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */; };
+		65D8C5092E2D1B7600B057B3 /* MeetJudgeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */; };
+		65DBC968217D5B320029C6AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC967217D5B320029C6AA /* AppDelegate.swift */; };
 		65DBC96A217D5B320029C6AA /* MeetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC969217D5B320029C6AA /* MeetDetailView.swift */; };
 		65DBC96D217D5B320029C6AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65DBC96B217D5B320029C6AA /* Main.storyboard */; };
 		65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC987217EBB7F0029C6AA /* Meet.swift */; };
 		65DBC99F219347F20029C6AA /* MeetDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC99E219347F20029C6AA /* MeetDay.swift */; };
 		65DBC9A52193A1820029C6AA /* Judge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A42193A1820029C6AA /* Judge.swift */; };
 		65DBC9A72193A1BB0029C6AA /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DBC9A62193A1BB0029C6AA /* Expense.swift */; };
-		65EE00072F001B7600B057B3 /* FeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00082F001B7600B057B3 /* FeeListView.swift */; };
-		65EE00092F001B7600B057B3 /* FeeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000A2F001B7600B057B3 /* FeeDetailView.swift */; };
 		65EE00022F001B7600B057B3 /* ExpensesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00012F001B7600B057B3 /* ExpensesListView.swift */; };
 		65EE00032F001B7600B057B3 /* ExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00042F001B7600B057B3 /* ExpenseDetailView.swift */; };
-		65D8C5082E2D1B7600B057B3 /* MeetJudgeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */; };
-		65D8C5092E2D1B7600B057B3 /* MeetJudgeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */; };
-		65D8C5022E2D1B7600B057B3 /* MeetDayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5012E2D1B7600B057B3 /* MeetDayListView.swift */; };
-		65D8C5042E2D1B7600B057B3 /* MeetDayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */; };
-		4CAFE6C444D542399C881090 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0217E152498C49ED86E3A6BF /* Session.swift */; };
-		40A5F424253D4145BD99BE0C /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F49B12EC4F46D1B61D709F /* SessionDetailView.swift */; };
-		D130C41A050E45FD8DF596E1 /* NawgjExpenseTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */; };
-		E5E7BD5C944B47A3B32A76ED /* FeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E743A6EE9C08482C84440467 /* FeeTests.swift */; };
-		305C410144594FF38C7E01FB /* ExpenseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */; };
-		FC02D7FEAF6A4BD9ACFD174F /* MeetDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */; };
-		DBFD3634E33E4F0FBE497FD4 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C308695E303D4413AFB82264 /* SessionTests.swift */; };
-		269A08BE9F57478283B4AF54 /* MeetMileageRateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */; };
+		65EE00052F001B7600B057B3 /* LodgingExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00062F001B7600B057B3 /* LodgingExpenseDetailView.swift */; };
+		65EE00072F001B7600B057B3 /* FeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00082F001B7600B057B3 /* FeeListView.swift */; };
+		65EE00092F001B7600B057B3 /* FeeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000A2F001B7600B057B3 /* FeeDetailView.swift */; };
+		65EE000B2F001B7600B057B3 /* AddJudgesToMeetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */; };
+		65EE000D2F001B7600B057B3 /* JudgeInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE000E2F001B7600B057B3 /* JudgeInvoiceView.swift */; };
 		65EE000F2F001B7600B057B3 /* ManagerMockingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE00102F001B7600B057B3 /* ManagerMockingTests.swift */; };
+		800DCE21EFB0483A9FBAD7AE /* CreateJudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655150D923729ADA00BED00A /* CreateJudgeView.swift */; };
+		D130C41A050E45FD8DF596E1 /* NawgjExpenseTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */; };
+		DBFD3634E33E4F0FBE497FD4 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C308695E303D4413AFB82264 /* SessionTests.swift */; };
+		E5E7BD5C944B47A3B32A76ED /* FeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E743A6EE9C08482C84440467 /* FeeTests.swift */; };
+		FC02D7FEAF6A4BD9ACFD174F /* MeetDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -244,16 +243,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		65EE000E2F001B7600B057B3 /* JudgeInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInvoiceView.swift; sourceTree = "<group>"; };
+		0217E152498C49ED86E3A6BF /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		32F49B12EC4F46D1B61D709F /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
 		650F7B8421D94C7800D5A632 /* MeetPDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetPDFCreator.swift; sourceTree = "<group>"; };
 		651C2D14278378CA000D802F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
 		651E4E9529AC90300078B346 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = images.xcassets; path = NawgjExpenseTracker/images.xcassets; sourceTree = SOURCE_ROOT; };
-		65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListView.swift; sourceTree = "<group>"; };
 		652236F721EFDD4C0024F1E6 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		652236F921EFED230024F1E6 /* MeetUIPrintPageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetUIPrintPageRender.swift; sourceTree = "<group>"; };
 		652236FC21F029950024F1E6 /* MeetListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListManager.swift; sourceTree = "<group>"; };
-		65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJudgesToMeetView.swift; sourceTree = "<group>"; };
-		65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListView.swift; sourceTree = "<group>"; };
 		655150D923729ADA00BED00A /* CreateJudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateJudgeView.swift; sourceTree = "<group>"; };
 		656EA4C521F686CC00DE4029 /* JudgeListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListManager.swift; sourceTree = "<group>"; };
 		656EA4C721F68A1200DE4029 /* JudgeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInfo.swift; sourceTree = "<group>"; };
@@ -441,11 +438,15 @@
 		65C0864029AD0D5500B1069D /* splat-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splat-29.png"; sourceTree = "<group>"; };
 		65C0864129AD0D5500B1069D /* splat-20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splat-20@2x.png"; sourceTree = "<group>"; };
 		65C386CB21BB77F70070D76B /* Fee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fee.swift; sourceTree = "<group>"; };
-		65EE00062F001B7600B057B3 /* LodgingExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodgingExpenseDetailView.swift; sourceTree = "<group>"; };
-		65DBC964217D5B320029C6AA /* Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D8C4E02E2D1B7600B057B3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		65D8C4E22E2D1B7600B057B3 /* SwiftUIHosting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIHosting.swift; sourceTree = "<group>"; };
+		65D8C4F12E2D1B7600B057B3 /* MeetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetListView.swift; sourceTree = "<group>"; };
+		65D8C4F32E2D1B7600B057B3 /* JudgeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeListView.swift; sourceTree = "<group>"; };
+		65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayDetailView.swift; sourceTree = "<group>"; };
+		65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetJudgeListView.swift; sourceTree = "<group>"; };
+		65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetJudgeDetailView.swift; sourceTree = "<group>"; };
+		65DBC964217D5B320029C6AA /* Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65DBC967217D5B320029C6AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65DBC969217D5B320029C6AA /* MeetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDetailView.swift; sourceTree = "<group>"; };
 		65DBC96C217D5B320029C6AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		65DBC973217D5B320029C6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -454,23 +455,20 @@
 		65DBC99E219347F20029C6AA /* MeetDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeetDay.swift; sourceTree = "<group>"; };
 		65DBC9A42193A1820029C6AA /* Judge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Judge.swift; sourceTree = "<group>"; };
 		65DBC9A62193A1BB0029C6AA /* Expense.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
-		65EE00082F001B7600B057B3 /* FeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeListView.swift; sourceTree = "<group>"; };
-		65EE000A2F001B7600B057B3 /* FeeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeDetailView.swift; sourceTree = "<group>"; };
 		65EE00012F001B7600B057B3 /* ExpensesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesListView.swift; sourceTree = "<group>"; };
 		65EE00042F001B7600B057B3 /* ExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailView.swift; sourceTree = "<group>"; };
-		65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetJudgeListView.swift; sourceTree = "<group>"; };
-		65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetJudgeDetailView.swift; sourceTree = "<group>"; };
-		65D8C5012E2D1B7600B057B3 /* MeetDayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayListView.swift; sourceTree = "<group>"; };
-		65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayDetailView.swift; sourceTree = "<group>"; };
-		0217E152498C49ED86E3A6BF /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		32F49B12EC4F46D1B61D709F /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
-		B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NawgjExpenseTrackerTests.swift; sourceTree = "<group>"; };
-		E743A6EE9C08482C84440467 /* FeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeTests.swift; sourceTree = "<group>"; };
-		9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTests.swift; sourceTree = "<group>"; };
-		FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayTests.swift; sourceTree = "<group>"; };
-		C308695E303D4413AFB82264 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
-		9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetMileageRateTests.swift; sourceTree = "<group>"; };
+		65EE00062F001B7600B057B3 /* LodgingExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodgingExpenseDetailView.swift; sourceTree = "<group>"; };
+		65EE00082F001B7600B057B3 /* FeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeListView.swift; sourceTree = "<group>"; };
+		65EE000A2F001B7600B057B3 /* FeeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeDetailView.swift; sourceTree = "<group>"; };
+		65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJudgesToMeetView.swift; sourceTree = "<group>"; };
+		65EE000E2F001B7600B057B3 /* JudgeInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JudgeInvoiceView.swift; sourceTree = "<group>"; };
 		65EE00102F001B7600B057B3 /* ManagerMockingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerMockingTests.swift; sourceTree = "<group>"; };
+		9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTests.swift; sourceTree = "<group>"; };
+		9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetMileageRateTests.swift; sourceTree = "<group>"; };
+		B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NawgjExpenseTrackerTests.swift; sourceTree = "<group>"; };
+		C308695E303D4413AFB82264 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
+		E743A6EE9C08482C84440467 /* FeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeTests.swift; sourceTree = "<group>"; };
+		FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetDayTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -495,6 +493,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		408B6B2754E94A9A92404FEA /* NawgjExpenseTrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */,
+				E743A6EE9C08482C84440467 /* FeeTests.swift */,
+				9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */,
+				FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */,
+				C308695E303D4413AFB82264 /* SessionTests.swift */,
+				9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */,
+				65EE00102F001B7600B057B3 /* ManagerMockingTests.swift */,
+			);
+			path = NawgjExpenseTrackerTests;
+			sourceTree = "<group>";
+		};
 		650F7B8321D94C4C00D5A632 /* PDFConversion */ = {
 			isa = PBXGroup;
 			children = (
@@ -1014,6 +1026,16 @@
 			path = AppIcon.appiconset;
 			sourceTree = "<group>";
 		};
+		65D8C5052E2D1B7600B057B3 /* MeetJudges */ = {
+			isa = PBXGroup;
+			children = (
+				65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */,
+				65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */,
+				65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */,
+			);
+			path = MeetJudges;
+			sourceTree = "<group>";
+		};
 		65DBC95B217D5B320029C6AA = {
 			isa = PBXGroup;
 			children = (
@@ -1021,20 +1043,6 @@
 				408B6B2754E94A9A92404FEA /* NawgjExpenseTrackerTests */,
 				65DBC965217D5B320029C6AA /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		408B6B2754E94A9A92404FEA /* NawgjExpenseTrackerTests */ = {
-			isa = PBXGroup;
-			children = (
-				B3EBD544351E408895B086FC /* NawgjExpenseTrackerTests.swift */,
-				E743A6EE9C08482C84440467 /* FeeTests.swift */,
-				9B4DC707842C48B2B41CEC6A /* ExpenseTests.swift */,
-				FAD92330951D49E89A8CBDB9 /* MeetDayTests.swift */,
-				C308695E303D4413AFB82264 /* SessionTests.swift */,
-				9DDD8851EB664D59B05D66E9 /* MeetMileageRateTests.swift */,
-				65EE00102F001B7600B057B3 /* ManagerMockingTests.swift */,
-			);
-			path = NawgjExpenseTrackerTests;
 			sourceTree = "<group>";
 		};
 		65DBC965217D5B320029C6AA /* Products */ = {
@@ -1116,21 +1124,10 @@
 		65EE306121A0C1900011B2B8 /* MeetDays */ = {
 			isa = PBXGroup;
 			children = (
-				65D8C5012E2D1B7600B057B3 /* MeetDayListView.swift */,
 				65D8C5032E2D1B7600B057B3 /* MeetDayDetailView.swift */,
 				32F49B12EC4F46D1B61D709F /* SessionDetailView.swift */,
 			);
 			path = MeetDays;
-			sourceTree = "<group>";
-		};
-		65D8C5052E2D1B7600B057B3 /* MeetJudges */ = {
-			isa = PBXGroup;
-			children = (
-				65D8C5062E2D1B7600B057B3 /* MeetJudgeListView.swift */,
-				65D8C5072E2D1B7600B057B3 /* MeetJudgeDetailView.swift */,
-				65EE000C2F001B7600B057B3 /* AddJudgesToMeetView.swift */,
-			);
-			path = MeetJudges;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1437,7 +1434,6 @@
 				652236FD21F029950024F1E6 /* MeetListManager.swift in Sources */,
 				65EE000D2F001B7600B057B3 /* JudgeInvoiceView.swift in Sources */,
 				65DBC988217EBB7F0029C6AA /* Meet.swift in Sources */,
-				65D8C5022E2D1B7600B057B3 /* MeetDayListView.swift in Sources */,
 				65EE00032F001B7600B057B3 /* ExpenseDetailView.swift in Sources */,
 				652236FA21EFED230024F1E6 /* MeetUIPrintPageRender.swift in Sources */,
 				656EA4C621F686CC00DE4029 /* JudgeListManager.swift in Sources */,

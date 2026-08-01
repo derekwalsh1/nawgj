@@ -82,7 +82,7 @@ struct MeetJudgeDetailView: View {
                     .onChange(of: name) { _ in persistChanges() }
 
                 Picker("Level", selection: $level) {
-                    ForEach(Judge.Level.selectableCases, id: \.self) { level in
+                    ForEach(levelPickerOptions, id: \.self) { level in
                         Text(level.description).tag(level)
                     }
                 }
@@ -251,5 +251,18 @@ struct MeetJudgeDetailView: View {
         persistChanges()
         let view = JudgeInvoiceView(judge: judge, meet: meet)
         pushViewController(UIHostingController(rootView: view))
+    }
+
+    /// The Level Picker's options. Normally just the current, selectable
+    /// levels - but if the judge being edited already has a legacy level
+    /// (e.g. imported from an older meet, before some levels were retired
+    /// from `selectableCases`), that level is prepended so the Picker has a
+    /// matching option for it instead of showing an invalid, undefined
+    /// selection. It stays selectable here only because it's already the
+    /// judge's current value; it still can't be picked fresh once changed
+    /// away from.
+    private var levelPickerOptions: [Judge.Level] {
+        let cases = Judge.Level.selectableCases
+        return cases.contains(level) ? cases : [level] + cases
     }
 }
