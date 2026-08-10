@@ -101,6 +101,41 @@ Track meets, expenses, and generate professional invoices. The essential tool fo
 
 ## What's New (4000 character limit - for version updates)
 
+Version 5.1
+
+Session Assignment Improvements
+• Judges are no longer auto-assigned when adding meet days or sessions
+• Assign judges manually per session with new Add All and Remove All controls
+• Session assignment checkmarks now update correctly after bulk changes
+
+Scheduling and Accuracy Updates
+• Prevents session time edits that would double-book assigned judges
+• Meet overview and meet day details now show assigned judge counts more accurately
+• Session assignments now persist correctly when you leave and reopen a meet
+
+Mileage and Level Updates
+• Added support for the July 1, 2026 federal mileage rate change to $0.76/mile
+• Removed the SixSeven judge level from new selections
+
+Thank you for using NAWGJ Expense Tracker!
+
+---
+
+Version 5.0
+
+Multiple Judging Sessions Per Day
+• Split any meet day into multiple concurrent sessions (e.g. separate floors, panels, or age divisions running at the same time)
+• Assign judges to the specific sessions they worked, with automatic hours and fee calculation per session
+• Existing meets automatically upgrade to the new format - no action needed
+
+Judge List Improvements
+• Fixed an issue where importing a large batch of judges could silently drop some entries
+• New "Remove All Judges" option (with confirmation) for quickly resetting your roster
+
+Thank you for using NAWGJ Expense Tracker!
+
+---
+
 Version 1.0 - Initial Release
 
 Welcome to NAWGJ Expense Tracker! This initial release includes:
