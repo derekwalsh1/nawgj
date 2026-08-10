@@ -177,7 +177,7 @@ class Judge: Codable {
         /// decodable `Level` values) so existing judges/meets keep displaying
         /// and billing at their original rate until explicitly changed.
         static let selectableCases: [Level] = [
-            .FourFiveX1R, .SixSeven, .EightXR, .LevelNine, .LevelTen, .N4, .N3, .B2N2, .B1N1,
+            .FourFiveX1R, .EightXR, .LevelNine, .LevelTen, .N4, .N3, .B2N2, .B1N1,
             .NGA_Local, .NGA_State, .NGA_Regional, .NGA_National, .NGA_Elite
         ]
     }

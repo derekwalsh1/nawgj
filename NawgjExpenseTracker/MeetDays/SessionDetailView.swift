@@ -36,16 +36,7 @@ struct SessionDetailView: View {
 
     @State private var showOverlapAlert = false
     @State private var overlapMessage = ""
-
-    /// In `.add` mode, judges are auto-assigned to the new session by
-    /// default (mirrors `Meet.addSession`'s behavior) - this tracks which
-    /// ones the user has opted the new session *out* of via the checklist
-    /// below, applied after the session/fees are created in `save()`.
-    @State private var excludedJudgeIDs: Set<ObjectIdentifier> = []
-
-    /// Bumped after any judge assignment change so the checklist section -
-    /// which reads directly from `meet.judges`/`judge.fees` rather than
-    /// local `@State` - redraws.
+    @State private var assignedJudgeIDs: Set<ObjectIdentifier> = []
     @State private var refreshToken = UUID()
 
     init(mode: Mode, meet: Meet, day: MeetDay, onFinish: @escaping () -> Void) {
@@ -85,8 +76,6 @@ struct SessionDetailView: View {
     var body: some View {
         Group {
             if case .add = mode {
-                // Add mode: no Cancel - the standard back button discards
-                // without saving, and "Add" saves and goes back.
                 formContent
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
@@ -97,9 +86,6 @@ struct SessionDetailView: View {
                         }
                     }
             } else {
-                // Edit mode: changes save live as fields change (see
-                // saveLiveIfEditing()), so there's no Cancel/Done - the
-                // standard back button is all that's needed.
                 formContent
             }
         }
@@ -150,6 +136,18 @@ struct SessionDetailView: View {
 
             if case .edit(let session) = mode {
                 Section("Judges Working This Session") {
+                    HStack {
+                        Button("Add All") {
+                            assignAllJudges(to: session)
+                        }
+                        .buttonStyle(.borderless)
+                        Spacer()
+                        Button("Remove All", role: .destructive) {
+                            unassignAllJudges(from: session)
+                        }
+                        .buttonStyle(.borderless)
+                    }
+
                     ForEach(meet.judges) { judge in
                         Button {
                             toggleJudge(judge, session: session)
@@ -158,7 +156,7 @@ struct SessionDetailView: View {
                                 Text(judge.name)
                                     .foregroundColor(.primary)
                                 Spacer()
-                                if isAssigned(judge, to: session) {
+                                if assignedJudgeIDs.contains(ObjectIdentifier(judge)) {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.accentColor)
                                 }
@@ -167,28 +165,6 @@ struct SessionDetailView: View {
                     }
                 }
                 .id(refreshToken)
-            } else if !meet.judges.isEmpty {
-                Section {
-                    ForEach(meet.judges) { judge in
-                        Button {
-                            toggleNewSessionJudge(judge)
-                        } label: {
-                            HStack {
-                                Text(judge.name)
-                                    .foregroundColor(.primary)
-                                Spacer()
-                                if !excludedJudgeIDs.contains(ObjectIdentifier(judge)) {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.accentColor)
-                                }
-                            }
-                        }
-                    }
-                } header: {
-                    Text("Judges Working This Session")
-                } footer: {
-                    Text("Every judge is included by default. Uncheck anyone who isn't working this session.")
-                }
             }
         }
         .navigationTitle(navigationTitle)
@@ -206,6 +182,10 @@ struct SessionDetailView: View {
         .alert(overlapMessage, isPresented: $showOverlapAlert) {
             Button("OK", role: .cancel) {}
         }
+        .onAppear {
+            syncAssignedJudgeIDs()
+            refreshToken = UUID()
+        }
     }
 
     @ViewBuilder
@@ -218,8 +198,6 @@ struct SessionDetailView: View {
         }
     }
 
-    // MARK: Derived display text
-
     private var navigationTitle: String {
         switch mode {
         case .add: return "Add Session"
@@ -227,21 +205,31 @@ struct SessionDetailView: View {
         }
     }
 
-    /// A throwaway `Session` built from the current in-progress field
-    /// values, used only to read the shared billing calculations.
     private var workingSession: Session {
         Session(name: name, startTime: startTime, endTime: endTime, breaks: breaks, breakTimeInMins: breakTimeInMins)
     }
-
-    // MARK: Judge checklist
 
     private func isAssigned(_ judge: Judge, to session: Session) -> Bool {
         judge.fees.contains(where: { $0.getSessionUUID() == session.getUUID() })
     }
 
+    private func syncAssignedJudgeIDs() {
+        guard case .edit(let session) = mode else {
+            assignedJudgeIDs = []
+            return
+        }
+
+        assignedJudgeIDs = Set(
+            meet.judges.compactMap { judge in
+                isAssigned(judge, to: session) ? ObjectIdentifier(judge) : nil
+            }
+        )
+    }
+
     private func toggleJudge(_ judge: Judge, session: Session) {
         if isAssigned(judge, to: session) {
             MeetListManager.GetInstance().unassignJudge(judge, from: session)
+            assignedJudgeIDs.remove(ObjectIdentifier(judge))
         } else {
             let result = MeetListManager.GetInstance().assignJudge(judge, to: session, in: day)
             if case .failure(let error) = result {
@@ -250,39 +238,83 @@ struct SessionDetailView: View {
                     overlapMessage = "\(judge.name) is already assigned to \"\(conflict.name)\", which overlaps this session's time."
                     showOverlapAlert = true
                 }
+            } else {
+                assignedJudgeIDs.insert(ObjectIdentifier(judge))
             }
         }
         refreshToken = UUID()
     }
 
-    /// Toggles a judge's inclusion in a brand-new (not-yet-created) session.
-    private func toggleNewSessionJudge(_ judge: Judge) {
-        let id = ObjectIdentifier(judge)
-        if excludedJudgeIDs.contains(id) {
-            excludedJudgeIDs.remove(id)
-        } else {
-            excludedJudgeIDs.insert(id)
+    private func assignAllJudges(to session: Session) {
+        var conflicts: [String] = []
+
+        for judge in meet.judges where !isAssigned(judge, to: session) {
+            let result = MeetListManager.GetInstance().assignJudge(judge, to: session, in: day)
+            if case .failure(let error) = result {
+                switch error {
+                case .overlappingSession(let conflict):
+                    conflicts.append("\(judge.name) with \"\(conflict.name)\"")
+                }
+            } else {
+                assignedJudgeIDs.insert(ObjectIdentifier(judge))
+            }
         }
+
+        if !conflicts.isEmpty {
+            overlapMessage = "Could not assign:\n" + conflicts.joined(separator: "\n")
+            showOverlapAlert = true
+        }
+
+        refreshToken = UUID()
     }
 
-    // MARK: Save
+    private func unassignAllJudges(from session: Session) {
+        for judge in meet.judges where isAssigned(judge, to: session) {
+            MeetListManager.GetInstance().unassignJudge(judge, from: session)
+            assignedJudgeIDs.remove(ObjectIdentifier(judge))
+        }
+        refreshToken = UUID()
+    }
 
     private func save() {
         guard case .add = mode else { return }
         let sessionName = name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Session.DEFAULT_NAME : name
         let newSession = Session(name: sessionName, startTime: startTime, endTime: endTime, breaks: breaks, breakTimeInMins: breakTimeInMins)
         MeetListManager.GetInstance().addSession(session: newSession, to: day)
-        for judge in meet.judges where excludedJudgeIDs.contains(ObjectIdentifier(judge)) {
-            MeetListManager.GetInstance().unassignJudge(judge, from: newSession)
-        }
     }
 
-    /// Saves field edits immediately as they change (edit mode only) -
-    /// mirrors `MeetDayDetailView`'s `checkForDateCollision` live-save
-    /// pattern, since there's no Done button in edit mode anymore.
     private func saveLiveIfEditing() {
         guard case .edit(let session) = mode else { return }
         let sessionName = name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Session.DEFAULT_NAME : name
+
+        let candidate = Session(
+            name: sessionName,
+            startTime: startTime,
+            endTime: endTime,
+            breaks: breaks,
+            breakTimeInMins: breakTimeInMins,
+            uuid: session.getUUID()
+        )
+
+        let validation = MeetListManager.GetInstance().validateSessionChange(candidate, in: day)
+        if case .failure(let error) = validation {
+            name = session.name
+            startTime = session.startTime
+            endTime = session.endTime
+            breaks = session.breaks
+            breakTimeInMins = session.breakTimeInMins ?? MeetDay.DEFAULT_BREAK_TIME_MINS
+
+            switch error {
+            case .overlappingAssignments(let conflicts):
+                let lines = conflicts.map { conflict in
+                    "\(conflict.judgeName) with \"\(conflict.conflictingSessionName)\""
+                }
+                overlapMessage = "This change would double-book:\n" + lines.joined(separator: "\n")
+            }
+            showOverlapAlert = true
+            return
+        }
+
         session.name = sessionName
         session.startTime = startTime
         session.endTime = endTime

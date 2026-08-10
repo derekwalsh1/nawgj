@@ -15,48 +15,54 @@ import os.log
 /// calculations such as total hours, total costs, and mileage rate lookup.
 /// It is `Codable` so it can be serialized/deserialized for persistence.
 class Meet: Codable {
+
+    struct SessionOverlapConflict: Equatable {
+        let judgeName: String
+        let conflictingSessionName: String
+    }
     
-    /// Federal mileage rates keyed by year. Used to determine mileage reimbursement.
-    static let FED_MILEAGE_RATES: [Int: Float] = [
-        2016 : 0.54,
-        2017 : 0.535,
-        2018 : 0.545,
-        2019 : 0.58,
-        2020 : 0.575,
-        2021 : 0.56,
-        2022 : 0.625,
-        2023 : 0.655,
-        2024 : 0.67,
-        2025 : 0.70,
-        2026 : 0.725,
-        2027 : 0.76
+    /// Federal mileage rates keyed by the date each rate took effect.
+    static let FED_MILEAGE_RATE_SCHEDULE: [(effectiveDate: Date, rate: Float)] = [
+        (effectiveDate: makeMileageRateDate(year: 2016, month: 1, day: 1), rate: 0.54),
+        (effectiveDate: makeMileageRateDate(year: 2017, month: 1, day: 1), rate: 0.535),
+        (effectiveDate: makeMileageRateDate(year: 2018, month: 1, day: 1), rate: 0.545),
+        (effectiveDate: makeMileageRateDate(year: 2019, month: 1, day: 1), rate: 0.58),
+        (effectiveDate: makeMileageRateDate(year: 2020, month: 1, day: 1), rate: 0.575),
+        (effectiveDate: makeMileageRateDate(year: 2021, month: 1, day: 1), rate: 0.56),
+        (effectiveDate: makeMileageRateDate(year: 2022, month: 1, day: 1), rate: 0.625),
+        (effectiveDate: makeMileageRateDate(year: 2023, month: 1, day: 1), rate: 0.655),
+        (effectiveDate: makeMileageRateDate(year: 2024, month: 1, day: 1), rate: 0.67),
+        (effectiveDate: makeMileageRateDate(year: 2025, month: 1, day: 1), rate: 0.70),
+        (effectiveDate: makeMileageRateDate(year: 2026, month: 1, day: 1), rate: 0.725),
+        (effectiveDate: makeMileageRateDate(year: 2026, month: 7, day: 1), rate: 0.76)
     ]
     
     /// Maximum daily expense considered expensible for a single-room request.
     /// Stored as `Float` to match other monetary calculations in the model.
     static let SINGLE_ROOM_REQUEST_MAX_DAILY_EXPENSE_DOLLARS: Float = 107.0
     
-    /// Returns the mileage rate for a given date using the table above.
-    /// If an exact year match isn't found this function returns the most
-    /// recent rate for a year <= the requested year. If there is no earlier
-    /// rate (requested year is before our table), the earliest available rate
-    /// is returned.
+    private static func makeMileageRateDate(year: Int, month: Int, day: Int) -> Date {
+        var components = DateComponents()
+        components.calendar = Calendar(identifier: .gregorian)
+        components.year = year
+        components.month = month
+        components.day = day
+        return components.date!
+    }
+
+    /// Returns the mileage rate for a given date using the schedule above.
+    /// If there is no exact change-date match this function returns the most
+    /// recent rate whose effective date is <= the requested date. If there is
+    /// no earlier rate (requested date is before our table), the earliest
+    /// available rate is returned.
     static func getMileageRate(forDate: Date) -> Float {
-        let yearComponent = Calendar.current.component(.year, from: forDate)
-
-        // Exact match
-        if let rate = Meet.FED_MILEAGE_RATES[yearComponent] {
-            return rate
+        if let best = Meet.FED_MILEAGE_RATE_SCHEDULE
+            .filter({ $0.effectiveDate <= forDate })
+            .max(by: { $0.effectiveDate < $1.effectiveDate }) {
+            return best.rate
         }
 
-        // Pick the largest year <= requested year
-        let candidates = Meet.FED_MILEAGE_RATES.filter { $0.key <= yearComponent }
-        if let best = candidates.max(by: { $0.key < $1.key }) {
-            return best.value
-        }
-
-        // If none are <= requested year, fall back to the earliest available rate
-        return Meet.FED_MILEAGE_RATES.min(by: { $0.key < $1.key })?.value ?? 0.725
+        return Meet.FED_MILEAGE_RATE_SCHEDULE.min(by: { $0.effectiveDate < $1.effectiveDate })?.rate ?? 0.76
     }
     
     // MARK: Properties
@@ -134,44 +140,16 @@ class Meet: Codable {
         return totalHours
     }
     
-    /// Add a meet day and append corresponding fees to each judge, one per
-    /// session on that day. Fee creation is failable; failures are logged
-    /// and skipped rather than force-unwrapping, avoiding runtime crashes.
+    /// Add a meet day without assigning any judges to that day's sessions.
+    /// Judges must be assigned manually per session after the day is added.
     func addMeetDay(day: MeetDay) {
         self.days.append(day)
-        for session in day.sessions {
-            addFeesForNewSession(session, in: day)
-        }
     }
 
-    /// Creates a fee for every existing meet judge for a newly-added
-    /// session. Used both by `addMeetDay` (a new day's default session) and
-    /// unconditionally by callers that don't need the overlap check (a
-    /// brand-new day/session can't yet have any conflicting assignments).
-    private func addFeesForNewSession(_ session: Session, in day: MeetDay) {
-        for judge in self.judges {
-            if let fee = Fee(date: day.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
-                judge.fees.append(fee)
-            } else {
-                os_log("Failed to create Fee for judge %{public}@ on date %{public}@", log: OSLog.default, type: .error, judge.name, String(describing: day.meetDate))
-            }
-        }
-    }
-
-    /// Adds a new session to `day`. Every existing meet judge is
-    /// auto-assigned (a fee is created) *unless* they already have an
-    /// overlapping session on that day, in which case they're skipped and
-    /// returned to the caller so the UI can surface who wasn't included.
-    @discardableResult
-    func addSession(_ session: Session, to day: MeetDay) -> [Judge] {
+    /// Adds a new session to `day` without assigning any judges to it.
+    /// Judges must be assigned manually after the session is created.
+    func addSession(_ session: Session, to day: MeetDay) {
         day.sessions.append(session)
-        var skippedJudges: [Judge] = []
-        for judge in judges {
-            if case .failure = assignJudge(judge, to: session, in: day) {
-                skippedJudges.append(judge)
-            }
-        }
-        return skippedJudges
     }
 
     /// Removes a session from `day`, and any fees tied to it. Refuses to
@@ -196,6 +174,12 @@ class Meet: Codable {
         /// candidate session's time range (a judge can't work two
         /// concurrent sessions).
         case overlappingSession(Session)
+    }
+
+    enum SessionChangeError: Error {
+        /// One or more currently-assigned judges would become double-booked
+        /// if this session's new time range were saved.
+        case overlappingAssignments([SessionOverlapConflict])
     }
 
     /// Assigns `judge` to `session` (creates a fee), validating that they
@@ -228,11 +212,37 @@ class Meet: Codable {
     /// `judge` is already assigned to and that overlaps `candidate`'s time
     /// range, if any.
     private func conflictingSession(for judge: Judge, in day: MeetDay, candidate: Session) -> Session? {
-        day.sessions.first { other in
+        let candidateUUID = candidate.getUUID()
+        return day.sessions.first { other in
             other !== candidate
+                && other.getUUID() != candidateUUID
                 && other.overlaps(with: candidate)
                 && judge.fees.contains(where: { $0.getSessionUUID() == other.getUUID() })
         }
+    }
+
+    /// Validates a proposed session edit before it is applied to the live
+    /// `Session` object. This allows UI callers to reject time changes that
+    /// would double-book already-assigned judges without mutating model state.
+    @discardableResult
+    func validateSessionChange(_ session: Session, in day: MeetDay) -> Result<Void, SessionChangeError> {
+        guard days.contains(where: { $0 === day }) else { return .success(()) }
+
+        let conflicts = judges.compactMap { judge -> SessionOverlapConflict? in
+            guard judge.fees.contains(where: { $0.getSessionUUID() == session.getUUID() }) else {
+                return nil
+            }
+            guard let conflict = conflictingSession(for: judge, in: day, candidate: session) else {
+                return nil
+            }
+            return SessionOverlapConflict(judgeName: judge.name, conflictingSessionName: conflict.name)
+        }
+
+        if conflicts.isEmpty {
+            return .success(())
+        }
+
+        return .failure(.overlappingAssignments(conflicts))
     }
     
     /// Add a judge to the meet and append fees for every session on every
@@ -268,9 +278,9 @@ class Meet: Codable {
         }
     }
 
-    /// Called when a session's own time range/breaks changed; re-syncs the
-    /// hours (and date) of the one fee each judge has for that specific
-    /// session.
+    /// Called when a session's own time range/breaks changed after validation
+    /// has already succeeded; re-syncs the hours (and date) of the one fee
+    /// each judge has for that specific session.
     func sessionChanged(_ session: Session, in day: MeetDay){
         guard days.contains(where: { $0 === day }) else { return }
         let sessionUUID = session.getUUID()
@@ -336,6 +346,14 @@ class Meet: Codable {
             total += judgesFeeForDay(dayIndex: dayIndex, judge: judge)
         }
         return total
+    }
+
+    func assignedJudgeCountForDay(dayIndex: Int) -> Int {
+        guard days.indices.contains(dayIndex) else { return 0 }
+        let dayUUID = days[dayIndex].getUUID()
+        return judges.filter { judge in
+            judge.fees.contains(where: { $0.getMeetDayUUID() == dayUUID })
+        }.count
     }
     
     func totalBillableJudgeHours() -> Float{

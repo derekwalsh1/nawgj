@@ -153,6 +153,12 @@ final class MockMeetListManager: MeetListManaging {
         saveMeets()
     }
 
+    @discardableResult
+    func validateSessionChange(_ session: Session, in day: MeetDay) -> Result<Void, Meet.SessionChangeError> {
+        guard let meet = getSelectedMeet() else { return .success(()) }
+        return meet.validateSessionChange(session, in: day)
+    }
+
     func sessionChanged(_ session: Session, in day: MeetDay) {
         getSelectedMeet()?.sessionChanged(session, in: day)
         saveMeets()
@@ -217,6 +223,194 @@ final class MockMeetListManager: MeetListManaging {
     }
 
     func importMeet(fromFile: URL?) {}
+}
+
+final class MeetSessionAssignmentTests: XCTestCase {
+
+    private func date(year: Int, month: Int, day: Int, hour: Int, minute: Int) -> Date {
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        components.day = day
+        components.hour = hour
+        components.minute = minute
+        return Calendar.current.date(from: components)!
+    }
+
+    func testAddSession_doesNotAutoAssignExistingJudges() {
+        let meetDate = date(year: 2026, month: 8, day: 1, hour: 0, minute: 0)
+        let originalSession = Session(
+            name: "Session 1",
+            startTime: date(year: 2026, month: 8, day: 1, hour: 8, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 1, hour: 11, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+        let meetDay = MeetDay(meetDate: meetDate, sessions: [originalSession], id: UUID().uuidString)
+        let existingFee = Fee(
+            date: meetDate,
+            hours: originalSession.totalBillableTimeInHours(),
+            rate: Judge.Level.LevelNine.rate,
+            notes: "",
+            meetDayUUID: meetDay.getUUID(),
+            sessionUUID: originalSession.getUUID()
+        )!
+        let judge = Judge(name: "Judge 1", level: .LevelNine, expenses: [], fees: [existingFee])
+        let meet = Meet(name: "Meet", days: [meetDay], judges: [judge], startDate: meetDate, meetDescription: nil, location: nil)!
+
+        let newSession = Session(
+            name: "Session 2",
+            startTime: date(year: 2026, month: 8, day: 1, hour: 12, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 1, hour: 15, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+
+        meet.addSession(newSession, to: meetDay)
+
+        XCTAssertEqual(meetDay.sessions.count, 2)
+        XCTAssertEqual(judge.fees.count, 1)
+        XCTAssertFalse(judge.fees.contains(where: { $0.getSessionUUID() == newSession.getUUID() }))
+    }
+
+    func testAddMeetDay_doesNotAutoAssignExistingJudgesToInitialSession() {
+        let meetDate = date(year: 2026, month: 8, day: 1, hour: 0, minute: 0)
+        let existingSession = Session(
+            name: "Session 1",
+            startTime: date(year: 2026, month: 8, day: 1, hour: 8, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 1, hour: 11, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+        let existingDay = MeetDay(meetDate: meetDate, sessions: [existingSession], id: UUID().uuidString)
+        let existingFee = Fee(
+            date: meetDate,
+            hours: existingSession.totalBillableTimeInHours(),
+            rate: Judge.Level.LevelNine.rate,
+            notes: "",
+            meetDayUUID: existingDay.getUUID(),
+            sessionUUID: existingSession.getUUID()
+        )!
+        let judge = Judge(name: "Judge 1", level: .LevelNine, expenses: [], fees: [existingFee])
+        let meet = Meet(name: "Meet", days: [existingDay], judges: [judge], startDate: meetDate, meetDescription: nil, location: nil)!
+
+        let newDayDate = date(year: 2026, month: 8, day: 2, hour: 0, minute: 0)
+        let initialSession = Session(
+            name: "Session 1",
+            startTime: date(year: 2026, month: 8, day: 2, hour: 8, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 2, hour: 11, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+        let newDay = MeetDay(meetDate: newDayDate, sessions: [initialSession], id: UUID().uuidString)
+
+        meet.addMeetDay(day: newDay)
+
+        XCTAssertEqual(meet.days.count, 2)
+        XCTAssertEqual(judge.fees.count, 1)
+        XCTAssertFalse(judge.fees.contains(where: { $0.getSessionUUID() == initialSession.getUUID() }))
+    }
+
+    func testValidateSessionChange_failsWhenAssignedJudgeWouldBeDoubleBooked() {
+        let meetDate = date(year: 2026, month: 8, day: 1, hour: 0, minute: 0)
+        let morningSession = Session(
+            name: "Morning",
+            startTime: date(year: 2026, month: 8, day: 1, hour: 8, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 1, hour: 10, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+        let afternoonSession = Session(
+            name: "Afternoon",
+            startTime: date(year: 2026, month: 8, day: 1, hour: 11, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 1, hour: 13, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+        let meetDay = MeetDay(meetDate: meetDate, sessions: [morningSession, afternoonSession], id: UUID().uuidString)
+        let morningFee = Fee(
+            date: meetDate,
+            hours: morningSession.totalBillableTimeInHours(),
+            rate: Judge.Level.LevelNine.rate,
+            notes: "",
+            meetDayUUID: meetDay.getUUID(),
+            sessionUUID: morningSession.getUUID()
+        )!
+        let afternoonFee = Fee(
+            date: meetDate,
+            hours: afternoonSession.totalBillableTimeInHours(),
+            rate: Judge.Level.LevelNine.rate,
+            notes: "",
+            meetDayUUID: meetDay.getUUID(),
+            sessionUUID: afternoonSession.getUUID()
+        )!
+        let judge = Judge(name: "Judge 1", level: .LevelNine, expenses: [], fees: [morningFee, afternoonFee])
+        let meet = Meet(name: "Meet", days: [meetDay], judges: [judge], startDate: meetDate, meetDescription: nil, location: nil)!
+
+        let editedMorningSession = Session(
+            name: "Morning",
+            startTime: date(year: 2026, month: 8, day: 1, hour: 9, minute: 30),
+            endTime: date(year: 2026, month: 8, day: 1, hour: 12, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS,
+            uuid: morningSession.getUUID()
+        )
+
+        let result = meet.validateSessionChange(editedMorningSession, in: meetDay)
+
+        switch result {
+        case .success:
+            XCTFail("Expected session edit validation to fail for overlapping assigned sessions")
+        case .failure(.overlappingAssignments(let conflicts)):
+            XCTAssertEqual(conflicts, [Meet.SessionOverlapConflict(judgeName: "Judge 1", conflictingSessionName: "Afternoon")])
+        }
+    }
+
+    func testAssignedJudgeCountForDay_countsOnlyJudgesAssignedToThatDay() {
+        let dayOneDate = date(year: 2026, month: 8, day: 1, hour: 0, minute: 0)
+        let dayTwoDate = date(year: 2026, month: 8, day: 2, hour: 0, minute: 0)
+        let dayOneSession = Session(
+            name: "Day 1",
+            startTime: date(year: 2026, month: 8, day: 1, hour: 8, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 1, hour: 11, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+        let dayTwoSession = Session(
+            name: "Day 2",
+            startTime: date(year: 2026, month: 8, day: 2, hour: 8, minute: 0),
+            endTime: date(year: 2026, month: 8, day: 2, hour: 11, minute: 0),
+            breaks: 0,
+            breakTimeInMins: MeetDay.DEFAULT_BREAK_TIME_MINS
+        )
+        let dayOne = MeetDay(meetDate: dayOneDate, sessions: [dayOneSession], id: UUID().uuidString)
+        let dayTwo = MeetDay(meetDate: dayTwoDate, sessions: [dayTwoSession], id: UUID().uuidString)
+
+        let dayOneFee = Fee(
+            date: dayOneDate,
+            hours: dayOneSession.totalBillableTimeInHours(),
+            rate: Judge.Level.LevelNine.rate,
+            notes: "",
+            meetDayUUID: dayOne.getUUID(),
+            sessionUUID: dayOneSession.getUUID()
+        )!
+        let dayTwoFee = Fee(
+            date: dayTwoDate,
+            hours: dayTwoSession.totalBillableTimeInHours(),
+            rate: Judge.Level.LevelNine.rate,
+            notes: "",
+            meetDayUUID: dayTwo.getUUID(),
+            sessionUUID: dayTwoSession.getUUID()
+        )!
+
+        let dayOneJudge = Judge(name: "Judge 1", level: .LevelNine, expenses: [], fees: [dayOneFee])
+        let dayTwoJudge = Judge(name: "Judge 2", level: .LevelNine, expenses: [], fees: [dayTwoFee])
+        let unassignedJudge = Judge(name: "Judge 3", level: .LevelNine, expenses: [], fees: [])
+        let meet = Meet(name: "Meet", days: [dayOne, dayTwo], judges: [dayOneJudge, dayTwoJudge, unassignedJudge], startDate: dayOneDate, meetDescription: nil, location: nil)!
+
+        XCTAssertEqual(meet.assignedJudgeCountForDay(dayIndex: 0), 1)
+        XCTAssertEqual(meet.assignedJudgeCountForDay(dayIndex: 1), 1)
+    }
 }
 
 final class ManagerMockingTests: XCTestCase {

@@ -57,6 +57,6 @@ final class ExpenseTests: XCTestCase {
         let date = Calendar.current.date(from: components)!
 
         let expense = Expense(type: .Mileage, amount: 10.0, notes: "", date: date)
-        XCTAssertEqual(expense.mileageRate, Meet.FED_MILEAGE_RATES[2024])
+        XCTAssertEqual(expense.mileageRate, Meet.getMileageRate(forDate: date))
     }
 }

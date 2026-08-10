@@ -253,7 +253,7 @@ struct MeetDetailView: View {
 
             HStack(spacing: 12) {
                 Label(String(format: "%0.1f hrs", day.totalBillableTimeInHours()), systemImage: "clock")
-                Label("\(meet.judges.count)", systemImage: "person.2")
+                Label("\(meet.assignedJudgeCountForDay(dayIndex: dayIndex))", systemImage: "person.2")
             }
             .font(.caption2)
             .foregroundColor(.secondary)

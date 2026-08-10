@@ -191,6 +191,9 @@ struct MeetDayDetailView: View {
                 Text("\(timeFormatter.string(from: session.startTime)) – \(timeFormatter.string(from: session.endTime))")
                     .font(.caption)
                     .foregroundColor(.secondary)
+                Text(judgeCountText(for: session))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 Text(String(format: "%.2f Billable Hours", session.totalBillableTimeInHours()))
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -202,6 +205,13 @@ struct MeetDayDetailView: View {
         }
         .padding(.vertical, 4)
         .contentShape(Rectangle())
+    }
+
+    private func judgeCountText(for session: Session) -> String {
+        let judgeCount = meet.judges.filter { judge in
+            judge.fees.contains(where: { $0.getSessionUUID() == session.getUUID() })
+        }.count
+        return judgeCount == 1 ? "1 Judge Assigned" : "\(judgeCount) Judges Assigned"
     }
 
     @ViewBuilder

@@ -35,6 +35,8 @@ protocol MeetListManaging: AnyObject {
     @discardableResult
     func assignJudge(_ judge: Judge, to session: Session, in day: MeetDay) -> Result<Void, Meet.SessionAssignmentError>
     func unassignJudge(_ judge: Judge, from session: Session)
+    @discardableResult
+    func validateSessionChange(_ session: Session, in day: MeetDay) -> Result<Void, Meet.SessionChangeError>
     func sessionChanged(_ session: Session, in day: MeetDay)
     func updateSelectedMeetWith(meet: Meet)
     func updateSelectedMeetDayWith(meetDay: MeetDay)
@@ -125,9 +127,9 @@ class MeetListManager: MeetListManaging {
 
     /// Decodes the meets archive and runs the same meet-day/session/fee
     /// synchronization performed by `loadMeets()` (ensures every meet day,
-    /// session, and judge fee has a UUID, and that judges have a fee entry
-    /// for every session of every meet day). Shared by both the sync and
-    /// async load paths.
+    /// session, and judge fee has a UUID, while preserving whatever
+    /// session-level judge assignments were actually saved). Shared by both
+    /// the sync and async load paths.
     private static func decodeAndNormalizeMeets(from data: Data) throws -> [Meet] {
         let decodedMeets = try JSONDecoder().decode([Meet].self, from: data)
         decodedMeets.forEach(normalizeMeet)
@@ -135,9 +137,9 @@ class MeetListManager: MeetListManaging {
     }
 
     /// Runs the meet-day/session/fee synchronization needed for a single
-    /// decoded `Meet` (ensures every meet day, session, and judge fee has a
-    /// UUID, and that judges have a fee entry for every session of every
-    /// meet day). This is what allows meets exported from older app
+    /// decoded `Meet` (ensures every meet day, session, and existing judge
+    /// fee has a UUID, without synthesizing new assignments for sessions
+    /// that were intentionally left unassigned). This is what allows meets exported from older app
     /// versions - before Sessions existed, or even before per-fee session
     /// UUIDs existed - to import and load correctly. Used by both
     /// `decodeAndNormalizeMeets(from:)` (app's own archive) and
@@ -195,19 +197,6 @@ class MeetListManager: MeetListManaging {
                 }
             }
 
-            // Run through the list and find any (day, session) pair
-            // without a corresponding fee for it in the judge's fee list
-            // and add a fee entry.
-            for meetDay in meet.days{
-                for session in meetDay.sessions{
-                    if !judge.fees.contains(where: {$0.getSessionUUID() == session.getUUID()}){
-                        // Add a new fee to the judges fees list corresponding to this session
-                        if let fee = Fee(date: meetDay.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: nil, meetDayUUID: meetDay.getUUID(), sessionUUID: session.getUUID()){
-                            judge.fees.append(fee)
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -302,6 +291,12 @@ class MeetListManager: MeetListManaging {
             meet.unassignJudge(judge, from: session)
             saveMeets()
         }
+    }
+
+    @discardableResult
+    func validateSessionChange(_ session: Session, in day: MeetDay) -> Result<Void, Meet.SessionChangeError> {
+        guard let meet = getSelectedMeet() else { return .success(()) }
+        return meet.validateSessionChange(session, in: day)
     }
     
     func sessionChanged(_ session: Session, in day: MeetDay){
