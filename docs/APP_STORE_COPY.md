@@ -101,6 +101,22 @@ Track meets, expenses, and generate professional invoices. The essential tool fo
 
 ## What's New (4000 character limit - for version updates)
 
+Version 5.2
+
+Judge List Reliability Fixes
+• Fixed a bug where newly added or edited judges could silently fail to save, especially when adding more than one judge in a row
+• Fixed an issue where creating a new judge while adding judges to a meet could show an empty list instead of the judge you just created
+
+Judge List Improvements
+• Creating a new judge while adding judges to a meet now adds them to that meet automatically
+• The "Select Judges" screen now shows judges already added to the meet at the top with a checkmark
+• Added a new Settings screen (gear icon) with a toggle for automatically adding judges found in your meets to the Judge List - off by default
+• Added a tip on the meet's Judges screen about long-press to remove a judge
+
+Thank you for using NAWGJ Expense Tracker!
+
+---
+
 Version 5.1
 
 Session Assignment Improvements
