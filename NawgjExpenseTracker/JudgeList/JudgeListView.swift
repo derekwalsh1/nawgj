@@ -160,7 +160,7 @@ struct JudgeListView: View {
     // MARK: Actions
 
     private func addJudge() {
-        let createJudgeView = CreateJudgeView(mode: .create) {
+        let createJudgeView = CreateJudgeView(mode: .create) { _ in
             popViewController()
             refreshJudges()
         }
@@ -170,7 +170,7 @@ struct JudgeListView: View {
     private func editJudge(_ judgeInfo: JudgeInfo) {
         guard let index = JudgeListManager.GetInstance().judges?.firstIndex(where: { $0 === judgeInfo }) else { return }
         JudgeListManager.GetInstance().selectJudgeInfoAt(index)
-        let createJudgeView = CreateJudgeView(mode: .edit(judgeInfo)) {
+        let createJudgeView = CreateJudgeView(mode: .edit(judgeInfo)) { _ in
             popViewController()
             refreshJudges()
         }

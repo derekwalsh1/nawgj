@@ -53,31 +53,36 @@ struct MeetJudgeListView: View {
     }
 
     var body: some View {
-        ScrollView {
-            if filteredJudges.isEmpty {
-                emptyState
-                    .padding(.top, 60)
-            } else {
-                LazyVGrid(columns: gridColumns, spacing: 16) {
-                    ForEach(filteredJudges) { judge in
-                        Button {
-                            editJudge(judge)
-                        } label: {
-                            tile(for: judge)
-                        }
-                        .buttonStyle(.plain)
-                        .contextMenu {
-                            Button(role: .destructive) {
-                                delete(judge)
+        VStack(spacing: 0) {
+            tipBanner
+
+            ScrollView {
+                if filteredJudges.isEmpty {
+                    emptyState
+                        .padding(.top, 60)
+                } else {
+                    LazyVGrid(columns: gridColumns, spacing: 16) {
+                        ForEach(filteredJudges) { judge in
+                            Button {
+                                editJudge(judge)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                tile(for: judge)
+                            }
+                            .buttonStyle(.plain)
+                            .contextMenu {
+                                Button(role: .destructive) {
+                                    delete(judge)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
                             }
                         }
                     }
+                    .padding()
                 }
-                .padding()
             }
         }
+        .background(InteractivePopGestureDisabler())
         .navigationTitle("Judges")
         .searchable(text: $searchText, prompt: "Search Judges")
         .toolbar {
@@ -92,6 +97,16 @@ struct MeetJudgeListView: View {
         .onAppear {
             refreshJudges()
         }
+    }
+
+    private var tipBanner: some View {
+        Label("Long-press a judge to remove them from this meet.", systemImage: "hand.tap")
+            .font(.footnote)
+            .foregroundColor(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .background(Color(.secondarySystemBackground))
     }
 
     // MARK: Tile
@@ -204,6 +219,33 @@ struct MeetJudgeListView: View {
         MeetListManager.GetInstance().removeJudgeAt(index: index)
         judges = meet.judges
     }
+}
+
+/// Disables the navigation controller's interactive edge-swipe-to-go-back
+/// gesture while this screen is visible. The grid's tiles use a long-press
+/// `.contextMenu` to delete a judge, and that long-press gesture competes
+/// with the system's edge-swipe-back gesture for touches near the leading
+/// edge (most noticeable on the grid's leftmost column), which can log
+/// "Gesture: System gesture gate timed out" and make the context menu feel
+/// unresponsive. Tapping the back button still works as normal.
+private struct InteractivePopGestureDisabler: UIViewControllerRepresentable {
+    final class ViewController: UIViewController {
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        }
+
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        }
+    }
+
+    func makeUIViewController(context: Context) -> ViewController {
+        ViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: ViewController, context: Context) {}
 }
 
 /// `Judge` is a plain `Codable` class with no natural stable identifier, so

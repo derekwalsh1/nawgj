@@ -195,6 +195,13 @@ class JudgeListManager: JudgeListManaging {
     }
 
     func addJudge(_ judgeInfo: JudgeInfo) -> Bool {
+        // Guard against `judges` still being nil (e.g. called before the
+        // initial load finished): without this, `judges?.append` below is a
+        // silent no-op, yet this method would still report success and the
+        // new judge would never actually be persisted.
+        if judges == nil {
+            loadJudges()
+        }
         var judgeAdded = false
         if self.indexOfJudge(judgeInfo) < 0{
             judges?.append(judgeInfo)

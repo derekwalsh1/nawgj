@@ -31,16 +31,16 @@ struct CreateJudgeView: View {
 
     let mode: Mode
 
-    /// Called when the user taps Cancel or Save (after the judge, if any,
-    /// has already been added/updated). The caller is responsible for
-    /// popping the screen and refreshing its judge list.
-    let onFinish: () -> Void
+    /// Called after Save, with the judge that was just created/updated.
+    /// The caller is responsible for popping the screen and refreshing its
+    /// judge list (and, if relevant, acting on the saved judge).
+    let onFinish: (JudgeInfo) -> Void
 
     @State private var name: String
     @State private var selectedLevel: Judge.Level
     @FocusState private var nameFieldFocused: Bool
 
-    init(mode: Mode, onFinish: @escaping () -> Void) {
+    init(mode: Mode, onFinish: @escaping (JudgeInfo) -> Void) {
         self.mode = mode
         self.onFinish = onFinish
         switch mode {
@@ -100,8 +100,9 @@ struct CreateJudgeView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    saveIfPossible()
-                    onFinish()
+                    if let savedJudgeInfo = saveIfPossible() {
+                        onFinish(savedJudgeInfo)
+                    }
                 }
                 .disabled(!canSave)
             }
@@ -150,8 +151,8 @@ struct CreateJudgeView: View {
         !trimmedName.isEmpty && !isDuplicateJudge
     }
 
-    private func saveIfPossible() {
-        guard canSave else { return }
+    private func saveIfPossible() -> JudgeInfo? {
+        guard canSave else { return nil }
         let judgeInfo = JudgeInfo(name: trimmedName, level: selectedLevel)
         switch mode {
         case .create:
@@ -159,6 +160,7 @@ struct CreateJudgeView: View {
         case .edit:
             JudgeListManager.GetInstance().updateSelectedJudgeWith(judgeInfo)
         }
+        return judgeInfo
     }
 
     private static func defaultLevel() -> Judge.Level {
