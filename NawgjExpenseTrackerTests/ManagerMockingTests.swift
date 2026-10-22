@@ -29,6 +29,10 @@ final class MockJudgeListManager: JudgeListManaging {
         return judges ?? []
     }
 
+    func sortJudges() {
+        loadAndSortJudges()
+    }
+
     func importJudges(fromFile: URL?) {}
 
     func loadJudges() {}

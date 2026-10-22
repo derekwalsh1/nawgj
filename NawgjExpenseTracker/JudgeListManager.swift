@@ -20,6 +20,7 @@ protocol JudgeListManaging: AnyObject {
 
     func loadAndSortJudges()
     func loadAndSortJudgesAsync() async -> [JudgeInfo]
+    func sortJudges()
     func importJudges(fromFile: URL?)
     func loadJudges()
     func loadJudgesAsync() async -> [JudgeInfo]
@@ -82,6 +83,23 @@ class JudgeListManager: JudgeListManaging {
         let sorted = loadedJudges.sorted(by: {$0.name < $1.name})
         judges = sorted
         return sorted
+    }
+    
+    /// Re-sorts the already-loaded in-memory `judges` array by name,
+    /// without re-reading from disk. Use this (instead of
+    /// `loadAndSortJudges()`) right after a local mutation like
+    /// `addJudge`/`updateSelectedJudgeWith`: those already updated `judges`
+    /// in memory and queued their own async disk write via `saveJudges()`,
+    /// so an immediate synchronous disk re-read at that point can race
+    /// ahead of that pending write, read back a stale pre-mutation
+    /// snapshot, and then re-save it - silently discarding the change that
+    /// was just made (this was the root cause of reports like "I can only
+    /// add one judge to the list"). See also the similar comment in
+    /// `importJudges(fromFile:)`.
+    func sortJudges() {
+        if let originalJudgeList = judges {
+            judges = originalJudgeList.sorted(by: { $0.name < $1.name })
+        }
     }
     
     func importJudges(fromFile: URL?){

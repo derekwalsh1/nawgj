@@ -150,10 +150,13 @@ struct JudgeListView: View {
     }
 
     private func refreshJudges() {
-        // Mirrors the old JudgeListTableViewController.finishJudgeEditing(),
-        // which reloaded and re-sorted from disk after add/edit since
-        // editing a name can change its alphabetical position.
-        JudgeListManager.GetInstance().loadAndSortJudges()
+        // Re-sort the already up-to-date in-memory list (editing a name can
+        // change its alphabetical position) instead of reloading from disk:
+        // `addJudge`/`updateSelectedJudgeWith` already updated `judges` in
+        // memory and queued their own async save, so reloading from disk
+        // immediately afterward could race ahead of that pending write and
+        // silently discard the change that was just made.
+        JudgeListManager.GetInstance().sortJudges()
         judges = JudgeListManager.GetInstance().judges ?? []
     }
 

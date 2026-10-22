@@ -123,6 +123,18 @@ struct AddJudgesToMeetView: View {
         judgeList = JudgeListManager.GetInstance().judges ?? []
     }
 
+    /// Re-sorts the already up-to-date in-memory judge list instead of
+    /// reloading from disk. Use this right after `CreateJudgeView` adds a
+    /// new judge: `JudgeListManager.addJudge` already updated the in-memory
+    /// list and queued its own async save, so reloading from disk
+    /// immediately afterward (as `loadJudgeList()` does) could race ahead
+    /// of that pending write and silently discard the judge that was just
+    /// created.
+    private func refreshJudgeList() {
+        JudgeListManager.GetInstance().sortJudges()
+        judgeList = JudgeListManager.GetInstance().judges ?? []
+    }
+
     private func toggleSelection(_ judgeInfo: JudgeInfo) {
         if selectedNames.contains(judgeInfo.name) {
             selectedNames.remove(judgeInfo.name)
@@ -152,7 +164,7 @@ struct AddJudgesToMeetView: View {
             // requiring the user to also find and select them afterward.
             addJudgeInfoToMeet(newJudgeInfo)
             popViewController()
-            loadJudgeList()
+            refreshJudgeList()
         }
         pushViewController(UIHostingController(rootView: createJudgeView))
     }
