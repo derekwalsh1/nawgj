@@ -119,16 +119,11 @@ struct ExpensesListView: View {
         MeetListManager.GetInstance().selectExpenseAt(index: index)
         let expense = judge.expenses[index]
 
-        let onFinish: () -> Void = {
-            popViewController()
-            refreshToken = UUID()
-        }
-
         if type == .Lodging {
-            let view = LodgingExpenseDetailView(expense: expense, popViewController: onFinish)
+            let view = LodgingExpenseDetailView(expense: expense)
             pushViewController(UIHostingController(rootView: view))
         } else {
-            let view = ExpenseDetailView(expense: expense, popViewController: onFinish)
+            let view = ExpenseDetailView(expense: expense)
             pushViewController(UIHostingController(rootView: view))
         }
     }

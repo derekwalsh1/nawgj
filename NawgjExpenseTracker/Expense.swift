@@ -72,13 +72,7 @@ class Expense: Codable {
     
     required convenience init(type: ExpenseType, amount: Float, notes: String, date: Date ) {
         // Initialize stored properties.
-        var mileageRate = 0.0 as Float
-        if Meet.FED_MILEAGE_RATES.keys.contains(Calendar.current.component(.year, from: date)){
-            mileageRate = Meet.FED_MILEAGE_RATES[Calendar.current.component(.year, from: date)]!
-        }
-        else{
-            mileageRate = (Meet.FED_MILEAGE_RATES.reversed().first?.value)!
-        }
+        let mileageRate = Meet.getMileageRate(forDate: date)
         self.init(type: type, amount: amount, notes: notes, date: date, mileageRate: mileageRate, isCustomMileageRate:false, isPrivateLodgingRequested: false, totalNights: 0, amountPerNight: 0)
     }
     

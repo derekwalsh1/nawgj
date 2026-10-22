@@ -45,6 +45,7 @@ struct MeetListView: View {
     @State private var searchText = ""
     @State private var isImportingDocument = false
     @State private var importErrorMessage: String?
+    @State private var isShowingSettings = false
 
     private var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -108,6 +109,13 @@ struct MeetListView: View {
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    isShowingSettings = true
+                } label: {
+                    Label("Settings", systemImage: "gearshape")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Button {
                         addMeet()
@@ -126,6 +134,16 @@ struct MeetListView: View {
         }
         .fileImporter(isPresented: $isImportingDocument, allowedContentTypes: [.json]) { result in
             handleImportResult(result)
+        }
+        .sheet(isPresented: $isShowingSettings) {
+            NavigationView {
+                SettingsView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("Done") { isShowingSettings = false }
+                        }
+                    }
+            }
         }
         .alert("Import Failed", isPresented: Binding(
             get: { importErrorMessage != nil },
@@ -241,7 +259,9 @@ struct MeetListView: View {
         let loadedJudges = await JudgeListManager.GetInstance().loadJudgesAsync()
         JudgeListManager.GetInstance().judges = loadedJudges
 
-        synchronizeJudgeList()
+        if AppSettings.autoAddJudgesFromMeetsEnabled {
+            synchronizeJudgeList()
+        }
         refreshMeets()
     }
 
@@ -253,6 +273,8 @@ struct MeetListView: View {
     // list of meets and add any existing judges. If a judge appears in a
     // meet that is not in the judge list, then add the judge and save the
     // list. (Mirrors the old MeetTableViewController.synchronizeJudgeList().)
+    // Only runs when AppSettings.autoAddJudgesFromMeetsEnabled is on (see
+    // Settings screen, reachable via the toolbar gear icon).
     private func synchronizeJudgeList() {
         guard let meets = MeetListManager.GetInstance().meets else { return }
         for meet in meets {

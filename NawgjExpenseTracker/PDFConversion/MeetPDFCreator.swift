@@ -538,6 +538,12 @@ tbody.details-table { page-break-inside: auto; }
         return htmlString
     }
     
+    /// The Session (within `day`) that `fee` belongs to, if any - used to
+    /// label rows on days with more than one session.
+    private static func sessionName(for fee: Fee, in day: MeetDay) -> String {
+        day.sessions.first(where: { $0.getUUID() == fee.getSessionUUID() })?.name ?? ""
+    }
+
     static func generateFeeTable(meet: Meet) -> String{
         var htmlString = ""
         htmlString += "<h1>Daily Judging Fees:</h1>\n"
@@ -548,30 +554,42 @@ tbody.details-table { page-break-inside: auto; }
         htmlString += "</tr>\n</thead>\n<tbody class=\"details-table\">\n"
         
         for (dayIndex, day) in meet.days.sorted(by: { $0.meetDate < $1.meetDate }).enumerated(){
-            for (judgeIndex, judge) in meet.judges.sorted(by: { $0.name < $1.name }).enumerated(){
-                if let fee = judge.fees.first(where: {$0.date == day.meetDate}){
-                    
+            // One row per (judge, fee) for the day - a judge can now have
+            // more than one fee on the same day (one per session).
+            var rows: [(judge: Judge, fee: Fee)] = []
+            for judge in meet.judges.sorted(by: { $0.name < $1.name }) {
+                let judgeFeesForDay = judge.fees
+                    .filter { $0.date == day.meetDate }
+                    .sorted { sessionName(for: $0, in: day) < sessionName(for: $1, in: day) }
+                for fee in judgeFeesForDay {
+                    rows.append((judge, fee))
+                }
+            }
+
+            for (rowIndex, row) in rows.enumerated() {
+                htmlString += """
+                <tr align="left" height="26" \(dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
+                """
+
+                if rowIndex == 0 {
                     htmlString += """
-                    <tr align="left" height="26" \(dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : "")>
-                    """
-                    
-                    if( judgeIndex == 0){
-                        htmlString += """
-                        <td rowspan="\(meet.judges.count)" valign="top">\(dateFormatter.string(from: day.meetDate))</td>
-                        """
-                    }
-                    let rate = String(format: "$%0.2f/hr", judge.level.rate)
-                    let hours = String(format: "%0.2f", fee.getHours())
-                    let total = numberFormatter.string(from: fee.getFeeTotal() as NSNumber)!
-                    htmlString += """
-                    <td>\(judge.name)</td>
-                    <td>\(rate)</td>
-                    <td>\(judge.level.description)</td>
-                    <td>\(hours)</td>
-                    <td>\(total)</td>
-                    </tr>
+                    <td rowspan="\(rows.count)" valign="top">\(dateFormatter.string(from: day.meetDate))</td>
                     """
                 }
+                let judgeName = day.sessions.count > 1
+                    ? "\(row.judge.name) (\(sessionName(for: row.fee, in: day)))"
+                    : row.judge.name
+                let rate = String(format: "$%0.2f/hr", row.judge.level.rate)
+                let hours = String(format: "%0.2f", row.fee.getHours())
+                let total = numberFormatter.string(from: row.fee.getFeeTotal() as NSNumber)!
+                htmlString += """
+                <td>\(judgeName)</td>
+                <td>\(rate)</td>
+                <td>\(row.judge.level.description)</td>
+                <td>\(hours)</td>
+                <td>\(total)</td>
+                </tr>
+                """
             }
             
             let colorString = dayIndex % 2 == 0 ? "bgcolor=\"#EEEEEE\"" : ""

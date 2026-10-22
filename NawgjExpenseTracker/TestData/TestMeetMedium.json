@@ -1,0 +1,1648 @@
+{
+  "name": "2026 Fall Sectional Invitational",
+  "startDate": 810889200.0,
+  "location": "Boulder Rec Center, Boulder, CO",
+  "meetDescription": "Levels 4-8 - Sectional Meet",
+  "days": [
+    {
+      "meetDate": 810889200.0,
+      "uuid": "218626d2-b081-4172-a12b-005d2a236399",
+      "sessions": [
+        {
+          "uuid": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e",
+          "name": "Session A",
+          "startTime": 810918000.0,
+          "endTime": 810936000.0,
+          "breaks": 1,
+          "breakTimeInMins": 30
+        },
+        {
+          "uuid": "14287483-a36b-4957-a204-2d885eb540bb",
+          "name": "Session B",
+          "startTime": 810919800.0,
+          "endTime": 810937800.0,
+          "breaks": 1,
+          "breakTimeInMins": 30
+        },
+        {
+          "uuid": "edfe9024-219b-4afb-8239-aef00ba4e1b2",
+          "name": "Session C",
+          "startTime": 810921600.0,
+          "endTime": 810939600.0,
+          "breaks": 1,
+          "breakTimeInMins": 30
+        }
+      ]
+    }
+  ],
+  "judges": [
+    {
+      "name": "Michelle Davis",
+      "level": 19,
+      "notes": "Judge from Salt Lake City",
+      "paid": false,
+      "meetReferee": false,
+      "w9Received": false,
+      "receiptsReceived": false,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 38.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session A",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 38.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 38.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 20.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Kevin Brown",
+      "level": 15,
+      "notes": "Judge from Lakewood",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 28.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 28.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session B",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 28.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 29.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Nicole Taylor",
+      "level": 12,
+      "notes": "Judge from Arvada",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 20.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 20.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 20.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session C",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 38.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Brian Wilson",
+      "level": 20,
+      "notes": "Judge from Seattle",
+      "paid": false,
+      "meetReferee": false,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 40.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session A",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 40.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 40.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 47.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 10.0,
+          "notes": "Parking",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Patricia Moore",
+      "level": 13,
+      "notes": "Judge from Thornton",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": false,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session B",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 56.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 10.0,
+          "notes": "Parking",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Steven Garcia",
+      "level": 16,
+      "notes": "Judge from Grand Junction",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 32.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 32.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 32.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session C",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 65.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 10.0,
+          "notes": "Parking",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Karen Miller",
+      "level": 18,
+      "notes": "Judge from Vail",
+      "paid": false,
+      "meetReferee": false,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 36.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session A",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 36.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 36.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 74.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 10.0,
+          "notes": "Parking",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Jason Harris",
+      "level": 14,
+      "notes": "Judge from Brighton",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 24.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 24.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session B",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 24.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 83.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 10.0,
+          "notes": "Parking",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Rebecca Clark",
+      "level": 12,
+      "notes": "Judge from Longmont",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": false,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 20.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 20.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 20.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session C",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 92.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 10.0,
+          "notes": "Parking",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Thomas Lewis",
+      "level": 17,
+      "notes": "Judge from Chicago",
+      "paid": false,
+      "meetReferee": false,
+      "w9Received": false,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session A",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 34.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 101.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 10.0,
+          "notes": "Parking",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Angela Robinson",
+      "level": 15,
+      "notes": "Judge from Centennial",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 28.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 28.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session B",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 28.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 20.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    },
+    {
+      "name": "Gregory Walker",
+      "level": 13,
+      "notes": "Judge from Loveland",
+      "paid": true,
+      "meetReferee": false,
+      "w9Received": true,
+      "receiptsReceived": true,
+      "fees": [
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "06f727da-cbb3-45f1-96e1-b0a1c99cee6e"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 0.0,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": true,
+          "notes": "Not worked",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "14287483-a36b-4957-a204-2d885eb540bb"
+        },
+        {
+          "date": 810889200.0,
+          "hours": 4.5,
+          "rate": 21.0,
+          "rateOverridden": false,
+          "hoursOverridden": false,
+          "exclude": false,
+          "notes": "Session C",
+          "meetDayUUID": "218626d2-b081-4172-a12b-005d2a236399",
+          "sessionUUID": "edfe9024-219b-4afb-8239-aef00ba4e1b2"
+        }
+      ],
+      "expenses": [
+        {
+          "type": 0,
+          "amount": 29.0,
+          "notes": "Round trip mileage",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 1,
+          "amount": 22.0,
+          "notes": "Meals/per diem",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 2,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 3,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 4,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 5,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 6,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        },
+        {
+          "type": 7,
+          "amount": 0.0,
+          "notes": "",
+          "date": 810889200.0,
+          "mileageRate": 0.725,
+          "isCustomMileageRate": false,
+          "isPrivateLodgingRequested": false,
+          "totalNights": 0,
+          "amountPerNight": 0.0
+        }
+      ]
+    }
+  ]
+}

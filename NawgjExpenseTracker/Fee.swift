@@ -20,9 +20,15 @@ class Fee: Codable {
     var hoursOverridden : Bool
     var exclude : Bool? = false
     var meetDayUUID : String?
+    /// The Session (within `meetDayUUID`'s day) this fee bills for. Optional
+    /// only so old JSON (saved before Sessions existed) can decode; it is
+    /// filled in for every fee during meet load/normalization once the
+    /// owning day's sessions are known - see
+    /// `MeetListManager.decodeAndNormalizeMeets`.
+    var sessionUUID : String?
     
     //MARK: Initialization
-    init(date: Date, hours: Float, rate: Float, rateOverridden: Bool, hoursOverridden: Bool, notes: String?, exclude: Bool, meetDayUUID: String ) {
+    init(date: Date, hours: Float, rate: Float, rateOverridden: Bool, hoursOverridden: Bool, notes: String?, exclude: Bool, meetDayUUID: String, sessionUUID: String? = nil ) {
         // If notes aren't provided (they are optional, then use an empty string
         if notes == nil { _ = ""}
         
@@ -35,12 +41,13 @@ class Fee: Codable {
         self.rate = rate
         self.exclude = exclude
         self.meetDayUUID = meetDayUUID
+        self.sessionUUID = sessionUUID
     }
     
-    required convenience init?(date: Date, hours: Float, rate: Float, notes : String?, meetDayUUID: String){
+    required convenience init?(date: Date, hours: Float, rate: Float, notes : String?, meetDayUUID: String, sessionUUID: String? = nil){
         
         if notes == nil { _ = ""}
-        self.init(date: date, hours: hours, rate: rate, rateOverridden: false, hoursOverridden: false, notes: notes, exclude: false, meetDayUUID: meetDayUUID)
+        self.init(date: date, hours: hours, rate: rate, rateOverridden: false, hoursOverridden: false, notes: notes, exclude: false, meetDayUUID: meetDayUUID, sessionUUID: sessionUUID)
     }
     
     func getFeeTotal() -> Float{
@@ -57,5 +64,13 @@ class Fee: Codable {
     
     func setMeetDayUUID(uuid: String){
         self.meetDayUUID = uuid
+    }
+    
+    func getSessionUUID() -> String?{
+        return sessionUUID
+    }
+    
+    func setSessionUUID(uuid: String){
+        self.sessionUUID = uuid
     }
 }

@@ -145,6 +145,19 @@ class JudgePDFCreator : PDFCreator{
         pdfData.write(to: atLocation, atomically: true)
     }
     
+    /// The short-format date, plus the session name appended when the
+    /// owning day has more than one session (so multi-session days aren't
+    /// ambiguous in the fee summary table).
+    static func feeDateLabel(for fee: Fee, in meet: Meet) -> String {
+        let dateText = dateFormatterShort.string(from: fee.date)
+        guard let day = meet.days.first(where: { $0.getUUID() == fee.getMeetDayUUID() }),
+              day.sessions.count > 1,
+              let session = day.sessions.first(where: { $0.getUUID() == fee.getSessionUUID() }) else {
+            return dateText
+        }
+        return "\(dateText)<br>\(session.name)"
+    }
+
     /// Generate judge invoice HTML. Optional `scale` applies a CSS transform to reduce overall size.
     static func generateJudgeInvoice(judge: Judge, meet: Meet, scale: CGFloat = 1.0) -> String{
          let paidCheckedString = judge.isPaid() ? "checked" : ""
@@ -152,11 +165,15 @@ class JudgePDFCreator : PDFCreator{
          let receiptsCheckedString = judge.isReceiptsReceived() ? "checked" : ""
          let feeList = judge.fees.sorted(by: { $0.date < $1.date })
 
+        // De-duplicated, sorted list of dates (a day can now have more than
+        // one fee - one per session - so don't repeat its date per-fee).
+        let uniqueDates = Array(Set(feeList.map { $0.date })).sorted()
+
         var datesString = ""
-        if feeList.count > 0 {
-            for (index, fee) in feeList.enumerated() {
-                datesString.append(dateFormatter.string(from: fee.date))
-                if index < feeList.count - 1 { datesString.append("<br>") }
+        if uniqueDates.count > 0 {
+            for (index, date) in uniqueDates.enumerated() {
+                datesString.append(dateFormatter.string(from: date))
+                if index < uniqueDates.count - 1 { datesString.append("<br>") }
             }
         }
 
@@ -264,7 +281,7 @@ class JudgePDFCreator : PDFCreator{
             if fee.rateOverridden { anyRateOverridden = true }
             html += """
     <tr>
-      <td>\(dateFormatterShort.string(from: fee.date))</td>
+      <td>\(feeDateLabel(for: fee, in: meet))</td>
       <td>\(fee.getHours()) Hours @ \(rateDescription)</td>
       <td align="right">\(numberFormatter.string(from: NSNumber(value: fee.getFeeTotal())) ?? "$0.00")</td>
     </tr>

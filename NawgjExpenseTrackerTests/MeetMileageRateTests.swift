@@ -3,9 +3,9 @@
 //  NawgjExpenseTrackerTests
 //
 //  Unit tests covering Meet.getMileageRate(forDate:), which drives mileage
-//  reimbursement amounts: exact-year lookup, falling back to the most
-//  recent rate for years past the table, and falling back to the earliest
-//  rate for years before the table.
+//  reimbursement amounts: exact schedule-date lookup, mid-year changeover,
+//  falling back to the most recent rate after the table, and falling back
+//  to the earliest rate before the table.
 //
 
 import XCTest
@@ -13,28 +13,28 @@ import XCTest
 
 final class MeetMileageRateTests: XCTestCase {
 
-    private func date(year: Int) -> Date {
+    private func date(year: Int, month: Int = 6, day: Int = 1) -> Date {
         var components = DateComponents()
         components.year = year
-        components.month = 6
-        components.day = 1
+        components.month = month
+        components.day = day
         return Calendar.current.date(from: components)!
     }
 
-    func testGetMileageRate_returnsExactMatch_forYearInTable() {
-        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: 2024)), Meet.FED_MILEAGE_RATES[2024])
+    func testGetMileageRate_returnsScheduledRate_beforeMidYearChange() {
+        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: 2026, month: 6, day: 30)), 0.725)
     }
 
-    func testGetMileageRate_forYearAfterTable_returnsMostRecentRate() {
-        let futureYear = (Meet.FED_MILEAGE_RATES.keys.max() ?? 2026) + 1
-        let latestYear = Meet.FED_MILEAGE_RATES.keys.max() ?? 2026
-        let expected = Meet.FED_MILEAGE_RATES[latestYear]
-        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: futureYear)), expected)
+    func testGetMileageRate_returnsUpdatedRate_onAndAfterJulyFirst2026() {
+        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: 2026, month: 7, day: 1)), 0.76)
+        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: 2026, month: 12, day: 31)), 0.76)
     }
 
-    func testGetMileageRate_beforeEarliestTableYear_returnsEarliestRate() {
-        let earliestYear = Meet.FED_MILEAGE_RATES.keys.min() ?? 2016
-        let expected = Meet.FED_MILEAGE_RATES[earliestYear]
-        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: earliestYear - 10)), expected)
+    func testGetMileageRate_forDateAfterTable_returnsMostRecentRate() {
+        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: 2030, month: 1, day: 1)), 0.76)
+    }
+
+    func testGetMileageRate_beforeEarliestScheduleDate_returnsEarliestRate() {
+        XCTAssertEqual(Meet.getMileageRate(forDate: date(year: 2006, month: 1, day: 1)), 0.54)
     }
 }

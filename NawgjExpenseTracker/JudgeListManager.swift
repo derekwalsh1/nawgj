@@ -20,6 +20,7 @@ protocol JudgeListManaging: AnyObject {
 
     func loadAndSortJudges()
     func loadAndSortJudgesAsync() async -> [JudgeInfo]
+    func sortJudges()
     func importJudges(fromFile: URL?)
     func loadJudges()
     func loadJudgesAsync() async -> [JudgeInfo]
@@ -28,6 +29,7 @@ protocol JudgeListManaging: AnyObject {
     func saveJudgesAsync(_ judgesToSave: [JudgeInfo]?) async -> Bool
     func addJudge(_ judgeInfo: JudgeInfo) -> Bool
     func removeJudgeAt(_ index: Int)
+    func removeAllJudges()
     func selectJudgeInfoAt(_ index: Int)
     func judgeInfo(forJudgeID: String) -> String?
     func updateSelectedJudgeWith(_ judgeInfo: JudgeInfo)
@@ -83,6 +85,23 @@ class JudgeListManager: JudgeListManaging {
         return sorted
     }
     
+    /// Re-sorts the already-loaded in-memory `judges` array by name,
+    /// without re-reading from disk. Use this (instead of
+    /// `loadAndSortJudges()`) right after a local mutation like
+    /// `addJudge`/`updateSelectedJudgeWith`: those already updated `judges`
+    /// in memory and queued their own async disk write via `saveJudges()`,
+    /// so an immediate synchronous disk re-read at that point can race
+    /// ahead of that pending write, read back a stale pre-mutation
+    /// snapshot, and then re-save it - silently discarding the change that
+    /// was just made (this was the root cause of reports like "I can only
+    /// add one judge to the list"). See also the similar comment in
+    /// `importJudges(fromFile:)`.
+    func sortJudges() {
+        if let originalJudgeList = judges {
+            judges = originalJudgeList.sorted(by: { $0.name < $1.name })
+        }
+    }
+    
     func importJudges(fromFile: URL?){
         if let jsonFile = fromFile{
             guard jsonFile.startAccessingSecurityScopedResource() else {
@@ -105,8 +124,17 @@ class JudgeListManager: JudgeListManaging {
                     }
                 }
                 
+                // Sort the already up-to-date in-memory list rather than
+                // reloading from disk here: each `addJudge(_:)` call above
+                // queues its own async save via `saveJudges()`, so a
+                // synchronous re-read of the archive file at this point can
+                // race ahead of those pending writes and read back a stale/
+                // partial snapshot, which would then get saved again and
+                // clobber the judges that hadn't been flushed to disk yet.
+                if let originalJudgeList = judges{
+                    judges = originalJudgeList.sorted(by: {$0.name < $1.name})
+                }
                 saveJudges()
-                loadAndSortJudges()
             }
             catch {
                 os_log("Failed to import judges...", log: OSLog.default, type: .error)
@@ -185,6 +213,13 @@ class JudgeListManager: JudgeListManaging {
     }
 
     func addJudge(_ judgeInfo: JudgeInfo) -> Bool {
+        // Guard against `judges` still being nil (e.g. called before the
+        // initial load finished): without this, `judges?.append` below is a
+        // silent no-op, yet this method would still report success and the
+        // new judge would never actually be persisted.
+        if judges == nil {
+            loadJudges()
+        }
         var judgeAdded = false
         if self.indexOfJudge(judgeInfo) < 0{
             judges?.append(judgeInfo)
@@ -196,6 +231,11 @@ class JudgeListManager: JudgeListManaging {
     
     func removeJudgeAt(_ index: Int){
         judges?.remove(at: index)
+        saveJudges()
+    }
+    
+    func removeAllJudges(){
+        judges = Array<JudgeInfo>()
         saveJudges()
     }
     

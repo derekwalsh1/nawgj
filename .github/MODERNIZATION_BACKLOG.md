@@ -627,6 +627,37 @@ ongoing steps rather than a big-bang rewrite.
     new judge from that screen, then Invoice → confirm the PDF renders and
     the share sheet opens with the correct file/subject.
 
+- [x] Sessions feature (concurrent judging areas within a meet day). Full
+      plan/decision log: `.github/SESSIONS_FEATURE_PLAN.md`. Adds a
+      `Session` model under each `MeetDay` (name + time/breaks), one `Fee`
+      per (judge, session) instead of per (judge, day), auto-assign-all
+      with an opt-out checklist on `SessionDetailView` (both add and edit
+      modes), overlap validation so a judge can't be double-booked into two
+      concurrent sessions, and session-aware labels in `FeeListView` and
+      both PDF reports (`JudgePDFCreator`, `MeetPDFCreator`) when a day has
+      more than one session. Existing meet days auto-migrate to a single
+      implicit session on load — no user action required, fully backward
+      compatible with old JSON.
+  - New `Session.swift`/`SessionDetailView.swift`/`SessionTests.swift` had
+    to be manually registered in `project.pbxproj` (this repo's project
+    only uses a synchronized group for `TestData`; everything else needs
+    manual `PBXBuildFile`/`PBXFileReference`/group/Sources-phase entries).
+  - Fixed a recurring SwiftUI staleness bug class along the way: several
+    screens (`MeetDetailView`, `FeeListView`, `SessionDetailView`,
+    `MeetDayDetailView`, `MeetDayListView`) read live data straight off
+    mutable class references (`Meet`/`MeetDay`/`Session`/`Judge`) rather
+    than `@ObservedObject`, and reassigning a backing `@State` array on
+    refresh wasn't always enough to force a redraw on reappear. Fixed with
+    a `@State private var refreshToken = UUID()` bumped in `.onAppear` and
+    after any child screen's edit completes, applied via `.id(refreshToken)`
+    on the relevant List/Form/Section. Watch for the same symptom
+    ("doesn't update when I change X and go back") in other screens holding
+    similar live class references (e.g. `MeetJudgeListView`,
+    `MeetJudgeDetailView`) and apply the same fix if reported.
+  - Verified with a full `xcodebuild build` + `xcodebuild test` (42/42
+    passing, including new `SessionTests.swift`) and simulator
+    install/launch smoke test.
+
 ## Phase 5 — Concurrency & manager cleanup
 - [x] Move `JudgeListManager` / `MeetListManager` file I/O to `async/await`.
   - Both managers' actual disk I/O (`JSONEncoder().encode` + `Data.write`,

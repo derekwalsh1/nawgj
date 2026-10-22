@@ -39,6 +39,20 @@ struct AddJudgesToMeetView: View {
         Set(meet.judges.map { $0.name })
     }
 
+    /// `judgeList` sorted so judges already added to this meet appear first
+    /// (each group keeps the existing alphabetical order).
+    private var sortedJudgeList: [JudgeInfo] {
+        let names = meetJudgeNames
+        return judgeList.enumerated().sorted { lhs, rhs in
+            let lhsIncluded = names.contains(lhs.element.name)
+            let rhsIncluded = names.contains(rhs.element.name)
+            if lhsIncluded != rhsIncluded {
+                return lhsIncluded
+            }
+            return lhs.offset < rhs.offset
+        }.map { $0.element }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             Button {
@@ -55,7 +69,7 @@ struct AddJudgesToMeetView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 8)
 
-            List(judgeList) { judgeInfo in
+            List(sortedJudgeList) { judgeInfo in
                 let alreadyIncluded = meetJudgeNames.contains(judgeInfo.name)
                 Button {
                     toggleSelection(judgeInfo)
@@ -68,7 +82,10 @@ struct AddJudgesToMeetView: View {
                                 .foregroundColor(.secondary)
                         }
                         Spacer()
-                        if selectedNames.contains(judgeInfo.name) {
+                        if alreadyIncluded {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.green)
+                        } else if selectedNames.contains(judgeInfo.name) {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.accentColor)
                         }
@@ -106,6 +123,18 @@ struct AddJudgesToMeetView: View {
         judgeList = JudgeListManager.GetInstance().judges ?? []
     }
 
+    /// Re-sorts the already up-to-date in-memory judge list instead of
+    /// reloading from disk. Use this right after `CreateJudgeView` adds a
+    /// new judge: `JudgeListManager.addJudge` already updated the in-memory
+    /// list and queued its own async save, so reloading from disk
+    /// immediately afterward (as `loadJudgeList()` does) could race ahead
+    /// of that pending write and silently discard the judge that was just
+    /// created.
+    private func refreshJudgeList() {
+        JudgeListManager.GetInstance().sortJudges()
+        judgeList = JudgeListManager.GetInstance().judges ?? []
+    }
+
     private func toggleSelection(_ judgeInfo: JudgeInfo) {
         if selectedNames.contains(judgeInfo.name) {
             selectedNames.remove(judgeInfo.name)
@@ -116,21 +145,26 @@ struct AddJudgesToMeetView: View {
 
     private func addSelectedJudges() {
         for judgeInfo in judgeList where selectedNames.contains(judgeInfo.name) {
-            if let newJudge = Judge(name: judgeInfo.name, level: judgeInfo.level, fees: Array<Fee>()) {
-                MeetListManager.GetInstance().addJudge(judge: newJudge)
-            }
+            addJudgeInfoToMeet(judgeInfo)
+        }
+    }
+
+    private func addJudgeInfoToMeet(_ judgeInfo: JudgeInfo) {
+        if let newJudge = Judge(name: judgeInfo.name, level: judgeInfo.level, fees: Array<Fee>(), defaultExpenseDate: meet.startDate) {
+            MeetListManager.GetInstance().addJudge(judge: newJudge)
         }
     }
 
     // MARK: Actions
 
     private func createNewJudge() {
-        let createJudgeView = CreateJudgeView(mode: .create) {
-            // Mirrors the old createNewJudgeButtonTapped, which popped back
-            // to this screen and refreshed the judge list every time,
-            // regardless of whether a judge was actually created.
+        let createJudgeView = CreateJudgeView(mode: .create) { newJudgeInfo in
+            // Creating a judge from this screen implies the intent is to
+            // add them to this meet, so do that automatically instead of
+            // requiring the user to also find and select them afterward.
+            addJudgeInfoToMeet(newJudgeInfo)
             popViewController()
-            loadJudgeList()
+            refreshJudgeList()
         }
         pushViewController(UIHostingController(rootView: createJudgeView))
     }

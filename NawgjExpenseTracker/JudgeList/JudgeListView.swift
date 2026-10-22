@@ -34,8 +34,7 @@ struct JudgeListView: View {
 
     @State private var judges: [JudgeInfo] = []
     @State private var isImportingDocument = false
-    @State private var shareItems: [Any] = []
-    @State private var isShareSheetPresented = false
+    @State private var showRemoveAllConfirmation = false
 
     var body: some View {
         List {
@@ -80,6 +79,12 @@ struct JudgeListView: View {
                     } label: {
                         Label("Export Judges…", systemImage: "square.and.arrow.up")
                     }
+                    Button(role: .destructive) {
+                        showRemoveAllConfirmation = true
+                    } label: {
+                        Label("Remove All Judges…", systemImage: "trash")
+                    }
+                    .disabled(judges.isEmpty)
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -88,8 +93,15 @@ struct JudgeListView: View {
         .fileImporter(isPresented: $isImportingDocument, allowedContentTypes: [.json]) { result in
             handleImportResult(result)
         }
-        .sheet(isPresented: $isShareSheetPresented) {
-            ActivitySheet(items: shareItems)
+        .confirmationDialog(
+            "Remove all \(judges.count) judges? This cannot be undone.",
+            isPresented: $showRemoveAllConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Remove All", role: .destructive) {
+                removeAllJudges()
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .task {
             await loadJudges()
@@ -138,17 +150,20 @@ struct JudgeListView: View {
     }
 
     private func refreshJudges() {
-        // Mirrors the old JudgeListTableViewController.finishJudgeEditing(),
-        // which reloaded and re-sorted from disk after add/edit since
-        // editing a name can change its alphabetical position.
-        JudgeListManager.GetInstance().loadAndSortJudges()
+        // Re-sort the already up-to-date in-memory list (editing a name can
+        // change its alphabetical position) instead of reloading from disk:
+        // `addJudge`/`updateSelectedJudgeWith` already updated `judges` in
+        // memory and queued their own async save, so reloading from disk
+        // immediately afterward could race ahead of that pending write and
+        // silently discard the change that was just made.
+        JudgeListManager.GetInstance().sortJudges()
         judges = JudgeListManager.GetInstance().judges ?? []
     }
 
     // MARK: Actions
 
     private func addJudge() {
-        let createJudgeView = CreateJudgeView(mode: .create) {
+        let createJudgeView = CreateJudgeView(mode: .create) { _ in
             popViewController()
             refreshJudges()
         }
@@ -158,7 +173,7 @@ struct JudgeListView: View {
     private func editJudge(_ judgeInfo: JudgeInfo) {
         guard let index = JudgeListManager.GetInstance().judges?.firstIndex(where: { $0 === judgeInfo }) else { return }
         JudgeListManager.GetInstance().selectJudgeInfoAt(index)
-        let createJudgeView = CreateJudgeView(mode: .edit(judgeInfo)) {
+        let createJudgeView = CreateJudgeView(mode: .edit(judgeInfo)) { _ in
             popViewController()
             refreshJudges()
         }
@@ -171,10 +186,14 @@ struct JudgeListView: View {
         judges = JudgeListManager.GetInstance().judges ?? []
     }
 
+    private func removeAllJudges() {
+        JudgeListManager.GetInstance().removeAllJudges()
+        judges = JudgeListManager.GetInstance().judges ?? []
+    }
+
     private func exportJudges() {
         guard let url = dataToFile(fileName: "JudgeList.JSON") else { return }
-        shareItems = [url]
-        isShareSheetPresented = true
+        presentShareSheet(items: [url])
     }
 
     private func dataToFile(fileName: String) -> URL? {

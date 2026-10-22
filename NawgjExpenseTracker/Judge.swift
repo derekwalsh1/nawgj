@@ -177,7 +177,7 @@ class Judge: Codable {
         /// decodable `Level` values) so existing judges/meets keep displaying
         /// and billing at their original rate until explicitly changed.
         static let selectableCases: [Level] = [
-            .FourFiveX1R, .SixSeven, .EightXR, .LevelNine, .LevelTen, .N4, .N3, .B2N2, .B1N1,
+            .FourFiveX1R, .EightXR, .LevelNine, .LevelTen, .N4, .N3, .B2N2, .B1N1,
             .NGA_Local, .NGA_State, .NGA_Regional, .NGA_National, .NGA_Elite
         ]
     }
@@ -215,8 +215,8 @@ class Judge: Codable {
         self.init(name: name, level: level, expenses: expenses, fees: fees, notes: "", paid: false, meetRef: false, w9Received: false, meetRefereeFee: 0.0, receiptsReceived: false)
     }
     
-    required convenience init?(name: String, level: Level, fees: Array<Fee>) {
-        let expenseDate = (fees.isEmpty ? Date() : fees.last?.date)!
+    required convenience init?(name: String, level: Level, fees: Array<Fee>, defaultExpenseDate: Date? = nil) {
+        let expenseDate = (fees.isEmpty ? (defaultExpenseDate ?? Date()) : fees.last?.date)!
         
         let expenses = [
             Expense(type: .Mileage, date: expenseDate),
@@ -331,11 +331,9 @@ class Judge: Codable {
     }
     
     func getFeesFor(date: Date) -> Float{
-        if let fee = fees.first(where: {$0.date == date}){
-            return fee.getFeeTotal()
-        }
-        else{
-            return 0
-        }
+        // A day can now have multiple sessions (and therefore multiple fees
+        // sharing the same date), so sum every matching fee rather than
+        // taking just the first one.
+        return fees.filter { $0.date == date }.reduce(0) { $0 + $1.getFeeTotal() }
     }
 }

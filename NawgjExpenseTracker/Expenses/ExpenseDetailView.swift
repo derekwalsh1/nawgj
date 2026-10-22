@@ -10,9 +10,9 @@
 //
 //  Pushed from ExpensesListView after MeetListManager.selectExpenseAt(index:)
 //  has already been called, so `expense` is the live, already-selected
-//  model object. Edits are staged in local @State and only committed back
-//  to `expense` (and persisted via MeetListManager) when Done is tapped,
-//  preserving the old screen's Cancel-discards-edits / Done-saves behavior.
+//  model object. Edits save live as each field changes (see
+//  `saveIfValid()`) rather than only on a Done button - there's no
+//  Cancel/Done, just the standard back button.
 //
 //  Phase 4 of the incremental SwiftUI migration - see
 //  .github/MODERNIZATION_BACKLOG.md.
@@ -23,7 +23,6 @@ import SwiftUI
 struct ExpenseDetailView: View {
 
     let expense: Expense
-    let popViewController: () -> Void
 
     @State private var amountText: String
     @State private var isCustomMileageRate: Bool
@@ -31,9 +30,14 @@ struct ExpenseDetailView: View {
     @State private var date: Date
     @State private var notes: String
 
-    init(expense: Expense, popViewController: @escaping () -> Void) {
+    private enum Field: Hashable {
+        case amount
+        case mileageRate
+    }
+    @FocusState private var focusedField: Field?
+
+    init(expense: Expense) {
         self.expense = expense
-        self.popViewController = popViewController
 
         let initialDate = expense.date ?? Date()
         _date = State(initialValue: initialDate)
@@ -55,10 +59,6 @@ struct ExpenseDetailView: View {
     }()
 
     private var isMileageExpense: Bool { expense.type == .Mileage }
-
-    private var isAmountValid: Bool {
-        Self.numberFormatter.number(from: amountText) != nil
-    }
 
     private var iconName: String {
         switch expense.type {
@@ -89,6 +89,7 @@ struct ExpenseDetailView: View {
             Section(isMileageExpense ? "Miles" : "Amount($)") {
                 TextField(isMileageExpense ? "Miles" : "Amount($)", text: $amountText)
                     .keyboardType(.decimalPad)
+                    .focused($focusedField, equals: .amount)
             }
 
             if isMileageExpense {
@@ -98,10 +99,12 @@ struct ExpenseDetailView: View {
                             if !newValue {
                                 mileageRateText = Self.numberFormatter.string(from: NSNumber(value: Meet.getMileageRate(forDate: date))) ?? ""
                             }
+                            saveIfValid()
                         }
                     TextField("Mileage Rate", text: $mileageRateText)
                         .keyboardType(.decimalPad)
                         .disabled(!isCustomMileageRate)
+                        .focused($focusedField, equals: .mileageRate)
                 }
             }
 
@@ -111,6 +114,7 @@ struct ExpenseDetailView: View {
                         if isMileageExpense && !isCustomMileageRate {
                             mileageRateText = Self.numberFormatter.string(from: NSNumber(value: Meet.getMileageRate(forDate: newValue))) ?? ""
                         }
+                        saveIfValid()
                     }
             }
 
@@ -121,29 +125,24 @@ struct ExpenseDetailView: View {
         }
         .navigationTitle(expense.type.description)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    popViewController()
-                }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done") {
-                    saveExpense()
-                    popViewController()
-                }
-                .disabled(!isAmountValid)
+        .onChange(of: amountText) { _ in saveIfValid() }
+        .onChange(of: mileageRateText) { _ in saveIfValid() }
+        .onChange(of: notes) { _ in saveIfValid() }
+        .onChange(of: focusedField) { newValue in
+            // Wipe the field's contents as soon as it's tapped into, rather
+            // than leaving the existing value (e.g. "0") for new input to be
+            // appended to.
+            switch newValue {
+            case .amount: amountText = ""
+            case .mileageRate: mileageRateText = ""
+            case nil: break
             }
         }
     }
 
-    private func saveExpense() {
-        if let amount = Self.numberFormatter.number(from: amountText) {
-            expense.amount = amount.floatValue
-        } else {
-            expense.amount = 0
-        }
+    private func saveIfValid() {
+        guard let amount = Self.numberFormatter.number(from: amountText) else { return }
+        expense.amount = amount.floatValue
         expense.notes = notes
         expense.date = date
 
