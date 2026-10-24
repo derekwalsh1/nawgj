@@ -110,13 +110,14 @@ struct FeeListView: View {
         let fee = judge.fees[index]
         MeetListManager.GetInstance().selectMeetDayForFee(fee: fee)
         let meetDay = MeetListManager.GetInstance().getSelectedMeetDay()
+        let session = meetDay?.sessions.first(where: { $0.getUUID() == fee.getSessionUUID() })
 
         let onFinish: () -> Void = {
             popViewController()
             refreshToken = UUID()
         }
 
-        let view = FeeDetailView(fee: fee, judge: judge, meetDay: meetDay, popViewController: onFinish)
+        let view = FeeDetailView(fee: fee, judge: judge, meetDay: meetDay, session: session, popViewController: onFinish)
         pushViewController(UIHostingController(rootView: view))
     }
 }
