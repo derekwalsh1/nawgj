@@ -29,6 +29,7 @@ protocol JudgeListManaging: AnyObject {
     func saveJudgesAsync(_ judgesToSave: [JudgeInfo]?) async -> Bool
     func addJudge(_ judgeInfo: JudgeInfo) -> Bool
     func removeJudgeAt(_ index: Int)
+    func removeJudges(_ judgesToRemove: [JudgeInfo])
     func removeAllJudges()
     func selectJudgeInfoAt(_ index: Int)
     func judgeInfo(forJudgeID: String) -> String?
@@ -231,6 +232,16 @@ class JudgeListManager: JudgeListManaging {
     
     func removeJudgeAt(_ index: Int){
         judges?.remove(at: index)
+        saveJudges()
+    }
+
+    /// Removes multiple judges in one operation (e.g. a multi-select
+    /// delete), matched by identity rather than index since indices can
+    /// shift as earlier entries are removed.
+    func removeJudges(_ judgesToRemove: [JudgeInfo]) {
+        guard let judges = judges, !judgesToRemove.isEmpty else { return }
+        let idsToRemove = Set(judgesToRemove.map { ObjectIdentifier($0) })
+        self.judges = judges.filter { !idsToRemove.contains(ObjectIdentifier($0)) }
         saveJudges()
     }
     

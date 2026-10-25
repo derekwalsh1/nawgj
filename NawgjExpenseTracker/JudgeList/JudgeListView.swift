@@ -35,23 +35,14 @@ struct JudgeListView: View {
     @State private var judges: [JudgeInfo] = []
     @State private var isImportingDocument = false
     @State private var showRemoveAllConfirmation = false
+    @State private var isSelecting = false
+    @State private var selectedJudgeIDs: Set<ObjectIdentifier> = []
+    @State private var showDeleteSelectedConfirmation = false
 
     var body: some View {
         List {
             ForEach(judges) { judgeInfo in
-                Button {
-                    editJudge(judgeInfo)
-                } label: {
-                    row(for: judgeInfo)
-                }
-                .buttonStyle(.plain)
-                .swipeActions {
-                    Button(role: .destructive) {
-                        delete(judgeInfo)
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                    }
-                }
+                rowContainer(for: judgeInfo)
             }
         }
         .listStyle(.plain)
@@ -62,31 +53,55 @@ struct JudgeListView: View {
         }
         .navigationTitle("All Judges")
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button {
-                        addJudge()
-                    } label: {
-                        Label("New Judge", systemImage: "plus")
+            // Keep a fixed set of ToolbarItems (conditional ToolbarContent
+            // needs iOS 16+); vary the view inside each item instead.
+            ToolbarItem(placement: .navigationBarLeading) {
+                if isSelecting {
+                    Button("Cancel") {
+                        isSelecting = false
+                        selectedJudgeIDs.removeAll()
                     }
-                    Button {
-                        isImportingDocument = true
-                    } label: {
-                        Label("Import Judges…", systemImage: "square.and.arrow.down")
-                    }
-                    Button {
-                        exportJudges()
-                    } label: {
-                        Label("Export Judges…", systemImage: "square.and.arrow.up")
-                    }
-                    Button(role: .destructive) {
-                        showRemoveAllConfirmation = true
-                    } label: {
-                        Label("Remove All Judges…", systemImage: "trash")
+                } else {
+                    Button("Select") {
+                        isSelecting = true
                     }
                     .disabled(judges.isEmpty)
-                } label: {
-                    Image(systemName: "plus")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if isSelecting {
+                    Button(role: .destructive) {
+                        showDeleteSelectedConfirmation = true
+                    } label: {
+                        Text("Delete (\(selectedJudgeIDs.count))")
+                    }
+                    .disabled(selectedJudgeIDs.isEmpty)
+                } else {
+                    Menu {
+                        Button {
+                            addJudge()
+                        } label: {
+                            Label("New Judge", systemImage: "plus")
+                        }
+                        Button {
+                            isImportingDocument = true
+                        } label: {
+                            Label("Import Judges…", systemImage: "square.and.arrow.down")
+                        }
+                        Button {
+                            exportJudges()
+                        } label: {
+                            Label("Export Judges…", systemImage: "square.and.arrow.up")
+                        }
+                        Button(role: .destructive) {
+                            showRemoveAllConfirmation = true
+                        } label: {
+                            Label("Remove All Judges…", systemImage: "trash")
+                        }
+                        .disabled(judges.isEmpty)
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         }
@@ -103,12 +118,52 @@ struct JudgeListView: View {
             }
             Button("Cancel", role: .cancel) {}
         }
+        .confirmationDialog(
+            "Delete \(selectedJudgeIDs.count) judge\(selectedJudgeIDs.count == 1 ? "" : "s")? This cannot be undone.",
+            isPresented: $showDeleteSelectedConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                deleteSelectedJudges()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
         .task {
             await loadJudges()
         }
     }
 
     // MARK: Row
+
+    @ViewBuilder
+    private func rowContainer(for judgeInfo: JudgeInfo) -> some View {
+        if isSelecting {
+            Button {
+                toggleSelection(judgeInfo)
+            } label: {
+                HStack {
+                    Image(systemName: selectedJudgeIDs.contains(ObjectIdentifier(judgeInfo)) ? "checkmark.circle.fill" : "circle")
+                        .foregroundColor(selectedJudgeIDs.contains(ObjectIdentifier(judgeInfo)) ? .accentColor : Color(.tertiaryLabel))
+                    row(for: judgeInfo)
+                }
+            }
+            .buttonStyle(.plain)
+        } else {
+            Button {
+                editJudge(judgeInfo)
+            } label: {
+                row(for: judgeInfo)
+            }
+            .buttonStyle(.plain)
+            .swipeActions {
+                Button(role: .destructive) {
+                    delete(judgeInfo)
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+        }
+    }
 
     @ViewBuilder
     private func row(for judgeInfo: JudgeInfo) -> some View {
@@ -184,6 +239,23 @@ struct JudgeListView: View {
         guard let index = JudgeListManager.GetInstance().judges?.firstIndex(where: { $0 === judgeInfo }) else { return }
         JudgeListManager.GetInstance().removeJudgeAt(index)
         judges = JudgeListManager.GetInstance().judges ?? []
+    }
+
+    private func toggleSelection(_ judgeInfo: JudgeInfo) {
+        let id = ObjectIdentifier(judgeInfo)
+        if selectedJudgeIDs.contains(id) {
+            selectedJudgeIDs.remove(id)
+        } else {
+            selectedJudgeIDs.insert(id)
+        }
+    }
+
+    private func deleteSelectedJudges() {
+        let judgesToDelete = judges.filter { selectedJudgeIDs.contains(ObjectIdentifier($0)) }
+        JudgeListManager.GetInstance().removeJudges(judgesToDelete)
+        judges = JudgeListManager.GetInstance().judges ?? []
+        isSelecting = false
+        selectedJudgeIDs.removeAll()
     }
 
     private func removeAllJudges() {

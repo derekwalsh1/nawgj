@@ -63,6 +63,13 @@ final class MockJudgeListManager: JudgeListManaging {
         saveJudges()
     }
 
+    func removeJudges(_ judgesToRemove: [JudgeInfo]) {
+        guard let judges = judges, !judgesToRemove.isEmpty else { return }
+        let idsToRemove = Set(judgesToRemove.map { ObjectIdentifier($0) })
+        self.judges = judges.filter { !idsToRemove.contains(ObjectIdentifier($0)) }
+        saveJudges()
+    }
+
     func removeAllJudges() {
         judges = []
         saveJudges()
