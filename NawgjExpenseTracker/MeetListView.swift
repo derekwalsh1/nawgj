@@ -105,15 +105,17 @@ struct MeetListView: View {
                 Button {
                     showJudgeList()
                 } label: {
-                    Label("Judges", systemImage: "person.2")
+                    Image(systemName: "person.2")
                 }
+                .accessibilityLabel("Judges")
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     isShowingSettings = true
                 } label: {
-                    Label("Settings", systemImage: "gearshape")
+                    Image(systemName: "gearshape")
                 }
+                .accessibilityLabel("Settings")
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
