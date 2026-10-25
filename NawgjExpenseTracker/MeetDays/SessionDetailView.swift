@@ -26,6 +26,8 @@ struct SessionDetailView: View {
     let mode: Mode
     let meet: Meet
     let day: MeetDay
+    let pushViewController: (UIViewController) -> Void
+    let popViewController: () -> Void
     let onFinish: () -> Void
 
     @State private var name: String
@@ -39,10 +41,12 @@ struct SessionDetailView: View {
     @State private var assignedJudgeIDs: Set<ObjectIdentifier> = []
     @State private var refreshToken = UUID()
 
-    init(mode: Mode, meet: Meet, day: MeetDay, onFinish: @escaping () -> Void) {
+    init(mode: Mode, meet: Meet, day: MeetDay, pushViewController: @escaping (UIViewController) -> Void, popViewController: @escaping () -> Void, onFinish: @escaping () -> Void) {
         self.mode = mode
         self.meet = meet
         self.day = day
+        self.pushViewController = pushViewController
+        self.popViewController = popViewController
         self.onFinish = onFinish
 
         switch mode {
@@ -149,19 +153,39 @@ struct SessionDetailView: View {
                     }
 
                     ForEach(meet.judges) { judge in
+                        let isAssignedHere = assignedJudgeIDs.contains(ObjectIdentifier(judge))
+                        let conflict = conflictingSession(for: judge, session: session)
                         Button {
                             toggleJudge(judge, session: session)
                         } label: {
                             HStack {
-                                Text(judge.name)
-                                    .foregroundColor(.primary)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(judge.name)
+                                        .foregroundColor(conflict != nil && !isAssignedHere ? .secondary : .primary)
+                                    if let conflict {
+                                        Text("Busy with \"\(conflict.name)\"")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
                                 Spacer()
-                                if assignedJudgeIDs.contains(ObjectIdentifier(judge)) {
+                                if isAssignedHere {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.accentColor)
                                 }
                             }
                         }
+                        // Still allow unassigning a judge who's somehow
+                        // already assigned here despite a conflict (legacy
+                        // data); only block a brand new conflicting
+                        // assignment.
+                        .disabled(conflict != nil && !isAssignedHere)
+                    }
+
+                    Button {
+                        addNewJudge(to: session)
+                    } label: {
+                        Label("Add New Judge", systemImage: "plus.circle.fill")
                     }
                 }
                 .id(refreshToken)
@@ -213,6 +237,18 @@ struct SessionDetailView: View {
         judge.fees.contains(where: { $0.getSessionUUID() == session.getUUID() })
     }
 
+    /// The other session on this day (if any) that `judge` is already
+    /// assigned to and that overlaps `session`'s time - mirrors
+    /// `Meet.conflictingSession(for:in:candidate:)`'s rule so the judge can
+    /// be shown/disabled as busy before the user even taps them.
+    private func conflictingSession(for judge: Judge, session: Session) -> Session? {
+        day.sessions.first { other in
+            other !== session
+                && other.overlaps(with: session)
+                && judge.fees.contains(where: { $0.getSessionUUID() == other.getUUID() })
+        }
+    }
+
     private func syncAssignedJudgeIDs() {
         guard case .edit(let session) = mode else {
             assignedJudgeIDs = []
@@ -243,6 +279,21 @@ struct SessionDetailView: View {
             }
         }
         refreshToken = UUID()
+    }
+
+    private func addNewJudge(to session: Session) {
+        let addJudgesView = AddJudgesToMeetView(
+            meet: meet,
+            pushViewController: pushViewController,
+            popViewController: popViewController,
+            onFinish: {
+                popViewController()
+                syncAssignedJudgeIDs()
+                refreshToken = UUID()
+            },
+            assignmentTarget: (session: session, day: day)
+        )
+        pushViewController(UIHostingController(rootView: addJudgesView))
     }
 
     private func assignAllJudges(to session: Session) {

@@ -292,20 +292,27 @@ class Meet: Codable {
         return .failure(.overlappingAssignments(conflicts))
     }
     
-    /// Add a judge to the meet and append fees for every session on every
-    /// existing meet day.
-    func addJudge(judge: Judge){
-        for day in self.days {
-            for session in day.sessions {
-                let actualHours = session.actualBillableTimeInHours()
-                if let fee = Fee(date: day.meetDate, hours: actualHours, rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
-                    fee.actualHours = actualHours
-                    judge.fees.append(fee)
-                } else {
-                    os_log("Failed to create Fee for judge %{public}@ when adding to meet", log: OSLog.default, type: .error, judge.name)
+    /// Add a judge to the meet. By default (`assignToAllSessions: true`)
+    /// also appends fees for every session on every existing meet day -
+    /// the normal "add this judge to the whole meet" behavior. Pass
+    /// `assignToAllSessions: false` when the caller will assign the judge
+    /// to one specific session itself (e.g. adding a new judge directly
+    /// from a session's "Add New Judge" action), so they aren't also
+    /// auto-assigned to - and billed for - every other session in the meet.
+    func addJudge(judge: Judge, assignToAllSessions: Bool = true){
+        if assignToAllSessions {
+            for day in self.days {
+                for session in day.sessions {
+                    let actualHours = session.actualBillableTimeInHours()
+                    if let fee = Fee(date: day.meetDate, hours: actualHours, rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
+                        fee.actualHours = actualHours
+                        judge.fees.append(fee)
+                    } else {
+                        os_log("Failed to create Fee for judge %{public}@ when adding to meet", log: OSLog.default, type: .error, judge.name)
+                    }
                 }
+                recomputeBillableHours(for: judge, day: day)
             }
-            recomputeBillableHours(for: judge, day: day)
         }
         self.judges.append(judge)
     }

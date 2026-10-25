@@ -6,12 +6,18 @@
 //  Copyright © 2026 Derek Walsh. All rights reserved.
 //
 //  Modern UIKit scene lifecycle entry point. The app has a single window
-//  scene. The root screen (Meet List) is a SwiftUI view (MeetListView),
-//  hosted directly in a UINavigationController rather than instantiated
-//  from the Main storyboard, which supplies pushViewController/
-//  popViewController closures used to bridge into the remaining
-//  UIKit/storyboard screens (same pattern used by MeetDetailView and other
-//  SwiftUI screens further down the navigation stack).
+//  scene, rooted in a UITabBarController with three tabs - Meets, Judges,
+//  Settings - each its own UINavigationController hosting a SwiftUI root
+//  view. A persistent, labeled bottom tab bar (rather than nav-bar icon
+//  buttons) was chosen for clarity: it's the most familiar iOS navigation
+//  pattern, every destination is always visible with a text label (not
+//  just an icon to decode), and it's one tap away with no hidden menus -
+//  important for an audience that may not be deeply familiar with newer
+//  iOS UI conventions. Each tab's SwiftUI root view is supplied its own
+//  pushViewController/popViewController closures, bound to that tab's own
+//  navigation controller, used to bridge into the remaining UIKit/
+//  storyboard screens further down each tab's stack (same pattern used by
+//  MeetDetailView and other SwiftUI screens).
 
 import UIKit
 import SwiftUI
@@ -25,18 +31,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        let navigationController = UINavigationController()
+        let meetsNavigationController = UINavigationController()
         let meetListView = MeetListView(
-            pushViewController: { [weak navigationController] viewController in
-                navigationController?.pushViewController(viewController, animated: true)
+            pushViewController: { [weak meetsNavigationController] viewController in
+                meetsNavigationController?.pushViewController(viewController, animated: true)
             },
-            popViewController: { [weak navigationController] in
-                navigationController?.popViewController(animated: true)
+            popViewController: { [weak meetsNavigationController] in
+                meetsNavigationController?.popViewController(animated: true)
             }
         )
-        navigationController.viewControllers = [UIHostingController(rootView: meetListView)]
+        meetsNavigationController.viewControllers = [UIHostingController(rootView: meetListView)]
+        meetsNavigationController.tabBarItem = UITabBarItem(title: "Meets", image: UIImage(systemName: "calendar"), selectedImage: nil)
 
-        window.rootViewController = navigationController
+        let judgesNavigationController = UINavigationController()
+        let judgeListView = JudgeListView(
+            pushViewController: { [weak judgesNavigationController] viewController in
+                judgesNavigationController?.pushViewController(viewController, animated: true)
+            },
+            popViewController: { [weak judgesNavigationController] in
+                judgesNavigationController?.popViewController(animated: true)
+            }
+        )
+        judgesNavigationController.viewControllers = [UIHostingController(rootView: judgeListView)]
+        judgesNavigationController.tabBarItem = UITabBarItem(title: "Judges", image: UIImage(systemName: "person.2"), selectedImage: nil)
+
+        let settingsNavigationController = UINavigationController()
+        settingsNavigationController.viewControllers = [UIHostingController(rootView: SettingsView())]
+        settingsNavigationController.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape"), selectedImage: nil)
+
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [meetsNavigationController, judgesNavigationController, settingsNavigationController]
+
+        window.rootViewController = tabBarController
         self.window = window
         window.makeKeyAndVisible()
     }

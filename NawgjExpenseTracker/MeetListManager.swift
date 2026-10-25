@@ -27,7 +27,7 @@ protocol MeetListManaging: AnyObject {
     @discardableResult
     func saveMeetsAsync(_ meetsToSave: [Meet]?) async -> Bool
     func addMeet(meet: Meet)
-    func addJudge(judge: Judge)
+    func addJudge(judge: Judge, assignToAllSessions: Bool)
     func addMeetDay(meetDay: MeetDay)
     func addSession(session: Session, to day: MeetDay)
     @discardableResult
@@ -60,6 +60,14 @@ protocol MeetListManaging: AnyObject {
     func getSelectedFee() -> Fee?
     func moveMeet(fromIndex: Int, toIndex: Int)
     func importMeet(fromFile: URL?)
+}
+
+extension MeetListManaging {
+    /// Adds `judge` to the meet and auto-assigns them to every existing
+    /// session (the normal "add this judge to the whole meet" behavior).
+    func addJudge(judge: Judge) {
+        addJudge(judge: judge, assignToAllSessions: true)
+    }
 }
 
 class MeetListManager: MeetListManaging {
@@ -245,9 +253,9 @@ class MeetListManager: MeetListManaging {
         }
     }
     
-    func addJudge(judge : Judge){
+    func addJudge(judge: Judge, assignToAllSessions: Bool){
         if let meet = getSelectedMeet(){
-            meet.addJudge(judge: judge)
+            meet.addJudge(judge: judge, assignToAllSessions: assignToAllSessions)
             saveMeets()
         }
     }

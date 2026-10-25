@@ -12,13 +12,15 @@
 //   - Meets are sorted by date (most recent first) instead of manual
 //     drag-to-reorder.
 //   - A search field to filter by name/location.
-//   - "New Meet" and "Import Meet" combined into a single toolbar menu
-//     instead of Import always occupying its own row.
+//   - A single "+" button opens a large, clearly-labeled action sheet
+//     (New Meet / Import Meet) rather than a small contextual dropdown
+//     menu - friendlier tap targets for users less used to touchscreens.
 //   - Swipe-to-delete instead of a separate Edit-mode toggle.
 //
-//  This is the app's root screen, so unlike other SwiftUI screens it isn't
-//  pushed from a UIKit view controller - it's hosted directly in a
-//  UINavigationController by SceneDelegate, which supplies the
+//  This is one of three tab roots (Meets / Judges / Settings) set up by
+//  SceneDelegate, each in its own UINavigationController - unlike other
+//  SwiftUI screens further down a navigation stack, it isn't pushed from a
+//  UIKit view controller. SceneDelegate supplies the
 //  `pushViewController`/`popViewController` closures used to bridge to the
 //  remaining UIKit/storyboard screens (same pattern as MeetDetailView).
 //
@@ -45,7 +47,7 @@ struct MeetListView: View {
     @State private var searchText = ""
     @State private var isImportingDocument = false
     @State private var importErrorMessage: String?
-    @State private var isShowingSettings = false
+    @State private var showAddMeetOptions = false
 
     private var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -101,49 +103,26 @@ struct MeetListView: View {
         .navigationTitle("NAWGJ Meet Manager")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    showJudgeList()
-                } label: {
-                    Label("Judges", systemImage: "person.2")
-                }
-            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    isShowingSettings = true
-                } label: {
-                    Label("Settings", systemImage: "gearshape")
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button {
-                        addMeet()
-                    } label: {
-                        Label("New Meet", systemImage: "plus")
-                    }
-                    Button {
-                        isImportingDocument = true
-                    } label: {
-                        Label("Import Meet…", systemImage: "square.and.arrow.down")
-                    }
+                    showAddMeetOptions = true
                 } label: {
                     Image(systemName: "plus")
                 }
+                .accessibilityLabel("Add Meet")
             }
+        }
+        .confirmationDialog("Add Meet", isPresented: $showAddMeetOptions, titleVisibility: .visible) {
+            Button("New Meet") {
+                addMeet()
+            }
+            Button("Import Meet…") {
+                isImportingDocument = true
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .fileImporter(isPresented: $isImportingDocument, allowedContentTypes: [.json]) { result in
             handleImportResult(result)
-        }
-        .sheet(isPresented: $isShowingSettings) {
-            NavigationView {
-                SettingsView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") { isShowingSettings = false }
-                        }
-                    }
-            }
         }
         .alert("Import Failed", isPresented: Binding(
             get: { importErrorMessage != nil },
@@ -180,24 +159,25 @@ struct MeetListView: View {
     @ViewBuilder
     private func row(for meet: Meet) -> some View {
         HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(meet.name)
-                    .font(.headline)
+                    .font(.title3)
+                    .fontWeight(.semibold)
                     .foregroundColor(.primary)
                 Text("\(dateFormatter.string(from: meet.startDate)) • \(meet.location.trimmingCharacters(in: .whitespaces))")
-                    .font(.subheadline)
+                    .font(.body)
                     .foregroundColor(.secondary)
             }
             Spacer()
-            VStack(alignment: .trailing, spacing: 6) {
+            VStack(alignment: .trailing, spacing: 8) {
                 Text(currencyString(meet.totalCostOfMeet()))
-                    .font(.subheadline)
+                    .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundColor(.primary)
                 statusBadge(for: meet)
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 10)
         .contentShape(Rectangle())
     }
 
@@ -215,10 +195,10 @@ struct MeetListView: View {
 
     private func badge(_ text: String, color: Color) -> some View {
         Text(text)
-            .font(.caption2)
-            .fontWeight(.medium)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 3)
+            .font(.footnote)
+            .fontWeight(.semibold)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
             .background(color.opacity(0.15))
             .foregroundColor(color)
             .clipShape(Capsule())
@@ -274,7 +254,7 @@ struct MeetListView: View {
     // meet that is not in the judge list, then add the judge and save the
     // list. (Mirrors the old MeetTableViewController.synchronizeJudgeList().)
     // Only runs when AppSettings.autoAddJudgesFromMeetsEnabled is on (see
-    // Settings screen, reachable via the toolbar gear icon).
+    // the Settings tab).
     private func synchronizeJudgeList() {
         guard let meets = MeetListManager.GetInstance().meets else { return }
         for meet in meets {
@@ -316,11 +296,6 @@ struct MeetListView: View {
             refreshMeets()
         })
         pushViewController(UIHostingController(rootView: detailView))
-    }
-
-    private func showJudgeList() {
-        let judgeListView = JudgeListView(pushViewController: pushViewController, popViewController: popViewController)
-        pushViewController(UIHostingController(rootView: judgeListView))
     }
 
     private func handleImportResult(_ result: Result<URL, Error>) {

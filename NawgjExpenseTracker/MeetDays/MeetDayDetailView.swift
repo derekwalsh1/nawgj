@@ -112,8 +112,15 @@ struct MeetDayDetailView: View {
             } else {
                 // Edit mode: changes save live as fields change (see
                 // checkForDateCollision), so there's no Cancel/Done - the
-                // standard back button is all that's needed.
+                // standard back button is all that's needed. An Edit
+                // button is still needed to reveal the Sessions list's
+                // drag-to-reorder handles.
                 formContent
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            EditButton()
+                        }
+                    }
             }
         }
     }
@@ -131,6 +138,14 @@ struct MeetDayDetailView: View {
             }
 
             if case .edit = mode {
+                if sessions.count > 1 {
+                    Section("Session Timeline") {
+                        DayTimelineView(sessions: sessions, colorFor: sessionColor(for:), onSelect: editSession)
+                            .padding(.vertical, 4)
+                            .listRowBackground(Color(.systemBackground))
+                    }
+                }
+
                 Section("Sessions") {
                     ForEach(sessions) { session in
                         Button {
@@ -139,6 +154,7 @@ struct MeetDayDetailView: View {
                             sessionRow(for: session)
                         }
                         .buttonStyle(.plain)
+                        .listRowBackground(sessions.count > 1 ? sessionColor(for: session) : Color(.secondarySystemGroupedBackground))
                         .swipeActions {
                             Button(role: .destructive) {
                                 deleteSession(session)
@@ -147,6 +163,7 @@ struct MeetDayDetailView: View {
                             }
                         }
                     }
+                    .onMove(perform: moveSession)
 
                     Button {
                         addSession()
@@ -157,7 +174,23 @@ struct MeetDayDetailView: View {
 
                 Section("Summary") {
                     summaryRow(title: "Total Time", hours: dayTotalTime)
-                    summaryRow(title: "Billable Time", hours: dayBillableTime)
+                }
+
+                // A single day-wide "Billable Time" isn't meaningful once a
+                // day has more than one session, since the per-judge,
+                // per-day minimum billing rule means two judges on the same
+                // day can bill different totals. Show each assigned judge's
+                // actual billable total for this day instead.
+                if !judgeBillableBreakdown.isEmpty {
+                    Section {
+                        ForEach(judgeBillableBreakdown) { entry in
+                            summaryRow(title: entry.name, hours: entry.hours)
+                        }
+                    } header: {
+                        Text("Billable Time by Judge")
+                    } footer: {
+                        Text("Billable hours can differ from judge to judge based on which sessions they worked and the 3-hour daily minimum.")
+                    }
                 }
             }
         }
@@ -180,6 +213,25 @@ struct MeetDayDetailView: View {
     }
 
     // MARK: Rows
+
+    /// Light pastel colors assigned to sessions by their order in `sessions`
+    /// (not by lane/start time, so a session keeps its color as others are
+    /// added/removed/reordered). Shared by the timeline bars and the
+    /// matching Sessions list row backgrounds so the two can be visually
+    /// correlated at a glance.
+    private static let sessionColors: [Color] = [
+        Color(red: 0.80, green: 0.88, blue: 1.00),
+        Color(red: 0.80, green: 0.95, blue: 0.80),
+        Color(red: 1.00, green: 0.90, blue: 0.75),
+        Color(red: 0.90, green: 0.83, blue: 1.00),
+        Color(red: 0.78, green: 0.93, blue: 0.93),
+        Color(red: 1.00, green: 0.85, blue: 0.90),
+    ]
+
+    private func sessionColor(for session: Session) -> Color {
+        let index = sessions.firstIndex(where: { $0.id == session.id }) ?? 0
+        return Self.sessionColors[index % Self.sessionColors.count]
+    }
 
     @ViewBuilder
     private func sessionRow(for session: Session) -> some View {
@@ -254,9 +306,26 @@ struct MeetDayDetailView: View {
         return day.totalTimeInHours()
     }
 
-    private var dayBillableTime: Float {
-        guard case .edit(let day) = mode else { return 0 }
-        return day.totalBillableTimeInHours()
+    private struct JudgeDayBillable: Identifiable {
+        let id: ObjectIdentifier
+        let name: String
+        let hours: Float
+    }
+
+    /// Each judge assigned to this day, with their own billable total for
+    /// it (summed across whichever of the day's sessions they worked,
+    /// already topped up to the per-judge daily minimum by
+    /// `Meet.recomputeBillableHours`). Judges with no non-excluded fee on
+    /// this day are omitted.
+    private var judgeBillableBreakdown: [JudgeDayBillable] {
+        guard case .edit(let day) = mode else { return [] }
+        let dayUUID = day.getUUID()
+        return meet.judges.compactMap { judge -> JudgeDayBillable? in
+            let dayFees = judge.fees.filter { $0.getMeetDayUUID() == dayUUID && !($0.exclude ?? false) }
+            guard !dayFees.isEmpty else { return nil }
+            let total = dayFees.reduce(Float(0)) { $0 + $1.hours }
+            return JudgeDayBillable(id: ObjectIdentifier(judge), name: judge.name, hours: total)
+        }.sorted { $0.name < $1.name }
     }
 
     // MARK: Validation
@@ -295,11 +364,19 @@ struct MeetDayDetailView: View {
         refreshToken = UUID()
     }
 
+    private func moveSession(from source: IndexSet, to destination: Int) {
+        guard case .edit(let day) = mode else { return }
+        sessions.move(fromOffsets: source, toOffset: destination)
+        day.sessions = sessions
+        MeetListManager.GetInstance().updateSelectedMeetDayWith(meetDay: day)
+        refreshToken = UUID()
+    }
+
     // MARK: Actions
 
     private func addSession() {
         guard case .edit(let day) = mode else { return }
-        let detailView = SessionDetailView(mode: .add, meet: meet, day: day) {
+        let detailView = SessionDetailView(mode: .add, meet: meet, day: day, pushViewController: pushViewController, popViewController: popViewController) {
             popViewController()
             refreshSessions()
         }
@@ -308,7 +385,7 @@ struct MeetDayDetailView: View {
 
     private func editSession(_ session: Session) {
         guard case .edit(let day) = mode else { return }
-        let detailView = SessionDetailView(mode: .edit(session), meet: meet, day: day) {
+        let detailView = SessionDetailView(mode: .edit(session), meet: meet, day: day, pushViewController: pushViewController, popViewController: popViewController) {
             popViewController()
             refreshSessions()
         }
@@ -335,3 +412,79 @@ struct MeetDayDetailView: View {
         MeetListManager.GetInstance().addMeetDay(meetDay: newDay)
     }
 }
+
+// MARK: - DayTimelineView
+
+/// Each of a day's sessions as its own row - name on the left, then a
+/// compact bar showing where it falls across the full day (proportionally
+/// scaled - exact times are shown in the Sessions list below instead).
+/// Drawn in the same pastel color as its row in the Sessions list below
+/// (via `colorFor`) so the two can be visually matched up. Tapping a row
+/// opens that session (via `onSelect`).
+private struct DayTimelineView: View {
+    let sessions: [Session]
+    let colorFor: (Session) -> Color
+    let onSelect: (Session) -> Void
+
+    private static let laneHeight: CGFloat = 44
+    private static let laneSpacing: CGFloat = 6
+    private static let labelWidth: CGFloat = 90
+
+    private var dayStart: Date {
+        sessions.map { $0.startTime }.min() ?? Date()
+    }
+
+    private var dayEnd: Date {
+        sessions.map { $0.endTime }.max() ?? Date()
+    }
+
+    private var totalSeconds: TimeInterval {
+        max(dayEnd.timeIntervalSince(dayStart), 1)
+    }
+
+    private func fraction(for date: Date) -> CGFloat {
+        CGFloat(date.timeIntervalSince(dayStart) / totalSeconds)
+    }
+
+    /// Each session in chronological order, one per row.
+    private var orderedSessions: [Session] {
+        sessions.sorted(by: { $0.startTime < $1.startTime })
+    }
+
+    var body: some View {
+        if sessions.isEmpty {
+            EmptyView()
+        } else {
+            VStack(spacing: Self.laneSpacing) {
+                ForEach(orderedSessions) { session in
+                    HStack(spacing: 8) {
+                        Text(session.name)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.primary)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .frame(width: Self.labelWidth, alignment: .leading)
+
+                        GeometryReader { geo in
+                            let width = geo.size.width
+                            let startX = fraction(for: session.startTime) * width
+                            let endX = fraction(for: session.endTime) * width
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(colorFor(session))
+                                .frame(width: max(endX - startX, 3), height: Self.laneHeight)
+                                .offset(x: startX)
+                        }
+                        .frame(height: Self.laneHeight)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        onSelect(session)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+

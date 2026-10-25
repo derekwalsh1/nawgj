@@ -25,15 +25,25 @@ struct AddJudgesToMeetView: View {
     /// popping this screen and refreshing its judge list.
     let onFinish: () -> Void
 
-    init(meet: Meet, pushViewController: @escaping (UIViewController) -> Void, popViewController: @escaping () -> Void, onFinish: @escaping () -> Void) {
+    /// When set, every judge added/created from this screen is also
+    /// immediately assigned to this specific session, rather than just
+    /// added to the meet's judge list - used when this screen is pushed
+    /// from a session's "Add New Judge" action (`SessionDetailView`)
+    /// instead of the meet-wide "Select Judges" flow.
+    var assignmentTarget: (session: Session, day: MeetDay)? = nil
+
+    init(meet: Meet, pushViewController: @escaping (UIViewController) -> Void, popViewController: @escaping () -> Void, onFinish: @escaping () -> Void, assignmentTarget: (session: Session, day: MeetDay)? = nil) {
         self.meet = meet
         self.pushViewController = pushViewController
         self.popViewController = popViewController
         self.onFinish = onFinish
+        self.assignmentTarget = assignmentTarget
     }
 
     @State private var judgeList: [JudgeInfo] = []
     @State private var selectedKeys: Set<String> = []
+    @State private var overlapMessage = ""
+    @State private var showOverlapAlert = false
 
     /// A judge is uniquely identified by name (case-insensitive) + level,
     /// matching `JudgeListManager.indexOfJudge(_:)`'s own de-dup rule - not
@@ -73,7 +83,7 @@ struct AddJudgesToMeetView: View {
             }
             .padding()
 
-            Text("Select judges to add to meet:")
+            Text(assignmentTarget != nil ? "Select judges to add and assign to this session:" : "Select judges to add to meet:")
                 .font(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
@@ -106,7 +116,7 @@ struct AddJudgesToMeetView: View {
             }
             .listStyle(.plain)
         }
-        .navigationTitle("Select Judges")
+        .navigationTitle(assignmentTarget != nil ? "Add Judges" : "Select Judges")
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -120,6 +130,9 @@ struct AddJudgesToMeetView: View {
                     onFinish()
                 }
             }
+        }
+        .alert(overlapMessage, isPresented: $showOverlapAlert) {
+            Button("OK", role: .cancel) {}
         }
         .onAppear {
             loadJudgeList()
@@ -173,8 +186,19 @@ struct AddJudgesToMeetView: View {
     }
 
     private func addJudgeInfoToMeet(_ judgeInfo: JudgeInfo) {
-        if let newJudge = Judge(name: judgeInfo.name, level: judgeInfo.level, fees: Array<Fee>(), defaultExpenseDate: meet.startDate) {
-            MeetListManager.GetInstance().addJudge(judge: newJudge)
+        guard let newJudge = Judge(name: judgeInfo.name, level: judgeInfo.level, fees: Array<Fee>(), defaultExpenseDate: meet.startDate) else { return }
+        // When assigning to one specific session, don't also auto-assign
+        // (and bill) this judge for every other session in the meet.
+        MeetListManager.GetInstance().addJudge(judge: newJudge, assignToAllSessions: assignmentTarget == nil)
+
+        guard let target = assignmentTarget else { return }
+        let result = MeetListManager.GetInstance().assignJudge(newJudge, to: target.session, in: target.day)
+        if case .failure(let error) = result {
+            switch error {
+            case .overlappingSession(let conflict):
+                overlapMessage = "\(newJudge.name) is already assigned to \"\(conflict.name)\", which overlaps this session's time."
+                showOverlapAlert = true
+            }
         }
     }
 
