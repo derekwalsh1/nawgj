@@ -130,8 +130,8 @@ final class MockMeetListManager: MeetListManaging {
         saveMeets()
     }
 
-    func addJudge(judge: Judge) {
-        getSelectedMeet()?.addJudge(judge: judge)
+    func addJudge(judge: Judge, assignToAllSessions: Bool) {
+        getSelectedMeet()?.addJudge(judge: judge, assignToAllSessions: assignToAllSessions)
         saveMeets()
     }
 
