@@ -33,19 +33,29 @@ struct AddJudgesToMeetView: View {
     }
 
     @State private var judgeList: [JudgeInfo] = []
-    @State private var selectedNames: Set<String> = []
+    @State private var selectedKeys: Set<String> = []
 
-    private var meetJudgeNames: Set<String> {
-        Set(meet.judges.map { $0.name })
+    /// A judge is uniquely identified by name (case-insensitive) + level,
+    /// matching `JudgeListManager.indexOfJudge(_:)`'s own de-dup rule - not
+    /// by name alone. Two roster entries can share the same name with
+    /// different levels (e.g. a judge who got re-certified at a new
+    /// level), and treating name alone as the identity caused selecting
+    /// one to also select/add the other.
+    private func judgeKey(name: String, level: Judge.Level) -> String {
+        "\(name.lowercased())|\(level.rawValue)"
+    }
+
+    private var meetJudgeKeys: Set<String> {
+        Set(meet.judges.map { judgeKey(name: $0.name, level: $0.level) })
     }
 
     /// `judgeList` sorted so judges already added to this meet appear first
     /// (each group keeps the existing alphabetical order).
     private var sortedJudgeList: [JudgeInfo] {
-        let names = meetJudgeNames
+        let keys = meetJudgeKeys
         return judgeList.enumerated().sorted { lhs, rhs in
-            let lhsIncluded = names.contains(lhs.element.name)
-            let rhsIncluded = names.contains(rhs.element.name)
+            let lhsIncluded = keys.contains(judgeKey(name: lhs.element.name, level: lhs.element.level))
+            let rhsIncluded = keys.contains(judgeKey(name: rhs.element.name, level: rhs.element.level))
             if lhsIncluded != rhsIncluded {
                 return lhsIncluded
             }
@@ -70,7 +80,7 @@ struct AddJudgesToMeetView: View {
                 .padding(.bottom, 8)
 
             List(sortedJudgeList) { judgeInfo in
-                let alreadyIncluded = meetJudgeNames.contains(judgeInfo.name)
+                let alreadyIncluded = meetJudgeKeys.contains(judgeKey(name: judgeInfo.name, level: judgeInfo.level))
                 Button {
                     toggleSelection(judgeInfo)
                 } label: {
@@ -85,7 +95,7 @@ struct AddJudgesToMeetView: View {
                         if alreadyIncluded {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.green)
-                        } else if selectedNames.contains(judgeInfo.name) {
+                        } else if selectedKeys.contains(judgeKey(name: judgeInfo.name, level: judgeInfo.level)) {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.accentColor)
                         }
@@ -148,15 +158,16 @@ struct AddJudgesToMeetView: View {
     }
 
     private func toggleSelection(_ judgeInfo: JudgeInfo) {
-        if selectedNames.contains(judgeInfo.name) {
-            selectedNames.remove(judgeInfo.name)
+        let key = judgeKey(name: judgeInfo.name, level: judgeInfo.level)
+        if selectedKeys.contains(key) {
+            selectedKeys.remove(key)
         } else {
-            selectedNames.insert(judgeInfo.name)
+            selectedKeys.insert(key)
         }
     }
 
     private func addSelectedJudges() {
-        for judgeInfo in judgeList where selectedNames.contains(judgeInfo.name) {
+        for judgeInfo in judgeList where selectedKeys.contains(judgeKey(name: judgeInfo.name, level: judgeInfo.level)) {
             addJudgeInfoToMeet(judgeInfo)
         }
     }
