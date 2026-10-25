@@ -2,10 +2,10 @@
 //  SettingsView.swift
 //  NawgjExpenseTracker
 //
-//  App-wide user preferences, surfaced from MeetListView's toolbar gear
-//  icon. Currently holds a single toggle controlling whether judges found
-//  in existing meets but missing from the master Judge List are
-//  automatically added to it on launch (see
+//  App-wide user preferences. One of the app's three tab roots (Meets /
+//  Judges / Settings - see SceneDelegate.swift). Currently holds a single
+//  toggle controlling whether judges found in existing meets but missing
+//  from the master Judge List are automatically added to it on launch (see
 //  MeetListView.synchronizeJudgeList()).
 //
 

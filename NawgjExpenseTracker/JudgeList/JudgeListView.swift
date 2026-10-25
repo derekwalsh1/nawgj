@@ -5,13 +5,14 @@
 //  SwiftUI replacement for the old storyboard-driven "All Judges" screen
 //  (JudgeListTableViewController / JudgeManagementCell), continuing the
 //  same redesign approach used for the Meet List root screen: compact rows,
-//  swipe-to-delete instead of Edit-mode, and Add/Import/Export consolidated
-//  into a single toolbar menu.
+//  swipe-to-delete (plus an explicit multi-select "Delete" mode) instead of
+//  Edit-mode, and Add/Import/Export consolidated into a single toolbar menu.
 //
-//  Pushed from MeetListView via its pushViewController closure (see
-//  MeetListView.swift), and itself pushes the existing SwiftUI
-//  CreateJudgeView for both "Add New" and tapping an existing judge, using
-//  the same push/pop closure bridging pattern.
+//  One of the app's three tab roots (Meets / Judges / Settings - see
+//  SceneDelegate.swift), hosted in its own UINavigationController. Itself
+//  pushes the existing SwiftUI CreateJudgeView for both "Add New" and
+//  tapping an existing judge, using the same push/pop closure bridging
+//  pattern used elsewhere.
 //
 //  Phase 4 of the incremental SwiftUI migration - see
 //  .github/MODERNIZATION_BACKLOG.md.
