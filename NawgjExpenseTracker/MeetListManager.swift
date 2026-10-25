@@ -38,6 +38,7 @@ protocol MeetListManaging: AnyObject {
     @discardableResult
     func validateSessionChange(_ session: Session, in day: MeetDay) -> Result<Void, Meet.SessionChangeError>
     func sessionChanged(_ session: Session, in day: MeetDay)
+    func recomputeBillableHours(for judge: Judge, day: MeetDay)
     func updateSelectedMeetWith(meet: Meet)
     func updateSelectedMeetDayWith(meetDay: MeetDay)
     func updateSelectedJudgeWith(judge: Judge)
@@ -302,6 +303,13 @@ class MeetListManager: MeetListManaging {
     func sessionChanged(_ session: Session, in day: MeetDay){
         if let meet = getSelectedMeet(){
             meet.sessionChanged(session, in: day)
+            saveMeets()
+        }
+    }
+
+    func recomputeBillableHours(for judge: Judge, day: MeetDay) {
+        if let meet = getSelectedMeet() {
+            meet.recomputeBillableHours(for: judge, day: day)
             saveMeets()
         }
     }

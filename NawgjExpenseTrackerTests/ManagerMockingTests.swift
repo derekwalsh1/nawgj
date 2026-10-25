@@ -168,6 +168,11 @@ final class MockMeetListManager: MeetListManaging {
         saveMeets()
     }
 
+    func recomputeBillableHours(for judge: Judge, day: MeetDay) {
+        getSelectedMeet()?.recomputeBillableHours(for: judge, day: day)
+        saveMeets()
+    }
+
     func updateSelectedMeetWith(meet: Meet) {
         if let index = selectedMeetIndex, meets != nil, index < meets!.count {
             meets![index] = meet

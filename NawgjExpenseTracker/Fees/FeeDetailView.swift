@@ -5,9 +5,12 @@
 //  SwiftUI replacement for FeeDetailsViewController. Pushed from
 //  FeeListView after MeetListManager.selectFeeAt(index:) and
 //  selectMeetDayForFee(fee:) have already been called, so `fee` is the
-//  live, already-selected model object and `meetDay` is its associated
-//  MeetDay (used to display total/break time and to compute the default,
-//  non-overridden billable hours).
+//  live, already-selected model object, `meetDay` is its associated
+//  MeetDay, and `session` is the specific Session (within that day) this
+//  fee bills for - used to display total/break time and to compute the
+//  default, non-overridden actual hours for just this fee, not the whole
+//  day (a day can have more than one session since each judge is billed
+//  per session they worked).
 //
 //  Unlike the Expenses detail screens, this screen has no Cancel option in
 //  the old UIKit code - the "Fee List" back button unwound and saved
@@ -38,6 +41,7 @@ struct FeeDetailView: View {
     let fee: Fee
     let judge: Judge
     let meetDay: MeetDay?
+    let session: Session?
     let popViewController: () -> Void
 
     @State private var hoursOverridden: Bool
@@ -47,18 +51,19 @@ struct FeeDetailView: View {
     @State private var rateText: String
     @State private var excludeJudge: Bool
 
-    init(fee: Fee, judge: Judge, meetDay: MeetDay?, popViewController: @escaping () -> Void) {
+    init(fee: Fee, judge: Judge, meetDay: MeetDay?, session: Session?, popViewController: @escaping () -> Void) {
         self.fee = fee
         self.judge = judge
         self.meetDay = meetDay
+        self.session = session
         self.popViewController = popViewController
 
         _hoursOverridden = State(initialValue: fee.hoursOverridden)
         _excludeJudge = State(initialValue: fee.exclude ?? false)
         _rateOverridden = State(initialValue: fee.rateOverridden)
 
-        let hours = Int(fee.hours)
-        let minutes = Int(((fee.hours - Float(hours)) * 60).rounded())
+        let hours = Int(fee.actualHours)
+        let minutes = Int(((fee.actualHours - Float(hours)) * 60).rounded())
         _adjustedHours = State(initialValue: hours)
         _adjustedMinutes = State(initialValue: minutes)
 
@@ -93,11 +98,17 @@ struct FeeDetailView: View {
     private static let hoursRange = Array(0...24)
     private static let minutesRange = Array(0...60)
 
-    private var billableHours: Float {
+    /// This fee's own actual (pre-minimum-billing-rule) hours: the
+    /// manually-entered picker value when overridden, or this fee's
+    /// session's own un-floored time otherwise. The final billed
+    /// `fee.hours` (used for totals/invoices elsewhere) may be higher than
+    /// this if the day's minimum billing hours rule tops it up - see
+    /// `Meet.recomputeBillableHours(for:day:)`.
+    private var actualHours: Float {
         if hoursOverridden {
             return Float(adjustedHours) + Float(adjustedMinutes) / 60.0
         }
-        return meetDay?.totalBillableTimeInHours() ?? fee.hours
+        return session?.actualBillableTimeInHours() ?? fee.actualHours
     }
 
     private var effectiveRate: Float {
@@ -108,16 +119,16 @@ struct FeeDetailView: View {
     }
 
     private var totalFee: Float {
-        excludeJudge ? 0 : billableHours * effectiveRate
+        excludeJudge ? 0 : actualHours * effectiveRate
     }
 
     var body: some View {
         Form {
             Section {
                 labeledRow("Date", Self.dateFormatter.string(from: fee.date))
-                labeledRow("Total Time", Self.timeFormatter.string(from: TimeInterval((meetDay?.totalTimeInHours() ?? 0) * 60 * 60)) ?? "")
-                labeledRow("Break Time", Self.timeFormatter.string(from: TimeInterval((meetDay?.breakTimeInHours() ?? 0) * 60 * 60)) ?? "")
-                labeledRow("Billable Time", Self.timeFormatter.string(from: TimeInterval(billableHours * 60 * 60)) ?? "")
+                labeledRow("Total Time", Self.timeFormatter.string(from: TimeInterval((session?.totalTimeInHours() ?? 0) * 60 * 60)) ?? "")
+                labeledRow("Break Time", Self.timeFormatter.string(from: TimeInterval((session?.breakTimeInHours() ?? 0) * 60 * 60)) ?? "")
+                labeledRow("Billable Time", Self.timeFormatter.string(from: TimeInterval(actualHours * 60 * 60)) ?? "")
                 labeledRow("Judge's Rate", rateOverridden ? "$\(Self.rateFormatter.string(from: NSNumber(value: effectiveRate)) ?? "0")/Hour (Manual)" : String(format: "$%0.1f/Hour (%@)", judge.level.rate, judge.level.description))
                 labeledRow("Fee", Self.currencyFormatter.string(from: totalFee as NSNumber) ?? "")
             }
@@ -195,10 +206,13 @@ struct FeeDetailView: View {
     private func persistFee() {
         fee.hoursOverridden = hoursOverridden
         fee.exclude = excludeJudge
-        fee.hours = billableHours
+        fee.actualHours = actualHours
         fee.rateOverridden = rateOverridden
         fee.rate = effectiveRate
 
         MeetListManager.GetInstance().updateSelectedFeeWith(fee: fee)
+        if let meetDay {
+            MeetListManager.GetInstance().recomputeBillableHours(for: judge, day: meetDay)
+        }
     }
 }

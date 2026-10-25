@@ -119,7 +119,19 @@ struct AddJudgesToMeetView: View {
     // MARK: Data
 
     private func loadJudgeList() {
-        JudgeListManager.GetInstance().loadAndSortJudges()
+        // Only reload from disk the first time this session touches the
+        // roster (judges == nil). Reloading from disk on every appearance
+        // of this screen, unconditionally, could race ahead of a very
+        // recent pending save made elsewhere (a delete/edit on the All
+        // Judges screen, an import, etc. all save asynchronously) and read
+        // back stale data, silently reverting that change - and then
+        // re-save that stale snapshot, making the revert permanent. Once
+        // the roster is loaded in memory, just re-sort it instead.
+        if JudgeListManager.GetInstance().judges == nil {
+            JudgeListManager.GetInstance().loadAndSortJudges()
+        } else {
+            JudgeListManager.GetInstance().sortJudges()
+        }
         judgeList = JudgeListManager.GetInstance().judges ?? []
     }
 

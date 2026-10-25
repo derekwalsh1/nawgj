@@ -154,7 +154,9 @@ class Meet: Codable {
 
     /// Removes a session from `day`, and any fees tied to it. Refuses to
     /// remove a day's last remaining session (a day must always have >= 1
-    /// session) - returns `false` in that case.
+    /// session) - returns `false` in that case. Re-applies the day
+    /// minimum-billing-hours rule for any judge who had a fee for the
+    /// removed session, since removing it can change their day total.
     @discardableResult
     func removeSession(_ session: Session, from day: MeetDay) -> Bool {
         guard day.sessions.count > 1, let index = day.sessions.firstIndex(where: { $0 === session }) else {
@@ -162,7 +164,11 @@ class Meet: Codable {
         }
         let sessionUUID = session.getUUID()
         for judge in judges {
+            let hadFeeForSession = judge.fees.contains(where: { $0.getSessionUUID() == sessionUUID })
             judge.fees.removeAll(where: { $0.getSessionUUID() == sessionUUID })
+            if hadFeeForSession {
+                recomputeBillableHours(for: judge, day: day)
+            }
         }
         day.sessions.remove(at: index)
         return true
@@ -195,17 +201,28 @@ class Meet: Codable {
             return .failure(.overlappingSession(conflict))
         }
 
-        if let fee = Fee(date: day.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
+        let actualHours = session.actualBillableTimeInHours()
+        if let fee = Fee(date: day.meetDate, hours: actualHours, rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
+            fee.actualHours = actualHours
             judge.fees.append(fee)
+            recomputeBillableHours(for: judge, day: day)
         } else {
             os_log("Failed to create Fee for judge %{public}@ for session %{public}@", log: OSLog.default, type: .error, judge.name, session.name)
         }
         return .success(())
     }
 
-    /// Unassigns `judge` from `session` (removes their fee for it, if any).
+    /// Unassigns `judge` from `session` (removes their fee for it, if any),
+    /// then re-applies the day minimum-billing-hours rule to whatever fees
+    /// remain for that judge on that day.
     func unassignJudge(_ judge: Judge, from session: Session) {
-        judge.fees.removeAll(where: { $0.getSessionUUID() == session.getUUID() })
+        let sessionUUID = session.getUUID()
+        guard let removedFee = judge.fees.first(where: { $0.getSessionUUID() == sessionUUID }) else { return }
+        let dayUUID = removedFee.getMeetDayUUID()
+        judge.fees.removeAll(where: { $0.getSessionUUID() == sessionUUID })
+        if let dayUUID, let day = days.first(where: { $0.getUUID() == dayUUID }) {
+            recomputeBillableHours(for: judge, day: day)
+        }
     }
 
     /// Finds an existing session (other than `candidate`) on `day` that
@@ -218,6 +235,36 @@ class Meet: Codable {
                 && other.getUUID() != candidateUUID
                 && other.overlaps(with: candidate)
                 && judge.fees.contains(where: { $0.getSessionUUID() == other.getUUID() })
+        }
+    }
+
+    /// Applies the minimum-billing-hours rule for `judge` across all of
+    /// their (non-excluded) fees on `day` as a whole, rather than to each
+    /// session independently: the sum of the day's fees' *actual* hours
+    /// (`Fee.actualHours` - each session's un-floored time for
+    /// auto-computed fees, or exactly what was manually entered for
+    /// overridden ones) is floored at `MeetDay.MIN_BILLING_HOURS` only if
+    /// it falls short overall. Any shortfall is added to a single fee
+    /// (preferring a non-overridden one, so a manual entry isn't obscured)
+    /// so the day's billed total reaches the minimum.
+    ///
+    /// Call this after anything that can change a judge's set of fees for
+    /// a day: assigning/unassigning a session, a session's time range
+    /// changing, a fee being excluded/included, or hours being manually
+    /// overridden.
+    func recomputeBillableHours(for judge: Judge, day: MeetDay) {
+        let dayUUID = day.getUUID()
+        let dayFees = judge.fees.filter { $0.getMeetDayUUID() == dayUUID && !($0.exclude ?? false) }
+        guard !dayFees.isEmpty else { return }
+
+        for fee in dayFees {
+            fee.hours = fee.actualHours
+        }
+
+        let shortfall = MeetDay.MIN_BILLING_HOURS - dayFees.reduce(Float(0)) { $0 + $1.actualHours }
+        if shortfall > 0 {
+            let feeToAdjust = dayFees.first(where: { !$0.hoursOverridden }) ?? dayFees[0]
+            feeToAdjust.hours += shortfall
         }
     }
 
@@ -250,12 +297,15 @@ class Meet: Codable {
     func addJudge(judge: Judge){
         for day in self.days {
             for session in day.sessions {
-                if let fee = Fee(date: day.meetDate, hours: session.totalBillableTimeInHours(), rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
+                let actualHours = session.actualBillableTimeInHours()
+                if let fee = Fee(date: day.meetDate, hours: actualHours, rate: judge.level.rate, notes: "", meetDayUUID: day.getUUID(), sessionUUID: session.getUUID()) {
+                    fee.actualHours = actualHours
                     judge.fees.append(fee)
                 } else {
                     os_log("Failed to create Fee for judge %{public}@ when adding to meet", log: OSLog.default, type: .error, judge.name)
                 }
             }
+            recomputeBillableHours(for: judge, day: day)
         }
         self.judges.append(judge)
     }
@@ -280,19 +330,20 @@ class Meet: Codable {
 
     /// Called when a session's own time range/breaks changed after validation
     /// has already succeeded; re-syncs the hours (and date) of the one fee
-    /// each judge has for that specific session.
+    /// each judge has for that specific session, then re-applies the day
+    /// minimum-billing-hours rule for that judge.
     func sessionChanged(_ session: Session, in day: MeetDay){
         guard days.contains(where: { $0 === day }) else { return }
         let sessionUUID = session.getUUID()
         for judge in judges {
-            if let fee = judge.fees.first(where: { $0.getSessionUUID() == sessionUUID }) {
-                let excluded = fee.exclude ?? false
-                if !excluded && !fee.hoursOverridden {
-                    fee.hours = session.totalBillableTimeInHours()
+            guard let fee = judge.fees.first(where: { $0.getSessionUUID() == sessionUUID }) else { continue }
+            let excluded = fee.exclude ?? false
+            if !excluded {
+                if !fee.hoursOverridden {
+                    fee.actualHours = session.actualBillableTimeInHours()
                 }
-                if !excluded {
-                    fee.date = day.meetDate
-                }
+                fee.date = day.meetDate
+                recomputeBillableHours(for: judge, day: day)
             }
         }
     }

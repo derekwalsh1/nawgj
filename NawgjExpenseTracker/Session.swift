@@ -49,11 +49,25 @@ extension BillableTimeRange {
 
     /// Total billable time in hours: total time minus break time (capped at
     /// `MeetDay.MAX_BREAK_TIME_HOURS`), floored at `MeetDay.MIN_BILLING_HOURS`.
+    /// Used for meet/day-level aggregate stats that aren't tied to a
+    /// specific judge (e.g. `MeetDay.totalBillableTimeInHours()`,
+    /// `Meet.billableMeetHours()`); per-judge fee hours use
+    /// `actualBillableTimeInHours()` instead - see its doc comment.
     func totalBillableTimeInHours() -> Float {
         return max(
             MeetDay.MIN_BILLING_HOURS,
             totalTimeInHours() - min(breakTimeInHours(), MeetDay.MAX_BREAK_TIME_HOURS)
         )
+    }
+
+    /// Actual billable time for this range - total time minus break time
+    /// (capped) - with NO minimum-billing-hours floor applied. This is the
+    /// "actual hours worked" input to the per-judge, per-day minimum
+    /// billing rule (see `Meet.recomputeBillableHours(for:day:)`), which
+    /// applies that rule once across everything a judge worked that day
+    /// rather than to each session independently.
+    func actualBillableTimeInHours() -> Float {
+        return totalTimeInHours() - min(breakTimeInHours(), MeetDay.MAX_BREAK_TIME_HOURS)
     }
 }
 
