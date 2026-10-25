@@ -101,6 +101,31 @@ Track meets, expenses, and generate professional invoices. The essential tool fo
 
 ## What's New (4000 character limit - for version updates)
 
+Version 5.3
+
+Billing Accuracy
+• Fixed the 3-hour minimum billing rule to apply once per judge per day instead of once per session, so a judge working two short sessions on the same day is no longer double-billed the minimum
+
+Judge List Fixes
+• Fixed selecting one of two same-named judges (e.g. re-certified at a new level) also selecting/adding the other by mistake when adding judges to a meet
+
+New Navigation
+• Added a bottom tab bar (Meets, Judges, Settings) and a bigger, clearer meet list
+• Added multi-select bulk delete on the All Judges screen
+
+New Meet Day Tools
+• Added a compact session timeline on the Meet Day Details screen, color-matched to the Sessions list, showing each session's place across the day
+• Replaced the day-wide "Billable Time" summary with a per-judge billable hours breakdown
+• Sessions can now be reordered by dragging
+
+Faster Judge Assignment
+• Added "Add New Judge" on the Session Details screen - add a judge to the meet and assign them to just that session in one step
+• Judges already busy with an overlapping session are now shown grayed out instead of only failing after being tapped
+
+Thank you for using NAWGJ Expense Tracker!
+
+---
+
 Version 5.2
 
 Judge List Reliability Fixes

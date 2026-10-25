@@ -39,7 +39,7 @@ https://github.com/derekwalsh1/nawgj
 - [x] Release: **Automatic** or **Manual**
 
 ### ✅ Version Information
-- [x] Version Number: **1.0**
+- [x] Version Number: **5.3**
 - [x] Copyright: **© 2026 Derek Walsh**
 - [x] Age Rating: **4+**
 
